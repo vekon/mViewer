@@ -153,7 +153,7 @@ YUI({
 
         function requestInitialData() {
             var fullUrl = window.location.search;
-            Y.one("#connectionId").set("value", fullUrl.substring(fullUrl.indexOf("=") + 1));
+            MV.appInfo.connectionId = fullUrl.substring(fullUrl.indexOf("=") + 1);
             var sUrl = MV.URLMap.graphInitiate();
             var request = Y.io(sUrl, cfg);
         }
@@ -177,7 +177,6 @@ YUI({
             var parsedResponse = Y.JSON.parse(responseObject.responseText);
             response = parsedResponse.response.result;
             if (response !== undefined) {
-                Y.log("Chart initiated");
                 drawChart();
             } else {
                 MV.showAlertMessage("Error: [0]".format(parsedResponse.response.error.message), MV.warnIcon);

@@ -38,7 +38,7 @@ YUI({
         var idMap = {};
 
         var initQueryBox = function(event) {
-            Y.one("#currentColl").set("value", event.currentTarget.getAttribute("label"));
+            MV.appInfo.currentColl = event.currentTarget.getAttribute("data-collection-name");
             MV.selectDBItem(event.currentTarget);
             MV.loadQueryBox(MV.URLMap.getDocKeys(), MV.URLMap.getDocs(), sm.currentColl(), showTabView);
         };
@@ -53,8 +53,7 @@ YUI({
             MV.deleteDocEvent.subscribe(deleteDoc);
 
             try {
-                Y.log("Preparing the data tabs...", "info");
-                MV.header.set("innerHTML", "Contents of Collection : " + Y.one("#currentColl").get("value"));
+                MV.setHeader(MV.headerConstants.QUERY_RESPONSE);
                 tabView.appendTo(MV.mainBody.get('id'));
                 var treebleData = MV.getTreebleDataForDocs(response);
                 var treeble = MV.getTreeble(treebleData, "document");
@@ -70,7 +69,6 @@ YUI({
                 populateJSONTab(response);
                 sm.publish(sm.events.queryFired);
                 MV.hideLoadingPanel();
-                Y.log("Loaded data tabs.", "info");
             } catch (error) {
                 MV.hideLoadingPanel();
                 Y.log("Failed to initailise data tabs. Reason: [0]".format(error), "error");
@@ -166,7 +164,6 @@ YUI({
                     });
                 }
             }, 'div.jsonBuffer');
-            Y.log("The documents written on the JSON tab", "debug");
         }
 
         /**
@@ -242,7 +239,6 @@ YUI({
                             toggleSaveEdit(targetNode, index, actionMap.save);
                             MV.showAlertMessage("Document updated successfully.", MV.infoIcon);
                             Y.one('#execQueryButton').simulate('click');
-                            Y.log("Document update to [0]".format(response), "info");
                         } else {
                             var error = parsedResponse.response.error;
                             MV.showAlertMessage("Could not update Document ! [0]", MV.warnIcon, error.code);
@@ -297,7 +293,6 @@ YUI({
                                 var response = parsedResponse.response.result;
                                 if (response !== undefined) {
                                     MV.showAlertMessage("Document deleted successfully.", MV.infoIcon);
-                                    Y.log("Document with _id= [0] deleted. Response: [1]".format(docId, response), "info");
                                     Y.one('#execQueryButton').simulate('click');
                                 } else {
                                     var error = parsedResponse.response.error;
@@ -306,7 +301,7 @@ YUI({
                                 }
                             },
                             failure: function(ioId, responseObj) {
-                                Y.log("Could not delete the document .Status text: ".format(Y.one("#currentColl").get("value"), responseObj.statusText), "error");
+                                Y.log("Could not delete the document .Status text: ".format(MV.appInfo.currentColl, responseObj.statusText), "error");
                                 MV.showAlertMessage("Could not drop the document! Please check if your app server is running and try again. Status Text: [1]".format(responseObj.statusText), MV.warnIcon);
                             }
                         }
@@ -336,7 +331,7 @@ YUI({
             var doc = textArea.get("value");
             try {
                 var parsedDoc = Y.JSON.parse(doc);
-                sendUpdateDocRequest(Y.JSON.stringify(parsedDoc), idMap[index].docId, eventObject);
+                sendUpdateDocRequest(encodeURIComponent(doc), idMap[index].docId, eventObject);
             } catch (e) {
                 var message = e.message.substr(e.message.indexOf(":") + 1);
                 MV.showAlertMessage("Invalid Document format: " + message, MV.warnIcon);

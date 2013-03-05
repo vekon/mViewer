@@ -51,6 +51,30 @@ YUI.add('utility', function(Y) {
     MV.infoIcon = "infoIcon";
     MV.users = "system.users";
     MV.indexes = "system.indexes";
+    MV.appInfo = {
+        currentColl: "",
+        currentDB: "",
+        currentBucket: "",
+        username: "",
+        host: "",
+        port: "",
+        newName: "",
+        connectionId: ""
+    };
+
+    MV.headerConstants = {
+        STATISTICS : "Statistics",
+        SERVER_STATS : "Server Statistics",
+        QUERY_RESPONSE : "Query Response"
+    };
+
+    MV.setHeader = function(value){
+        MV.header.set("innerHTML", value);
+    };
+
+    MV.clearHeader = function(){
+        MV.header.set("innerHTML", "");
+    };
 
     MV.openFileEvent = new YAHOO.util.CustomEvent("OpenFile");
     MV.deleteFileEvent = new YAHOO.util.CustomEvent("DeleteFile");
@@ -64,6 +88,22 @@ YUI.add('utility', function(Y) {
         MV.selectedHeader = $(node._node).closest('a');
     };
 
+    MV.databaseIdPrefix = "db-";
+    MV.collectionIdPrefix = "coll-";
+    MV.bucketIdPRefix = "bucket-";
+
+    MV.getDatabaseElementId = function(databaseName) {
+        return MV.databaseIdPrefix + (databaseName.replace(/ /g, '_').replace('.', '_'));
+    };
+
+    MV.getCollectionElementId = function(collectionName) {
+        return MV.collectionIdPrefix + (collectionName.replace(/ /g, '_').replace('.', '_'));
+    };
+
+    MV.getBucketElementId = function(bucketName) {
+        return MV.bucketIdPRefix + bucketName.replace(/ /g, '_');
+    };
+
     MV.selectDatabase = function(node) {
         if (MV.selectedDB) {
             MV.selectedDB.removeClass('sel');
@@ -72,6 +112,7 @@ YUI.add('utility', function(Y) {
         MV.selectedDB = $(node._node).closest('li');
     };
 
+    /* Highlights the selected database item(collection, bucket, system collections)*/
     MV.selectDBItem = function(node) {
         if (MV.selectedDBItem) {
             MV.selectedDBItem.removeClass('sel');
@@ -81,14 +122,14 @@ YUI.add('utility', function(Y) {
     };
 
     MV.StateManager = (function() {
-        var self = this, stateVariables = ['currentDB', 'currentColl', 'currentBucket', 'host', 'port', 'connectionId', 'newName'], exports = {}, i=0;
+        var self = this, stateVariables = ['currentDB', 'currentColl', 'currentBucket', 'host', 'port', 'connectionId', 'newName'], exports = {}, i = 0;
 
         function getVal(key) {
-            return Y.one('#' + key).get("value");
+            return MV.appInfo[key];
         }
 
         function setVal(key, value) {
-            Y.one('#' + key).set("value", value);
+            MV.appInfo[key] = value;
         }
 
         function deliverEvent(eventName, eventArgs) {
@@ -123,14 +164,17 @@ YUI.add('utility', function(Y) {
         }
 
         exports.connectionId = function() {
-            var query = window.location.search.substring(1);
-            var vars = query.split("&");
-            var params = new Array()
-            for (var i = 0; i < vars.length; i++) {
-                var pair = vars[i].split("=");
-                params[pair[0]] = pair[1]
+            if (!MV.appInfo.connectionId) {
+                var query = window.location.search.substring(1);
+                var vars = query.split("&");
+                var params = new Array()
+                for (var i = 0; i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    params[pair[0]] = pair[1]
+                }
+                MV.appInfo.connectionId = params["connectionId"];
             }
-            return params["connectionId"];
+            return MV.appInfo.connectionId;
         };
 
         exports.publish = function(eventName, eventArgs) {
@@ -303,6 +347,8 @@ YUI.add('utility', function(Y) {
         "NEED_AUTHORISATION": "mongod is running in secure mode. Please enter username and password.",
         "INVALID_SESSION": "Your session has timed out ! Please login again.",
         "INVALID_CONNECTION": "You are currently not connected to Mongo DB ! Please Connect.",
+        "INVALID_NAME" : "Name cannot contain following special characters [!@#$%^&*(),;:\"{}[]'<>?/\\|]!",
+        "INVALID_NAME_ENDINGS" : "Name cannot begin or end with a '.'",
         "GET_DB_LIST_EXCEPTION": "Could not load the DB list ! Please check if mongo is still running and then refresh the page.",
         "GET_COLLECTION_LIST_EXCEPTION": "Please check if mongod is still running and then refresh the page.",
         "DB_DELETION_EXCEPTION": "Please check if mongo is running and then refresh the page and try again.",
@@ -317,11 +363,11 @@ YUI.add('utility', function(Y) {
         "DOCUMENT_CREATION_EXCEPTION": "Please check if mongod is running and refresh the page.",
         "DOCUMENT_UPDATE_EXCEPTION": "Please check if mongod is running and refresh the page.",
         "DOCUMENT_DOES_NOT_EXIST": "Document does not exist !",
-        "INVALID_USER": "Your session is corrupted or timed out ! Please login again from the login page.",
         "DB_INFO_ABSENT": "Mongo Config details are not provided in session ! Please login again from the login page.",
         "GET_DB_STATS_EXCEPTION": "Please check if mongod is running and refresh the page.",
         "GET_COLL_STATS_EXCEPTION": "Please check if mongod is running and refresh the page.",
         "COLLECTION_CREATION_EXCEPTION": "Please check if mongod is running and refresh the page.",
+        "COLLECTION_UPDATE_EXCEPTION": "Please check if mongod is running and refresh the page.",
         "COLLECTION_DELETION_EXCEPTION": "Please check if mongod is running and refresh the page.",
         "INVALID_OBJECT_ID": "Value provided for '_id' is invalid .",
         "UPDATE_OBJECT_ID_EXCEPTION": "_id cannot be updated.",

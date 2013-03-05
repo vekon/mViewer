@@ -22,38 +22,14 @@ public class QueryExecutor {
             keysObj.put(strtok.nextToken(), 1);
         }
         DBObject sortObj = (DBObject) JSON.parse(sortByStr);
+        if (command.equals("aggregate")) {
+            return executeAggregate(dbCollection, queryStr);
+        }
         if (command.equals("count")) {
             return executeCount(dbCollection, queryStr);
         }
         if (command.equals("distinct")) {
             return executeDistinct(dbCollection, queryStr);
-        }
-        if (command.equals("find")) {
-            return executeFind(dbCollection, queryStr, keysObj, sortObj, limit, skip);
-        }
-        if (command.equals("findOne")) {
-            return executeFindOne(dbCollection, queryStr);
-        }
-        if (command.equals("findAndModify")) {
-            return executeFindAndModify(dbCollection, queryStr, keysObj);
-        }
-        if (command.equals("group")) {
-            return executeGroup(dbCollection, queryStr);
-        }
-        if (command.equals("insert")) {
-            return executeInsert(dbCollection, queryStr);
-        }
-        if (command.equals("mapReduce")) {
-            return executeMapReduce(dbCollection, queryStr, limit);
-        }
-        if (command.equals("update")) {
-            return executeUpdate(dbCollection, queryStr);
-        }
-        if (command.equals("remove")) {
-            return executeRemove(dbCollection, queryStr);
-        }
-        if (command.equals("stats")) {
-            return executeStats(dbCollection);
         }
         if (command.equals("drop")) {
             return executeDrop(dbCollection);
@@ -67,20 +43,53 @@ public class QueryExecutor {
         if (command.equals("ensureIndex")) {
             return executeEnsureIndex(dbCollection, queryStr);
         }
+        if (command.equals("find")) {
+            return executeFind(dbCollection, queryStr, keysObj, sortObj, limit, skip);
+        }
+        if (command.equals("findOne")) {
+            return executeFindOne(dbCollection, queryStr);
+        }
+        if (command.equals("findAndModify")) {
+            return executeFindAndModify(dbCollection, queryStr, keysObj);
+        }
+        if (command.equals("group")) {
+            return executeGroup(dbCollection, queryStr);
+        }
         if (command.equals("getIndexes")) {
             return executeGetIndexes(dbCollection);
+        }
+        if (command.equals("insert")) {
+            return executeInsert(dbCollection, queryStr);
+        }
+        if (command.equals("mapReduce")) {
+            return executeMapReduce(dbCollection, queryStr, limit);
+        }
+        if (command.equals("remove")) {
+            return executeRemove(dbCollection, queryStr);
+        }
+        if (command.equals("stats")) {
+            return executeStats(dbCollection);
+        }
+        if (command.equals("storageSize")) {
+            return executeStorageSize(dbCollection);
+        }
+        if (command.equals("totalIndexSize")) {
+            return executeTotalIndexSize(dbCollection);
+        }
+        if (command.equals("update")) {
+            return executeUpdate(dbCollection, queryStr);
         }
         throw new InvalidMongoCommandException(ErrorCodes.COMMAND_NOT_SUPPORTED, "Command is not yet supported");
     }
 
-    public static JSONObject executeAggregate(DBCollection dbCollection, String queryStr) throws DatabaseException, JSONException {
+    private static JSONObject executeAggregate(DBCollection dbCollection, String queryStr) throws DatabaseException, JSONException {
         DBObject queryObj = (DBObject) JSON.parse("[" + queryStr + "]");
         if (queryObj instanceof List) {
             List<DBObject> listOfAggregates = (List) queryObj;
             int size = listOfAggregates.size();
-            AggregationOutput aggregationOutput = dbCollection.aggregate(listOfAggregates.get(0), listOfAggregates.subList(1, size).toArray(new DBObject[size]));
+            AggregationOutput aggregationOutput = dbCollection.aggregate(listOfAggregates.get(0), listOfAggregates.subList(1, size).toArray(new DBObject[size - 1]));
             Iterator<DBObject> resultIterator = aggregationOutput.results().iterator();
-            List<DBObject> results = dbCollection.getIndexInfo();
+            List<DBObject> results = new ArrayList<DBObject>();
             while (resultIterator.hasNext()) {
                 results.add(resultIterator.next());
             }
@@ -95,13 +104,13 @@ public class QueryExecutor {
         return constructResponse(false, commandResult);
     }
 
-    public static JSONObject executeCount(DBCollection dbCollection, String queryStr) throws JSONException {
+    private static JSONObject executeCount(DBCollection dbCollection, String queryStr) throws JSONException {
         DBObject queryObj = (DBObject) JSON.parse(queryStr);
         long count = dbCollection.count(queryObj);
         return constructResponse(false, new BasicDBObject("count", count));
     }
 
-    public static JSONObject executeDistinct(DBCollection dbCollection, String queryStr) throws JSONException {
+    private static JSONObject executeDistinct(DBCollection dbCollection, String queryStr) throws JSONException {
         DBObject queryObj = (DBObject) JSON.parse("[" + queryStr + "]");
         List distinctValuesList = null;
         if (queryObj.get("1") == null) {
@@ -112,14 +121,14 @@ public class QueryExecutor {
         return constructResponse(false, distinctValuesList.size(), distinctValuesList);
     }
 
-    public static JSONObject executeDrop(DBCollection dbCollection) throws JSONException {
+    private static JSONObject executeDrop(DBCollection dbCollection) throws JSONException {
         dbCollection.drop();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("success", true);
         return jsonObject;
     }
 
-    public static JSONObject executeDropIndex(DBCollection dbCollection, String queryStr) throws JSONException, DatabaseException {
+    private static JSONObject executeDropIndex(DBCollection dbCollection, String queryStr) throws JSONException, DatabaseException {
         DBObject indexInfo = (DBObject) JSON.parse(queryStr);
         if (indexInfo == null) {
             throw new DatabaseException(ErrorCodes.INDEX_EMPTY, "Index is null");
@@ -128,12 +137,12 @@ public class QueryExecutor {
         return executeGetIndexes(dbCollection);
     }
 
-    public static JSONObject executeDropIndexes(DBCollection dbCollection) throws JSONException {
+    private static JSONObject executeDropIndexes(DBCollection dbCollection) throws JSONException {
         dbCollection.dropIndexes();
         return executeGetIndexes(dbCollection);
     }
 
-    public static JSONObject executeEnsureIndex(DBCollection dbCollection, String queryStr) throws JSONException, DatabaseException {
+    private static JSONObject executeEnsureIndex(DBCollection dbCollection, String queryStr) throws JSONException, DatabaseException {
         DBObject queryObj = (DBObject) JSON.parse("[" + queryStr + "]");
         DBObject keys = (DBObject) queryObj.get("0");
         if (keys == null) {
@@ -151,13 +160,13 @@ public class QueryExecutor {
         return executeGetIndexes(dbCollection);
     }
 
-    public static JSONObject executeFindOne(DBCollection dbCollection, String queryStr) throws JSONException {
+    private static JSONObject executeFindOne(DBCollection dbCollection, String queryStr) throws JSONException {
         DBObject queryObj = (DBObject) JSON.parse("[" + queryStr + "]");
         DBObject matchedRecord = dbCollection.findOne((DBObject) queryObj.get("0"), (DBObject) queryObj.get("1"));
         return constructResponse(true, matchedRecord);
     }
 
-    public static JSONObject executeFind(DBCollection dbCollection, String queryStr, DBObject keysObj, DBObject sortObj, int limit, int skip) throws JSONException {
+    private static JSONObject executeFind(DBCollection dbCollection, String queryStr, DBObject keysObj, DBObject sortObj, int limit, int skip) throws JSONException {
         DBObject queryObj = (DBObject) JSON.parse(queryStr);
         DBCursor cursor = dbCollection.find(queryObj, keysObj).sort(sortObj).skip(skip).limit(limit);
         ArrayList<DBObject> dataList = new ArrayList<DBObject>();
@@ -169,7 +178,7 @@ public class QueryExecutor {
         return constructResponse(true, dbCollection.count(queryObj), dataList);
     }
 
-    public static JSONObject executeFindAndModify(DBCollection dbCollection, String queryStr, DBObject keysObj) throws JSONException {
+    private static JSONObject executeFindAndModify(DBCollection dbCollection, String queryStr, DBObject keysObj) throws JSONException {
         DBObject queryObj = (DBObject) JSON.parse(queryStr);
         DBObject criteria = (DBObject) queryObj.get("query");
         DBObject sort = (DBObject) queryObj.get("sort");
@@ -183,12 +192,12 @@ public class QueryExecutor {
         return constructResponse(false, queryResult);
     }
 
-    public static JSONObject executeGetIndexes(DBCollection dbCollection) throws JSONException {
+    private static JSONObject executeGetIndexes(DBCollection dbCollection) throws JSONException {
         List<DBObject> indexInfo = dbCollection.getIndexInfo();
         return constructResponse(false, indexInfo.size(), indexInfo);
     }
 
-    public static JSONObject executeInsert(DBCollection dbCollection, String queryStr) throws JSONException {
+    private static JSONObject executeInsert(DBCollection dbCollection, String queryStr) throws JSONException {
         DBObject queryObj = (DBObject) JSON.parse(queryStr);
         WriteResult writeResult;
         if (queryObj instanceof List) {
@@ -199,7 +208,7 @@ public class QueryExecutor {
         return constructResponse(false, writeResult.getLastError());
     }
 
-    public static JSONObject executeGroup(DBCollection dbCollection, String queryString) throws JSONException {
+    private static JSONObject executeGroup(DBCollection dbCollection, String queryString) throws JSONException {
         DBObject queryObj = (DBObject) JSON.parse(queryString);
 
         DBObject key = (DBObject) queryObj.get("key");
@@ -214,7 +223,7 @@ public class QueryExecutor {
         return constructResponse(false, groupQueryResult);
     }
 
-    public static JSONObject executeMapReduce(DBCollection dbCollection, String queryString, int limit) throws JSONException {
+    private static JSONObject executeMapReduce(DBCollection dbCollection, String queryString, int limit) throws JSONException {
         DBObject queryObj = (DBObject) JSON.parse(queryString);
 
         String map = (String) queryObj.get("map");
@@ -251,13 +260,13 @@ public class QueryExecutor {
         return constructResponse(false, mapReduceOutput.getCommandResult());
     }
 
-    public static JSONObject executeRemove(DBCollection dbCollection, String queryStr) throws JSONException {
+    private static JSONObject executeRemove(DBCollection dbCollection, String queryStr) throws JSONException {
         DBObject queryObj = (DBObject) JSON.parse(queryStr);
         WriteResult result = dbCollection.remove(queryObj);
         return constructResponse(false, result.getLastError());
     }
 
-    public static JSONObject executeUpdate(DBCollection dbCollection, String queryStr) throws JSONException, InvalidMongoCommandException {
+    private static JSONObject executeUpdate(DBCollection dbCollection, String queryStr) throws JSONException, InvalidMongoCommandException {
         String reconstructedUpdateQuery = "{updateQueryParams:[" + queryStr + "]}";
         DBObject queryObj = (DBObject) JSON.parse(reconstructedUpdateQuery);
 
@@ -279,9 +288,19 @@ public class QueryExecutor {
         return constructResponse(false, commandResult);
     }
 
-    public static JSONObject executeStats(DBCollection dbCollection) throws JSONException {
+    private static JSONObject executeStats(DBCollection dbCollection) throws JSONException {
         CommandResult stats = dbCollection.getStats();
         return constructResponse(false, stats);
+    }
+
+    private static JSONObject executeStorageSize(DBCollection dbCollection) throws JSONException {
+        Integer storageSize = (Integer) dbCollection.getStats().toMap().get("storageSize");
+        return constructResponse(false, new BasicDBObject("storageSize", storageSize));
+    }
+
+    private static JSONObject executeTotalIndexSize(DBCollection dbCollection) throws JSONException {
+        Integer totalIndexSize = (Integer) dbCollection.getStats().toMap().get("totalIndexSize");
+        return constructResponse(false, new BasicDBObject("totalIndexSize", totalIndexSize));
     }
 
     private static JSONObject constructResponse(boolean isEditable, long size, List docs) throws JSONException {

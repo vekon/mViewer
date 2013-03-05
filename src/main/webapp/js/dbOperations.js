@@ -35,9 +35,8 @@ YUI({
                 error;
             if (response !== undefined) {
                 MV.showAlertMessage(response, MV.infoIcon);
-                Y.log("[0] created in [1]".format(Y.one("#newName").get("value"), Y.one("#currentDB").get("value")), "info");
                 sm.clearCurrentColl();
-                Y.one("#" + Y.one("#currentDB").get("value")).simulate("click");
+                Y.one("#" + MV.getDatabaseElementId(MV.appInfo.currentDB)).simulate("click");
             } else {
                 error = parsedResponse.response.error;
                 MV.showAlertMessage("Could not add Collection! [0]", MV.warnIcon, error.code);
@@ -53,7 +52,6 @@ YUI({
         function sendDropDBRequest() {
             //"this" refers to the Yes/No dialog box
             this.hide();
-            Y.log("Preparing to send request to drop DB", "info");
             var request = Y.io(MV.URLMap.dropDB(), {
                 method: "POST",
                 on: {
@@ -61,19 +59,18 @@ YUI({
                         var parsedResponse = Y.JSON.parse(responseObject.responseText),
                             error;
                         if (parsedResponse.response.result !== undefined) {
-                            Y.log("[0] dropped".format(Y.one("#currentDB").get("value")), "info");
-                            Y.one("#currentDB").set("value", "");
+                            MV.appInfo.currentDB = "";
                             alert(parsedResponse.response.result);
                             window.location.reload();
                         } else {
                             error = parsedResponse.response.error;
-                            MV.showAlertMessage("Could not drop: [0]. [1]".format(Y.one("#currentDB").get("value"), MV.errorCodeMap[error.code]), MV.warnIcon);
-                            Y.log("Could not drop: [0], Response Recieved: [1], ErrorCode: [2]".format(Y.one("#currentDB").get("value"), error.message, error.code), "error");
+                            MV.showAlertMessage("Could not drop: [0]. [1]".format(MV.appInfo.currentDB, MV.errorCodeMap[error.code]), MV.warnIcon);
+                            Y.log("Could not drop: [0], Response Recieved: [1], ErrorCode: [2]".format(MV.appInfo.currentDB, error.message, error.code), "error");
                         }
                     },
                     failure: function(ioId, responseObject) {
-                        Y.log("Could not drop: [0]. Status Text: [1]".format(Y.one("#currentDB").get("value"), responseObject.statusText), "error");
-                        MV.showAlertMessage("Could not drop: [0], Status Text: [2]".format(Y.one("#currentDB").get("value"), responseObject.statusText), MV.warnIcon);
+                        Y.log("Could not drop: [0]. Status Text: [1]".format(MV.appInfo.currentDB, responseObject.statusText), "error");
+                        MV.showAlertMessage("Could not drop: [0], Status Text: [2]".format(MV.appInfo.currentDB, responseObject.statusText), MV.warnIcon);
                     }
                 }
             });
@@ -87,10 +84,10 @@ YUI({
 
         function handleClickEvent(event) {
             var dialog, showErrorMessage;
-            var label = $(event.currentTarget._node).closest("ul").closest("li")[0].attributes["label"].value;
+            var label = $(event.currentTarget._node).closest("ul").closest("li")[0].attributes["data-db-name"].value;
             var index = parseInt(event.currentTarget._node.attributes["index"].value);
-            Y.one("#currentDB").set("value", label);
-            MV.selectDatabase(Y.one("#" + Y.one("#currentDB").get("value")));
+            MV.appInfo.currentDB = label;
+            MV.selectDatabase(Y.one("#" + MV.getDatabaseElementId(MV.appInfo.currentDB)));
             switch (index) {
                 case 1:
                     // add collection
@@ -111,7 +108,7 @@ YUI({
                         var result = parsedResponse.response.result;
                         if (result !== undefined) {
                             MV.showAlertMessage(result, MV.infoIcon);
-                            Y.one("#" + Y.one("#currentDB").get("value")).simulate("click");
+                            Y.one("#" + MV.getDatabaseElementId(MV.appInfo.currentDB)).simulate("click");
                         }
                     };
                     showErrorMessage = function(responseObject) {
@@ -129,7 +126,7 @@ YUI({
                 case 4:
                     // show statistics
                     MV.hideQueryForm();
-                    MV.createDatatable(MV.URLMap.dbStatistics(), Y.one("#currentDB").get("value"));
+                    MV.createDatatable(MV.URLMap.dbStatistics(), MV.appInfo.currentDB);
                     break;
             }
         }
@@ -140,11 +137,14 @@ YUI({
         function setUserInfo(params) {
             var username = params.username ? params.username : "Guest";
             var hostVal = params.host + ":" + params.port;
-            Y.one("#host").set("value", params.host);
-            Y.one("#port").set("value", params.port);
-            Y.one("#username").set("value", username);
+            // Update View
             Y.one('#user').set("innerHTML", username);
             Y.one('#hostname').set("innerHTML", hostVal);
+            // Store the details
+            MV.appInfo.host = params.host;
+            MV.appInfo.port = params.port;
+            MV.appInfo.username = username;
+
         }
 
         /**
@@ -155,7 +155,6 @@ YUI({
          *  @param responseObject The response Object
          */
         function showConnectionDetails(ioId, responseObject) {
-            Y.log("Response Recieved of get DB request", "info");
             try {
                 var parsedResponse = Y.JSON.parse(responseObject.responseText);
                 var result = parsedResponse.response.result;
@@ -168,9 +167,9 @@ YUI({
                     }
                     var info, index, dbNames = "";
                     var dbTemplate = '' +
-                        '<li class="yui3-menuitem" label=[0]> \
+                        '<li class="yui3-menuitem" data-db-name=[0]> \
                                 <span class="yui3-menu-label"> \
-                                      <a id=[1] label=[2] href="javascript:void(0)" class="dbLabel navigable">[3]</a> \
+                                      <a id=[1] data-db-name=[2] href="javascript:void(0)" class="dbLabel navigable">[3]</a> \
                                       <a href="#[4]" class="yui3-menu-toggle"></a>\
                                 </span>\
                                 <div id="[5]" class="yui3-menu menu-width">\
@@ -193,9 +192,14 @@ YUI({
                                 </div>\
                                 </li>';
                     for (index = 0; index < result.dbNames.length; index++) {
-                        var id = result.dbNames[index];
-                        var formattedName = id.length > 20 ? id.substring(0, 20) + "..." : id;
-                        dbNames += dbTemplate.format(id, id, id, formattedName, id + "_subMenu", id + "_subMenu");
+                        var dbName = result.dbNames[index];
+                        var menuDataDbName = dbName;
+                        var spanId = MV.getDatabaseElementId(dbName);
+                        var spanDataDbName = dbName;
+                        var subMenuHref = dbName + "_subMenu";
+                        var subMenuId = dbName + "_subMenu"
+                        var formattedName = dbName.length > 18 ? dbName.substring(0, 15) + "..." : dbName;
+                        dbNames += dbTemplate.format(menuDataDbName, spanId, spanDataDbName, formattedName, subMenuHref, subMenuId);
                     }
                     if (index === 0) {
                         dbDiv.set("innerHTML", "No Databases");
@@ -206,7 +210,6 @@ YUI({
                     menu.plug(Y.Plugin.NodeMenuNav, { autoSubmenuDisplay: false, mouseOutHideDelay: 0 });
                     menu.set("style.display", "block");
                     MV.hideLoadingPanel();
-                    Y.log("Database Names succesfully loaded", "info");
                     sm.publish(sm.events.dbsChanged);
                 } else {
                     MV.hideLoadingPanel();
@@ -251,16 +254,29 @@ YUI({
                             failure: displayError
                         }
                     });
-                Y.log("Sending request to load DB names", "info");
             }
         }
 
         /**
          * The function shows a dialog that takes input (i.e. Db name) from user
          */
-        function createDB() {
+        function createDB(event) {
             MV.showSubmitDialog("addDBDialog", requestConnectionDetails, null);
+            event.stopPropagation();
         }
+
+        $('#dbBuffer').accordion({
+            header: "div.list-head",
+            heightStyle : "content",
+            collapsible: true
+        });
+
+        $('#dbOperations').accordion({
+            header: "div.list-head",
+            heightStyle : "content",
+            collapsible: true,
+            active : 0
+        });
 
         // Make a request to load Database names when the page loads
         Y.on("load", requestConnectionDetails);

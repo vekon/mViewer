@@ -42,7 +42,7 @@ YUI({
         var idMap = {};
 
         var initQueryBox = function(event) {
-            Y.one("#currentColl").set("value", event.currentTarget.getAttribute("label"));
+            MV.appInfo.currentColl = event.currentTarget.getAttribute("data-collection-name");
             MV.selectDBItem(event.currentTarget);
             MV.loadQueryBox(MV.URLMap.getDocKeys(), MV.URLMap.getDocs(), sm.currentColl(), showTabView);
         };
@@ -57,8 +57,7 @@ YUI({
             MV.deleteDocEvent.subscribe(deleteUserOrIndex);
 
             try {
-                Y.log("Preparing the data tabs...", "info");
-                MV.header.set("innerHTML", "Contents of Collection : " + Y.one("#currentColl").get("value"));
+                MV.setHeader(MV.headerConstants.QUERY_RESPONSE);
                 tabView.appendTo(MV.mainBody.get('id'));
                 var treebleData = MV.getTreebleDataForDocs(response);
                 var treeble = MV.getTreeble(treebleData, "document");
@@ -77,7 +76,6 @@ YUI({
                 }
                 sm.publish(sm.events.queryFired);
                 MV.hideLoadingPanel();
-                Y.log("Loaded data tabs.", "info");
             } catch (error) {
                 MV.hideLoadingPanel();
                 Y.log("Failed to initailise data tabs. Reason: [0]".format(error), "error");
@@ -187,7 +185,6 @@ YUI({
                     });
                 }
             }, 'div.jsonBuffer');
-            Y.log("The documents written on the JSON tab", "debug");
         }
 
         /**
@@ -246,7 +243,6 @@ YUI({
                                     var response = parsedResponse.response.result;
                                     if (response !== undefined) {
                                         MV.showAlertMessage(response, MV.infoIcon);
-                                        Y.log("User with username= [0] deleted. Response: [1]".format(username, response), "info");
                                         Y.one('#execQueryButton').simulate('click');
                                     }
                                     else {
@@ -256,7 +252,7 @@ YUI({
                                     }
                                 },
                                 failure: function(ioId, responseObj) {
-                                    Y.log("Could not delete the user Status text: ".format(Y.one("#currentColl").get("value"), responseObj.statusText), "error");
+                                    Y.log("Could not delete the user Status text: ".format(MV.appInfo.currentColl, responseObj.statusText), "error");
                                     MV.showAlertMessage("Could not delete the user! Please check if your app server is running and try again. Status Text: [1]".format(responseObj.statusText), MV.warnIcon);
                                 }
                             }
@@ -280,7 +276,6 @@ YUI({
                                     var response = parsedResponse.response.result;
                                     if (response !== undefined) {
                                         MV.showAlertMessage(response, MV.infoIcon);
-                                        Y.log("Index with indexname= [0] deleted. Response: [1]".format(indexName, response), "info");
                                         Y.one('#execQueryButton').simulate('click');
                                     }
                                     else {
@@ -290,7 +285,7 @@ YUI({
                                     }
                                 },
                                 failure: function(ioId, responseObj) {
-                                    Y.log("Could not delete the index Status text: ".format(Y.one("#currentColl").get("value"), responseObj.statusText), "error");
+                                    Y.log("Could not delete the index Status text: ".format(MV.appInfo.currentColl, responseObj.statusText), "error");
                                     MV.showAlertMessage("Could not delete the index! Please check if your app server is running and try again. Status Text: [1]".format(responseObj.statusText), MV.warnIcon);
                                 }
                             }
@@ -393,9 +388,9 @@ YUI({
          * @param args the arguments containing information about which menu item was clicked
          */
         function handleUserAndIndexEvent(event) {
-            var label = $(event.currentTarget._node).closest("ul").closest("li")[0].attributes["label"].value;
+            var label = $(event.currentTarget._node).closest("ul").closest("li")[0].attributes["data-collection-name"].value;
             var index = parseInt(event.currentTarget._node.attributes["index"].value);
-            Y.one("#currentColl").set("value", label);
+            MV.appInfo.currentColl = label;
             if (label == MV.users) {
                 switch (index) {
                     //Add User
@@ -466,18 +461,17 @@ YUI({
                                 error;
                             if (response !== undefined) {
                                 MV.showAlertMessage(response, MV.infoIcon);
-                                Y.log("[0] dropped. Response: [1]".format(Y.one("#currentColl").get("value"), response), "info");
-                                var collection = Y.one("#currentColl").get("value").replace("\.", "_");
+                                var collection = MV.getCollectionElementId(MV.appInfo.currentColl);
                                 Y.one("#" + collection).simulate("click");
                             } else {
                                 error = parsedResponse.response.error;
-                                MV.showAlertMessage("Could not drop: [0]. [1]".format(Y.one("#currentColl").get("value"), MV.errorCodeMap[error.code]), MV.warnIcon);
-                                Y.log("Could not drop [0], Error message: [1], Error Code: [2]".format(Y.one("#currentColl").get("value"), error.message, error.code), "error");
+                                MV.showAlertMessage("Could not drop: [0]. [1]".format(MV.appInfo.currentColl, MV.errorCodeMap[error.code]), MV.warnIcon);
+                                Y.log("Could not drop [0], Error message: [1], Error Code: [2]".format(MV.appInfo.currentColl, error.message, error.code), "error");
                             }
                         },
                         failure: function(ioId, responseObj) {
-                            Y.log("Could not drop [0].Status text: ".format(Y.one("#currentColl").get("value"), responseObj.statusText), "error");
-                            MV.showAlertMessage("Could not drop [0]!  Please check if your app server is running and try again. Status Text: [1]".format(Y.one("#currentColl").get("value"), responseObj.statusText), MV.warnIcon);
+                            Y.log("Could not drop [0].Status text: ".format(MV.appInfo.currentColl, responseObj.statusText), "error");
+                            MV.showAlertMessage("Could not drop [0]!  Please check if your app server is running and try again. Status Text: [1]".format(MV.appInfo.currentColl, responseObj.statusText), MV.warnIcon);
                         }
                     }
                 });
@@ -504,18 +498,17 @@ YUI({
                                 error;
                             if (response !== undefined) {
                                 MV.showAlertMessage(response, MV.infoIcon);
-                                Y.log("[0] dropped. Response: [1]".format(Y.one("#currentColl").get("value"), response), "info");
                                 sm.clearcurrentColl();
-                                Y.one("#" + Y.one("#currentDB").get("value")).simulate("click");
+                                Y.one("#" + MV.getDatabaseElementId(MV.appInfo.currentDB)).simulate("click");
                             } else {
                                 error = parsedResponse.response.error;
-                                MV.showAlertMessage("Could not drop: [0]. [1]".format(Y.one("#currentColl").get("value"), MV.errorCodeMap[error.code]), MV.warnIcon);
-                                Y.log("Could not drop [0], Error message: [1], Error Code: [2]".format(Y.one("#currentColl").get("value"), error.message, error.code), "error");
+                                MV.showAlertMessage("Could not drop: [0]. [1]".format(MV.appInfo.currentColl, MV.errorCodeMap[error.code]), MV.warnIcon);
+                                Y.log("Could not drop [0], Error message: [1], Error Code: [2]".format(MV.appInfo.currentColl, error.message, error.code), "error");
                             }
                         },
                         failure: function(ioId, responseObj) {
-                            Y.log("Could not drop [0].Status text: ".format(Y.one("#currentColl").get("value"), responseObj.statusText), "error");
-                            MV.showAlertMessage("Could not drop [0]!  Please check if your app server is running and try again. Status Text: [1]".format(Y.one("#currentColl").get("value"), responseObj.statusText), MV.warnIcon);
+                            Y.log("Could not drop [0].Status text: ".format(MV.appInfo.currentColl, responseObj.statusText), "error");
+                            MV.showAlertMessage("Could not drop [0]!  Please check if your app server is running and try again. Status Text: [1]".format(MV.appInfo.currentColl, responseObj.statusText), MV.warnIcon);
                         }
                     }
                 });
@@ -531,8 +524,8 @@ YUI({
                 error;
             if (response !== undefined) {
                 MV.showAlertMessage(response, MV.infoIcon);
-                Y.log("User added to [0]".format(Y.one("#currentColl").get("value"), "info"));
-                sm.currentCollAsNode().simulate("click");
+                var collection = MV.getCollectionElementId(MV.appInfo.currentColl);
+                Y.one("#" + collection).simulate("click");
 
             } else {
                 error = parsedResponse.response.error;
@@ -551,8 +544,8 @@ YUI({
                 error;
             if (response !== undefined) {
                 MV.showAlertMessage(response, MV.infoIcon);
-                Y.log("New Index added to [0]".format(Y.one("#currentColl").get("value"), "info"));
-                sm.currentCollAsNode().simulate("click");
+                var collection = MV.getCollectionElementId(MV.appInfo.currentColl);
+                Y.one("#" + collection).simulate("click");
             } else {
                 error = parsedResponse.response.error;
                 MV.showAlertMessage("Could not add Index ! [0]", MV.warnIcon, error.code);

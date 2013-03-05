@@ -35,6 +35,7 @@ YUI.add('upload-dialog', function(Y) {
                 effect: YAHOO.widget.ContainerEffect.SLIDE,
                 duration: 0.25
             },
+            close : false,
             constraintoviewport: true,
             buttons: [
                 {
@@ -49,12 +50,10 @@ YUI.add('upload-dialog', function(Y) {
             this.cancel();
             if (newFilesUploaded == true) {
                 setTimeout(function() {
-                    Y.one("#" + Y.one("#currentBucket").get("value").replace(/ /g, '_')).simulate("click");
+                    Y.one("#" + MV.getBucketElementId(MV.appInfo.currentBucket)).simulate("click");
                 }, 250);
             }
         }
-
-        ;
 
         uploadDialog.setHeader("File Upload");
         uploadDialog.render();

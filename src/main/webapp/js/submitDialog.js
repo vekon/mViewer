@@ -31,10 +31,15 @@ YUI.add('submit-dialog', function(Y) {
         }
 
         function addCollection() {
-            Y.log("Submit handler for add collection called", "info");
             var newCollInfo = this.getData();
             if (newCollInfo.newCollName === "") {
                 MV.showAlertMessage("Name should be entered to create a Collection!", MV.warnIcon);
+                return false;
+            } else if (newCollInfo.newCollName.match(/[!@#$%^&*,";:()\{\}\[\]'<>?|\/\\]/g) != null) {
+                MV.showAlertMessage(MV.errorCodeMap.INVALID_NAME, MV.warnIcon);
+                return false;
+            } else if (newCollInfo.newCollName.match(/^\.|\.$/) != null) {
+                MV.showAlertMessage(MV.errorCodeMap.INVALID_NAME_ENDINGS,  MV.warnIcon);
                 return false;
             } else if (newCollInfo.isCapped === true && newCollInfo.capSize === "") {
                 MV.showAlertMessage("Size should be entered to create a Capped Collection!", MV.warnIcon);
@@ -42,7 +47,7 @@ YUI.add('submit-dialog', function(Y) {
             } else {
                 var updateColl = Y.one("#updateColl").get("value");
                 if (updateColl === "false") {
-                    Y.one("#currentColl").set("value", newCollInfo.newCollName);
+                    MV.appInfo.currentColl = newCollInfo.newCollName;
                 }
                 Y.one("#" + form + " .bd form").setAttribute("action", MV.URLMap.insertColl());
             }
@@ -50,10 +55,15 @@ YUI.add('submit-dialog', function(Y) {
         }
 
         function addGridFS() {
-            Y.log("Submit handler for adding gridFS bucket called", "info");
             var newCollInfo = this.getData();
             if (newCollInfo.name === "") {
                 MV.showAlertMessage("Enter the bucket name!", MV.warnIcon);
+                return false;
+            } else if (newCollInfo.name.match(/^\.|\.$/) != null) {
+                MV.showAlertMessage(MV.errorCodeMap.INVALID_NAME_ENDINGS,  MV.warnIcon);
+                return false;
+            } else if (newCollInfo.name.match(/[!@#$%^&*,";:()\{\}\[\]'<>?|\/\\]/g) != null) {
+                MV.showAlertMessage(MV.errorCodeMap.INVALID_NAME, MV.warnIcon);
                 return false;
             } else {
                 Y.one("#" + form + " .bd form").setAttribute("action", MV.URLMap.addGridFS(newCollInfo.name));
@@ -66,10 +76,16 @@ YUI.add('submit-dialog', function(Y) {
             if (newDBInfo.name === "") {
                 MV.showAlertMessage("Enter the database name!", MV.warnIcon);
                 return false;
+            } else if (newDBInfo.name.match(/[!@#$%^&*,";:()\{\}\[\]'<>?|\/\\]/g) != null) {
+                MV.showAlertMessage(MV.errorCodeMap.INVALID_NAME, MV.warnIcon);
+                return false;
+            } else if (newDBInfo.name.match(/^\.|\.$/) != null) {
+                MV.showAlertMessage(MV.errorCodeMap.INVALID_NAME_ENDINGS,  MV.warnIcon);
+                return false;
             } else {
-                Y.one("#newName").set("value", newDBInfo.name);
+                MV.appInfo.newName = newDBInfo.name;
                 Y.one("#" + form + " .bd form").setAttribute("action", MV.URLMap.insertDB());
-                MV.showAlertMessage("New Database '"+newDBInfo.name+"' added successfully", MV.warnIcon);
+                MV.showAlertMessage("New Database '" + newDBInfo.name + "' added successfully", MV.warnIcon);
             }
             return true;
         }

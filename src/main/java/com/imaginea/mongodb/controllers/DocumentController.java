@@ -18,6 +18,7 @@ package com.imaginea.mongodb.controllers;
 import com.imaginea.mongodb.exceptions.ApplicationException;
 import com.imaginea.mongodb.exceptions.DocumentException;
 import com.imaginea.mongodb.exceptions.ErrorCodes;
+import com.imaginea.mongodb.exceptions.InvalidMongoCommandException;
 import com.imaginea.mongodb.services.DocumentService;
 import com.imaginea.mongodb.services.impl.DocumentServiceImpl;
 import com.imaginea.mongodb.utils.JSON;
@@ -34,7 +35,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -43,9 +43,9 @@ import java.util.Set;
  * to. Also provide resources to get list of all documents present inside a
  * collection in a database in mongo.
  * <p/>
- * These resources map different HTTP equests made by the client to access these
+ * These resources map different HTTP requests made by the client to access these
  * resources to services file which performs these operations. The resources
- * also form a JSON response using the output recieved from the serives files.
+ * also form a JSON response using the output received from the services files.
  * GET and POST request resources for documents are defined here. For PUT and
  * DELETE functionality , a POST request with an action parameter taking values
  * PUT and DELETE is made.
@@ -84,30 +84,30 @@ public class DocumentController extends BaseController {
                                @Context final HttpServletRequest request) throws JSONException {
 
         String response = new ResponseTemplate().execute(logger, connectionId, request,
-                new ResponseCallback() {
-                    public Object execute() throws Exception {
-                        DocumentService documentService = new DocumentServiceImpl(connectionId);
-                        // Get query
-                        int startIndex = query.indexOf("("), endIndex = query.lastIndexOf(")");
-                        String cmdStr = query.substring(0, startIndex);
-                        String tokens[] = cmdStr.split("\\.");
-                        String collection = null, command = null;
-                        if (tokens.length == 3) {
-                            collection = tokens[1];
-                            command = tokens[2];
-                        } else if (tokens.length == 4) {
-                            collection = tokens[1] + '.' + tokens[2];
-                            command = tokens[3];
-                        } else {
-                            command = tokens[1];
-                        }
-                        String jsonStr = query.substring(startIndex + 1, endIndex);
-                        int docsLimit = Integer.parseInt(limit);
-                        int docsSkip = Integer.parseInt(skip);
-                        JSONObject result = documentService.getQueriedDocsList(dbName, collection, command, jsonStr, fields, sortBy, docsLimit, docsSkip);
-                        return result;
+            new ResponseCallback() {
+                public Object execute() throws Exception {
+                    DocumentService documentService = new DocumentServiceImpl(connectionId);
+                    // Get query
+                    int startIndex = query.indexOf("("), endIndex = query.lastIndexOf(")");
+                    String cmdStr = query.substring(0, startIndex);
+                    int lastIndexOfDot = cmdStr.lastIndexOf(".");
+                    if (lastIndexOfDot + 1 == cmdStr.length()) {
+                        // In this case the cmsStr = db.collectionName.
+                        throw new InvalidMongoCommandException(ErrorCodes.COMMAND_EMPTY, "Command is empty");
                     }
-                });
+                    String command = cmdStr.substring(lastIndexOfDot + 1, cmdStr.length());
+                    String collection = null;
+                    int firstIndexOfDot = cmdStr.indexOf(".");
+                    if (firstIndexOfDot != lastIndexOfDot) {
+                        // when commands are not of the form db.runCommand ie., they contain collection name as in db.collectionName.find
+                        collection = cmdStr.substring(firstIndexOfDot + 1, lastIndexOfDot);
+                    }
+                    String jsonStr = query.substring(startIndex + 1, endIndex);
+                    int docsLimit = Integer.parseInt(limit);
+                    int docsSkip = Integer.parseInt(skip);
+                    return documentService.getQueriedDocsList(dbName, collection, command, jsonStr, fields, sortBy, docsLimit, docsSkip);
+                }
+            });
 
         return response;
     }
@@ -166,12 +166,10 @@ public class DocumentController extends BaseController {
      */
     private void getNestedKeys(DBObject doc, Set<String> completeSet, String prefix) {
         Set<String> allKeys = doc.keySet();
-        Iterator<String> it = allKeys.iterator();
-        while (it.hasNext()) {
-            String temp = it.next();
-            completeSet.add(prefix + temp);
-            if (doc.get(temp) instanceof BasicDBObject) {
-                getNestedKeys((DBObject) doc.get(temp), completeSet, prefix + temp + ".");
+        for (String key : allKeys) {
+            completeSet.add(prefix + key);
+            if (doc.get(key) instanceof BasicDBObject) {
+                getNestedKeys((DBObject) doc.get(key), completeSet, prefix + key + ".");
             }
         }
     }
@@ -188,7 +186,7 @@ public class DocumentController extends BaseController {
      * @param documentData   Contains the document to be inserted
      * @param _id            Object id of document to delete or update
      * @param keys           new Document values in case of update
-     * @param action         Query Paramater with value PUT for identifying a create
+     * @param action         Query Parameter with value PUT for identifying a create
      *                       database request and value DELETE for dropping a database.
      * @param connectionId   Mongo Db Configuration provided by user to connect to.
      * @param request        Get the HTTP request context to extract session parameters
