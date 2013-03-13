@@ -91,4 +91,10 @@ public interface ErrorCodes {
 
     //Aggregation
     String INVALID_AGGREGATE_COMMAND = "INVALID_AGGREGATE_COMMAND";
+
+    String INVALID_COMMAND = "INVALID_COMMAND";
+    String INVALID_QUERY = "INVALID_QUERY";
+
+    //bucket
+    String BUCKET_NAME_EMPTY = "BUCKET_NAME_EMPTY";
 }

@@ -2,12 +2,18 @@ YUI.add('query-executor', function(Y) {
     YUI.namespace('com.imaginea.mongoV');
     var MV = YUI.com.imaginea.mongoV;
     var successHandler, currentSelection;
+    var sm = MV.StateManager;
 
     MV.loadQueryBox = function(keysUrl, dataUrl, selectedCollection, sHandler) {
 
         var cachedQueryParams = {};
         successHandler = sHandler;
         currentSelection = selectedCollection;
+        var keys = [];
+
+        function _getKeys(){
+            return keys;
+        }
 
         /**
          * It sends request to get the keys from first 10 records only. Updates all key with another request.
@@ -18,7 +24,7 @@ YUI.add('query-executor', function(Y) {
             on: {
                 success: function(ioId, responseObject) {
                     populateQueryBox(ioId, responseObject);
-                    executeQuery(null);
+                    _executeQuery(null);
                     // Now sending request to fetch all keys
                     populateAllKeys();
                 },
@@ -34,8 +40,8 @@ YUI.add('query-executor', function(Y) {
          *The function is an event handler for the execute query button. It gets the query parameters from UI components
          *and sends a request to get the documents
          */
-        function executeQuery() {
-            var queryParams = getQueryParameters(false);
+        function _executeQuery() {
+            var queryParams = _getQueryParameters(false);
             execute(queryParams);
         }
 
@@ -43,8 +49,8 @@ YUI.add('query-executor', function(Y) {
          *The function is an event handler for the execute query button. It gets the query parameters from cache
          *and sends a request to get the documents
          */
-        function executeCachedQuery() {
-            var queryParams = getQueryParameters(true);
+        function _executeCachedQuery() {
+            var queryParams = _getQueryParameters(true);
             execute(queryParams);
         }
 
@@ -63,9 +69,10 @@ YUI.add('query-executor', function(Y) {
                             if (result && !error) {
                                 //TotalCount may vary from request to request. so update the same in cache.
                                 queryParams.totalCount = result.count;
-                                setQueryParameters(queryParams);
+                                postExecuteQueryProcess(queryParams);
                                 //Update the pagination anchors accordingly
                                 updateAnchors(result.count, result.editable);
+                                sm.publish(sm.events.queryExecuted);
                                 successHandler(result);
                             } else {
                                 MV.hideLoadingPanel();
@@ -88,9 +95,9 @@ YUI.add('query-executor', function(Y) {
                 on: {
                     success: function(ioId, responseObject) {
                         var parsedResponse = Y.JSON.parse(responseObject.responseText);
-                        var keys = parsedResponse.response.result.keys;
+                        keys = parsedResponse.response.result.keys;
                         if (keys !== undefined) {
-                            var innerHTML = formatKeys(keys);
+                            var innerHTML = _formatKeys(keys);
                             Y.one('#fields').set('innerHTML', innerHTML);
                         }
                     },
@@ -146,7 +153,7 @@ YUI.add('query-executor', function(Y) {
                     "<a id='unselectAll' href='javascript:void(0)'>Unselect All</a>"
                 ].join('\n');
                 checkList = "<div id='checkListDiv'><div class='queryBoxlabels'><label for='fields' >Attributes</label>" + selectTemplate + "</div><div><ul id='fields' class='checklist'>";
-                checkList += formatKeys(keys);
+                checkList += _formatKeys(keys);
                 checkList += "</ul>";
                 checkList += "</div>";
                 checkList += "</div>";
@@ -154,7 +161,7 @@ YUI.add('query-executor', function(Y) {
             return upperPartTemplate.format(currentSelection) + checkList + lowerPartTemplate;
         };
 
-        function formatKeys(keys) {
+        function _formatKeys(keys) {
             var checkList = "";
             for (var index = 0; index < keys.length; index++) {
                 checkList += checkListTemplate.format(keys[index], keys[index], keys[index], keys[index]);
@@ -199,7 +206,7 @@ YUI.add('query-executor', function(Y) {
         ].join('\n');
 
         function initListeners() {
-            Y.on("click", executeQuery, "#execQueryButton");
+            Y.on("click", _executeQuery, "#execQueryButton");
             Y.on("click", handleSelect, "#selectAll");
             Y.on("click", handleSelect, "#unselectAll");
             Y.on("click", handlePagination, "#first");
@@ -209,19 +216,19 @@ YUI.add('query-executor', function(Y) {
             Y.on("keyup", function(eventObject) {
                 // insert a ctrl + enter listener for query evaluation
                 if (eventObject.ctrlKey && eventObject.keyCode === 13) {
-                    executeQuery();
+                    _executeQuery();
                 }
             }, "#queryBox");
             Y.on("keyup", function(eventObject) {
                 // insert a ctrl + enter listener for query evaluation on skip field
                 if (eventObject.ctrlKey && eventObject.keyCode === 13) {
-                    executeQuery();
+                    _executeQuery();
                 }
             }, "#skip");
             Y.on("keyup", function(eventObject) {
                 // insert a ctrl + enter listener for query evaluation on limit field
                 if (eventObject.ctrlKey && eventObject.keyCode === 13) {
-                    executeQuery();
+                    _executeQuery();
                 }
             }, "#limit");
         }
@@ -244,7 +251,7 @@ YUI.add('query-executor', function(Y) {
             var href = event.currentTarget.get("href");
             if (href == null || href == undefined || href == "")
                 return;
-            var queryParameters = getQueryParameters(true);
+            var queryParameters = _getQueryParameters(true);
             var skipValue = queryParameters.skip, limitValue = queryParameters.limit, countValue = queryParameters.totalCount;
             var id = event.currentTarget.get("id");
             if (id === "first") {
@@ -254,18 +261,19 @@ YUI.add('query-executor', function(Y) {
             } else if (id === "next") {
                 skipValue = skipValue + limitValue;
             } else if (id === "last") {
-                skipValue = countValue - limitValue;
+                var docCountInLastPage = (countValue % limitValue == 0) ? limitValue : (countValue % limitValue);
+                skipValue = countValue - docCountInLastPage;
             }
             //update skip value in the cache query parameters
             queryParameters.skip = skipValue;
-            executeCachedQuery();
+            _executeCachedQuery();
         }
 
         function updateAnchors(count, showPaginated) {
             var first = Y.one('#first'), prev = Y.one('#prev'), next = Y.one('#next'), last = Y.one('#last');
             var start = Y.one('#startLabel'), end = Y.one('#endLabel'), countLabel = Y.one('#countLabel');
             // Get the cached query parameter values
-            var queryParameters = getQueryParameters(true);
+            var queryParameters = _getQueryParameters(true);
             var skipValue = queryParameters.skip, limitValue = queryParameters.limit;
             if (skipValue == 0 || skipValue >= count || !showPaginated)
                 disableAnchor(first);
@@ -306,12 +314,32 @@ YUI.add('query-executor', function(Y) {
             obj.setStyle('color', 'grey');
         }
 
+        function getCommand(queryParams) {
+            var commandStr = queryParams.query.substr(0, queryParams.query.indexOf("("));
+            return commandStr.substr(commandStr.lastIndexOf(".") + 1);
+        }
+
         /**
          * Stores the query parameters in the cache.
          * @param queryParams
          */
-        function setQueryParameters(queryParams) {
-            cachedQueryParams = queryParams;
+        function postExecuteQueryProcess(queryParams) {
+            var command = getCommand(queryParams);
+            if (command && (command === "find" || command === "findOne")) {
+                cachedQueryParams = queryParams;
+            } else if (command === "drop") {
+                Y.one("#" + MV.getDatabaseElementId(MV.appInfo.currentDB)).simulate("click");
+            }
+        }
+
+        function _populateCheckedFields(queryParameters) {
+            var fields = Y.all('#fields input'), item;
+            for (var index = 0; index < fields.size(); index++) {
+                item = fields.item(index);
+                if (item.get("checked")) {
+                    queryParameters.checkedFields.push(item.get("name"));
+                }
+            }
         }
 
         /**
@@ -320,7 +348,7 @@ YUI.add('query-executor', function(Y) {
          * @returns {String} Query parameters
          *
          */
-        function getQueryParameters(fromCache) {
+        function _getQueryParameters(fromCache) {
             if (fromCache) {
                 return cachedQueryParams;
             } else {
@@ -330,17 +358,46 @@ YUI.add('query-executor', function(Y) {
                 queryParameters.skip = parseInt(Y.one('#skip').get("value").trim());
                 queryParameters.sortBy = "{" + Y.one('#sort').get("value") + "}";
                 //populate checked keys of a collection from UI
-                var fields = Y.all('#fields input'), item;
-                for (var index = 0; index < fields.size(); index++) {
-                    item = fields.item(index);
-                    if (item.get("checked")) {
-                        queryParameters.checkedFields.push(item.get("name"));
-                    }
-                }
+                _populateCheckedFields(queryParameters);
                 if (queryParameters.query === "") {
                     queryParameters.query = "{}";
                 }
                 return queryParameters;
+            }
+        }
+
+        return {
+            executeQuery: function() {
+                _executeQuery();
+            },
+
+            executeCachedQuery: function(selectAllFields) {
+                if (selectAllFields) {
+                    Y.one('#selectAll').simulate('click');
+                    var queryParameters = _getQueryParameters(true);
+                    _populateCheckedFields(queryParameters);
+                }
+                _executeCachedQuery();
+            },
+
+            getQueryParameters: function(fromCache) {
+                return _getQueryParameters(fromCache);
+            },
+
+            adjustQueryParamsOnDelete: function(numberOfDocs) {
+                var queryParams = _getQueryParameters(true);
+                queryParams.totalCount = queryParams.totalCount - numberOfDocs;
+                if (queryParams.skip == queryParams.totalCount) {
+                    queryParams.skip = queryParams.skip - queryParams.limit;
+                }
+            },
+
+            getKeys : function(){
+                return _getKeys();
+            },
+
+            formatKeys : function(keys){
+                return _formatKeys(keys)
             }
         }
     };
