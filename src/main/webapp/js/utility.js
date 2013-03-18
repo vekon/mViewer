@@ -7,7 +7,7 @@ YUI.add('utility', function(Y) {
     // format function can be added
     if (typeof String.prototype.format !== 'function') {
         String.prototype.format = function() {
-            var formatted = this,i;
+            var formatted = this, i;
             for (i = 0; i < arguments.length; i++) {
                 formatted = formatted.replace("[" + i + "]", arguments[i]);
             }
@@ -29,7 +29,7 @@ YUI.add('utility', function(Y) {
     }
 
     MV.getProperties = function(doc) {
-        var key, name, allKeys = [];
+        var key, allKeys = [];
         for (key in doc) {
             if (doc.hasOwnProperty(key)) {
                 allKeys.push(key);
@@ -211,7 +211,7 @@ YUI.add('utility', function(Y) {
         exports.events = {
             dbListUpdated: 1,
             collectionListUpdated: 2,
-            actionTriggered : 3,
+            actionTriggered: 3,
             queryExecuted: 4
         };
         return exports;
@@ -320,12 +320,6 @@ YUI.add('utility', function(Y) {
         help: function() {
             return "http://imaginea.github.com/mViewer/";
         },
-        troubleShootPage: function() {
-            return "troubleshoot.html";
-        },
-        troubleShoot: function() {
-            return "admin";
-        },
         graphs: function() {
             return "graphs.html?connectionId=[0]&ts=[1]".format(sm.connectionId(), sm.now());
         },
@@ -337,12 +331,36 @@ YUI.add('utility', function(Y) {
         }
     };
 
-    MV.getErrorMsgFromServerError = function(error) {
-        var messageJSONStr = error.message.substr(error.message.indexOf(":") + 1);
-        return Y.JSON.parse(messageJSONStr).errmsg;
-    }
+    MV.getResponseResult = function(responseObject) {
+        try {
+            var parsedResponse = Y.JSON.parse(responseObject.responseText);
+            return parsedResponse.response.result;
+        } catch (e) {
+            var msg = "Could not parse the JSON response.";
+            Y.log(msg, "error");
+            MV.showAlertMessage(msg, MV.warnIcon);
+        }
+    };
+
+    MV.getErrorMessage = function(responseObject) {
+        var parsedResponse = Y.JSON.parse(responseObject.responseText);
+        var serverError = parsedResponse.response.error;
+        if (serverError) {
+            if (serverError.message.indexOf("errmsg") > 0) {
+                var messageJSONStr = serverError.message.substr(serverError.message.indexOf(":") + 1);
+                serverError.message = Y.JSON.parse(messageJSONStr).errmsg;
+            }
+            return serverError.message;
+        }
+    };
+
+    MV.showServerErrorMessage = function(responseObject) {
+        MV.showAlertMessage(MV.errorCodeMap.SERVER_ERROR, MV.warnIcon);
+        Y.log(MV.errorCodeMap.SERVER_ERROR, "error");
+    };
 
     MV.errorCodeMap = {
+        "SERVER_ERROR" : "Could not execute your request. Please check if server is running.",
         "HOST_UNKNOWN": "Connection Failed ! Please check if MongoDB is running at the given host and port !",
         "MISSING_LOGIN_FIELDS": "Please fill in all the login fields !",
         "ERROR_PARSING_PORT": "You have entered an invalid port number !",
@@ -361,7 +379,7 @@ YUI.add('utility', function(Y) {
         "DB_ALREADY_EXISTS": "A database with the given name already exist ! Try another name.",
         "COLLECTION_ALREADY_EXISTS": "A collection with the given name already exists ! Try another name.",
         "COLLECTION_DOES_NOT_EXIST": "The collection you are trying to delete does not exist !",
-        "COLLECTION_NAME_EMPTY": "Recieved an empty collection name.",
+        "COLLECTION_NAME_EMPTY": "Received an empty collection name.",
         "GET_DOCUMENT_LIST_EXCEPTION": "Please check if mongod is running and refresh the page.",
         "DOCUMENT_DELETION_EXCEPTION": " Please check if mongod is running and refresh the page.",
         "DOCUMENT_CREATION_EXCEPTION": "Please check if mongod is running and refresh the page.",
@@ -375,11 +393,11 @@ YUI.add('utility', function(Y) {
         "COLLECTION_DELETION_EXCEPTION": "Please check if mongod is running and refresh the page.",
         "INVALID_OBJECT_ID": "Value provided for '_id' is invalid .",
         "UPDATE_OBJECT_ID_EXCEPTION": "_id cannot be updated.",
-        "ANY_OTHER_EXCEPTION": "An unknown exception occured ! Please try to login again.",
+        "ANY_OTHER_EXCEPTION": "An unknown exception occurred ! Please try to login again.",
         "ERROR_INITIATING_GRAPH": "Could not initiate the graph ! Please check if mongod is running.",
         "FILE_NOT_FOUND": "Logger Config File or Mongo Config File cannot be found ! Please check if they are present in the resources of src/main and src/test respectively.",
-        "IO_EXCEPTION": "An IO Exception Occured ! Please Refresh the page.",
-        "ERROR_PARSING_POLLING_INTERVAL": "An error occured while initiating graph ! Please chcek if polling interval is passed.",
+        "IO_EXCEPTION": "An IO Exception Occurred ! Please Refresh the page.",
+        "ERROR_PARSING_POLLING_INTERVAL": "An error occurred while initiating graph ! Please check if polling interval is passed.",
         "LOGGING_LEVEL_UNDEFINED": "The Logging level that you are trying to change to is undefined for log4j logger. Please select from the given options only.",
         "DELETING_FROM_CAPPED_COLLECTION": "Deleting from a Capped Collection is not allowed by database. Drop the whole Collection instead.",
         "USERNAME_IS_EMPTY": "Username is empty",
@@ -388,5 +406,5 @@ YUI.add('utility', function(Y) {
         "INDEX_EMPTY": "Index name is empty"
     };
 }, '3.3.0', {
-    requires: ["node"]
+    requires: ["node", "json-parse", "io"]
 });

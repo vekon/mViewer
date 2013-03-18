@@ -71,8 +71,9 @@ YUI({
                 MV.hideLoadingPanel();
             } catch (error) {
                 MV.hideLoadingPanel();
-                Y.log("Failed to initailise data tabs. Reason: [0]".format(error), "error");
-                MV.showAlertMessage("Failed to initailise data tabs. [0]".format(error), MV.warnIcon);
+                var msg = "Failed to initailise data tabs. Reason: [0]".format(error);
+                Y.log(msg, "error");
+                MV.showAlertMessage(msg, MV.warnIcon);
             }
         };
 
@@ -81,19 +82,19 @@ YUI({
          * @param response The response Object containing all the documents
          */
         function populateJSONTab(response) {
-            var jsonView = "<div class='buffer jsonBuffer navigable navigateTable' id='jsonBuffer'>";
+            var jsonView = "<div class='buffer jsonBuffer'>";
             var trTemplate = [
-                "<div class='docDiv' id='doc[0]'>",
-                "<div class='textAreaDiv'><pre><textarea id='ta[1]' class='non-navigable' disabled='disabled' cols='74'>[2]</textarea></pre></div>",
+                "<div class='docDiv navigable' id='doc[0]' data-search_name='json'>",
+                "<div class='textAreaDiv'><pre><textarea id='ta[1]' disabled='disabled' cols='74'>[2]</textarea></pre></div>",
                 "</div>"
             ];
 
             if (response.editable) {
                 trTemplate.splice(2, 0, "<div class='actionsDiv'>",
-                    "<button id='edit[3]'class='bttn editbtn non-navigable'>edit</button>",
-                    "<button id='delete[4]'class='bttn deletebtn non-navigable'>delete</button>",
-                    "<button id='save[5]'class='bttn savebtn non-navigable invisible'>save</button>",
-                    "<button id='cancel[6]'class='bttn cancelbtn non-navigable invisible'>cancel</button>",
+                    "<button id='edit[3]' class='bttn editbtn navigableChild'>edit</button>",
+                    "<button id='delete[4]' class='bttn deletebtn navigableChild'>delete</button>",
+                    "<button id='save[5]' class='bttn savebtn invisible navigableChild'>save</button>",
+                    "<button id='cancel[6]' class='bttn cancelbtn invisible navigableChild'>cancel</button>",
                     "</div>")
             }
             trTemplate = trTemplate.join('\n');
@@ -123,11 +124,11 @@ YUI({
             }
             var trSelectionClass = 'selected';
             // add click listener to select and deselect rows.
-            Y.all('.jsonTable tr').on("click", function(eventObject) {
+            Y.all('div.jsonBuffer .docDiv').on("click", function(eventObject) {
                 var currentTR = eventObject.currentTarget;
                 var alreadySelected = currentTR.hasClass(trSelectionClass);
 
-                Y.all('.jsonTable tr').each(function(item) {
+                Y.all('div.jsonBuffer .docDiv').each(function(item) {
                     item.removeClass(trSelectionClass);
                 });
 
@@ -146,7 +147,7 @@ YUI({
                     resetAll = false;
                 }
                 if (resetAll) {
-                    Y.all('tr.selected').each(function(item) {
+                    Y.all('div.selected').each(function(item) {
                         item.removeClass(trSelectionClass);
                     });
                 }
@@ -230,22 +231,21 @@ YUI({
                 method: "POST",
                 data: "_id=" + docId + "&keys=" + doc,
                 on: {
-                    success: function(ioId, responseObject) {
-                        var parsedResponse = Y.JSON.parse(responseObject.responseText);
-                        var response = parsedResponse.response.result;
+                    success: function(ioId, responseObj) {
+                        var response = MV.getResponseResult(responseObj);
                         if (response !== undefined) {
                             var targetNode = eventObject.currentTarget;
                             var index = getButtonIndex(targetNode);
                             toggleSaveEdit(targetNode, index, actionMap.save);
                             var savedKeys = queryExecutor.getKeys();
                             var newKeys = []
-                            for(var index = 0; index < response.keys.length; index++){
+                            for (var index = 0; index < response.keys.length; index++) {
                                 var key = response.keys[index];
-                                if(savedKeys.indexOf(key) == -1){
+                                if (savedKeys.indexOf(key) == -1) {
                                     newKeys.push(key);
                                 }
                             }
-                            if(newKeys.length > 0){
+                            if (newKeys.length > 0) {
                                 var innerHTML = Y.one('#fields').get('innerHTML');
                                 innerHTML = innerHTML + queryExecutor.formatKeys(newKeys);
                                 Y.one('#fields').set('innerHTML', innerHTML);
@@ -254,14 +254,13 @@ YUI({
                             // Re-execute the cached find query to update the view with the new resultSet
                             queryExecutor.executeCachedQuery(true);
                         } else {
-                            var error = parsedResponse.response.error;
-                            MV.showAlertMessage("Could not update Document ! [0]", MV.warnIcon, error.code);
-                            Y.log("Could not update Document ! [0]".format(MV.errorCodeMap[error.code]), "error");
+                            var errorMsg = "Could not update Document: " + MV.getErrorMessage(responseObj);
+                            MV.showAlertMessage(errorMsg, MV.warnIcon);
+                            Y.log(errorMsg, "error");
                         }
                     },
                     failure: function(ioId, responseObject) {
-                        MV.showAlertMessage("Unexpected Error: Could not update the document. Check if app server is running", MV.warnIcon);
-                        Y.log("Could not send the request to update the document. Response Status: [0]".format(responseObject.statusText), "error");
+                        MV.showServerErrorMessage(responseObject);
                     }
                 }
             });
@@ -303,22 +302,20 @@ YUI({
                         data: "_id=" + docId,
                         on: {
                             success: function(ioId, responseObj) {
-                                var parsedResponse = Y.JSON.parse(responseObj.responseText);
-                                var response = parsedResponse.response.result;
+                                var response = MV.getResponseResult(responseObj);
                                 if (response !== undefined) {
                                     MV.showAlertMessage("Document deleted successfully.", MV.infoIcon);
                                     // Re-execute the cached find query to update the view with the new resultSet
                                     queryExecutor.adjustQueryParamsOnDelete(1);
                                     queryExecutor.executeCachedQuery();
                                 } else {
-                                    var error = parsedResponse.response.error;
-                                    MV.showAlertMessage("Could not delete the document with _id [0]. [1]".format(docId, MV.errorCodeMap[error.code]), MV.warnIcon);
-                                    Y.log("Could not delete the document with _id =  [0], Error message: [1], Error Code: [2]".format(docId, error.message, error.code), "error");
+                                    var errorMsg = "Could not delete the document: " + MV.getErrorMessage(responseObj);
+                                    MV.showAlertMessage(errorMsg, MV.warnIcon);
+                                    Y.log(errorMsg, "error");
                                 }
                             },
-                            failure: function(ioId, responseObj) {
-                                Y.log("Could not delete the document .Status text: ".format(MV.appInfo.currentColl, responseObj.statusText), "error");
-                                MV.showAlertMessage("Could not drop the document! Please check if your app server is running and try again. Status Text: [1]".format(responseObj.statusText), MV.warnIcon);
+                            failure: function(ioId, responseObject) {
+                                MV.showServerErrorMessage(responseObject);
                             }
                         }
                     });

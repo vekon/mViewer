@@ -23,6 +23,7 @@ input {
 
 .ui-accordion .ui-accordion-content {
     padding: 0px;
+    border-top: 1px solid;
 }
 
 #dbOperations .dbOperation {
@@ -192,8 +193,8 @@ ul.nav-link-top li a {
     cursor: pointer;
 }
 
-ul.nav-link-top li a.sel, ul.nav-link-top li a:hover, ul.lists li.simulatedHover, ul.lists a.simulatedHover, ul.lists li.sel.simulatedHover,
-ul.lists li:hover, ul.lists li.sel:hover, .floatingFooter, .nav-link-home:hover {
+ul.nav-link-top li a.sel, ul.nav-link-top li a:hover, ul.lists li.simulatedHover, ul.nav-link-top li a.highlighted, ul.lists a.simulatedHover, ul.lists li.sel.simulatedHover,
+ul.lists li:hover, ul.lists li.sel:hover, .nav-link-home:hover {
     text-decoration: none;
     background: rgb(208, 228, 247); /* Old browsers */
     background: -moz-linear-gradient(top, rgba(208, 228, 247, 1) 0%, rgba(115, 177, 231, 1) 24%, rgba(10, 119, 213, 1) 50%, rgba(83, 159, 225, 1) 79%, rgba(135, 188, 234, 1) 100%); /* FF3.6+ */
@@ -207,15 +208,21 @@ ul.lists li:hover, ul.lists li.sel:hover, .floatingFooter, .nav-link-home:hover 
     cursor: pointer;
 }
 
-ul.lists li:hover span.yui3-menu-label-active *, ul.lists li.yui3-menuitem-active:hover * {
-    color: #fff !important;
-    text-decoration: none !important;
+.shadow, * input:focus, button:focus, textarea:focus, a:focus, select:focus, tr.selected {
+    box-shadow: 0 0 2px 2px highlight !important;
+    -webkit-box-shadow: 0 0 2px 2px rgb(255, 255, 255);
+    -moz-box-shadow: 0 0 2px 2px highlight !important;
+    outline: none;
 }
 
-ul.lists li * {
-    color: #000 !important;
-    padding: 0px;
-    margin: 0px;
+.highlighted {
+    border: 2px solid #007700;
+    text-decoration-color: #007700;
+}
+
+ul.lists li:hover span.yui3-menu-label-active *, ul.lists li.yui3-menuitem-active:hover *,  ul.lists li.simulatedHover.highlighted * {
+    color: #fff !important;
+    text-decoration: none !important;
 }
 
 ul.lists li {
@@ -232,7 +239,7 @@ ul.lists li {
     border: none !important;
 }
 
-ul.lists li:hover .yui3-menu-toggle {
+ul.lists li:hover .yui3-menu-toggle, ul.lists li.simulatedHover.highlighted .yui3-menu-toggle {
     opacity: 1 !important;
 }
 
@@ -302,7 +309,7 @@ ul.lists li.sel {
     background: #D0E4F7;
 }
 
-ul.lists li:hover {
+ul.lists li:hover, ul.lists li.simulatedHover.highlighted {
     list-style-image: url('../images/bullet_inverted.png');
 }
 
@@ -329,7 +336,7 @@ ul.nav-link-right li label {
     margin-top: 25px;
 }
 
-ul.nav-link-right li label.disconnect {
+#disconnect {
     color: #ccc !important;
     cursor: pointer
 }
@@ -495,6 +502,7 @@ textarea {
     font-weight: bold;
     margin-top: 2px;
     cursor: pointer;
+    min-width: 50px;
 }
 
 .bttn:hover {
@@ -620,8 +628,9 @@ table tr td {
 
 .docDiv {
     display: inline-block;
-    width: 99%;
+    width: 98%;
     position: relative;
+    margin: 4px;
 }
 
 .textAreaDiv {
@@ -635,7 +644,7 @@ table tr td {
     display: inline;
     float: right;
     position: absolute;
-    right: 20px;
+    right: 35px;
     top: 20px;
 }
 
@@ -916,17 +925,18 @@ textarea .disabled {
     border: 1px solid #ccc;
 }
 
-.floatingFooter {
-    border: 1px solid black;
-    border-radius: 5px 5px 5px 5px;
-    right: 250px;
-    top: 16px;
+.searchBox {
+    border: 1px solid #a9a9a9;
+    border-radius: 0px 3px 3px 0px;
+    left: 0px;
+    bottom: 0px;
     padding: 5px;
     position: fixed;
     font-weight: bold;
+    background-color: #c0c0c0;
 }
 
-*html .floatingFooter {
+*html .searchBox {
     position: absolute;
     right: 250px;
     top: 16px;
@@ -934,25 +944,7 @@ textarea .disabled {
 
 .assistText {
     border: 1px solid #888888;
-    width: 180px;
-}
-
-.shadow-original {
-    -moz-box-shadow: 3px 3px 4px #000;
-    -webkit-box-shadow: 3px 3px 4px #000;
-    box-shadow: 3px 3px 4px #000;
-    /* For IE 8 */
-    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
-    /* For IE 5.5 - 7 */
-    filter: progid:DXImageTransform.Microsoft.Shadow(Strength = 4, Direction = 135, Color = '#000000');
-}
-
-.shadow, * input:focus, button:focus, textarea:focus, a:focus, select:focus, tr.selected {
-    border: 1px solid #CCCCCC;
-    box-shadow: 0 0 2px 2px highlight !important;
-    -webkit-box-shadow: 0 0 2px 2px rgb(255, 255, 255);
-    -moz-box-shadow: 0 0 2px 2px highlight !important;
-    outline: none;
+    width: 137px;
 }
 
 div.navigable ul.lists li {
@@ -961,7 +953,6 @@ div.navigable ul.lists li {
 
 div.buffer {
     overflow-y: hidden;
-    margin: 2px;
     overflow-x: hidden;
 }
 
@@ -995,4 +986,12 @@ div.generalInfo {
 
 .yui-skin-sam .yui-navset .yui-nav a:hover {
     background: #1874CD !important;
+}
+
+a.enabledAnchor {
+    color: #39C;
+}
+
+a.disabledAnchor {
+    color: #808080;
 }

@@ -9,10 +9,9 @@ YUI.add('query-executor', function(Y) {
         var cachedQueryParams = {};
         successHandler = sHandler;
         currentSelection = selectedCollection;
-        var keys = [];
 
-        function _getKeys(){
-            return keys;
+        function _getKeys() {
+            return cachedQueryParams.checkedFields;
         }
 
         /**
@@ -30,8 +29,7 @@ YUI.add('query-executor', function(Y) {
                 },
                 failure: function(ioId, responseObject) {
                     MV.hideLoadingPanel();
-                    MV.showAlertMessage("Could not load the query Box", MV.warnIcon);
-                    Y.log("Could not send the request to get the keys in the collection. Response Status: [0]".format(responseObject.statusText), "error");
+                    MV.showServerErrorMessage(responseObject);
                 }
             }
         });
@@ -64,25 +62,26 @@ YUI.add('query-executor', function(Y) {
                     method: "GET",
                     data: queryStr,
                     on: {
-                        success: function(request, response) {
-                            var parsedResponse = Y.JSON.parse(response.responseText).response;
-                            var result = parsedResponse.result, error = parsedResponse.error;
+                        success: function(request, responseObj) {
+                            var result = MV.getResponseResult(responseObj), error = MV.getErrorMessage(responseObj);
                             if (result && !error) {
                                 //TotalCount may vary from request to request. so update the same in cache.
                                 queryParams.totalCount = result.count;
                                 postExecuteQueryProcess(queryParams);
                                 //Update the pagination anchors accordingly
                                 updateAnchors(result.count, result.editable);
-                                sm.publish(sm.events.queryExecuted);
                                 successHandler(result);
+                                sm.publish(sm.events.queryExecuted);
                             } else {
                                 MV.hideLoadingPanel();
-                                MV.showAlertMessage(error.message, MV.warnIcon);
+                                var msg = "Could not execute query: " + error;
+                                MV.showAlertMessage(msg, MV.warnIcon);
+                                Y.log(msg, "error");
                             }
                         },
-                        failure: function(request, response) {
+                        failure: function(request, responseObject) {
                             MV.hideLoadingPanel();
-                            MV.showAlertMessage(response.responseText, MV.warnIcon);
+                            MV.showServerErrorMessage(responseObject);
                         }
                     }
                 });
@@ -94,9 +93,8 @@ YUI.add('query-executor', function(Y) {
                 method: "GET",
                 data: 'allKeys=true',
                 on: {
-                    success: function(ioId, responseObject) {
-                        var parsedResponse = Y.JSON.parse(responseObject.responseText);
-                        keys = parsedResponse.response.result.keys;
+                    success: function(ioId, responseObj) {
+                        var keys = MV.getResponseResult(responseObj).keys;
                         if (keys !== undefined) {
                             var innerHTML = _formatKeys(keys);
                             Y.one('#fields').set('innerHTML', innerHTML);
@@ -104,8 +102,7 @@ YUI.add('query-executor', function(Y) {
                     },
                     failure: function(ioId, responseObject) {
                         MV.hideLoadingPanel();
-                        MV.showAlertMessage("Could not load the query Box", MV.warnIcon);
-                        Y.log("Could not send the request to get the keys in the collection. Response Status: [0]".format(responseObject.statusText), "error");
+                        MV.showServerErrorMessage(responseObject);
                     }
                 }
             });
@@ -118,12 +115,12 @@ YUI.add('query-executor', function(Y) {
          * @param {Number} e Id
          * @param {Object} The response Object
          */
-        function populateQueryBox(ioId, responseObject) {
-            var parsedResponse, keys, count, queryForm, error;
+        function populateQueryBox(ioId, responseObj) {
+            var keys, count, queryForm, error;
             try {
-                parsedResponse = Y.JSON.parse(responseObject.responseText);
-                keys = parsedResponse.response.result.keys;
-                count = parsedResponse.response.result.count;
+                var response = MV.getResponseResult(responseObj)
+                keys = response.keys;
+                count = response.count;
                 if (keys !== undefined || count !== undefined) {
                     document.getElementById('queryExecutor').style.display = 'block';
                     queryForm = Y.one('#queryForm');
@@ -134,14 +131,14 @@ YUI.add('query-executor', function(Y) {
                     MV.mainBody.set("innerHTML", paginatorTemplate.format(count < 25 ? count : 25, count));
                     initListeners();
                 } else {
-                    error = parsedResponse.response.error;
-                    Y.log("Could not get keys. Message: [0]".format(error.message), "error");
-                    MV.showAlertMessage("Could not load the query Box! [0]".format(MV.errorCodeMap(error.code)), MV.warnIcon);
+                    error = "Could not get keys: " + MV.getErrorMessage(responseObj);
+                    Y.log(error, "error");
+                    MV.showAlertMessage(error, MV.warnIcon);
                 }
             } catch (e) {
                 Y.log("Could not parse the JSON response to get the keys", "error");
-                Y.log("Response received: [0]".format(responseObject.responseText), "error");
-                MV.showAlertMessage("Cannot parse Response to get keys!", MV.warnIcon);
+                Y.log("Response received: [0]".format(responseObj.responseText), "error");
+                MV.showAlertMessage("Cannot parse Response to get keys", MV.warnIcon);
             }
         }
 
@@ -149,9 +146,9 @@ YUI.add('query-executor', function(Y) {
             var checkList = "", selectTemplate = "";
             if (keys !== undefined) {
                 selectTemplate = [
-                    "<a id='selectAll' class='navigationRight' href='javascript:void(0)'>Select All</a>",
+                    "<a id='selectAll' class='navigationRight navigable' data-search_name='Select All Attributes' href='javascript:void(0)'>Select All</a>",
                     "<label> / </label>",
-                    "<a id='unselectAll' href='javascript:void(0)'>Unselect All</a>"
+                    "<a id='unselectAll' href='javascript:void(0)' class='navigable' data-search_name='UnSelect All Attributes' >Unselect All</a>"
                 ].join('\n');
                 checkList = "<div id='checkListDiv'><div class='queryBoxlabels'><label for='fields' >Attributes</label>" + selectTemplate + "</div><div><ul id='fields' class='checklist'>";
                 checkList += _formatKeys(keys);
@@ -176,7 +173,7 @@ YUI.add('query-executor', function(Y) {
             "<label>Define Query</label>",
             "</div>",
             "<div>",
-            "<textarea id='queryBox' name='queryBox' class='queryBox'>",
+            "<textarea id='queryBox' name='queryBox' class='queryBox navigable' data-search_name='query'>",
             "db.[0].find({\r\r})",
             "</textarea>",
             "</div>",
@@ -188,21 +185,21 @@ YUI.add('query-executor', function(Y) {
 
         var lowerPartTemplate = [
             "<div id='parametersDiv'>",
-            "<label for='skip'> Skip(No. of records) </label><br/><input id='skip' type='text' name='skip' value='0'/><br/>",
-            "<label for='limit'> Max page size: </label><br/><span><select id='limit' name='limit'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option></select></span><br/>  ",
-            "<label for='sort'> Sort by fields </label><br/><input id='sort' type='text' name='sort' value='_id:-1'/><br/><br/>",
-            "<button id='execQueryButton' class='bttn'>Execute Query</button>",
+            "<label for='skip'> Skip(No. of records) </label><br/><input id='skip' type='text' name='skip' value='0' class='navigable' data-search_name='skip'/><br/>",
+            "<label for='limit'> Max page size: </label><br/><span><select id='limit' name='limit' class='navigable' data-search_name='max limit'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option></select></span><br/>  ",
+            "<label for='sort'> Sort by fields </label><br/><input id='sort' type='text' name='sort' value='_id:-1' class='navigable' data-search_name='sort'/><br/><br/>",
+            "<button id='execQueryButton' class='bttn navigable' data-search_name='Execute Query'>Execute Query</button>",
             "</div>"
         ].join('\n');
 
         var paginatorTemplate = [
             "<div id='paginator'>",
-            "<a id='first' href='javascript:void(0)'>&laquo; First</a>",
-            "<a id='prev'  href='javascript:void(0)'>&lsaquo; Previous</a>",
+            "<a id='first' href='javascript:void(0)' data-search_name='First'>&laquo; First</a>",
+            "<a id='prev'  href='javascript:void(0)' data-search_name='Previous'>&lsaquo; Previous</a>",
             "<label>Showing</label>", "<label id='startLabel'> 1 </label>", "<label> - </label>",
             "<label id='endLabel'> [0] </label>", "<label> of </label>", "<label id='countLabel'> [1] </label>",
-            "<a id='next' href='javascript:void(0)'>Next &rsaquo;</a>",
-            "<a id='last' href='javascript:void(0)'>Last &raquo;</a>",
+            "<a id='next' href='javascript:void(0)' data-search_name='Next'>Next &rsaquo;</a>",
+            "<a id='last' href='javascript:void(0)' data-search_name='Last'>Last &raquo;</a>",
             "</div>"
         ].join('\n');
 
@@ -307,12 +304,16 @@ YUI.add('query-executor', function(Y) {
 
         function enableAnchor(obj) {
             obj.setAttribute('href', 'javascript:void(0)');
-            obj.setStyle('color', '#39C');
+            obj.removeClass('disabledAnchor');
+            obj.addClass('navigable');
+            obj.addClass('enabledAnchor');
         }
 
         function disableAnchor(obj) {
             obj.removeAttribute('href');
-            obj.setStyle('color', 'grey');
+            obj.removeClass('enabledAnchor');
+            obj.addClass('disabledAnchor');
+            obj.removeClass('navigable');
         }
 
         function getCommand(queryParams) {
@@ -388,16 +389,16 @@ YUI.add('query-executor', function(Y) {
             adjustQueryParamsOnDelete: function(numberOfDocs) {
                 var queryParams = _getQueryParameters(true);
                 queryParams.totalCount = queryParams.totalCount - numberOfDocs;
-                if (queryParams.skip == queryParams.totalCount) {
+                if (queryParams.totalCount != 0 && queryParams.skip == queryParams.totalCount) {
                     queryParams.skip = queryParams.skip - queryParams.limit;
                 }
             },
 
-            getKeys : function(){
+            getKeys: function() {
                 return _getKeys();
             },
 
-            formatKeys : function(keys){
+            formatKeys: function(keys) {
                 return _formatKeys(keys)
             }
         }
@@ -411,5 +412,5 @@ YUI.add('query-executor', function(Y) {
     };
 
 }, '3.3.0', {
-    requires: ["json-parse", "node-event-simulate"]
+    requires: ["node-event-simulate"]
 });
