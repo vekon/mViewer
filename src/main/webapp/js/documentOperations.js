@@ -41,7 +41,14 @@ YUI({
             sm.publish(sm.events.actionTriggered);
             MV.appInfo.currentColl = event.currentTarget.getAttribute("data-collection-name");
             MV.selectDBItem(event.currentTarget);
-            queryExecutor = MV.loadQueryBox(MV.URLMap.getDocKeys(), MV.URLMap.getDocs(), sm.currentColl(), showTabView);
+            var config = {
+                keysUrl: MV.URLMap.getDocKeys(),
+                dataUrl: MV.URLMap.getDocs(),
+                query: "db.[0].find({\r\r})".format(sm.currentColl()),
+                currentSelection: sm.currentColl(),
+                showKeys: true
+            };
+            queryExecutor = MV.loadQueryBox(config, showTabView);
         };
 
         /**
@@ -55,7 +62,13 @@ YUI({
 
             try {
                 MV.setHeader(MV.headerConstants.QUERY_RESPONSE);
-                tabView.appendTo(MV.mainBody.get('id'));
+                var mainBody = MV.mainBody;
+                var mainBodyId = mainBody.get('id');
+                tabView.appendTo(mainBodyId);
+                mainBody.all("div.yui-navset li").each(function(item){
+                    item.addClass('navigable');
+                    item.setAttribute('data-search_name',item.one('em').getContent());
+                });
                 var treebleData = MV.getTreebleDataForDocs(response);
                 var treeble = MV.getTreeble(treebleData, "document");
                 // Remove download column for document operations
@@ -84,17 +97,17 @@ YUI({
         function populateJSONTab(response) {
             var jsonView = "<div class='buffer jsonBuffer'>";
             var trTemplate = [
-                "<div class='docDiv navigable' id='doc[0]' data-search_name='json'>",
+                "<div class='docDiv navigable' id='doc[0]'>",
                 "<div class='textAreaDiv'><pre><textarea id='ta[1]' disabled='disabled' cols='74'>[2]</textarea></pre></div>",
                 "</div>"
             ];
 
             if (response.editable) {
                 trTemplate.splice(2, 0, "<div class='actionsDiv'>",
-                    "<button id='edit[3]' class='bttn editbtn navigableChild'>edit</button>",
-                    "<button id='delete[4]' class='bttn deletebtn navigableChild'>delete</button>",
-                    "<button id='save[5]' class='bttn savebtn invisible navigableChild'>save</button>",
-                    "<button id='cancel[6]' class='bttn cancelbtn invisible navigableChild'>cancel</button>",
+                    "<button id='edit[3]' class='bttn editbtn navigableChild' data-search_name='edit'>edit</button>",
+                    "<button id='delete[4]' class='bttn deletebtn navigableChild' data-search_name='delete'>delete</button>",
+                    "<button id='save[5]' class='bttn savebtn invisible navigableChild' data-search_name='save'>save</button>",
+                    "<button id='cancel[6]' class='bttn cancelbtn invisible navigableChild' data-search_name='cancel'>cancel</button>",
                     "</div>")
             }
             trTemplate = trTemplate.join('\n');
@@ -231,31 +244,30 @@ YUI({
                 method: "POST",
                 data: "_id=" + docId + "&keys=" + doc,
                 on: {
-                    success: function(ioId, responseObj) {
-                        var response = MV.getResponseResult(responseObj);
-                        if (response !== undefined) {
+                    success: function(ioId, responseObject) {
+                        var jsonObject = MV.toJSON(responseObject);
+                        var responseResult = MV.getResponseResult(jsonObject);
+                        if (responseResult) {
                             var targetNode = eventObject.currentTarget;
                             var index = getButtonIndex(targetNode);
                             toggleSaveEdit(targetNode, index, actionMap.save);
                             var savedKeys = queryExecutor.getKeys();
-                            var newKeys = []
-                            for (var index = 0; index < response.keys.length; index++) {
-                                var key = response.keys[index];
+                            var newKeys = [];
+                            for (var index = 0; index < responseResult.keys.length; index++) {
+                                var key = responseResult.keys[index];
                                 if (savedKeys.indexOf(key) == -1) {
                                     newKeys.push(key);
                                 }
                             }
                             if (newKeys.length > 0) {
-                                var innerHTML = Y.one('#fields').get('innerHTML');
-                                innerHTML = innerHTML + queryExecutor.formatKeys(newKeys);
-                                Y.one('#fields').set('innerHTML', innerHTML);
+                                queryExecutor.updateKeysList(newKeys);
                             }
                             MV.showAlertMessage("Document updated successfully.", MV.infoIcon);
                             // Re-execute the cached find query to update the view with the new resultSet
                             queryExecutor.executeCachedQuery(true);
                         } else {
-                            var errorMsg = "Could not update Document: " + MV.getErrorMessage(responseObj);
-                            MV.showAlertMessage(errorMsg, MV.warnIcon);
+                            var errorMsg = "Could not update Document: " + MV.getErrorMessage(jsonObject);
+                            MV.showAlertMessage(errorMsg, MV.warnIcon, MV.getErrorCode(jsonObject));
                             Y.log(errorMsg, "error");
                         }
                     },
@@ -301,16 +313,17 @@ YUI({
                         method: "POST",
                         data: "_id=" + docId,
                         on: {
-                            success: function(ioId, responseObj) {
-                                var response = MV.getResponseResult(responseObj);
-                                if (response !== undefined) {
+                            success: function(ioId, responseObject) {
+                                var jsonObject = MV.toJSON(responseObject);
+                                var responseResult = MV.getResponseResult(jsonObject);
+                                if (responseResult) {
                                     MV.showAlertMessage("Document deleted successfully.", MV.infoIcon);
                                     // Re-execute the cached find query to update the view with the new resultSet
                                     queryExecutor.adjustQueryParamsOnDelete(1);
                                     queryExecutor.executeCachedQuery();
                                 } else {
-                                    var errorMsg = "Could not delete the document: " + MV.getErrorMessage(responseObj);
-                                    MV.showAlertMessage(errorMsg, MV.warnIcon);
+                                    var errorMsg = "Could not delete the document: " + MV.getErrorMessage(jsonObject);
+                                    MV.showAlertMessage(errorMsg, MV.warnIcon, MV.getErrorCode(jsonObject));
                                     Y.log(errorMsg, "error");
                                 }
                             },

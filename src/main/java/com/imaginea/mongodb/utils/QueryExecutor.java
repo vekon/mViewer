@@ -15,7 +15,7 @@ import java.util.*;
  */
 public class QueryExecutor {
 
-    public static JSONObject executeQuery(DB db, DBCollection dbCollection, String command, String queryStr, String fields, String sortByStr, int limit, int skip) throws JSONException, ApplicationException {
+    public static JSONObject executeQuery(DB db, DBCollection dbCollection, String command, String queryStr, String fields, String sortByStr, int limit, int skip, boolean allKeys) throws JSONException, ApplicationException {
         StringTokenizer strtok = new StringTokenizer(fields, ",");
         DBObject keysObj = new BasicDBObject("_id", 1);
         while (strtok.hasMoreElements()) {
@@ -44,7 +44,7 @@ public class QueryExecutor {
             return executeEnsureIndex(dbCollection, queryStr);
         }
         if (command.equals("find")) {
-            return executeFind(dbCollection, queryStr, keysObj, sortObj, limit, skip);
+            return executeFind(dbCollection, queryStr, keysObj, sortObj, limit, skip, allKeys);
         }
         if (command.equals("findOne")) {
             return executeFindOne(dbCollection, queryStr);
@@ -93,21 +93,15 @@ public class QueryExecutor {
             while (resultIterator.hasNext()) {
                 results.add(resultIterator.next());
             }
-            return constructResponse(false, results.size(), results);
+            return ApplicationUtils.constructResponse(false, results.size(), results);
         }
         throw new DatabaseException(ErrorCodes.INVALID_AGGREGATE_COMMAND, "Aggregate command is ill formed");
-    }
-
-    public static JSONObject executeCommand(DB db, String queryStr) throws JSONException {
-        DBObject queryObj = (DBObject) JSON.parse(queryStr);
-        CommandResult commandResult = db.command(queryObj);
-        return constructResponse(false, commandResult);
     }
 
     private static JSONObject executeCount(DBCollection dbCollection, String queryStr) throws JSONException {
         DBObject queryObj = (DBObject) JSON.parse(queryStr);
         long count = dbCollection.count(queryObj);
-        return constructResponse(false, new BasicDBObject("count", count));
+        return ApplicationUtils.constructResponse(false, new BasicDBObject("count", count));
     }
 
     private static JSONObject executeDistinct(DBCollection dbCollection, String queryStr) throws JSONException {
@@ -118,7 +112,7 @@ public class QueryExecutor {
         } else {
             distinctValuesList = dbCollection.distinct((String) queryObj.get("0"), (DBObject) queryObj.get("1"));
         }
-        return constructResponse(false, distinctValuesList.size(), distinctValuesList);
+        return ApplicationUtils.constructResponse(false, distinctValuesList.size(), distinctValuesList);
     }
 
     private static JSONObject executeDrop(DBCollection dbCollection) throws JSONException {
@@ -163,19 +157,25 @@ public class QueryExecutor {
     private static JSONObject executeFindOne(DBCollection dbCollection, String queryStr) throws JSONException {
         DBObject queryObj = (DBObject) JSON.parse("[" + queryStr + "]");
         DBObject matchedRecord = dbCollection.findOne((DBObject) queryObj.get("0"), (DBObject) queryObj.get("1"));
-        return constructResponse(true, matchedRecord);
+        return ApplicationUtils.constructResponse(true, matchedRecord);
     }
 
-    private static JSONObject executeFind(DBCollection dbCollection, String queryStr, DBObject keysObj, DBObject sortObj, int limit, int skip) throws JSONException {
+    private static JSONObject executeFind(DBCollection dbCollection, String queryStr, DBObject keysObj, DBObject sortObj, int limit, int skip, boolean allKeys) throws JSONException {
         DBObject queryObj = (DBObject) JSON.parse(queryStr);
-        DBCursor cursor = dbCollection.find(queryObj, keysObj).sort(sortObj).skip(skip).limit(limit);
+        DBCursor cursor = null;
+        if (allKeys) {
+            cursor = dbCollection.find(queryObj);
+        } else {
+            cursor = dbCollection.find(queryObj, keysObj);
+        }
+        cursor = cursor.sort(sortObj).skip(skip).limit(limit);
         ArrayList<DBObject> dataList = new ArrayList<DBObject>();
         if (cursor.hasNext()) {
             while (cursor.hasNext()) {
                 dataList.add(cursor.next());
             }
         }
-        return constructResponse(true, dbCollection.count(queryObj), dataList);
+        return ApplicationUtils.constructResponse(true, dbCollection.count(queryObj), dataList);
     }
 
     private static JSONObject executeFindAndModify(DBCollection dbCollection, String queryStr, DBObject keysObj) throws JSONException {
@@ -189,12 +189,12 @@ public class QueryExecutor {
         boolean remove = queryObj.get("remove") != null ? (Boolean) queryObj.get("remove") : false;
 
         DBObject queryResult = dbCollection.findAndModify(criteria, keysObj, sort, remove, update, returnNew, upsert);
-        return constructResponse(false, queryResult);
+        return ApplicationUtils.constructResponse(false, queryResult);
     }
 
     private static JSONObject executeGetIndexes(DBCollection dbCollection) throws JSONException {
         List<DBObject> indexInfo = dbCollection.getIndexInfo();
-        return constructResponse(false, indexInfo.size(), indexInfo);
+        return ApplicationUtils.constructResponse(false, indexInfo.size(), indexInfo);
     }
 
     private static JSONObject executeInsert(DBCollection dbCollection, String queryStr) throws JSONException {
@@ -206,9 +206,9 @@ public class QueryExecutor {
             writeResult = dbCollection.insert(queryObj);
         }
         if (writeResult.getLastError().get("err") == null) {
-            return constructResponse(false, queryObj);
+            return ApplicationUtils.constructResponse(false, queryObj);
         }
-        return constructResponse(false, writeResult.getLastError());
+        return ApplicationUtils.constructResponse(false, writeResult.getLastError());
     }
 
     private static JSONObject executeGroup(DBCollection dbCollection, String queryString) throws JSONException {
@@ -223,50 +223,80 @@ public class QueryExecutor {
         String finalize = (String) queryObj.get("finalize");
 
         DBObject groupQueryResult = dbCollection.group(key, cond, initial, reduce, finalize);
-        return constructResponse(false, groupQueryResult);
+        return ApplicationUtils.constructResponse(false, groupQueryResult);
     }
 
-    private static JSONObject executeMapReduce(DBCollection dbCollection, String queryString, int limit) throws JSONException {
-        DBObject queryObj = (DBObject) JSON.parse(queryString);
+    private static JSONObject executeMapReduce(DBCollection dbCollection, String queryString, int limit) throws JSONException, InvalidMongoCommandException {
+        DBObject queryObj = (DBObject) JSON.parse("[" + queryString + "]");
 
-        String map = (String) queryObj.get("map");
-        String reduce = (String) queryObj.get("reduce");
-        DBObject out = (DBObject) queryObj.get("out");
-        DBObject query = (DBObject) out.get("query");
+        String map = (String) queryObj.get("0");
+        String reduce = (String) queryObj.get("1");
+        DBObject params = (DBObject) queryObj.get("2");
+        String outputDb = null;
         MapReduceCommand.OutputType outputType = MapReduceCommand.OutputType.REPLACE;
         String outputCollection = null;
-        if (out.get("replace") != null) {
-            outputCollection = (String) out.get("replace");
-            outputType = MapReduceCommand.OutputType.REPLACE;
-        } else if (out.get("merge") != null) {
-            outputCollection = (String) out.get("merge");
-            outputType = MapReduceCommand.OutputType.INLINE;
-        } else if (out.get("reduce") != null) {
-            outputCollection = (String) out.get("reduce");
-            outputType = MapReduceCommand.OutputType.INLINE;
-        } else if (out.get("inline") != null) {
-            outputType = MapReduceCommand.OutputType.INLINE;
+
+        if (params.get("out") instanceof DBObject) {
+            DBObject out = (DBObject) params.get("out");
+            if (out.get("sharded") != null) {
+                throw new InvalidMongoCommandException(ErrorCodes.COMMAND_NOT_SUPPORTED, "sharded is not yet supported. Please remove it and run again");
+            }
+            if (out.get("replace") != null) {
+                if (out.get("nonAtomic") != null) {
+                    throw new InvalidMongoCommandException(ErrorCodes.COMMAND_NOT_SUPPORTED, "nonAtomic is not supported in replace mode. Please remove it and run again");
+                }
+                outputCollection = (String) out.get("replace");
+                outputDb = (String) out.get("db");
+                outputType = MapReduceCommand.OutputType.REPLACE;
+            } else if (out.get("merge") != null) {
+                outputCollection = (String) out.get("merge");
+                outputDb = (String) out.get("db");
+                outputType = MapReduceCommand.OutputType.INLINE;
+            } else if (out.get("reduce") != null) {
+                outputCollection = (String) out.get("reduce");
+                outputDb = (String) out.get("db");
+                outputType = MapReduceCommand.OutputType.INLINE;
+            } else if (out.get("inline") != null) {
+                outputType = MapReduceCommand.OutputType.INLINE;
+                if (out.get("nonAtomic") != null) {
+                    throw new InvalidMongoCommandException(ErrorCodes.COMMAND_NOT_SUPPORTED, "nonAtomic is not supported in inline mode. Please remove it and run again");
+                }
+            }
+        } else if (params.get("out") instanceof String) {
+            outputCollection = (String) params.get("out");
+        }
+
+        DBObject query = (DBObject) params.get("query");
+        DBObject sort = (DBObject) params.get("sort");
+        if (params.get("limit") != null) {
+            limit = (Integer) params.get("limit");
+        }
+        String finalize = (String) params.get("finalize");
+        Map scope = (Map) params.get("scope");
+        if (params.get("jsMode") != null) {
+            throw new InvalidMongoCommandException(ErrorCodes.COMMAND_NOT_SUPPORTED, "jsMode is not yet supported. Please remove it and run again");
+        }
+        boolean verbose = true;
+        if (params.get("verbose") != null) {
+            verbose = (Boolean) params.get("verbose ");
         }
 
         MapReduceCommand mapReduceCommand = new MapReduceCommand(dbCollection, map, reduce, outputCollection, outputType, query);
-        if (out != null) {
-            mapReduceCommand.setFinalize((String) out.get("finalize "));
-            mapReduceCommand.setLimit(limit);
-            mapReduceCommand.setScope((Map) out.get("scope"));
-            mapReduceCommand.setSort((DBObject) out.get("sort"));
-            if (out.get("verbose") != null) {
-                mapReduceCommand.setVerbose((Boolean) out.get("verbose"));
-            }
-        }
+        mapReduceCommand.setSort(sort);
+        mapReduceCommand.setLimit(limit);
+        mapReduceCommand.setFinalize(finalize);
+        mapReduceCommand.setScope(scope);
+        mapReduceCommand.setVerbose(verbose);
+        mapReduceCommand.setOutputDB(outputDb);
 
         MapReduceOutput mapReduceOutput = dbCollection.mapReduce(mapReduceCommand);
-        return constructResponse(false, mapReduceOutput.getCommandResult());
+        return ApplicationUtils.constructResponse(false, mapReduceOutput.getCommandResult());
     }
 
     private static JSONObject executeRemove(DBCollection dbCollection, String queryStr) throws JSONException {
         DBObject queryObj = (DBObject) JSON.parse(queryStr);
         WriteResult result = dbCollection.remove(queryObj);
-        return constructResponse(false, result.getLastError());
+        return ApplicationUtils.constructResponse(false, result.getLastError());
     }
 
     private static JSONObject executeUpdate(DBCollection dbCollection, String queryStr) throws JSONException, InvalidMongoCommandException {
@@ -288,34 +318,22 @@ public class QueryExecutor {
         }
         WriteResult updateResult = dbCollection.update(criteria, updateByValuesMap, upsert, multi);
         CommandResult commandResult = updateResult.getLastError();
-        return constructResponse(false, commandResult);
+        return ApplicationUtils.constructResponse(false, commandResult);
     }
 
     private static JSONObject executeStats(DBCollection dbCollection) throws JSONException {
         CommandResult stats = dbCollection.getStats();
-        return constructResponse(false, stats);
+        return ApplicationUtils.constructResponse(false, stats);
     }
 
     private static JSONObject executeStorageSize(DBCollection dbCollection) throws JSONException {
         Integer storageSize = (Integer) dbCollection.getStats().toMap().get("storageSize");
-        return constructResponse(false, new BasicDBObject("storageSize", storageSize));
+        return ApplicationUtils.constructResponse(false, new BasicDBObject("storageSize", storageSize));
     }
 
     private static JSONObject executeTotalIndexSize(DBCollection dbCollection) throws JSONException {
         Integer totalIndexSize = (Integer) dbCollection.getStats().toMap().get("totalIndexSize");
-        return constructResponse(false, new BasicDBObject("totalIndexSize", totalIndexSize));
+        return ApplicationUtils.constructResponse(false, new BasicDBObject("totalIndexSize", totalIndexSize));
     }
 
-    private static JSONObject constructResponse(boolean isEditable, long size, List docs) throws JSONException {
-        JSONObject result = new JSONObject();
-        result.put("documents", docs);
-        result.put("count", size);
-        result.put("editable", isEditable);
-        return result;
-    }
-
-    private static JSONObject constructResponse(boolean isEditable, DBObject... dbObject) throws JSONException {
-        List<DBObject> docs = Arrays.asList(dbObject);
-        return constructResponse(isEditable, docs.size(), docs);
-    }
 }
