@@ -81,7 +81,7 @@ Detailed documentation on mViewer features & usage can be found at http://imagin
 
  Using maven:-
 
-> $mvn clean -Prelease
+> $mvn -Prelease
 
   Using ant:-  
 
