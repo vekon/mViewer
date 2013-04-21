@@ -15,7 +15,7 @@
  */
 YUI({
     filter: 'raw'
-}).use("loading-panel", "alert-dialog", "utility", "submit-dialog", "yes-no-dialog", "io-base", "node", "node-menunav", "json-parse", "event-delegate", "node-event-simulate", "custom-datatable", "navigator", function(Y) {
+}).use("loading-panel", "alert-dialog", "utility", "submit-dialog", "yes-no-dialog", "io-base", "node", "node-menunav", "node-focusmanager", "json-parse", "event-delegate", "node-event-simulate", "custom-datatable", "navigator", function(Y) {
         // TODO: make loading panel module
         var dbDiv = Y.one('#dbNames ul.lists');
         dbDiv.delegate('click', handleMenuClickEvent, 'a.onclick');
@@ -133,9 +133,11 @@ YUI({
                     break;
                 case 3:
                     // Delete database
-                    dialog = MV.showYesNoDialog("Drop Database", "Are you sure you want to drop the Database?", sendDropDBRequest, function() {
-                        this.hide();
-                    });
+                    setTimeout(function() {
+                        dialog = MV.showYesNoDialog("Drop Database", "Are you sure you want to drop the Database?", sendDropDBRequest, function() {
+                            this.hide();
+                        });
+                    }, 250);
                     break;
                 case 4:
                     // show statistics
@@ -180,13 +182,13 @@ YUI({
                         Y.on("click", createDB, "#createDB");
                     }
                     var index, dbNames = "";
-                    var dbTemplate = '<li class="yui3-menuitem navigable" data-db-name="[0]" data-search_name="[3]"> \
+                    var dbTemplate = '<li class="yui3-menuitem yui3-menuitem-outer navigable" data-db-name="[0]" data-search_name="[3]"> \
                                 <span class="yui3-menu-label"> \
                                       <a id="[1]" data-db-name="[2]" href="javascript:void(0)" title="[4]" class="dbLabel navigableChild"><span class="wrap_listitem">[5]</span></a> \
                                       <a href="#[6]" class="yui3-menu-toggle navigableChild"></a>\
                                 </span>\
                                 <div id="[7]" class="yui3-menu menu-width">\
-                                    <div class="yui3-menu-content">\
+                                    <div class="yui3-menu-content yui3-menu-content-inner">\
                                         <ul>\
                                             <li class="yui3-menuitem">\
                                                 <a index="1" class="yui3-menuitem-content onclick">Add Collection</a>\
@@ -218,8 +220,26 @@ YUI({
                     dbDiv.set("innerHTML", dbNames);
                     var menu = Y.one("#dbNames");
                     menu.unplug(Y.Plugin.NodeMenuNav);
-                    menu.plug(Y.Plugin.NodeMenuNav, { autoSubmenuDisplay: false, mouseOutHideDelay: 0, _hasFocus: true });
+                    menu.plug(Y.Plugin.NodeMenuNav, { autoSubmenuDisplay: false, mouseOutHideDelay: 0});
                     menu.set("style.display", "block");
+                    var parentMenuItems = Y.all("#dbNames .yui3-menuitem-outer");
+                    parentMenuItems.each(function(parentMenuItem) {
+                        var contentNode = parentMenuItem.one(".yui3-menu-content-inner");
+                        contentNode.plug(Y.Plugin.NodeFocusManager, {
+                            descendants: "li",
+                            keys: { next: "down:40", // Down arrow
+                                previous: "down:38" }, // Up arrow
+                            focusClass: "yui3-menuitem-active"
+                        });
+                        Y.on("key", function(event) {
+                            event.target.one("a").simulate("click");
+                        }, contentNode, "down:13");
+
+                        Y.delegate("click", function(event) {
+                            contentNode.focusManager.focus(0);
+                        }, parentMenuItem, "a.yui3-menu-toggle");
+                    });
+
                     MV.hideLoadingPanel();
                     sm.publish(sm.events.dbListUpdated);
                 } else {
@@ -283,7 +303,7 @@ YUI({
             event.stopPropagation();
         }
 
-        function initializeAccordion(){
+        function initializeAccordion() {
             $('#dbBuffer').accordion({
                 header: "div.list-head",
                 heightStyle: "content",
