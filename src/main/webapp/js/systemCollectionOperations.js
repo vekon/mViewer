@@ -69,9 +69,9 @@ YUI({
                 var mainBody = MV.mainBody;
                 var mainBodyId = mainBody.get('id');
                 tabView.appendTo(mainBodyId);
-                mainBody.all("div.yui-navset li").each(function(item){
+                mainBody.all("div.yui-navset li").each(function(item) {
                     item.addClass('navigable');
-                    item.setAttribute('data-search_name',item.one('em').getContent());
+                    item.setAttribute('data-search_name', item.one('em').getContent());
                 });
                 var treebleData = MV.getTreebleDataForDocs(response);
                 var treeble = MV.getTreeble(treebleData, "document");
@@ -372,10 +372,12 @@ YUI({
                         MV.showSubmitDialog("addUserDialog", addUser, showError);
                         break;
                     case 2:
-                        // Drop All the users present in the database
-                        MV.showYesNoDialog("Drop Users", "Are you sure you want to drop all the users ?", dropUsers, function() {
-                            this.hide();
-                        });
+                        setTimeout(function() {
+                            // Drop All the users present in the database
+                            MV.showYesNoDialog("Drop Users", "Are you sure you want to drop all the users ?", dropUsers, function() {
+                                this.hide();
+                            });
+                        }, 250);
                         break;
 
                 }
@@ -390,9 +392,11 @@ YUI({
                         MV.showSubmitDialog("addIndexDialog", addIndex, showError);
                         break;
                     case 2:
-                        MV.showYesNoDialog("Drop Indexes", "Are you sure you want to drop Indexes on all the collections ?", dropAllIndexes, function() {
-                            this.hide();
-                        });
+                        setTimeout(function() {
+                            MV.showYesNoDialog("Drop Indexes", "Are you sure you want to drop Indexes on all the collections ?", dropAllIndexes, function() {
+                                this.hide();
+                            });
+                        }, 250);
                         break;
                 }
             }
@@ -504,7 +508,7 @@ YUI({
                 MV.showAlertMessage(responseResult, MV.infoIcon);
             } else {
                 var errorMsg = "Could not add Index: " + MV.getErrorMessage(jsonObject);
-                MV.showAlertMessage(errorMsg, MV.warnIcon,  MV.getErrorCode(jsonObject));
+                MV.showAlertMessage(errorMsg, MV.warnIcon, MV.getErrorCode(jsonObject));
                 Y.log(errorMsg, "error");
                 return false;
             }

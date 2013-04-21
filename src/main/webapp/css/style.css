@@ -34,12 +34,9 @@ input {
 /*Login Screen*/
 
 .spinner {
-    position:   fixed;
-    z-index:    1000;
-    background: rgba( 255, 255, 255, .8 )
-    url('/images/ajax-loader.gif')
-    50% 50%
-    no-repeat;
+    position: fixed;
+    z-index: 1000;
+    background: rgba(255, 255, 255, .8) url('/images/ajax-loader.gif') 50% 50% no-repeat;
     top: 0;
     left: 0;
     height: 100%;
@@ -211,7 +208,7 @@ ul.nav-link-top li a {
 }
 
 ul.nav-link-top li a.sel, ul.nav-link-top li a:hover, ul.lists li.simulatedHover, ul.nav-link-top li a.highlighted, ul.lists a.simulatedHover, ul.lists li.sel.simulatedHover,
-ul.lists li:hover, ul.lists li.sel:hover, .nav-link-home:hover {
+ul.lists li:hover, ul.lists li.sel:hover, .nav-link-home:hover, li.yui3-menuitem-active {
     text-decoration: none;
     background: rgb(208, 228, 247); /* Old browsers */
     background: -moz-linear-gradient(top, rgba(208, 228, 247, 1) 0%, rgba(115, 177, 231, 1) 24%, rgba(10, 119, 213, 1) 50%, rgba(83, 159, 225, 1) 79%, rgba(135, 188, 234, 1) 100%); /* FF3.6+ */
@@ -237,7 +234,7 @@ ul.lists li:hover, ul.lists li.sel:hover, .nav-link-home:hover {
     text-decoration-color: #007700;
 }
 
-ul.lists li:hover span.yui3-menu-label-active *, ul.lists li.yui3-menuitem-active:hover *,  ul.lists li.simulatedHover.highlighted * {
+ul.lists li:hover span.yui3-menu-label-active *, ul.lists li.yui3-menuitem-active:hover *, ul.lists li.simulatedHover.highlighted * {
     color: #fff !important;
     text-decoration: none !important;
 }
@@ -251,13 +248,27 @@ ul.lists li {
     line-height: 28px;
     border-radius: 3px;
     margin: 2px 0 0 2px;
-    padding-right: 10px;
     padding-left: 10px;
     border: none !important;
 }
 
+ul.lists li .yui3-menu-label, div.yui3-menu-content-inner .yui3-menuitem-content {
+    display: inline-block !important;
+    position: relative !important;
+    float: right;
+    width: 90% !important;
+}
+
+ul.lists li .yui3-menu-label a {
+    cursor: pointer !important;
+}
+
 ul.lists li:hover .yui3-menu-toggle, ul.lists li.simulatedHover.highlighted .yui3-menu-toggle {
     opacity: 1 !important;
+}
+
+.yui3-menuitem-content {
+    display: inline-block !important;
 }
 
 .yui3-skin-sam .yui3-splitbuttonnav .yui3-menu-label-active {
@@ -268,9 +279,9 @@ ul.lists li:hover .yui3-menu-toggle, ul.lists li.simulatedHover.highlighted .yui
     display: inline-block !important;
     opacity: 0.5;
     height: 20px !important;
-    width: 20px !important;
+    width: 10px !important;
     position: relative;
-    right: -20px;
+    right: -5px;
     border-right: 10px solid transparent !important;
     background: url("../images/operations.png") no-repeat !important;
     margin-top: 4px;
@@ -285,36 +296,8 @@ ul.lists li:hover .yui3-menu-toggle, ul.lists li.simulatedHover.highlighted .yui
     padding: 0 !important;
 }
 
-ul.lists li .yui3-menu-label {
-    display: inline-block !important;
-    position: relative !important;
-    float: right;
-    width: 90% !important;
-}
-
-ul.lists li .yui3-menu-label a {
-    width: 77% !important;
-    cursor: pointer !important;
-}
-
-.yui3-menuitem-content {
-    display: inline-block !important;
-}
-
-#dbNames .menu-width {
-    width: 165px;
-}
-
-#collNames .menu-width {
-    width: 155px;
-}
-
-#bucketNames .menu-width {
-    width: 120px;
-}
-
-#systemCollections .menu-width {
-    width: 130px;
+.menu-width {
+    width: 160px;
 }
 
 ul.lists li .op_icon {
@@ -364,7 +347,7 @@ ul.nav-link-right li label {
     width: 920px;
     border: 1px solid #B2D4D3;
     background: #fbfbfb;
-    top:90px;
+    top: 90px;
     position: relative;
 }
 
@@ -375,7 +358,7 @@ ul.nav-link-right li label {
     text-align: center;
     position: fixed;
     z-index: 2000;
-    top:60px;
+    top: 60px;
     width: inherit;
 }
 
@@ -709,7 +692,7 @@ table tr td {
 #paginator {
     float: right;
     margin-top: 5px;
-    z-index: 20;
+    z-index: 1;
     position: relative;
     margin-right: 32px;
 }
@@ -950,7 +933,7 @@ textarea .disabled {
     padding-top: 20px;
     color: lightgray;
     font-weight: bold;
-    float:left;
+    float: left;
 }
 
 *html .searchBox {

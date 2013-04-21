@@ -19,7 +19,7 @@
  */
 YUI({
     filter: 'raw'
-}).use("loading-panel", "alert-dialog", "query-executor", "utility", "submit-dialog", "yes-no-dialog", "io", "node", "node-menunav", "event-delegate", "node-event-simulate", "custom-datatable", function(Y) {
+}).use("loading-panel", "alert-dialog", "query-executor", "utility", "submit-dialog", "yes-no-dialog", "io", "node", "node-menunav", "node-focusmanager", "event-delegate", "node-event-simulate", "custom-datatable", function(Y) {
         var MV = YUI.com.imaginea.mongoV,
             sm = MV.StateManager,
             collDiv = Y.one("#collNames ul.lists"),
@@ -66,13 +66,13 @@ YUI({
                 var jsonObject = MV.toJSON(responseObject);
                 responseResult = MV.getResponseResult(jsonObject);
                 var collTemplate = '' +
-                    '<li class="yui3-menuitem navigable" data-collection-name="[0]" data-search_name="[3]" > \
+                    '<li class="yui3-menuitem yui3-menuitem-outer navigable" data-collection-name="[0]" data-search_name="[3]" > \
                          <span class="yui3-menu-label"> \
                              <a id="[1]" data-collection-name="[2]" title="[4]" href="javascript:void(0)" class="collectionLabel navigableChild"><span class="wrap_listitem">[5]</span></a> \
                              <a href="#[6]" class="yui3-menu-toggle navigableChild"></a>\
                          </span>\
                          <div id="[7]" class="yui3-menu menu-width">\
-                             <div class="yui3-menu-content">\
+                             <div class="yui3-menu-content yui3-menu-content-inner">\
                                  <ul>\
                                      <li class="yui3-menuitem">\
                                          <a index="1" class="yui3-menuitem-content onclick">Add Document</a>\
@@ -91,13 +91,13 @@ YUI({
                          </div>\
                          </li>';
                 var bucketTemplate = '' +
-                    '<li class="yui3-menuitem navigable" data-bucket-name="[0]" data-search_name="[3]"> \
+                    '<li class="yui3-menuitem yui3-menuitem-outer navigable" data-bucket-name="[0]" data-search_name="[3]"> \
                          <span class="yui3-menu-label"> \
                              <a id="[1]" data-bucket-name="[2]" title="[4]" href="javascript:void(0)" class="collectionLabel navigableChild"><span class="wrap_listitem">[5]</span></a> \
                              <a href="#[6]" class="yui3-menu-toggle navigableChild"></a>\
                          </span>\
                          <div id="[7]" class="yui3-menu menu-width">\
-                             <div class="yui3-menu-content">\
+                             <div class="yui3-menu-content yui3-menu-content-inner">\
                                  <ul>\
                                      <li class="yui3-menuitem">\
                                          <a index="1" class="yui3-menuitem-content onclick">Add File(s)</a>\
@@ -113,13 +113,13 @@ YUI({
                          </div>\
                          </li>';
                 var usersTemplate = '' +
-                    '<li class="yui3-menuitem navigable" data-collection-name="[0]" data-search_name="[3]"> \
+                    '<li class="yui3-menuitem yui3-menuitem-outer navigable" data-collection-name="[0]" data-search_name="[3]"> \
                     <span class="yui3-menu-label"> \
                         <a id="[1]" data-collection-name="[2]" title="[4]" href="javascript:void(0)" class="collectionLabel navigableChild"><span class="wrap_listitem">[5]</span></a> \
                         <a href="#[6]" class="yui3-menu-toggle navigableChild"></a>\
                     </span>\
                     <div id="[7]" class="yui3-menu menu-width">\
-                        <div class="yui3-menu-content">\
+                        <div class="yui3-menu-content yui3-menu-content-inner">\
                             <ul>\
                                 <li class="yui3-menuitem">\
                                     <a index="1" class="yui3-menuitem-content onclick">Add User</a>\
@@ -132,13 +132,13 @@ YUI({
                     </div>\
                     </li>';
                 var indexesTemplate = '' +
-                    '<li class="yui3-menuitem navigable" data-collection-name="[0]" data-search_name="[3]" > \
+                    '<li class="yui3-menuitem yui3-menuitem-outer navigable" data-collection-name="[0]" data-search_name="[3]" > \
                     <span class="yui3-menu-label"> \
                         <a id="[1]" data-collection-name="[2]" title="[4]" href="javascript:void(0)" class="collectionLabel navigableChild"><span class="wrap_listitem">[5]</span></a> \
                         <a href="#[6]" class="yui3-menu-toggle navigableChild"></a>\
                     </span>\
                     <div id="[7]" class="yui3-menu menu-width">\
-                        <div class="yui3-menu-content">\
+                        <div class="yui3-menu-content yui3-menu-content-inner">\
                             <ul>\
                                 <li class="yui3-menuitem">\
                                     <a index="1" class="yui3-menuitem-content onclick">Add Index</a>\
@@ -188,12 +188,28 @@ YUI({
                     gridFSDiv.set("innerHTML", gridFSBuckets);
                     systemCollDiv.set("innerHTML", systemCollections);
 
-                    var menu1 = Y.one("#collNames");
-                    menu1.plug(Y.Plugin.NodeMenuNav, { autoSubmenuDisplay: false, mouseOutHideDelay: 0 });
-                    var menu2 = Y.one("#bucketNames");
-                    menu2.plug(Y.Plugin.NodeMenuNav, { autoSubmenuDisplay: false, mouseOutHideDelay: 0 });
-                    var menu3 = Y.one("#systemCollections");
-                    menu3.plug(Y.Plugin.NodeMenuNav, { autoSubmenuDisplay: false, mouseOutHideDelay: 0 });
+                    var menus = Y.all("#collNames, #bucketNames, #systemCollections");
+                    menus.each(function(menu) {
+                        menu.plug(Y.Plugin.NodeMenuNav, { autoSubmenuDisplay: false, mouseOutHideDelay: 0 });
+                    });
+                    var parentMenuItems = Y.all("#dbOperations .yui3-menuitem-outer");
+                    parentMenuItems.each(function(parentMenuItem) {
+                        var contentNode = parentMenuItem.one(".yui3-menu-content-inner");
+                        contentNode.plug(Y.Plugin.NodeFocusManager, {
+                            descendants: "li",
+                            keys: { next: "down:40", // Down arrow
+                                previous: "down:38" }, // Up arrow
+                            focusClass: "yui3-menuitem-active"
+                        });
+                        Y.on("key", function(event) {
+                            event.target.one("a").simulate("click");
+                        }, contentNode, "down:13");
+
+                        Y.delegate("click", function(event) {
+                            contentNode.focusManager.focus(0);
+                        }, parentMenuItem, "a.yui3-menu-toggle");
+                    });
+
                     sm.publish(sm.events.collectionListUpdated);
                     MV.hideLoadingPanel();
                 } else {
@@ -229,9 +245,11 @@ YUI({
                     break;
                 case 2:
                     // Drop Collection
-                    MV.showYesNoDialog("Drop Collection", "Are you sure you want to drop the Collection - " + MV.appInfo.currentColl + "?", dropCollection, function() {
-                        this.hide();
-                    });
+                    setTimeout(function() {
+                        MV.showYesNoDialog("Drop Collection", "Are you sure you want to drop the Collection - " + MV.appInfo.currentColl + "?", dropCollection, function() {
+                            this.hide();
+                        });
+                    }, 250);
                     break;
                 case 3:
                     // Update collection
@@ -278,6 +296,7 @@ YUI({
          * @param args the arguments containing information about which menu item was clicked
          */
         function handleBucketMenuClickEvent(event) {
+            event.stopPropagation();
             sm.publish(sm.events.actionTriggered);
             var label = $(event.currentTarget._node).closest("ul").closest("li")[0].attributes["data-bucket-name"].value;
             var index = parseInt(event.currentTarget._node.attributes["index"].value);

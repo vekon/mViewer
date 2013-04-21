@@ -238,6 +238,7 @@ YUI.add('navigator', function(Y) {
                     if (activeSibling) {
                         if (activeSibling.hasClass('yui3-menu-toggle')) {
                             activeSibling.simulate('mousedown');
+                            activeSibling.simulate('click');
                         } else {
                             activeSibling.simulate('click');
                             // TODO Instead of checking for anchor tag, we need to have a better way to decide
@@ -344,7 +345,6 @@ YUI.add('navigator', function(Y) {
             this.keyListeners.upKeyListener.enable();
 
             this.keyListeners.ctrlLeftKeyListener = new YAHOO.util.KeyListener(document, {
-                ctrl: true,
                 keys: ARROW_KEYS.LEFT
             }, {
                 fn: function() {
@@ -356,7 +356,6 @@ YUI.add('navigator', function(Y) {
             this.keyListeners.ctrlLeftKeyListener.enable();
 
             this.keyListeners.ctrlRightKeyListener = new YAHOO.util.KeyListener(document, {
-                ctrl: true,
                 keys: ARROW_KEYS.RIGHT
             }, {
                 fn: function() {
