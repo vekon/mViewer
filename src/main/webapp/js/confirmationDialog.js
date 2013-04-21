@@ -34,12 +34,12 @@ YUI.add('yes-no-dialog', function(Y) {
         var buttons = [
             {
                 text: "Yes",
-                handler: handleYes,
-                isDefault: true
+                handler: handleYes
             },
             {
                 text: "No",
-                handler: handleNo
+                handler: handleNo,
+                isDefault: true
             }
         ];
         yesNoDialog.setHeader(header);
@@ -49,7 +49,7 @@ YUI.add('yes-no-dialog', function(Y) {
     };
     var sm = MV.StateManager;
     var hideConfirmationDialog = function() {
-        if(yesNoDialog) {
+        if (yesNoDialog) {
             yesNoDialog.hide();
         }
     };
