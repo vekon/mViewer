@@ -83,7 +83,7 @@ public class QueryExecutor {
     }
 
     private static JSONObject executeAggregate(DBCollection dbCollection, String queryStr) throws DatabaseException, JSONException {
-        DBObject queryObj = (DBObject) JSON.parse("[" + queryStr + "]");
+        DBObject queryObj = (DBObject) JSON.parseAsArr(queryStr);
         if (queryObj instanceof List) {
             List<DBObject> listOfAggregates = (List) queryObj;
             int size = listOfAggregates.size();
@@ -105,7 +105,7 @@ public class QueryExecutor {
     }
 
     private static JSONObject executeDistinct(DBCollection dbCollection, String queryStr) throws JSONException {
-        DBObject queryObj = (DBObject) JSON.parse("[" + queryStr + "]");
+        DBObject queryObj = (DBObject) JSON.parseAsArr(queryStr);
         List distinctValuesList = null;
         if (queryObj.get("1") == null) {
             distinctValuesList = dbCollection.distinct((String) queryObj.get("0"));
@@ -137,7 +137,7 @@ public class QueryExecutor {
     }
 
     private static JSONObject executeEnsureIndex(DBCollection dbCollection, String queryStr) throws JSONException, DatabaseException {
-        DBObject queryObj = (DBObject) JSON.parse("[" + queryStr + "]");
+        DBObject queryObj = (DBObject) JSON.parseAsArr(queryStr);
         DBObject keys = (DBObject) queryObj.get("0");
         if (keys == null) {
             throw new DatabaseException(ErrorCodes.KEYS_EMPTY, "Index Keys are null");
@@ -155,7 +155,7 @@ public class QueryExecutor {
     }
 
     private static JSONObject executeFindOne(DBCollection dbCollection, String queryStr) throws JSONException {
-        DBObject queryObj = (DBObject) JSON.parse("[" + queryStr + "]");
+        DBObject queryObj = (DBObject) JSON.parseAsArr(queryStr);
         DBObject matchedRecord = dbCollection.findOne((DBObject) queryObj.get("0"), (DBObject) queryObj.get("1"));
         return ApplicationUtils.constructResponse(true, matchedRecord);
     }
@@ -227,7 +227,7 @@ public class QueryExecutor {
     }
 
     private static JSONObject executeMapReduce(DBCollection dbCollection, String queryString) throws JSONException, InvalidMongoCommandException {
-        DBObject queryObj = (DBObject) JSON.parse("[" + queryString + "]");
+        DBObject queryObj = (DBObject) JSON.parseAsArr(queryString);
 
         String map = (String) queryObj.get("0");
         String reduce = (String) queryObj.get("1");

@@ -1,10 +1,13 @@
 package com.imaginea.mongodb.utils;
 
+import com.imaginea.mongodb.exceptions.ErrorCodes;
+import com.imaginea.mongodb.exceptions.InvalidMongoCommandException;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSONCallback;
 import com.mongodb.util.JSONParseException;
 import org.bson.BSONCallback;
 
+import java.util.Objects;
 import java.util.Stack;
 
 /**
@@ -26,6 +29,20 @@ public class JSON extends com.mongodb.util.JSON {
 
     /**
      * Parses a JSON string representing a JSON value
+     * NOTE:parse the JSON String as array if not already array
+     *
+     * @param s
+     * @return
+     */
+    public static Object parseAsArr(String s){
+        if(!startChar(s,'[')){
+            s="["+s+"]";
+        }
+        return parse(s,null);
+    }
+
+    /**
+     * Parses a JSON string representing a JSON value
      *
      * @param s the string to parse
      * @return the object
@@ -37,6 +54,17 @@ public class JSON extends com.mongodb.util.JSON {
 
         JSONParser p = new JSONParser(s, c);
         return p.parse();
+    }
+
+    public static boolean startChar(String s,char ch){
+        int i=0;
+        while(i<s.length() && Character.isWhitespace(s.charAt(i))){
+            i++;
+        }
+        if(s.charAt(i)!=ch){
+            return false;
+        }
+        return true;
     }
 }
 
@@ -152,6 +180,9 @@ class JSONParser {
             case '\"':
                 value = parseString(true);
                 break;
+            case '/':
+                value=parseRegexPatternObj(name);
+                break;
             // number
             case '0':
             case '1':
@@ -223,6 +254,140 @@ class JSONParser {
         read('}');
 
         return _callback.objectDone();
+    }
+
+    /**
+     * if the 'regex pattern' found is not value of $regex key then,
+     *  create object with keys $regex and $option for 'regex patterns'(/<regex pattern>/) passed
+     *
+     * if the regex pattern is with $regex key then
+     *  simply treat 'regex pattern' as string value of $regex key
+     * @param name
+     * @return
+     * @throws com.mongodb.util.JSONParseException
+     *      if invalid JSON is found
+     */
+    protected Object parseRegexPatternObj(String name) {
+        if(!name.equals("$regex")){ //if the regex pattern is found inside $regex key simply treat it as string
+            if (name != null) {
+                _callback.objectStart(name);
+            } else{
+                _callback.objectStart();
+            }
+        }
+
+        StringBuilder buf=new StringBuilder();
+        read('/');
+        int start=pos;
+        char current;
+        while(pos<s.length()){
+            current=s.charAt(pos);
+            if(current=='/'){
+                break;
+            }
+            if(current=='\\'){
+                pos++;
+
+                char x=get();
+                char special=0;
+                switch(x){
+                    case 'u': { // decode unicode
+                        buf.append(s.substring(start, pos - 1));
+                        pos++;
+                        int tempPos = pos;
+
+                        readHex();
+                        readHex();
+                        readHex();
+                        readHex();
+
+                        int codePoint = Integer.parseInt(s.substring(tempPos, tempPos + 4), 16);
+                        buf.append((char) codePoint);
+
+                        start = pos;
+                        continue;
+                    }
+                    case 'n':
+                        special = '\n';
+                        break;
+                    case 'r':
+                        special = '\r';
+                        break;
+                    case 't':
+                        special = '\t';
+                        break;
+                    case 'b':
+                        special = '\b';
+                        break;
+                    case '"':
+                        special = '\"';
+                        break;
+                    case '\\':
+                        special = '\\';
+                        break;
+                }
+                buf.append(s.substring(start, pos - 1));
+                if (special != 0) {
+                    pos++;
+                    buf.append(special);
+                }
+                start = pos;
+                continue;
+            }
+            pos++;
+        }
+
+        buf.append(s.substring(start, pos));
+
+        String key="$regex";
+        String value=buf.toString();
+
+        //if the regex pattern is found inside $regex key simply treat it as string
+        if(!name.equals("$regex")){
+            doCallback(key, value);
+        }
+
+        read('/');
+
+        //read options
+        start=pos;
+        buf=new StringBuilder();
+        outer:
+        while(pos<s.length()){
+            char ch=s.charAt(pos);
+            switch(ch){
+                case 'i':
+                case 'm':
+                    pos++;
+                    break;
+                case ',':
+                case '}':
+                    break outer;
+                default:
+                    break outer;
+            }
+        }
+        buf.append(s.substring(start, pos));
+        char x=get();
+        if(x!=','
+                && x!='}'
+                    && x!=']'){
+            throw new JSONParseException(s, pos);
+        }
+
+        if(!name.equals("$regex")){
+            if(buf.toString().length()>0){
+                key="$options";
+                value=buf.toString();
+                doCallback(key, value);
+            }
+            return _callback.objectDone();
+        }else{
+            if(buf.toString().length()>0 ){ //'options' with 'regex pattern' syntax is not supported when 'regex pattern' syntax is used as value to $regex key
+                throw new JSONParseException(s, pos);
+            }
+            return value;
+        }
     }
 
     protected void doCallback(String name, Object value) {
