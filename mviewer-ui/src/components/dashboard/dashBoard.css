@@ -1,0 +1,72 @@
+/*Main Container*/
+.mainContainer {
+    width: 80%;
+    margin: 0 auto;
+    background: #fff;
+    height: 100%;
+}
+
+/*Main Navigation*/
+.mainNav {
+/*    float: right;*/
+    list-style: none;
+    margin-top: 5%;
+    background: #f2f2f2;
+}
+
+.mainNav li {
+    display: inline-block;
+    margin-left: 40px;
+    
+}
+
+.mainNav li a:link,
+.mainNav li a:visited {
+    padding: 5px 0;
+    color : #212121;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 90%;
+    border-bottom: 2px solid transparent;
+    transition: border-bottom 0.2s;
+    
+}
+
+.mainNav li a:hover,
+.mainNav li a:active {
+    border-bottom: 2px solid #3679f8;
+}
+
+/*Logo*/
+
+.logo{
+    height: auto;
+    width: auto;
+    float: left;
+    margin-top: 5%;
+    text-decoration: none;
+    font-size: 120%;
+}
+
+
+/*-------Clear Floats-------*/
+.clearfix { zoom : 1}
+.clearfix:after {
+    content: '.';
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+
+/*Header*/
+
+header {
+    background: #f2f2f2;
+}
+
+.banner {
+    background: #61b2f7 !important;
+    padding: 1% 2%;
+}

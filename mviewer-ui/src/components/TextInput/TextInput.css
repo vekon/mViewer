@@ -6,13 +6,7 @@
     border-color: #FF9696;
     color: #FF9696;
 }
-.formGroup.required input[type='text'],
-.formGroup.required input[type='email'],
-.formGroup.required input[type='number'],
-.formGroup.required input[type='password'],
-.formGroup.required select {
-    border-color: #FF9696;
-}
+
 .validationError {
     color: red;
     margin: 5px 0;

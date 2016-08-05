@@ -40,7 +40,7 @@ var config = {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract('css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'),
         include: APP_DIR
-        
+
       },
 
         ]
@@ -51,7 +51,7 @@ var config = {
         new CopyWebpackPlugin([
             { from: APP_DIR + '/vendors/css/grid.css', to: BUILD_DIR  + '/grid.css'}
             ])
-        
+
     ]
 
 };

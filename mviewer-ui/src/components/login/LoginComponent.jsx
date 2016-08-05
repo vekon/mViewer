@@ -6,7 +6,6 @@ import TextInput from '../TextInput/TextInputComponent.jsx';
 import $ from 'jquery';
 import { browserHistory, hashHistory } from 'react-router';
 
-
 class LoginComponent extends React.Component {
 
         constructor(props) {
@@ -15,9 +14,10 @@ class LoginComponent extends React.Component {
                 host: '127.0.0.1',
                 port: '27017',
                 username: '',
-                password: '',
+                 password: '',
                 canSubmit: false,
-                message: ''
+                message: '',
+                connectionId:''
             }
         }
 
@@ -46,7 +46,7 @@ class LoginComponent extends React.Component {
                 state[key] = e.target.value;
                 this.setState(state);
             }.bind(this);
-        }
+        }   
 
         componentDidMount() {
 
@@ -54,6 +54,13 @@ class LoginComponent extends React.Component {
             $(function() {
                 $('form').on('submit', function(e) {
                     e.preventDefault();
+//                    e.stopImmediatePropagation();
+                    var data = $("form").serialize().split("&");
+                    var obj={};
+                    for(var key in data)
+                      {
+                       obj[data[key].split("=")[0]] = data[key].split("=")[1];
+                      }
                     $.ajax({
                         type: "POST",
                         cache: false,
@@ -62,16 +69,19 @@ class LoginComponent extends React.Component {
                             'X-Requested-With': 'XMLHttpRequest'
                         },
                         crossDomain: false,
-                        url: 'http://localhost:8080/services/login',
-                        data: $(this).serialize(),
+//                        url: 'http://localhost:8080/services/login',
+//                        data: $(this).serialize(),
+                        url: 'http://172.16.55.42:8080/mViewer-0.9.2/services/login/',
+                        data : obj,
                         success: function(data) {
                             if (data.response.result) {
                                 console.log(data.response.result);
                                 that.setState({
-                                    message: data.response.result
+                                    message: data.response.result['success']
                                 });
+                                
+                                console.log(that.state.message + '-------');
                                 hashHistory.push('/dashboard');
-                                console.log(window.location.search.substring(1));
                             }
 
                             if (data.response.error) {
@@ -79,13 +89,14 @@ class LoginComponent extends React.Component {
                                 that.setState({
                                     message: data.response.error.message
                                 });
+                                
+//                                console.log(that.state.message + '-------');
                             }
+                                             
 
                         },
 
                         error: function(jqXHR, exception) {
-                            console.log(jqXHR);
-                            console.log('error');
                             that.setState({
                                 message: 'Unexpected Error Occurred'
                             })
@@ -100,16 +111,16 @@ class LoginComponent extends React.Component {
 
 
         render() {
-          
-    
-    var rowClass = 'row inputLabel';  
+
+
+    var rowClass = 'row inputLabel';
     return (
 <section className={styles.loginForm}>
     <div className="row">
         <h2> mViewer</h2>
     </div>
     <div className='row'>
-        <Form className={styles.innerForm} method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()}>
+        <Form className={styles.innerForm} method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
 
             <div className={ styles.formContainer}>
                 <div className='row'>
