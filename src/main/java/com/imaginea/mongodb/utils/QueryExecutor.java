@@ -147,9 +147,9 @@ public class QueryExecutor {
         }
         DBObject options = (DBObject) queryObj.get("1");
         if (options != null) {
-            dbCollection.ensureIndex(keys, options);
+            dbCollection.createIndex(keys, options);
         } else {
-            dbCollection.ensureIndex(keys);
+            dbCollection.createIndex(keys);
         }
         return executeGetIndexes(dbCollection);
     }
@@ -201,14 +201,21 @@ public class QueryExecutor {
         DBObject queryObj = (DBObject) JSON.parse(queryStr);
         WriteResult writeResult;
         if (queryObj instanceof List) {
+        	
             writeResult = dbCollection.insert((List<DBObject>) queryObj);
         } else {
             writeResult = dbCollection.insert(queryObj);
         }
-        if (writeResult.getLastError().get("err") == null) {
-            return ApplicationUtils.constructResponse(false, queryObj);
-        }
-        return ApplicationUtils.constructResponse(false, writeResult.getLastError());
+        
+
+        //need to change
+        
+//        if (writeResult.getLastError().get("err") == null) {
+//            return ApplicationUtils.constructResponse(false, queryObj);
+//        }
+//        
+//        return ApplicationUtils.constructResponse(false, writeResult.getLastError());
+        return ApplicationUtils.constructResponse(false, queryObj);
     }
 
     private static JSONObject executeGroup(DBCollection dbCollection, String queryString) throws JSONException {
@@ -291,13 +298,23 @@ public class QueryExecutor {
         mapReduceCommand.setOutputDB(outputDb);
 
         MapReduceOutput mapReduceOutput = dbCollection.mapReduce(mapReduceCommand);
-        return ApplicationUtils.constructResponse(false, mapReduceOutput.getCommandResult());
+        
+        //need to change
+        
+//        return ApplicationUtils.constructResponse(false, mapReduceOutput.getCommandResult());
+        return ApplicationUtils.constructResponse(false, queryObj);
     }
 
     private static JSONObject executeRemove(DBCollection dbCollection, String queryStr) throws JSONException {
         DBObject queryObj = (DBObject) JSON.parse(queryStr);
         WriteResult result = dbCollection.remove(queryObj);
-        return ApplicationUtils.constructResponse(false, result.getLastError());
+        
+        //need to change
+        
+        //return ApplicationUtils.constructResponse(false, result.getLastError());
+        
+        return ApplicationUtils.constructResponse(false, queryObj);
+        
     }
 
     private static JSONObject executeUpdate(DBCollection dbCollection, String queryStr) throws JSONException, InvalidMongoCommandException {
@@ -318,8 +335,12 @@ public class QueryExecutor {
             }
         }
         WriteResult updateResult = dbCollection.update(criteria, updateByValuesMap, upsert, multi);
-        CommandResult commandResult = updateResult.getLastError();
-        return ApplicationUtils.constructResponse(false, commandResult);
+        
+        //need to change
+        
+//        CommandResult commandResult = updateResult.getLastError();
+//        return ApplicationUtils.constructResponse(false, commandResult);
+        return ApplicationUtils.constructResponse(false, queryObj);
     }
 
     private static JSONObject executeStats(DBCollection dbCollection) throws JSONException {

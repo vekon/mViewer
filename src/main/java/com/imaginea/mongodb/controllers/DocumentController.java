@@ -26,6 +26,9 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
+
+import io.swagger.annotations.Api;
+
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +57,7 @@ import java.util.Set;
  * @since 6 July 2011
  */
 @Path("/{dbName}/{collectionName}/document")
+@Api(value="/{dbName}/{collectionName}/document" , description = "Mongo Collection Documents Operations")
 public class DocumentController extends BaseController {
     private final static Logger logger = Logger.getLogger(DocumentController.class);
 

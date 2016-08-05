@@ -15,15 +15,21 @@
  */
 package com.imaginea.mongodb.services;
 
-import com.imaginea.mongodb.exceptions.*;
-import com.sun.jersey.multipart.FormDataBodyPart;
+import java.io.File;
+import java.io.InputStream;
+import java.util.Set;
+
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.Set;
+import com.imaginea.mongodb.exceptions.ApplicationException;
+import com.imaginea.mongodb.exceptions.CollectionException;
+import com.imaginea.mongodb.exceptions.DatabaseException;
+import com.imaginea.mongodb.exceptions.DocumentException;
+import com.imaginea.mongodb.exceptions.GridFSException;
+import com.imaginea.mongodb.exceptions.ValidationException;
 
 /**
  * Declares service methods for performing CRUD operations on files stored in GridFS.

@@ -80,7 +80,7 @@ public class UserLoginTest extends TestingTemplate {
                 Integer port = (Integer) (mongoInstance.getAddress().getPort());
                 HttpServletRequest request = new MockHttpServletRequest();
                 // Call Service for login
-                String response = loginController.authenticateUser(testUsername, testPassword, host, port.toString(), null, request);
+                String response = null;//loginController.authenticateUser(testUsername, testPassword, host, port.toString(), null, request);
                 if (response.contains("Login Success")) {
                     BasicDBObject responseObject = ((BasicDBObject) JSON.parse(response));
                     String connectionId = (String) ((BasicDBObject) responseObject.get("response")).get("connectionId");

@@ -1,13 +1,13 @@
 package com.imaginea.mongodb.domain;
 
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 
 public class MongoConnectionDetails {
     private ConnectionDetails connectionDetails;
-    private Mongo mongo;
+    private MongoClient mongo;
     private String connectionId;
 
-    public MongoConnectionDetails(ConnectionDetails connectionDetails, Mongo mongo, String connectionId) {
+    public MongoConnectionDetails(ConnectionDetails connectionDetails, MongoClient mongo, String connectionId) {
         this.connectionDetails = connectionDetails;
         this.mongo = mongo;
         this.connectionId = connectionId;
@@ -17,7 +17,7 @@ public class MongoConnectionDetails {
         return connectionDetails;
     }
 
-    public Mongo getMongo() {
+    public MongoClient getMongo() {
         return mongo;
     }
 

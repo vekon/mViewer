@@ -17,12 +17,16 @@ package com.imaginea.mongodb.controllers;
 
 import com.imaginea.mongodb.domain.ConnectionDetails;
 import com.imaginea.mongodb.domain.MongoConnectionDetails;
+import com.imaginea.mongodb.domain.UserLoginData;
 import com.imaginea.mongodb.exceptions.ApplicationException;
 import com.imaginea.mongodb.exceptions.ErrorCodes;
 import com.imaginea.mongodb.exceptions.MongoConnectionException;
 import com.imaginea.mongodb.services.impl.DatabaseServiceImpl;
 import com.mongodb.MongoException;
 import com.mongodb.MongoInternalException;
+
+import io.swagger.annotations.Api;
+
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,10 +54,63 @@ import java.util.Set;
  */
 
 @Path("/login")
+@Api(value="/login" , description="login base uri")
 public class LoginController extends BaseController {
 
     private static Logger logger = Logger.getLogger(LoginController.class);
+    
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String authenticateUser(final UserLoginData userLoginData , @Context final HttpServletRequest request) {
 
+    	System.out.println("Request comes as JSON object");
+        String response = ErrorTemplate.execute(logger, new ResponseCallback() {
+            public Object execute() throws Exception {
+                if ("".equals(userLoginData.getHost()) || "".equals(userLoginData.getPort())) {
+                    ApplicationException e = new ApplicationException(ErrorCodes.MISSING_LOGIN_FIELDS, "Missing Login Fields");
+                    return formErrorResponse(logger, e);
+                }
+                HttpSession session = request.getSession();
+                Set<String> existingConnectionIdsInSession = (Set<String>) session.getAttribute("existingConnectionIdsInSession");
+
+                int port = 0;
+                try {
+                    port = Integer.parseInt(userLoginData.getPort());
+                } catch (NumberFormatException e) {
+                    throw new MongoConnectionException(ErrorCodes.INVALID_PORT, "You have entered an invalid port number !");
+                }
+                ConnectionDetails connectionDetails = new ConnectionDetails(userLoginData.getHost(), port, userLoginData.getUserName(), userLoginData.getPassword(), userLoginData.getDatabases());
+                String connectionId = null;
+                try {
+                    connectionId = authService.authenticate(connectionDetails, existingConnectionIdsInSession);
+                } catch (IllegalArgumentException m) {
+                    throw new MongoConnectionException(ErrorCodes.INVALID_ARGUMENT, "You have entered an invalid data !");
+                } catch (MongoInternalException m) {
+                    // Throws when cannot connect to localhost.com
+                    throw new MongoConnectionException(ErrorCodes.HOST_UNKNOWN, m.getMessage());
+                } catch (MongoException m) {
+                    throw new MongoConnectionException(ErrorCodes.MONGO_CONNECTION_EXCEPTION, "Connection Failed. Check if MongoDB is running at the given host and port.");
+                }
+                if (existingConnectionIdsInSession == null) {
+                    existingConnectionIdsInSession = new HashSet<String>();
+                    session.setAttribute("existingConnectionIdsInSession", existingConnectionIdsInSession);
+                }
+                existingConnectionIdsInSession.add(connectionId);
+                JSONObject response = new JSONObject();
+                try {
+                    response.put("success", true);
+                    response.put("connectionId", connectionId);
+                } catch (JSONException e) {
+                    logger.error(e);
+                }
+                return response;
+            }
+        }, true);
+        return response;
+    }
+
+    
     /**
      * Authenticates User by verifying Mongo config details against admin
      * database and authenticating user to that Db. A facility for guest login
@@ -72,7 +129,10 @@ public class LoginController extends BaseController {
     @Produces(MediaType.APPLICATION_JSON)
     public String authenticateUser(final @FormParam("username") String user, @FormParam("password") final String password, final @FormParam("host") String host, @FormParam("port") final String mongoPort,
                                    @FormParam("databases") final String databases, @Context final HttpServletRequest request) {
+    	
 
+    	System.out.println("Request From Form");
+    	
         String response = ErrorTemplate.execute(logger, new ResponseCallback() {
             public Object execute() throws Exception {
                 if ("".equals(host) || "".equals(mongoPort)) {
