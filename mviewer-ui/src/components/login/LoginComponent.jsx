@@ -46,7 +46,7 @@ class LoginComponent extends React.Component {
                 state[key] = e.target.value;
                 this.setState(state);
             }.bind(this);
-        }   
+        }
 
         componentDidMount() {
 
@@ -69,30 +69,25 @@ class LoginComponent extends React.Component {
                             'X-Requested-With': 'XMLHttpRequest'
                         },
                         crossDomain: false,
-//                        url: 'http://localhost:8080/services/login',
-//                        data: $(this).serialize(),
-                        url: 'http://172.16.55.42:8080/mViewer-0.9.2/services/login/',
-                        data : obj,
+                       url: 'http://localhost:8080/services/login',
+                        data: $(this).serialize(),
+                        //url: 'http://172.16.55.42:8080/mViewer-0.9.2/services/login/',
+                        //data : obj,
                         success: function(data) {
                             if (data.response.result) {
                                 console.log(data.response.result);
                                 that.setState({
                                     message: data.response.result['success']
                                 });
-                                
-                                console.log(that.state.message + '-------');
                                 hashHistory.push('/dashboard');
                             }
 
                             if (data.response.error) {
-                                console.log(data.response.error.message);
                                 that.setState({
                                     message: data.response.error.message
                                 });
-                                
-//                                console.log(that.state.message + '-------');
                             }
-                                             
+
 
                         },
 
