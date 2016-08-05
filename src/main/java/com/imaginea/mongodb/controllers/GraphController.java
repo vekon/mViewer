@@ -174,7 +174,7 @@ public class GraphController extends HttpServlet {
             lastNoOfInserts = (Integer) obj.get("insert");
             lastNoOfUpdates = (Integer) obj.get("update");
             lastNoOfDeletes = (Integer) obj.get("delete");
-
+            
             respObj.put("result", "Initiated");
         } catch (Exception e) {
             // Invalid User
@@ -188,3 +188,4 @@ public class GraphController extends HttpServlet {
         return respObj;
     }
 }
+	

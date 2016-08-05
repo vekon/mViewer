@@ -15,6 +15,25 @@
  */
 package com.imaginea.mongodb.controllers;
 
+import java.io.File;
+import java.io.InputStream;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.apache.log4j.Logger;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+
 import com.imaginea.mongodb.exceptions.ApplicationException;
 import com.imaginea.mongodb.exceptions.DocumentException;
 import com.imaginea.mongodb.exceptions.ErrorCodes;
@@ -22,17 +41,6 @@ import com.imaginea.mongodb.exceptions.InvalidMongoCommandException;
 import com.imaginea.mongodb.services.GridFSService;
 import com.imaginea.mongodb.services.impl.GridFSServiceImpl;
 import com.imaginea.mongodb.utils.ApplicationUtils;
-import com.sun.jersey.multipart.FormDataBodyPart;
-import com.sun.jersey.multipart.FormDataParam;
-import org.apache.log4j.Logger;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.File;
-import java.io.InputStream;
 
 /**
  * Defines handlers for performing CRUD operations on files stored in GridFS.
@@ -173,6 +181,7 @@ public class GridFSController extends BaseController {
                              @FormDataParam("files") final InputStream inputStream,
                              @QueryParam("connectionId") final String connectionId, @Context final HttpServletRequest request) {
 
+    	
         String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
             public Object execute() throws Exception {
                 GridFSService gridFSService = new GridFSServiceImpl(connectionId);

@@ -17,6 +17,8 @@ package com.imaginea.mongodb.controllers;
 
 import org.apache.log4j.Logger;
 
+import io.swagger.annotations.Api;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.GET;
@@ -38,6 +40,7 @@ import java.util.Set;
  */
 
 @Path("/disconnect")
+@Api(value="/disconnect" , description="Disconnected Mongo Connection/Session")
 public class LogoutController extends BaseController {
 
     private static final long serialVersionUID = 1L;
