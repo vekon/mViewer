@@ -41,8 +41,8 @@ class DashBoardComponent extends React.Component {
                <div className="row">
                    <a href= "#" className={dashStyles.logo}><span className={dashStyles.span1}>m</span><span className={dashStyles.span2}>Viewer</span><span className={dashStyles.span3}></span></a>
                    <ul className={dashStyles.mainNav + ' ' + dashStyles.clearfix} >
-                       <li><a href="#mongoGraphs"><span><i className={"fa fa-envira " + dashStyles.icon} aria-hidden="true"></i></span>Mongo Graph</a></li>
-                       <li><a href="#serverStatics"><span><i className={"fa fa-area-chart " + dashStyles.icon} aria-hidden="true"></i></span>Server Statistics</a></li>
+                       <li><a href="#mongoGraphs"><i className={"fa fa-envira " + dashStyles.icon} aria-hidden="true"></i><span>Mongo Graph</span></a></li>
+                       <li><a href="#serverStatics"><i className={"fa fa-area-chart " + dashStyles.icon} aria-hidden="true"></i><span>Server Statistics</span></a></li>
                    </ul>
                </div>
            </nav>
