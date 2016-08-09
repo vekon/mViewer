@@ -1,40 +1,54 @@
 /*Main Container*/
 .mainContainer {
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
     background: #fff;
-    height: 100%;
+    font-family: Arial !important;
 }
 
 /*Main Navigation*/
 .mainNav {
 /*    float: right;*/
     list-style: none;
-    margin-top: 5%;
-    background: #f2f2f2;
+    /*margin-top: 5%;*/
+    background: #070F30;
+    height: 55px;
+    padding: 0 5px;
 }
 
 .mainNav li {
     display: inline-block;
-    margin-left: 40px;
-    
+    margin-left: 1%;
+
+    padding-top: 1%;
 }
 
 .mainNav li a:link,
 .mainNav li a:visited {
-    padding: 5px 0;
-    color : #212121;
+    padding: 0 0 0 15px;
+    color : #969B9C;
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 90%;
+    font-size: 60%;
     border-bottom: 2px solid transparent;
-    transition: border-bottom 0.2s;
-    
+    transition: border-bottom 0.2s, color 0.2s;
+    font-weight: 500;
 }
+
+.mainNav li::before {
+  content: '|';
+  border: 0;
+  padding: 0;
+}
+
+.mainNav li a:hover {
+    color: #6f7576;
+}
+
 
 .mainNav li a:hover,
 .mainNav li a:active {
-    border-bottom: 2px solid #3679f8;
+    /*border-bottom: 2px solid #3679f8;*/
 }
 
 /*Logo*/
@@ -43,9 +57,37 @@
     height: auto;
     width: auto;
     float: left;
-    margin-top: 5%;
+    /*margin-top: 5%;*/
     text-decoration: none;
-    font-size: 120%;
+    padding-left: 2%;
+    margin-top: 5px;
+}
+
+
+.span1{
+  font-family: 'Arial' ;
+  color: #fff;
+  font-size: 30px;
+}
+
+.span2 {
+  font-family: 'Times';
+  color: #0CB9F2;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.span3 {
+  font-family: 'Helvetica';
+  font-size: 60%;
+  color: #D7DEE0;
+  font-weight: 600;
+}
+
+
+.icon {
+  padding-right: 2%;
+  display: inline-block;
 }
 
 

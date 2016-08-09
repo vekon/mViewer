@@ -1,0 +1,49 @@
+.sideContainer {
+  width: 70px;
+  background-color: #124252;
+  font-family: 'Arial' !important;
+  height: 100%;
+}
+
+
+.sideNav {
+
+}
+
+.icon {
+  color: #85adad;
+  display: block;
+  text-align: center;
+}
+
+.sideNav li div span{
+  font-size: 40%;
+  color: #85adad;
+  text-align: center;
+}
+
+.sideNav li div {
+  text-align: center;
+}
+
+.sideNav li a {
+  text-decoration: none;
+}
+
+.sideNav li
+{
+  padding: 15% 0;
+  border-bottom: 1px groove #85adad;
+  transition: background-color 0.2s;
+}
+
+.sideNav li:hover {
+  background-color: #0D313D;
+}
+
+
+/*.sideNav li::after {
+  content: "\2014\2014\2014\2014";
+  overflow-x: hidden;
+  width: 80%;
+}*/

@@ -53,8 +53,8 @@ class LoginComponent extends React.Component {
             var that = this;
             $(function() {
                 $('form').on('submit', function(e) {
-                    e.preventDefault();
-//                    e.stopImmediatePropagation();
+                     e.preventDefault();
+                    //  e.stopImmediatePropagation();
                     var data = $("form").serialize().split("&");
                     var obj={};
                     for(var key in data)
@@ -69,16 +69,20 @@ class LoginComponent extends React.Component {
                             'X-Requested-With': 'XMLHttpRequest'
                         },
                         crossDomain: false,
-                       url: 'http://localhost:8080/services/login',
-                        data: $(this).serialize(),
-                        //url: 'http://172.16.55.42:8080/mViewer-0.9.2/services/login/',
-                        //data : obj,
+                      //  url: 'http://localhost:8080/services/login',
+                      //   data: $(this).serialize(),
+                        url: 'http://172.16.55.42:8080/mViewer-0.9.2/services/login/',
+                        data : obj,
                         success: function(data) {
-                            if (data.response.result) {
-                                console.log(data.response.result);
+                            if (data.response.result.success===true) {
+                                console.log(data.response.result.success);
                                 that.setState({
                                     message: data.response.result['success']
+
                                 });
+                                //  console.log(data);
+                                 hashHistory.push({ pathname: '/dashboard', query: { host: that.state.host, port: that.state.port, username: that.state.username,
+                                                    password: that.state.password, connectionId: data.response.result.connectionId } });
                                 hashHistory.push('/dashboard');
                             }
 
