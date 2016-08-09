@@ -17,6 +17,11 @@
 
 package com.imaginea.mongodb.services.impl;
 
+import java.util.Map;
+import java.util.Set;
+
+import org.bson.Document;
+
 /**
  * Defines services for performing operations like create/drop on indexes and users which
  * are part of system name space system.users & system.indexes collections
@@ -31,19 +36,18 @@ import com.imaginea.mongodb.exceptions.DatabaseException;
 import com.imaginea.mongodb.exceptions.ErrorCodes;
 import com.imaginea.mongodb.services.AuthService;
 import com.imaginea.mongodb.services.SystemCollectionService;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
-
-import java.util.Set;
 
 
 public class SystemCollectionServiceImpl implements SystemCollectionService {
     /**
      * Mongo Instance to communicate with mongo
      */
-    private Mongo mongoInstance;
+    private MongoClient mongoInstance;
     private static final AuthService AUTH_SERVICE = AuthServiceImpl.getInstance();
 
 
@@ -123,7 +127,11 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
             throw new DatabaseException(ErrorCodes.USERNAME_IS_EMPTY, "Username is empty");
         }
         try {
-            mongoInstance.getDB(dbName).removeUser(username);
+            Map<String, Object> commandArguments = new BasicDBObject();
+            commandArguments.put("dropUser", username);
+            BasicDBObject command = new BasicDBObject(commandArguments);
+            mongoInstance.getDatabase(dbName).runCommand(command);
+            
         } catch (MongoException e) {
             throw new ApplicationException(ErrorCodes.USER_DELETION_EXCEPTION, e.getMessage());
         }
@@ -193,7 +201,8 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
             throw new DatabaseException(ErrorCodes.KEYS_EMPTY, "Index keys are Empty");
         }
         try {
-            mongoInstance.getDB(dbName).getCollection(collectionName).ensureIndex(keys);
+        	
+            mongoInstance.getDB(dbName).getCollection(collectionName).createIndex(keys);
         } catch (MongoException e) {
             throw new ApplicationException(ErrorCodes.INDEX_ADDITION_EXCEPTION, e.getMessage());
         }

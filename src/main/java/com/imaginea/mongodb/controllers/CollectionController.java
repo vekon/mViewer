@@ -21,6 +21,9 @@ import com.imaginea.mongodb.services.CollectionService;
 import com.imaginea.mongodb.services.impl.AuthServiceImpl;
 import com.imaginea.mongodb.services.impl.CollectionServiceImpl;
 import com.mongodb.Mongo;
+
+import io.swagger.annotations.Api;
+
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +49,7 @@ import java.util.Set;
  * @since 4 July 2011
  */
 @Path("/{dbName}/collection")
+@Api(value="/{dbName}/collection" , description="Mongo Database Collection Operations")
 public class CollectionController extends BaseController {
     private final static Logger logger = Logger.getLogger(CollectionController.class);
 

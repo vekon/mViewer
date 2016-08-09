@@ -20,6 +20,9 @@ import com.imaginea.mongodb.exceptions.InvalidHTTPRequestException;
 import com.imaginea.mongodb.exceptions.InvalidMongoCommandException;
 import com.imaginea.mongodb.services.DatabaseService;
 import com.imaginea.mongodb.services.impl.DatabaseServiceImpl;
+
+import io.swagger.annotations.Api;
+
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +46,7 @@ import javax.ws.rs.core.MediaType;
  * @since 2 July 2011
  */
 @Path("/db")
+@Api(value="/db" , description="Mongo Database Operations")
 public class DatabaseController extends BaseController {
     private final static Logger logger = Logger.getLogger(DatabaseController.class);
 

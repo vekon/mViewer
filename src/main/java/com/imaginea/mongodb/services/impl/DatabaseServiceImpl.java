@@ -16,24 +16,30 @@
 
 package com.imaginea.mongodb.services.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.imaginea.mongodb.domain.ConnectionDetails;
 import com.imaginea.mongodb.domain.MongoConnectionDetails;
-import com.imaginea.mongodb.exceptions.*;
+import com.imaginea.mongodb.exceptions.ApplicationException;
+import com.imaginea.mongodb.exceptions.DatabaseException;
+import com.imaginea.mongodb.exceptions.ErrorCodes;
+import com.imaginea.mongodb.exceptions.InvalidMongoCommandException;
+import com.imaginea.mongodb.exceptions.ValidationException;
 import com.imaginea.mongodb.services.AuthService;
 import com.imaginea.mongodb.services.DatabaseService;
 import com.imaginea.mongodb.utils.DatabaseQueryExecutor;
 import com.mongodb.CommandResult;
 import com.mongodb.DB;
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import com.mongodb.client.MongoCursor;
 
 /**
  * Defines services definitions for performing operations like create/drop on
@@ -48,7 +54,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     /**
      * Mongo Instance to communicate with mongo
      */
-    private Mongo mongoInstance;
+    private MongoClient mongoInstance;
     private ConnectionDetails connectionDetails;
 
     private static final AuthService AUTH_SERVICE = AuthServiceImpl.getInstance();
@@ -81,7 +87,12 @@ public class DatabaseServiceImpl implements DatabaseService {
             if (!connectionDetails.isAdminLogin()) {
                 return new ArrayList<String>(authenticatedDbNames);
             }
-            return mongoInstance.getDatabaseNames();
+            List<String> dbs = new ArrayList<String>();
+            MongoCursor<String> dbsCursor = mongoInstance.listDatabaseNames().iterator();
+            while(dbsCursor.hasNext()) {
+                dbs.add(dbsCursor.next());
+            }
+            return dbs;
         } catch (MongoException m) {
             throw new DatabaseException(ErrorCodes.GET_DB_LIST_EXCEPTION, m.getMessage());
         }
@@ -113,7 +124,7 @@ public class DatabaseServiceImpl implements DatabaseService {
                 throw new DatabaseException(ErrorCodes.DB_ALREADY_EXISTS, "DB with name '" + dbName + "' ALREADY EXISTS");
             }
 
-            mongoInstance.getDB(dbName).getCollectionNames();
+            mongoInstance.getDatabase(dbName).listCollectionNames();
             connectionDetails.addToAuthenticatedDbNames(dbName);
         } catch (MongoException e) {
 
@@ -148,6 +159,11 @@ public class DatabaseServiceImpl implements DatabaseService {
             }
 
             mongoInstance.dropDatabase(dbName);
+            
+            // newly added line
+            
+            getDbList().remove(dbName);
+            
         } catch (MongoException e) {
 
             throw new DatabaseException(ErrorCodes.DB_DELETION_EXCEPTION, e.getMessage());

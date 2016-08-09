@@ -85,7 +85,8 @@ public class TestingTemplate extends BaseController {
         try {
             Mongo mongo = new Mongo(getMongoHost(), getMongoPort());
             DB adminDB = mongo.getDB("admin");
-            adminDB.authenticate(getMongoUsername(), getMongoPassword().toCharArray());
+            //need to change
+            //adminDB.authenticate(getMongoUsername(), getMongoPassword().toCharArray());
             return mongo;
         } catch (Exception e) {
             logger.error("Couldn't create a test mongo instance", e);
@@ -94,7 +95,7 @@ public class TestingTemplate extends BaseController {
     }
 
     protected String loginAndGetConnectionId(HttpServletRequest request) {
-        String response = new LoginController().authenticateUser(getMongoUsername(), getMongoPassword(), getMongoHost(), String.valueOf(getMongoPort()), null, request);
+        String response = null;//new LoginController().authenticateUser(getMongoUsername(), getMongoPassword(), getMongoHost(), String.valueOf(getMongoPort()), null, request);
         BasicDBObject responseObject = (BasicDBObject) JSON.parse(response);
         return (String) ((BasicDBObject)((BasicDBObject) responseObject.get("response")).get("result")).get("connectionId");
     }

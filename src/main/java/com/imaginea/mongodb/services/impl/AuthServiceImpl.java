@@ -7,7 +7,9 @@ import com.imaginea.mongodb.exceptions.ErrorCodes;
 import com.imaginea.mongodb.services.AuthService;
 import com.mongodb.DB;
 import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
+import com.mongodb.client.MongoDatabase;
 
 import java.net.UnknownHostException;
 import java.util.*;
@@ -40,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
             }
         }
 
-        Mongo mongo = getMongoAndAuthenticate(connectionDetails);
+        MongoClient mongo = getMongoAndAuthenticate(connectionDetails);
         boolean authMode = checkAuthMode(connectionDetails);
         connectionDetails.setAuthMode(authMode);
 
@@ -65,27 +67,24 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    private Mongo getMongoAndAuthenticate(ConnectionDetails connectionDetails) throws ApplicationException {
-        Mongo mongo;
-        try {
-            mongo = new Mongo(connectionDetails.getHostIp(), connectionDetails.getHostPort());
-        } catch (UnknownHostException e) {
-            throw new ApplicationException(ErrorCodes.HOST_UNKNOWN, "Could not connect to mongo instance with the given host and port");
-        }
+    private MongoClient getMongoAndAuthenticate(ConnectionDetails connectionDetails) throws ApplicationException {
+        MongoClient mongo;
+        mongo = new MongoClient(connectionDetails.getHostIp(), connectionDetails.getHostPort());
         String dbNames = connectionDetails.getDbNames();
         String[] dbNamesList = dbNames.split(",");
         String username = connectionDetails.getUsername();
         String password = connectionDetails.getPassword();
         for (String dbName : dbNamesList) {
             dbName = dbName.trim();
-            DB db = mongo.getDB(dbName);
+            MongoDatabase db = mongo.getDatabase(dbName);
             boolean loginStatus = false;
             try {
                 // Hack. Checking server connectivity status by fetching collection names on selected db
-                db.getCollectionNames();//this line will throw exception in two cases.1)On Invalid mongo host Address,2)Invalid authorization to fetch collection names
+                db.listCollectionNames();//this line will throw exception in two cases.1)On Invalid mongo host Address,2)Invalid authorization to fetch collection names
                 loginStatus = true;
             } catch (MongoException me) {
-                loginStatus = db.authenticate(username, password.toCharArray());//login using given username and password.This line will throw exception if invalid mongo host address
+            	
+                //loginStatus = db.authenticate(username, password.toCharArray());//login using given username and password.This line will throw exception if invalid mongo host address
             }
             if (loginStatus) {
                 connectionDetails.addToAuthenticatedDbNames(dbName);
