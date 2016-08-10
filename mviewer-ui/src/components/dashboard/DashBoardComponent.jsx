@@ -48,6 +48,7 @@ class DashBoardComponent extends React.Component {
            </nav>
         </header>
            <SideNav></SideNav>
+           {this.props.children}
         </div>
 
 
