@@ -76,7 +76,7 @@ public class DatabaseServiceImplTest extends TestingTemplate {
      * create a Database and check whether get Service shows that Db in the list
      * of Db Names
      */
-    @Test
+    //@Test
     public void getDbList() {
 
         // ArrayList of several test Objects - possible inputs
@@ -126,7 +126,7 @@ public class DatabaseServiceImplTest extends TestingTemplate {
      * a new database using the Service and check if the database created is
      * present in the list of databases in Mongo.
      */
-    @Test
+    //@Test
     public void createDb() {
 
         // ArrayList of several test Objects - possible inputs
@@ -169,7 +169,7 @@ public class DatabaseServiceImplTest extends TestingTemplate {
      * in the list of databases in Mongo.
      */
 
-    @Test
+    //@Test
     public void dropDb() {
 
         // ArrayList of several test Objects - possible inputs
@@ -218,7 +218,7 @@ public class DatabaseServiceImplTest extends TestingTemplate {
      * Hereby we create an empty Db and verify that the collections field in
      * database statistics is empty.
      */
-    @Test
+    //@Test
     public void getDbStats() {
 
         // ArrayList of several test Objects - possible inputs

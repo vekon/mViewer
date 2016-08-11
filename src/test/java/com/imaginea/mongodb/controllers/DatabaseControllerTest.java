@@ -83,7 +83,7 @@ public class DatabaseControllerTest extends TestingTemplate {
      * then tested ok. We will try it with multiple test Databases.
      */
 
-    @Test
+    //@Test
     public void getdbList() {
 
         // ArrayList of several test Objects - possible inputs
@@ -142,7 +142,7 @@ public class DatabaseControllerTest extends TestingTemplate {
      * @throws DatabaseException
      */
 
-    @Test
+    //@Test
     public void createDatabase() throws DatabaseException {
 
         // ArrayList of several test Objects - possible inputs
@@ -198,7 +198,7 @@ public class DatabaseControllerTest extends TestingTemplate {
      * @throws DatabaseException
      */
 
-    @Test
+    //@Test
     public void deleteDatabase() throws DatabaseException {
 
         // ArrayList of several test Objects - possible inputs

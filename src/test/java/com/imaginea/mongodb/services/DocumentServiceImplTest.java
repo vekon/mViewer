@@ -81,7 +81,7 @@ public class DocumentServiceImplTest extends TestingTemplate {
      * Database and will check if that document exists in the document list from
      * the service.
      */
-    @Test
+    //@Test
     public void getDocList() {
 
         // ArrayList of several test Objects - possible inputs
@@ -145,7 +145,7 @@ public class DocumentServiceImplTest extends TestingTemplate {
      * Database using the service and will check if that document exists in the
      * document list.
      */
-    @Test
+    //@Test
     public void testInsertDocument() {
         // ArrayList of several test Objects - possible inputs
         List<String> testDbNames = new ArrayList<String>();
@@ -210,7 +210,7 @@ public class DocumentServiceImplTest extends TestingTemplate {
      * Database using the service and will check if that old document is
      * updated.
      */
-    @Test
+    //@Test
     public void testUpdateDocument() {
         // ArrayList of several test Objects - possible inputs
         List<String> testDbNames = new ArrayList<String>();
@@ -271,7 +271,7 @@ public class DocumentServiceImplTest extends TestingTemplate {
      * Database using the service and will check if that document exists in the
      * document list.
      */
-    @Test
+    //@Test
     public void testDeleteDocument() {
 
         List<String> testDbNames = new ArrayList<String>();

@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public interface AuthService {
 
-    String authenticate(ConnectionDetails connectionDetails, Set<String> existingConnectionIdsInSession) throws ApplicationException;
+    String authenticate(ConnectionDetails connectionDetails) throws ApplicationException;
 
     MongoConnectionDetails getMongoConnectionDetails(String connectionId) throws ApplicationException;
 

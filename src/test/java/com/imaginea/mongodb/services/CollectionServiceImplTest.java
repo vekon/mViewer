@@ -79,7 +79,7 @@ public class CollectionServiceImplTest extends TestingTemplate {
      * we will create a test collection inside a Database and will check if that
      * collection exists in the collection list from the service.
      */
-    @Test
+    //@Test
     public void getCollList() {
         // ArrayList of several test Objects - possible inputs
         List<String> testDbNames = new ArrayList<String>();
@@ -121,7 +121,7 @@ public class CollectionServiceImplTest extends TestingTemplate {
      * will insert a collection using the service and then will check if that
      * collection is present in the list of collections.
      */
-    @Test
+    //@Test
     public void insertColl() {
 
         // ArrayList of several test Objects - possible inputs
@@ -165,7 +165,7 @@ public class CollectionServiceImplTest extends TestingTemplate {
      * will delete a collection using the service and then will check if that
      * collection is not present in the collection list.
      */
-    @Test
+    //@Test
     public void deleteColl() {
 
         // ArrayList of several test Objects - possible inputs
@@ -206,7 +206,7 @@ public class CollectionServiceImplTest extends TestingTemplate {
      * Hereby we will create an empty collection inside a Database and will
      * check the Number of documents in the Statistics obtained.
      */
-    @Test
+    //@Test
     public void getCollStats() {
 
         // ArrayList of several test Objects - possible inputs

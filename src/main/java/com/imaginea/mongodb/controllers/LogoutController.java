@@ -15,9 +15,7 @@
  */
 package com.imaginea.mongodb.controllers;
 
-import org.apache.log4j.Logger;
-
-import io.swagger.annotations.Api;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,7 +25,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.util.Set;
+
+import org.apache.log4j.Logger;
+
+import io.swagger.annotations.Api;
 
 /**
  * Listens at a disconnect Request made by the user and destroys user id from the

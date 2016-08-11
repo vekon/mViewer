@@ -15,6 +15,18 @@
  */
 package com.imaginea.mongodb.controllers;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+
+import org.apache.log4j.Logger;
+
 import com.imaginea.mongodb.exceptions.ErrorCodes;
 import com.imaginea.mongodb.exceptions.InvalidHTTPRequestException;
 import com.imaginea.mongodb.exceptions.InvalidMongoCommandException;
@@ -22,13 +34,6 @@ import com.imaginea.mongodb.services.DatabaseService;
 import com.imaginea.mongodb.services.impl.DatabaseServiceImpl;
 
 import io.swagger.annotations.Api;
-
-import org.apache.log4j.Logger;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 
 /**
  * Defines resources for performing create/drop operations on databases present
@@ -163,6 +168,9 @@ public class DatabaseController extends BaseController {
                         throw new InvalidMongoCommandException(ErrorCodes.INVALID_QUERY, "Invalid query");
                     }
                     String cmdStr = query.substring(0, startIndex);
+                    
+                    System.out.println("cmdStr "+cmdStr);
+                    
                     int lastIndexOfDot = cmdStr.lastIndexOf(".");
                     if (lastIndexOfDot + 1 == cmdStr.length()) {
                         // In this case the cmsStr = db.collectionName.
@@ -176,6 +184,9 @@ public class DatabaseController extends BaseController {
                     return databaseService.executeQuery(dbName, command, jsonStr, fields, sortBy, docsLimit, docsSkip);
                 }
             });
+        
+        System.out.println("response "+response);
+        
         return response;
     }
 }
