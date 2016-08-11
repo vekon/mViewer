@@ -10,7 +10,6 @@ class SideNavComponent extends React.Component {
 
 
   render () {
-
     return(
       <div className={sideNavStyles.sideContainer}>
         <ul className={sideNavStyles.sideNav} >
@@ -21,7 +20,6 @@ class SideNavComponent extends React.Component {
             <li><a href= '#/dashboard/console'><div><i className={"fa fa-code " +  sideNavStyles.icon} aria-hidden="true"></i><span>CONSOLE</span></div></a></li>
             <li><a href= '#/dashboard/settings'><div><i className={"fa fa-gear " +  sideNavStyles.icon} aria-hidden="true"></i><span>SETTINGS</span></div></a></li>
         </ul>
-
       </div>
     );
   }

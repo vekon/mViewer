@@ -29,7 +29,7 @@ const TextInput = React.createClass({
         return (
             <div className={textCss.formGroup + (this.props.className || ' ') + (this.showRequired() ? textCss.required : this.showError() ? textCss.error : '')}>
                 <label htmlFor={this.props.name}>{this.props.title}</label>
-                <input type={this.props.type || 'text'} name={this.props.name} onChange={this.changeValue} value={this.getValue()}  />
+                <input type={this.props.type || 'text'} name={this.props.name} placeholder={this.props.placeholder} onChange={this.changeValue} value={this.getValue()}  />
                 <span className={textCss.validationError}>{errorMessage}</span>
             </div>             
              );

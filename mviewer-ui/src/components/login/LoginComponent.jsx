@@ -54,7 +54,7 @@ class LoginComponent extends React.Component {
             $(function() {
                 $('form').on('submit', function(e) {
                      e.preventDefault();
-                    //  e.stopImmediatePropagation();
+                     e.stopImmediatePropagation();
                     var data = $("form").serialize().split("&");
                     var obj={};
                     for(var key in data)
@@ -81,9 +81,9 @@ class LoginComponent extends React.Component {
 
                                 });
                                 //  console.log(data);
-                                 hashHistory.push({ pathname: '/dashboard', query: { host: that.state.host, port: that.state.port, username: that.state.username,
+                                 hashHistory.push({ pathname: '/dashboard/home', query: { host: that.state.host, port: that.state.port, username: that.state.username,
                                                     password: that.state.password, connectionId: data.response.result.connectionId } });
-                                hashHistory.push('/dashboard');
+                                // hashHistory.push('/dashboard/home');
                             }
 
                             if (data.response.error) {
@@ -114,62 +114,52 @@ class LoginComponent extends React.Component {
 
     var rowClass = 'row inputLabel';
     return (
-<section className={styles.loginForm}>
-    <div className="row">
-        <h2> mViewer</h2>
-    </div>
-    <div className='row'>
-        <Form className={styles.innerForm} method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
+      <section className={styles.loginForm}>
+          <div className={styles.parentDiv}>
+              <div className={styles.one}>
+                  <section className={styles.logoSection}>
+                      <span className={styles.mSpan}>m</span>
+                      <span className={styles.vSpan}>Viewer</span>
+                  </section>
+              </div>
+              <div className={styles.two}>
+                  <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
 
-            <div className={ styles.formContainer}>
-                <div className='row'>
-                    <div className="col span-1-of-3">
-                        <label htmlFor="host">Host</label>
-                    </div>
-                    <div className="col span-1-of-3">
-                        <TextInput type="text" name="host" id="host" placeholder="Host id" value={this.state.host} validations='isRequired' onChange={this.handleChange( 'host')} validationError="Host must not be empty" />
-                    </div>
-                </div>
+                      <div className={ styles.formContainer}>
+                           <div className={styles.inputBox}>
+                               <TextInput type="text" name="host" id="host" placeholder="Host" value={this.state.host} validations='isRequired' onChange={this.handleChange( 'host')} validationError="Host must not be empty" />
+                           </div>
 
-                <div className={rowClass}>
-                    <div className="col span-1-of-3">
-                        <label htmlFor="port">Port</label>
-                    </div>
-                    <div className="col span-1-of-3">
-                        <TextInput type="text" name="port" id="port" placeholder="Port" value={this.state.port} onChange={this.handleChange( 'port')} validations="isRequired" validationError="Port must not be empty" />
-                    </div>
-                </div>
+                          <div className={styles.inputBox}>
+                               <TextInput type="text" name="port" id="port" placeholder="Port" value={this.state.port} onChange={this.handleChange( 'port')} validations="isRequired" validationError="Port must not be empty" />
+                          </div>
 
-                <div className={rowClass}>
-                    <div className="col span-1-of-3">
-                        <label htmlFor="username">Username</label>
-                    </div>
-                    <div className="col span-1-of-3">
-                        <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} />
-                    </div>
-                </div>
+                          <div className={styles.inputBox}>
+                               <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} />
+                          </div>
 
-                <div className={rowClass}>
-                    <div className="col span-1-of-3">
-                        <label htmlFor="password">Password</label>
-                    </div>
-                    <div className="col span-1-of-3">
-                        <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleChange( 'password')} />
-                    </div>
-                </div>
+                          <div className={styles.inputBox}>
+                               <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleChange( 'password')} />
+                          </div>
 
-                <div className={rowClass}>
-                    <div className="col span-3-of-3">
-                        <input type="submit" value="Go" disabled={!this.state.canSubmit} className={ styles.gobutton} />
-                    </div>
-                </div>
-                <div className={styles.errorMessage + ' ' + (this.state.message!='' && this.state.message !='Login Success' ? styles.show : styles.hidden)}>{this.state.message}</div>
+                          <div>
+                               <input type="submit" value="CONNECT" disabled={!this.state.canSubmit} className={ styles.gobutton} />
+                          </div>
+                          <div className={styles.footerLink}>
+                               <div>
+                                  <a>Forgot your password?</a>
+                               </div>
+                               <div className={styles.help}>
+                                  <a>Need Help?</a>
+                               </div>
+                          </div>
+                          <div className={styles.errorMessage + ' ' + (this.state.message!='' && this.state.message !='Login Success' ? styles.show : styles.hidden)}>{this.state.message}</div>
 
-            </div>
-        </Form>
-    </div>
-</section>
-    );
+                      </div>
+                  </Form>
+              </div>
+          </div>
+      </section>    );
   }
 
 }
