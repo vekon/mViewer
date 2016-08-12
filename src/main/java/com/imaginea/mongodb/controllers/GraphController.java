@@ -15,26 +15,27 @@
  */
 package com.imaginea.mongodb.controllers;
 
-import com.imaginea.mongodb.controllers.BaseController.ResponseCallback;
-import com.imaginea.mongodb.controllers.BaseController.ResponseTemplate;
-import com.imaginea.mongodb.exceptions.ErrorCodes;
-import com.imaginea.mongodb.services.AuthService;
-import com.imaginea.mongodb.services.impl.AuthServiceImpl;
-import com.mongodb.BasicDBObject;
-import com.mongodb.CommandResult;
-import com.mongodb.DB;
-import com.mongodb.Mongo;
-import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+
+import org.apache.log4j.Logger;
+import org.bson.Document;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.imaginea.mongodb.controllers.BaseController.ResponseCallback;
+import com.imaginea.mongodb.controllers.BaseController.ResponseTemplate;
+import com.imaginea.mongodb.exceptions.ErrorCodes;
+import com.imaginea.mongodb.services.AuthService;
+import com.imaginea.mongodb.services.impl.AuthServiceImpl;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 
 /**
  * Return values of queries,updates,inserts and deletes being performed on Mongo
@@ -90,9 +91,10 @@ public class GraphController extends HttpServlet {
         final String connectionId = request.getParameter("connectionId");
         String result = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
             public Object execute() throws Exception {
-                Mongo mongoInstance = authService.getMongoInstance(connectionId);
+                MongoClient mongoInstance = authService.getMongoInstance(connectionId);
                 // Need a Db to get ServerStats
-                DB db = mongoInstance.getDB("admin");
+                MongoDatabase db = mongoInstance.getDatabase("admin");
+                
                 String uri = request.getRequestURI();
                 Object result = null;
                 if (uri != null) {
@@ -120,10 +122,11 @@ public class GraphController extends HttpServlet {
      * @throws IOException
      * @throws JSONException
      */
-    private JSONArray processQuery(DB db) throws IOException, JSONException {
+    private JSONArray processQuery(MongoDatabase db) throws IOException, JSONException {
 
-        CommandResult cr = db.command("serverStatus");
-        BasicDBObject obj = (BasicDBObject) cr.get("opcounters");
+    	Document cr = db.runCommand(new Document("serverStatus", 1));
+        
+    	Document obj = (Document)cr.get("opcounters");
         int currentValue;
         JSONObject temp = new JSONObject();
 
@@ -161,15 +164,17 @@ public class GraphController extends HttpServlet {
      * @throws RuntimeException
      */
 
-    private JSONObject processInitiate(DB db) throws RuntimeException, JSONException {
+    private JSONObject processInitiate(MongoDatabase db) throws RuntimeException, JSONException {
 
         JSONObject respObj = new JSONObject();
         array = new JSONArray();
         num = 0;
         try {
 
-            CommandResult cr = db.command("serverStatus");
-            BasicDBObject obj = (BasicDBObject) cr.get("opcounters");
+            Document cr = db.runCommand(new Document("serverStatus", 1));
+            
+            Document obj = (Document)cr.get("opcounters");
+            
             lastNoOfQueries = (Integer) obj.get("query");
             lastNoOfInserts = (Integer) obj.get("insert");
             lastNoOfUpdates = (Integer) obj.get("update");

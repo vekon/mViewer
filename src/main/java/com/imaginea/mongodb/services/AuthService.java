@@ -3,9 +3,7 @@ package com.imaginea.mongodb.services;
 import com.imaginea.mongodb.domain.ConnectionDetails;
 import com.imaginea.mongodb.domain.MongoConnectionDetails;
 import com.imaginea.mongodb.exceptions.ApplicationException;
-import com.mongodb.Mongo;
-
-import java.util.Set;
+import com.mongodb.MongoClient;
 
 /**
  * @author Uday Shankar
@@ -16,7 +14,7 @@ public interface AuthService {
 
     MongoConnectionDetails getMongoConnectionDetails(String connectionId) throws ApplicationException;
 
-    Mongo getMongoInstance(String connectionId) throws ApplicationException;
+    MongoClient getMongoInstance(String connectionId) throws ApplicationException;
 
     void disconnectConnection(String connectionId) throws ApplicationException;
 }
