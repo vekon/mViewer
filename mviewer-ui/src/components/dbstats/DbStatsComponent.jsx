@@ -1,13 +1,15 @@
 import React from 'react'
 import dbStatsStyles from './dbstats.css'
 import $ from 'jquery'
+import {Pagination} from 'react-bootstrap';
+
 
 class DbStatsComponent extends React.Component {
 
   constructor(props) {
       super(props);
       this.state = {
-          dbNames:['test1'],
+          dbNames:[],
           connectionId: this.props.connectionId,
           dbStats: {},
           selectedDB: null
@@ -23,7 +25,7 @@ class DbStatsComponent extends React.Component {
 //
 // });
     var that = this;
-    that.setState({selectedDB : item});
+    that.state.selectedDB = item;
     console.log(that.state.selectedDB);
     $.ajax({
         type: "GET",
@@ -78,7 +80,6 @@ class DbStatsComponent extends React.Component {
     var that = this;
     return(
       <div className={dbStatsStyles.mainContainer}>
-
          <div className ={dbStatsStyles.listContainer}>
            <h2>Databases</h2>
           <ul className={dbStatsStyles.dbList}>
@@ -90,8 +91,9 @@ class DbStatsComponent extends React.Component {
             }
             </ul>
             </div>
-            { that.state.selectedDB ?
+            { that.state.selectedDB  ?
                 <div className={dbStatsStyles.dbStats}>
+                  {this.state.message}
                     <h3 className={dbStatsStyles.dbStatsHeader}> Statistics: { that.state.selectedDB } </h3>
                         <div>
                             <table>

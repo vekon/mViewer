@@ -54,7 +54,7 @@ class LoginComponent extends React.Component {
             $(function() {
                 $('form').on('submit', function(e) {
                      e.preventDefault();
-                     e.stopImmediatePropagation();
+                    //  e.stopImmediatePropagation();
                     var data = $("form").serialize().split("&");
                     var obj={};
                     for(var key in data)
@@ -74,7 +74,8 @@ class LoginComponent extends React.Component {
                         url: 'http://172.16.55.42:8080/mViewer-0.9.2/services/login/',
                         data : obj,
                         success: function(data) {
-                            if (data.response.result.success===true) {
+                            // if (data.response.result.success===true) {
+                            if (data.response.result) {
                                 console.log(data.response.result.success);
                                 that.setState({
                                     message: data.response.result['success']
