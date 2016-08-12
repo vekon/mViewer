@@ -15,6 +15,21 @@
  */
 package com.imaginea.mongodb.controllers;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+
+import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.imaginea.mongodb.domain.ConnectionDetails;
 import com.imaginea.mongodb.domain.MongoConnectionDetails;
 import com.imaginea.mongodb.domain.UserLoginData;
@@ -27,19 +42,7 @@ import com.mongodb.MongoInternalException;
 
 import io.swagger.annotations.Api;
 
-import org.apache.log4j.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import java.util.HashSet;
-import java.util.Set;
-
-/**
+/**O
  * Authenticates User to Mongo Db by checking the user in <system.users>
  * collection of admin database.
  * <p/>
@@ -71,9 +74,7 @@ public class LoginController extends BaseController {
                     ApplicationException e = new ApplicationException(ErrorCodes.MISSING_LOGIN_FIELDS, "Missing Login Fields");
                     return formErrorResponse(logger, e);
                 }
-                HttpSession session = request.getSession();
-                Set<String> existingConnectionIdsInSession = (Set<String>) session.getAttribute("existingConnectionIdsInSession");
-
+                
                 int port = 0;
                 try {
                     port = Integer.parseInt(userLoginData.getPort());
@@ -83,7 +84,7 @@ public class LoginController extends BaseController {
                 ConnectionDetails connectionDetails = new ConnectionDetails(userLoginData.getHost(), port, userLoginData.getUserName(), userLoginData.getPassword(), userLoginData.getDatabases());
                 String connectionId = null;
                 try {
-                    connectionId = authService.authenticate(connectionDetails, existingConnectionIdsInSession);
+                    connectionId = authService.authenticate(connectionDetails);
                 } catch (IllegalArgumentException m) {
                     throw new MongoConnectionException(ErrorCodes.INVALID_ARGUMENT, "You have entered an invalid data !");
                 } catch (MongoInternalException m) {
@@ -92,11 +93,6 @@ public class LoginController extends BaseController {
                 } catch (MongoException m) {
                     throw new MongoConnectionException(ErrorCodes.MONGO_CONNECTION_EXCEPTION, "Connection Failed. Check if MongoDB is running at the given host and port.");
                 }
-                if (existingConnectionIdsInSession == null) {
-                    existingConnectionIdsInSession = new HashSet<String>();
-                    session.setAttribute("existingConnectionIdsInSession", existingConnectionIdsInSession);
-                }
-                existingConnectionIdsInSession.add(connectionId);
                 JSONObject response = new JSONObject();
                 try {
                     response.put("success", true);
@@ -139,8 +135,7 @@ public class LoginController extends BaseController {
                     ApplicationException e = new ApplicationException(ErrorCodes.MISSING_LOGIN_FIELDS, "Missing Login Fields");
                     return formErrorResponse(logger, e);
                 }
-                HttpSession session = request.getSession();
-                Set<String> existingConnectionIdsInSession = (Set<String>) session.getAttribute("existingConnectionIdsInSession");
+                
 
                 int port = 0;
                 try {
@@ -151,7 +146,7 @@ public class LoginController extends BaseController {
                 ConnectionDetails connectionDetails = new ConnectionDetails(host, port, user, password, databases);
                 String connectionId = null;
                 try {
-                    connectionId = authService.authenticate(connectionDetails, existingConnectionIdsInSession);
+                    connectionId = authService.authenticate(connectionDetails);
                 } catch (IllegalArgumentException m) {
                     throw new MongoConnectionException(ErrorCodes.INVALID_ARGUMENT, "You have entered an invalid data !");
                 } catch (MongoInternalException m) {
@@ -160,11 +155,7 @@ public class LoginController extends BaseController {
                 } catch (MongoException m) {
                     throw new MongoConnectionException(ErrorCodes.MONGO_CONNECTION_EXCEPTION, "Connection Failed. Check if MongoDB is running at the given host and port.");
                 }
-                if (existingConnectionIdsInSession == null) {
-                    existingConnectionIdsInSession = new HashSet<String>();
-                    session.setAttribute("existingConnectionIdsInSession", existingConnectionIdsInSession);
-                }
-                existingConnectionIdsInSession.add(connectionId);
+                
                 JSONObject response = new JSONObject();
                 try {
                     response.put("success", true);

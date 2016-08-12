@@ -30,13 +30,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String authenticate(ConnectionDetails connectionDetails, Set<String> existingConnectionIdsInSession) throws ApplicationException {
+    public String authenticate(ConnectionDetails connectionDetails) throws ApplicationException {
         sanitizeConnectionDetails(connectionDetails);
         String connectionDetailsHashCode = String.valueOf(connectionDetails.hashCode());
         Collection<MongoConnectionDetails> mongoConnectionDetailsList = allConnectionDetails.get(connectionDetailsHashCode);
-        if (existingConnectionIdsInSession != null && mongoConnectionDetailsList != null) {
+        if (mongoConnectionDetailsList != null) {
             for (MongoConnectionDetails mongoConnectionDetails : mongoConnectionDetailsList) {
-                if (existingConnectionIdsInSession.contains(mongoConnectionDetails.getConnectionId()) && connectionDetails.equals(mongoConnectionDetails.getConnectionDetails())) {
+                if (connectionDetails.equals(mongoConnectionDetails.getConnectionDetails())) {
                     return mongoConnectionDetails.getConnectionId();
                 }
             }

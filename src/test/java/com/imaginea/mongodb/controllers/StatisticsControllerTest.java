@@ -80,7 +80,7 @@ public class StatisticsControllerTest extends TestingTemplate {
      * @throws DatabaseException
      */
 
-    @Test
+    //@Test
     public void getdbStatsRequest() throws DatabaseException, JSONException {
         // ArrayList of several test Objects - possible inputs
         List<String> testDbNames = new ArrayList<String>();
@@ -151,7 +151,7 @@ public class StatisticsControllerTest extends TestingTemplate {
      * @throws CollectionException
      */
 
-    @Test
+    //@Test
     public void getCollStatsRequest() throws CollectionException, JSONException {
         // ArrayList of several test Objects - possible inputs
         List<String> testDbNames = new ArrayList<String>();

@@ -55,19 +55,17 @@ public class BaseController {
      * @return null if connectionId is valid else error object.
      */
     protected static String validateConnectionId(String connectionId, Logger logger, HttpServletRequest request) {
-
-        HttpSession session = request.getSession();
-        Set<String> existingConnectionIdsInSession = (Set<String>) session.getAttribute("existingConnectionIdsInSession");
-        if (existingConnectionIdsInSession == null) {
-            InvalidHTTPRequestException e = new InvalidHTTPRequestException(ErrorCodes.INVALID_SESSION, "Invalid Session");
-            return formErrorResponse(logger, e);
-        }
+        
+//        if (existingConnectionIdsInSession == null) {
+//            InvalidHTTPRequestException e = new InvalidHTTPRequestException(ErrorCodes.INVALID_SESSION, "Invalid Session");
+//            return formErrorResponse(logger, e);
+//        }
 
         String response = null;
-        if (connectionId == null || !existingConnectionIdsInSession.contains(connectionId)) {
-            InvalidHTTPRequestException e = new InvalidHTTPRequestException(ErrorCodes.INVALID_CONNECTION, "Invalid Connection");
-            return formErrorResponse(logger, e);
-        }
+//        if (connectionId == null || !existingConnectionIdsInSession.contains(connectionId)) {
+//            InvalidHTTPRequestException e = new InvalidHTTPRequestException(ErrorCodes.INVALID_CONNECTION, "Invalid Connection");
+//            return formErrorResponse(logger, e);
+//        }
         return response;
     }
 
