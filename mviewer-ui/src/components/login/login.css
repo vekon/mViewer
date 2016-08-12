@@ -17,25 +17,24 @@ body {
     text-rendering: optimizeLegibility;
 }
 /*Login Form*/
-
-.parentDiv {
+div.parentDiv {
     width: 700px;
     height: 400px;
     margin-top: 60px;
-    margin-left: 160px;
-    display:inline-block;
-    float:left;
+    margin-left: 80px;
 }
 .one{
   width:220px;
   height:350px;
   background:#26344e;
+  float: left;
 }
 
 .two{
     width: 300px;
-    height:  350px;
+    height: 350px;
     background: linear-gradient(#3768c7,#a0acc1);
+    float: left;
 }
 .logoSection {
     padding: 80px 0;
@@ -60,7 +59,6 @@ body {
 }
 input[type=text],
 input[type=password] {
-    width: 100%;
     padding: 10px;
     border-radius: 3px;
     border: 1.5px solid #4968a7;
@@ -123,7 +121,7 @@ h2:after {
     height: 2px;
     /*    background-color: #3679f8;*/
     color: #3679f8;
-    content: "\2014Login Details\2014";
+    content: "\2014 DB List \2014";
     font-size: 10px;
     width: auto;
     margin: 0 auto;

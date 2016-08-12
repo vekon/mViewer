@@ -5,8 +5,20 @@ import SideNav from '../sidenav/SideNavComponent.jsx';
 
 class DashBoardComponent extends React.Component {
 
+  constructor(props) {
+      super(props);
+      this.state = {
+          connectionId:this.props.location.query.connectionId,
+      }
+  }
+
   render() {
-    console.log(this.props.location.query.connectionId);
+    const childrenWithProps = React.Children.map(this.props.children,
+     (child) => React.cloneElement(child, {
+       connectionId: this.state.connectionId
+     })
+    );
+
     return (
         <div className ='row'>
         <div className = {dashStyles.mainContainer}>
@@ -22,8 +34,8 @@ class DashBoardComponent extends React.Component {
                </div>
            </nav>
         </header>
-           <SideNav></SideNav>
-           {React.cloneElement(this.props.children, this.props)}
+           <SideNav connectionId = {this.state.connectionId} propss = {this.props}></SideNav>
+           {childrenWithProps}
         </div>
 
 

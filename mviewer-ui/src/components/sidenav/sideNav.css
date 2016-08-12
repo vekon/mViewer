@@ -48,6 +48,11 @@
   background-color: #0D313D;
 }
 
+.active {
+  background-color: #0D313D;
+
+}
+
 
 /*.sideNav li::after {
   content: "\2014\2014\2014\2014";
