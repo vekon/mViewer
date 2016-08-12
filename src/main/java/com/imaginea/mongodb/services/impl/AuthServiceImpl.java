@@ -1,20 +1,21 @@
 package com.imaginea.mongodb.services.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
+
 import com.imaginea.mongodb.domain.ConnectionDetails;
 import com.imaginea.mongodb.domain.MongoConnectionDetails;
 import com.imaginea.mongodb.exceptions.ApplicationException;
 import com.imaginea.mongodb.exceptions.ErrorCodes;
 import com.imaginea.mongodb.services.AuthService;
-import com.mongodb.DB;
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoDatabase;
-
-import java.net.UnknownHostException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Uday Shankar
@@ -117,7 +118,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Mongo getMongoInstance(String connectionId) throws ApplicationException {
+    public MongoClient getMongoInstance(String connectionId) throws ApplicationException {
         String[] split = connectionId.split("_");
         if (split.length != 2) {
             throw new ApplicationException(ErrorCodes.INVALID_CONNECTION, "Invalid Connection");
