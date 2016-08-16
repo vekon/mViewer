@@ -6,7 +6,6 @@ import TextInput from '../TextInput/TextInputComponent.jsx';
 import $ from 'jquery';
 import { browserHistory, hashHistory } from 'react-router';
 
-
 class LoginComponent extends React.Component {
 
         constructor(props) {
@@ -15,9 +14,10 @@ class LoginComponent extends React.Component {
                 host: '127.0.0.1',
                 port: '27017',
                 username: '',
-                password: '',
+                 password: '',
                 canSubmit: false,
-                message: ''
+                message: '',
+                connectionId:''
             }
         }
 
@@ -53,7 +53,14 @@ class LoginComponent extends React.Component {
             var that = this;
             $(function() {
                 $('form').on('submit', function(e) {
-                    e.preventDefault();
+                     e.preventDefault();
+                    //  e.stopImmediatePropagation();
+                    var data = $("form").serialize().split("&");
+                    var obj={};
+                    for(var key in data)
+                      {
+                       obj[data[key].split("=")[0]] = data[key].split("=")[1];
+                      }
                     $.ajax({
                         type: "POST",
                         cache: false,
@@ -62,30 +69,34 @@ class LoginComponent extends React.Component {
                             'X-Requested-With': 'XMLHttpRequest'
                         },
                         crossDomain: false,
-                        url: 'http://localhost:8080/services/login',
-                        data: $(this).serialize(),
+                      //  url: 'http://localhost:8080/services/login',
+                      //   data: $(this).serialize(),
+                        url: 'http://172.16.55.42:8080/mViewer-0.9.2/services/login/',
+                        data : obj,
                         success: function(data) {
+                            // if (data.response.result.success===true) {
                             if (data.response.result) {
-                                console.log(data.response.result);
+                                console.log(data.response.result.success);
                                 that.setState({
-                                    message: data.response.result
+                                    message: data.response.result['success']
+
                                 });
-                                hashHistory.push('/dashboard');
-                                console.log(window.location.search.substring(1));
+                                //  console.log(data);
+                                 hashHistory.push({ pathname: '/dashboard/home', query: { host: that.state.host, port: that.state.port, username: that.state.username,
+                                                    password: that.state.password, connectionId: data.response.result.connectionId } });
+                                // hashHistory.push('/dashboard/home');
                             }
 
                             if (data.response.error) {
-                                console.log(data.response.error.message);
                                 that.setState({
                                     message: data.response.error.message
                                 });
                             }
 
+
                         },
 
                         error: function(jqXHR, exception) {
-                            console.log(jqXHR);
-                            console.log('error');
                             that.setState({
                                 message: 'Unexpected Error Occurred'
                             })
@@ -100,66 +111,56 @@ class LoginComponent extends React.Component {
 
 
         render() {
-          
-    
-    var rowClass = 'row inputLabel';  
+
+
+    var rowClass = 'row inputLabel';
     return (
-<section className={styles.loginForm}>
-    <div className="row">
-        <h2> mViewer</h2>
-    </div>
-    <div className='row'>
-        <Form className={styles.innerForm} method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()}>
+      <section className={styles.loginForm}>
+          <div className={styles.parentDiv}>
+              <div className={styles.one}>
+                  <section className={styles.logoSection}>
+                      <span className={styles.mSpan}>m</span>
+                      <span className={styles.vSpan}>Viewer</span>
+                  </section>
+              </div>
+              <div className={styles.two}>
+                  <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
 
-            <div className={ styles.formContainer}>
-                <div className='row'>
-                    <div className="col span-1-of-3">
-                        <label htmlFor="host">Host</label>
-                    </div>
-                    <div className="col span-1-of-3">
-                        <TextInput type="text" name="host" id="host" placeholder="Host id" value={this.state.host} validations='isRequired' onChange={this.handleChange( 'host')} validationError="Host must not be empty" />
-                    </div>
-                </div>
+                      <div className={ styles.formContainer}>
+                           <div className={styles.inputBox}>
+                               <TextInput type="text" name="host" id="host" placeholder="Host" value={this.state.host} validations='isRequired' onChange={this.handleChange( 'host')} validationError="Host must not be empty" />
+                           </div>
 
-                <div className={rowClass}>
-                    <div className="col span-1-of-3">
-                        <label htmlFor="port">Port</label>
-                    </div>
-                    <div className="col span-1-of-3">
-                        <TextInput type="text" name="port" id="port" placeholder="Port" value={this.state.port} onChange={this.handleChange( 'port')} validations="isRequired" validationError="Port must not be empty" />
-                    </div>
-                </div>
+                          <div className={styles.inputBox}>
+                               <TextInput type="text" name="port" id="port" placeholder="Port" value={this.state.port} onChange={this.handleChange( 'port')} validations="isRequired" validationError="Port must not be empty" />
+                          </div>
 
-                <div className={rowClass}>
-                    <div className="col span-1-of-3">
-                        <label htmlFor="username">Username</label>
-                    </div>
-                    <div className="col span-1-of-3">
-                        <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} />
-                    </div>
-                </div>
+                          <div className={styles.inputBox}>
+                               <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} />
+                          </div>
 
-                <div className={rowClass}>
-                    <div className="col span-1-of-3">
-                        <label htmlFor="password">Password</label>
-                    </div>
-                    <div className="col span-1-of-3">
-                        <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleChange( 'password')} />
-                    </div>
-                </div>
+                          <div className={styles.inputBox}>
+                               <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleChange( 'password')} />
+                          </div>
 
-                <div className={rowClass}>
-                    <div className="col span-3-of-3">
-                        <input type="submit" value="Go" disabled={!this.state.canSubmit} className={ styles.gobutton} />
-                    </div>
-                </div>
-                <div className={styles.errorMessage + ' ' + (this.state.message!='' && this.state.message !='Login Success' ? styles.show : styles.hidden)}>{this.state.message}</div>
+                          <div>
+                               <input type="submit" value="CONNECT" disabled={!this.state.canSubmit} className={ styles.gobutton} />
+                          </div>
+                          <div className={styles.footerLink}>
+                               <div>
+                                  <a>Forgot your password?</a>
+                               </div>
+                               <div className={styles.help}>
+                                  <a>Need Help?</a>
+                               </div>
+                          </div>
+                          <div className={styles.errorMessage + ' ' + (this.state.message!='' && this.state.message !='Login Success' ? styles.show : styles.hidden)}>{this.state.message}</div>
 
-            </div>
-        </Form>
-    </div>
-</section>
-    );
+                      </div>
+                  </Form>
+              </div>
+          </div>
+      </section>    );
   }
 
 }

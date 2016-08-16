@@ -1,0 +1,106 @@
+.mainContainer {
+    background-color: #CCD9DE;
+    display: inline-block;
+    position: absolute;
+    /* float: right; */
+    w: 100%;
+    overflow: hidden;
+    /* z-index: -99; */
+    width: calc(100% - 70px);
+    height: 100%;
+    overflow: hidden;
+}
+
+
+.listContainer {
+  width: 30%;
+  display: inline-block;
+  padding: 20px;
+}
+
+.listContainer, .dbStats{
+    float: left;
+}
+
+table {
+  border-collapse: collapse;
+  border: 1px solid;
+  text-align: center;
+  line-height: 25px;
+}
+table td, table th {
+  border: 1px solid black;
+}
+table tr:first-child th {
+  border-top: 0;
+}
+table tr:last-child td {
+  border-bottom: 0;
+}
+table tr td:first-child,
+table tr th:first-child {
+  border-left: 0;
+}
+table tr td:last-child,
+table tr th:last-child {
+  border-right: 0;
+}
+
+table tr td {
+    padding: 5px 50px;
+    text-transform: capitalize;
+}
+
+.dbStats {
+    float: left;
+    margin-left: 20%;
+    margin-top: 5%;;
+}
+
+.dbStatsHeader {
+    font-weight: 300;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+.dbList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dbList li {
+  font-family: 'Lato';
+  font-size: 90%;
+  /*border-bottom: 1px solid #ccc;*/
+  padding-bottom: 5px;
+}
+
+.dbList li:last-child {
+  border: none;
+}
+
+.dbList li  {
+  text-decoration: none;
+  display: block;
+  width: 200px;
+  padding: 3%;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: none !important;
+
+  -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+  transition: font-size 0.3s ease, background-color 0.3s ease;
+}
+
+.dbList li:hover {
+  font-size: 130%;
+  background: #e6ecef;
+}
+.dbIcon {
+  font-size: 80%;
+  padding-right: 5px;
+}
