@@ -17,6 +17,8 @@ package com.imaginea.mongodb.services;
 
 import com.imaginea.mongodb.exceptions.*;
 import com.mongodb.DBObject;
+
+import org.bson.Document;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,7 +72,7 @@ public interface DocumentService {
      * @throws DocumentException   throw super type of InsertDocumentException
      */
 
-    public String insertDocument(String dbName, String collectionName, DBObject document) throws DatabaseException, CollectionException, DocumentException, ValidationException;
+    public String insertDocument(String dbName, String collectionName, Document document) throws DatabaseException, CollectionException, DocumentException, ValidationException;
 
     /**
      * Updates a document inside a collection in a database in mongo to which
@@ -89,7 +91,7 @@ public interface DocumentService {
      * @throws DocumentException   throw super type of UpdateDocumentException
      */
 
-    public String updateDocument(String dbName, String collectionName, String _id, DBObject newData) throws DatabaseException, CollectionException, DocumentException, ValidationException;
+    public String updateDocument(String dbName, String collectionName, String _id, Document newData) throws DatabaseException, CollectionException, DocumentException, ValidationException;
 
     /**
      * Deletes a document inside a collection in a database in mongo to which

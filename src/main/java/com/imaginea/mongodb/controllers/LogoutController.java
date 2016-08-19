@@ -29,6 +29,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * Listens at a disconnect Request made by the user and destroys user id from the
@@ -59,6 +60,7 @@ public class LogoutController extends BaseController {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value="Disconnect the mongodb session" , notes="To disconnect mongodb session you must pass connectionId")
     public String doGet(@QueryParam("connectionId") final String connectionId, @Context final HttpServletRequest request) {
         String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
             public Object execute() throws Exception {

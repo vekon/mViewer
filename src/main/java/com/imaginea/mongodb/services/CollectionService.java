@@ -115,4 +115,7 @@ public interface CollectionService {
      */
 
     public JSONArray getCollStats(String dbName, String collectionName) throws DatabaseException, CollectionException, ValidationException, JSONException;
+    
+    public boolean isCappedCollection(String dbName, String collectionName) throws DatabaseException, CollectionException, ValidationException;
+    
 }

@@ -16,17 +16,34 @@
 
 package com.imaginea.mongodb.services.impl;
 
-import com.imaginea.mongodb.exceptions.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.bson.Document;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.imaginea.mongodb.exceptions.ApplicationException;
+import com.imaginea.mongodb.exceptions.CollectionException;
+import com.imaginea.mongodb.exceptions.DatabaseException;
+import com.imaginea.mongodb.exceptions.DocumentException;
+import com.imaginea.mongodb.exceptions.ErrorCodes;
+import com.imaginea.mongodb.exceptions.ValidationException;
 import com.imaginea.mongodb.services.AuthService;
+import com.imaginea.mongodb.services.CollectionService;
 import com.imaginea.mongodb.services.DatabaseService;
 import com.imaginea.mongodb.services.DocumentService;
 import com.imaginea.mongodb.utils.JSON;
 import com.imaginea.mongodb.utils.QueryExecutor;
-import com.mongodb.*;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.List;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
 
 /**
  * Defines services definitions for performing operations like
@@ -41,8 +58,9 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * Mongo Instance to communicate with mongo
      */
-    private Mongo mongoInstance;
+    private MongoClient mongoInstance;
     private DatabaseService databaseService;
+    private CollectionService collectionService;
 
     private static final AuthService AUTH_SERVICE = AuthServiceImpl.getInstance();
 
@@ -57,6 +75,7 @@ public class DocumentServiceImpl implements DocumentService {
     public DocumentServiceImpl(String connectionId) throws ApplicationException {
         mongoInstance = AUTH_SERVICE.getMongoInstance(connectionId);
         databaseService = new DatabaseServiceImpl(connectionId);
+        collectionService = new CollectionServiceImpl(connectionId);
     }
 
     /**
@@ -94,19 +113,20 @@ public class DocumentServiceImpl implements DocumentService {
             if (!databaseNames.contains(dbName)) {
                 throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS, "DB with name [" + dbName + "]DOES_NOT_EXIST");
             }
-            DB db = mongoInstance.getDB(dbName);
+            MongoDatabase db = mongoInstance.getDatabase(dbName);
             if (collectionName == null) {
                 throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection name is null");
             }
             if (collectionName.equals("")) {
                 throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection Name Empty");
             }
-            if (!db.getCollectionNames().contains(collectionName)) {
+            if (!collectionService.getCollList(dbName).contains(collectionName)) {
                 throw new CollectionException(ErrorCodes.COLLECTION_DOES_NOT_EXIST, "Collection with name [" + collectionName + "] DOES NOT EXIST in Database [" + dbName + "]");
             }
 
-            DBCollection dbCollection = db.getCollection(collectionName);
-            return QueryExecutor.executeQuery(db, dbCollection, command, queryStr, keys, sortBy, limit, skip, allKeys);
+            MongoCollection<Document> collection = db.getCollection(collectionName);
+            
+            return QueryExecutor.executeQuery(db, collection, collectionName,command, queryStr, keys, sortBy, limit, skip, allKeys);
         } catch (MongoException e) {
             throw new DocumentException(ErrorCodes.QUERY_EXECUTION_EXCEPTION, e.getMessage());
         }
@@ -128,7 +148,7 @@ public class DocumentServiceImpl implements DocumentService {
      * @throws DocumentException   throw super type of InsertDocumentException
      */
 
-    public String insertDocument(String dbName, String collectionName, DBObject document) throws DatabaseException, CollectionException, DocumentException, ValidationException {
+    public String insertDocument(String dbName, String collectionName, Document document) throws DatabaseException, CollectionException, DocumentException, ValidationException {
         if (dbName == null) {
             throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
 
@@ -149,13 +169,22 @@ public class DocumentServiceImpl implements DocumentService {
             if (!databaseService.getDbList().contains(dbName)) {
                 throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS, "DB [" + dbName + "] DOES NOT EXIST");
             }
+            
+            MongoCursor<String> iterator = mongoInstance.getDatabase(dbName).listCollectionNames().iterator();
+        	Set<String> collectionNames = null;
+        	if(iterator.hasNext()){
+        		collectionNames = new HashSet<>(); 
+        		while(iterator.hasNext()){
+        			collectionNames.add(iterator.next());
+        		}
+        	}
 
-            if (!mongoInstance.getDB(dbName).getCollectionNames().contains(collectionName)) {
+            if (!collectionNames.contains(collectionName)) {
                 throw new CollectionException(ErrorCodes.COLLECTION_DOES_NOT_EXIST, "COLLECTION [ " + collectionName + "] _DOES_NOT_EXIST in Db [ " + dbName + "]");
             }
 
             // MongoDb permits Duplicate document Insert
-            mongoInstance.getDB(dbName).getCollection(collectionName).insert(document);
+            mongoInstance.getDatabase(dbName).getCollection(collectionName).insertOne(document);
             result = "Inserted Document with Data : [" + document + "]";
         } catch (MongoException e) {
             throw new DocumentException(ErrorCodes.DOCUMENT_CREATION_EXCEPTION, e.getMessage());
@@ -180,7 +209,7 @@ public class DocumentServiceImpl implements DocumentService {
      * @throws DocumentException   throw super type of UpdateDocumentException
      */
 
-    public String updateDocument(String dbName, String collectionName, String _id, DBObject newData) throws DatabaseException, CollectionException, DocumentException, ValidationException {
+    public String updateDocument(String dbName, String collectionName, String _id, Document newData) throws DatabaseException, CollectionException, DocumentException, ValidationException {
 
         if (dbName == null) {
             throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
@@ -197,7 +226,7 @@ public class DocumentServiceImpl implements DocumentService {
             throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection Name Empty");
         }
         String result = null;
-        DBObject documentData = null;
+        Document documentData = null;
         try {
             if (!databaseService.getDbList().contains(dbName)) {
                 throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS, "DB [" + dbName + "] DOES NOT EXIST");
@@ -226,16 +255,18 @@ public class DocumentServiceImpl implements DocumentService {
                 // as newData as id of string type but we need ObjectId type
                 newData.put("_id", docId);
             }
-            DBObject query = new BasicDBObject("_id", docId);
+            Document query = new Document("_id", docId);
+            
+            MongoCollection<Document> collection = mongoInstance.getDatabase(dbName).getCollection(collectionName);
 
-            DBCollection collection = mongoInstance.getDB(dbName).getCollection(collectionName);
-            DBObject doc = collection.findOne(query);
-            if (doc == null) {
+            documentData = collection.findOneAndUpdate(query, newData);
+            
+            if (documentData == null) {
                 throw new DocumentException(ErrorCodes.DOCUMENT_DOES_NOT_EXIST, "Document does not exist !");
             }
 
-            collection.update(doc, newData, true, false);
-            documentData = collection.findOne(query);
+            
+            
 
         } catch (IllegalArgumentException e) {
             // When error converting object Id
