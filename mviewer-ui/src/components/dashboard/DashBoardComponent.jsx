@@ -35,7 +35,7 @@ class DashBoardComponent extends React.Component {
            </nav>
         </header>
            <SideNav connectionId = {this.state.connectionId} propss = {this.props}></SideNav>
-           {childrenWithProps}
+            {childrenWithProps}
         </div>
 
 
