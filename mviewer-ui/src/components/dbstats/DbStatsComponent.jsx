@@ -1,8 +1,6 @@
 import React from 'react'
 import dbStatsStyles from './dbstats.css'
 import $ from 'jquery'
-import {Pagination} from 'react-bootstrap';
-
 
 class DbStatsComponent extends React.Component {
 
@@ -12,9 +10,13 @@ class DbStatsComponent extends React.Component {
           dbNames:[],
           connectionId: this.props.connectionId,
           dbStats: {},
-          selectedDB: null
+          selectedDB: null,
+          sidebarOpen: false
       }
   }
+  // onSetSidebarOpen (open) {
+  //   this.setState({sidebarOpen: open});
+  // }
 
   onClickHandler (item, e) {
 //     $(function() {
