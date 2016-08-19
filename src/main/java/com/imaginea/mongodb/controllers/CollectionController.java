@@ -20,6 +20,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -28,17 +29,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
-import org.bson.Document;
 
-import com.imaginea.mongodb.exceptions.ErrorCodes;
-import com.imaginea.mongodb.exceptions.InvalidHTTPRequestException;
 import com.imaginea.mongodb.services.CollectionService;
-import com.imaginea.mongodb.services.impl.AuthServiceImpl;
 import com.imaginea.mongodb.services.impl.CollectionServiceImpl;
-import com.mongodb.DBCollection;
-import com.mongodb.Mongo;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
 
 import io.swagger.annotations.Api;
 
@@ -88,14 +81,10 @@ public class CollectionController extends BaseController {
 
 		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
 			public Object execute() throws Exception {
-				MongoClient mongoInstance2 = AuthServiceImpl.getInstance().getMongoInstance(connectionId);
-
-				Document document = mongoInstance2.getDatabase(dbName)
-						.runCommand(new Document("collStats", selectedCollection));
-
-				boolean isCapped = (Boolean) document.get("capped");
-
-				return isCapped;
+				
+				CollectionService collectionService = new CollectionServiceImpl(connectionId);
+			
+				return collectionService.isCappedCollection(dbName, selectedCollection);
 			}
 		});
 		return response;
@@ -159,53 +148,43 @@ public class CollectionController extends BaseController {
 	@Path("/{collectionName}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String postCollRequest(@PathParam("dbName") final String dbName,
-			@PathParam("collectionName") final String selectedCollection,
-			@FormParam("newCollName") final String newCollName, @FormParam("updateColl") final String updateColl,
+			@FormParam("newCollName") final String newCollName,
 			@FormParam("isCapped") final String isCapped, @FormParam("capSize") final int capSize,
 			@FormParam("maxDocs") final int maxDocs, @FormParam("autoIndexId") final String autoIndexId,
-			@QueryParam("connectionId") final String connectionId, @QueryParam("action") final String action,
-			@Context final HttpServletRequest request) {
-
-		if (action == null) {
-			InvalidHTTPRequestException e = new InvalidHTTPRequestException(ErrorCodes.ACTION_PARAMETER_ABSENT,
-					"ACTION_PARAMETER_ABSENT");
-			return formErrorResponse(logger, e);
-		}
+			@QueryParam("connectionId") final String connectionId, @Context final HttpServletRequest request) {
 
 		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
 			public Object execute() throws Exception {
 				CollectionService collectionService = new CollectionServiceImpl(connectionId);
 				String status = null;
-				RequestMethod method = null;
-				for (RequestMethod m : RequestMethod.values()) {
-					if ((m.toString()).equals(action)) {
-						method = m;
-						break;
-					}
-				}
-				switch (method) {
-				case PUT: {
-					if (updateColl.equals("false")) {
-						status = collectionService.insertCollection(dbName, newCollName,
-								(isCapped != null && isCapped.equals("on")), capSize, maxDocs,
-								(autoIndexId != null && autoIndexId.equals("on")));
-					} else {
-						status = collectionService.updateCollection(dbName, selectedCollection, newCollName,
-								(isCapped != null && isCapped.equals("on")), capSize, maxDocs,
-								(autoIndexId != null && autoIndexId.equals("on")));
-					}
-					break;
-				}
-				case DELETE: {
-					System.out.println("calling delete collection");
-					status = collectionService.deleteCollection(dbName, selectedCollection);
-					break;
-				}
-				default: {
-					status = "Action parameter value is wrong";
-					break;
-				}
-				}
+				status = collectionService.insertCollection(dbName, newCollName,
+						(isCapped != null && isCapped.equals("on")), capSize, maxDocs,
+						(autoIndexId != null && autoIndexId.equals("on")));
+				return status;
+			}
+		});
+		return response;
+	}
+
+	@PUT
+	@Path("/{collectionName}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateCollRequest(@PathParam("dbName") final String dbName,
+			@PathParam("collectionName") final String selectedCollection,
+			@FormParam("newCollName") final String newCollName, 
+			@FormParam("isCapped") final String isCapped, @FormParam("capSize") final int capSize,
+			@FormParam("maxDocs") final int maxDocs, @FormParam("autoIndexId") final String autoIndexId,
+			@QueryParam("connectionId") final String connectionId, @Context final HttpServletRequest request) {
+
+		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+			public Object execute() throws Exception {
+				CollectionService collectionService = new CollectionServiceImpl(connectionId);
+				String status = null;
+
+				status = collectionService.updateCollection(dbName, selectedCollection, newCollName,
+						(isCapped != null && isCapped.equals("on")), capSize, maxDocs,
+						(autoIndexId != null && autoIndexId.equals("on")));
+
 				return status;
 			}
 		});
@@ -215,24 +194,15 @@ public class CollectionController extends BaseController {
 	@DELETE
 	@Path("/{collectionName}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String deleteCollection(@PathParam("dbName") final String dbName,
+	public String deleteCollRequest(@PathParam("dbName") final String dbName,
 			@PathParam("collectionName") final String selectedCollection,
-			@QueryParam("connectionId") final String connectionId, @QueryParam("action") final String action,
-			@Context final HttpServletRequest request) {
+			@QueryParam("connectionId") final String connectionId, @Context final HttpServletRequest request) {
 		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
 			public Object execute() throws Exception {
 				CollectionService collectionService = new CollectionServiceImpl(connectionId);
-				
-				String status = null;
-				
-				System.out.println("action method "+action); 
-				if (action.equalsIgnoreCase("DELETE")) {
-					System.out.println("calling delete collection");
-					status = collectionService.deleteCollection(dbName, selectedCollection);
 
-				}else{
-					status = "Action parameter value is wrong";
-				}
+				String status = null;
+				status = collectionService.deleteCollection(dbName, selectedCollection);
 				return status;
 			}
 		});

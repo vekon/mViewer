@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -31,9 +32,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.bson.Document;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.imaginea.mongodb.domain.DocumentUserQueryData;
 import com.imaginea.mongodb.exceptions.ApplicationException;
 import com.imaginea.mongodb.exceptions.DocumentException;
 import com.imaginea.mongodb.exceptions.ErrorCodes;
@@ -41,10 +44,9 @@ import com.imaginea.mongodb.exceptions.InvalidMongoCommandException;
 import com.imaginea.mongodb.services.DocumentService;
 import com.imaginea.mongodb.services.impl.DocumentServiceImpl;
 import com.imaginea.mongodb.utils.JSON;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCursor;
 
 import io.swagger.annotations.Api;
 
@@ -126,6 +128,48 @@ public class DocumentController extends BaseController {
 
         return response;
     }
+    
+    @POST
+    @Path("/query")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String executeQuery(@PathParam("dbName") final String dbName,
+                               @PathParam("collectionName") final String collectionName,
+                               @QueryParam("connectionId") final String connectionId,
+                               final DocumentUserQueryData queryData,
+                               @Context final HttpServletRequest request) throws JSONException {
+
+        String response = new ResponseTemplate().execute(logger, connectionId, request,
+            new ResponseCallback() {
+                public Object execute() throws Exception {
+                    DocumentService documentService = new DocumentServiceImpl(connectionId);
+                    // Get query
+                    int startIndex = queryData.getQuery().indexOf("("), endIndex =queryData.getQuery().lastIndexOf(")");
+                    if (startIndex == -1 || endIndex == -1) {
+                        throw new InvalidMongoCommandException(ErrorCodes.INVALID_QUERY, "Invalid query");
+                    }
+                    String cmdStr = queryData.getQuery().substring(0, startIndex);
+                    int lastIndexOfDot = cmdStr.lastIndexOf(".");
+                    if (lastIndexOfDot + 1 == cmdStr.length()) {
+                        // In this case the cmsStr = db.collectionName.
+                        throw new InvalidMongoCommandException(ErrorCodes.COMMAND_EMPTY, "Command is empty");
+                    }
+                    String command = cmdStr.substring(lastIndexOfDot + 1, cmdStr.length());
+                    String collection = null;
+                    int firstIndexOfDot = cmdStr.indexOf(".");
+                    if (firstIndexOfDot != lastIndexOfDot) {
+                        collection = cmdStr.substring(firstIndexOfDot + 1, lastIndexOfDot);
+                    }
+                    String jsonStr = queryData.getQuery().substring(startIndex + 1, endIndex);
+                    int docsLimit = Integer.parseInt(queryData.getLimit());
+                    int docsSkip = Integer.parseInt(queryData.getSkip());
+                    return documentService.executeQuery(dbName, collection, command, jsonStr, queryData.getFields(), queryData.getSortBy(), docsLimit, docsSkip, queryData.isAllKeys());
+                }
+            });
+
+        return response;
+    }
+
 
     /**
      * Maps GET Request to get all keys of document inside a collection inside a
@@ -149,15 +193,23 @@ public class DocumentController extends BaseController {
         String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
             public Object execute() throws Exception {
                 // Perform the operation here only.
-                Mongo mongoInstance = authService.getMongoInstance(connectionId);
-                long count = mongoInstance.getDB(dbName).getCollection(collectionName).count();
-                DBCursor cursor = mongoInstance.getDB(dbName).getCollection(collectionName).find();
-                if (!allKeys)
-                    cursor.limit(10);
-                DBObject doc = new BasicDBObject();
+                MongoClient mongoInstance = authService.getMongoInstance(connectionId);
+                
+                long count = mongoInstance.getDatabase(dbName).getCollection(collectionName).count();
+                FindIterable<Document> findIterable = mongoInstance.getDatabase(dbName).getCollection(collectionName).find();
+                
+                
+                
+                if (!allKeys){
+                	findIterable.limit(10);
+                }
+                
+                MongoCursor<Document> cursor = findIterable.iterator();
+                    
+                
                 Set<String> completeSet = new HashSet<String>();
                 while (cursor.hasNext()) {
-                    doc = cursor.next();
+                    Document doc = cursor.next();
                     getNestedKeys(doc, completeSet, "");
                 }
                 completeSet.remove("_id");
@@ -179,12 +231,12 @@ public class DocumentController extends BaseController {
      * @param prefix      For nested docs. For the key <foo.bar.baz>, the prefix would
      *                    be <foo.bar>
      */
-    private void getNestedKeys(DBObject doc, Set<String> completeSet, String prefix) {
+    private void getNestedKeys(Document doc, Set<String> completeSet, String prefix) {
         Set<String> allKeys = doc.keySet();
         for (String key : allKeys) {
             completeSet.add(prefix + key);
-            if (doc.get(key) instanceof BasicDBObject) {
-                getNestedKeys((DBObject) doc.get(key), completeSet, prefix + key + ".");
+            if (doc.get(key) instanceof Document) {
+                getNestedKeys((Document) doc.get(key), completeSet, prefix + key + ".");
             }
         }
     }
@@ -232,7 +284,7 @@ public class DocumentController extends BaseController {
                             ApplicationException e = new DocumentException(ErrorCodes.DOCUMENT_DOES_NOT_EXIST, "Document Data Missing in Request Body");
                             result = formErrorResponse(logger, e);
                         } else {
-                            DBObject document = (DBObject) JSON.parse(documentData);
+                            Document document = (Document) JSON.parse(documentData);
                             result = documentService.insertDocument(dbName, collectionName, document);
                         }
                         break;
@@ -252,7 +304,7 @@ public class DocumentController extends BaseController {
                             formErrorResponse(logger, e);
                         } else {
                             // New Document Keys
-                            DBObject newDoc = (DBObject) JSON.parse(keys);
+                            Document newDoc = (Document) JSON.parse(keys);
                             result = documentService.updateDocument(dbName, collectionName, _id, newDoc);
                             Set<String> completeSet = new HashSet<String>();
                             getNestedKeys(newDoc, completeSet, "");

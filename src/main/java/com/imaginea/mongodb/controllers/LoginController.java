@@ -41,6 +41,8 @@ import com.mongodb.MongoException;
 import com.mongodb.MongoInternalException;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 /**O
  * Authenticates User to Mongo Db by checking the user in <system.users>
@@ -65,7 +67,8 @@ public class LoginController extends BaseController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String authenticateUser(final UserLoginData userLoginData , @Context final HttpServletRequest request) {
+    @ApiOperation(value ="for login to mongodb" , notes="In order to login you must pass atleast host and port" , position = 1)
+    public String authenticateUser(@ApiParam(value="user login data in json format" , required = true) final UserLoginData userLoginData , @Context final HttpServletRequest request) {
 
     	System.out.println("Request comes as JSON object");
         String response = ErrorTemplate.execute(logger, new ResponseCallback() {

@@ -5,6 +5,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import eu.medsea.mimeutil.MimeType;
 import eu.medsea.mimeutil.MimeUtil;
+
+import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -150,8 +152,8 @@ public class ApplicationUtils {
         return result;
     }
 
-    public static JSONObject constructResponse(boolean isEditable, DBObject... dbObject) throws JSONException {
-        List<DBObject> docs = Arrays.asList(dbObject);
+    public static JSONObject constructResponse(boolean isEditable, Document... documents) throws JSONException {
+        List<Document> docs = Arrays.asList(documents);
         return constructResponse(isEditable, docs.size(), docs);
     }
 }

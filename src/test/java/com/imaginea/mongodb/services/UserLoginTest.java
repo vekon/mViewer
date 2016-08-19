@@ -30,6 +30,7 @@ import com.imaginea.mongodb.controllers.TestingTemplate;
 import com.imaginea.mongodb.utils.JSON;
 import com.mongodb.BasicDBObject;
 import org.apache.log4j.Logger;
+import org.bson.Document;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -70,17 +71,17 @@ public class UserLoginTest extends TestingTemplate {
      * will check if a mongoInstacne is set by the servlet.
      */
 
-    //@Test
+    @Test
     public void testUserLoginRequest() {
         ErrorTemplate.execute(logger, new ResponseCallback() {
             public Object execute() throws Exception {
                 // Insert user in admin db
-                mongoInstance.getDB("admin").addUser(testUsername, testPassword.toCharArray());
+                mongoInstance.getDatabase("admin").runCommand(new Document("user" , testUsername).append("pwd", testPassword.toCharArray()));
                 String host = mongoInstance.getAddress().getHost();
                 Integer port = (Integer) (mongoInstance.getAddress().getPort());
                 HttpServletRequest request = new MockHttpServletRequest();
                 // Call Service for login
-                String response = null;//loginController.authenticateUser(testUsername, testPassword, host, port.toString(), null, request);
+                String response = loginController.authenticateUser(testUsername, testPassword, host, port.toString(), null, request);
                 if (response.contains("Login Success")) {
                     BasicDBObject responseObject = ((BasicDBObject) JSON.parse(response));
                     String connectionId = (String) ((BasicDBObject) responseObject.get("response")).get("connectionId");

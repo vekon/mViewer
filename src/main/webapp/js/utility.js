@@ -244,10 +244,10 @@ YUI.add('utility', function(Y) {
             return "services/[0]/collection?connectionId=[1]&ts=[2]".format(sm.currentDB(), sm.connectionId(), sm.now());
         },
         insertColl: function() {
-            return "services/[0]/collection/[1]?connectionId=[2]&action=PUT&ts=[3]".format(sm.currentDB(), sm.currentColl(), sm.connectionId(), sm.now());
+            return "services/[0]/collection/[1]?connectionId=[2]&ts=[3]".format(sm.currentDB(), sm.currentColl(), sm.connectionId(), sm.now());
         },
         dropColl: function() {
-            return "services/[0]/collection/[1]?connectionId=[2]&action=DELETE&ts=[3]".format(sm.currentDB(), sm.currentColl(), sm.connectionId(), sm.now());
+            return "services/[0]/collection/[1]?connectionId=[2]&ts=[3]".format(sm.currentDB(), sm.currentColl(), sm.connectionId(), sm.now());
         },
         isCappedCollection: function() {
             return "services/[0]/collection/[1]/isCapped?connectionId=[2]&ts=[3]".format(sm.currentDB(), sm.currentColl(), sm.connectionId(), sm.now());

@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -186,7 +187,7 @@ public class CollectionServiceImpl implements CollectionService {
 				options.autoIndex(autoIndexId);
 				options.sizeInBytes(size);
 			}
-			
+
 			mongoInstance.getDatabase(dbName).createCollection(newCollName, options);
 		} catch (MongoException m) {
 			throw new CollectionException(ErrorCodes.COLLECTION_CREATION_EXCEPTION, m.getMessage());
@@ -400,12 +401,11 @@ public class CollectionServiceImpl implements CollectionService {
 				throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
 						"DB with name [" + dbName + "]DOES_NOT_EXIST");
 			}
-			if (!mongoInstance.getDB(dbName).getCollectionNames().contains(collectionName)) {
+			if (!getCollList(dbName).contains(collectionName)) {
 				throw new CollectionException(ErrorCodes.COLLECTION_DOES_NOT_EXIST,
 						"Collection with name [" + collectionName + "] DOES NOT EXIST in Database [" + dbName + "]");
 			}
-			CommandResult stats = mongoInstance.getDB(dbName).getCollection(collectionName).getStats();
-
+			Document stats = mongoInstance.getDatabase(dbName).runCommand(new Document("collStats", collectionName));
 			Set<String> keys = stats.keySet();
 			Iterator<String> keyIterator = keys.iterator();
 
@@ -423,5 +423,31 @@ public class CollectionServiceImpl implements CollectionService {
 			throw new CollectionException(ErrorCodes.GET_COLL_STATS_EXCEPTION, m.getMessage());
 		}
 		return collStats;
+	}
+
+	@Override
+	public boolean isCappedCollection(String dbName, String collectionName)
+			throws DatabaseException, CollectionException, ValidationException {
+
+		if (dbName == null) {
+			throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
+
+		}
+		if (dbName.equals("")) {
+			throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Empty");
+		}
+
+		if (collectionName == null) {
+			throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection name is null");
+		}
+		if (collectionName.equals("")) {
+			throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection Name Empty");
+		}
+
+		Document document = mongoInstance.getDatabase(dbName).runCommand(new Document("collStats", collectionName));
+
+		boolean isCapped = (Boolean) document.get("capped");
+
+		return isCapped;
 	}
 }

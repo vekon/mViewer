@@ -365,7 +365,7 @@ YUI({
             var request = Y.io(MV.URLMap.dropColl(),
                 // configuration for dropping the collection
                 {
-                    method: "POST",
+                    method: "DELETE",
                     on: {
                         success: function(ioId, responseObject) {
                             var jsonObject = MV.toJSON(responseObject);

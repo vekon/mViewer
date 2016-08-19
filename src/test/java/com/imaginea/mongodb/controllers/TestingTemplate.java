@@ -5,10 +5,14 @@ import com.imaginea.mongodb.utils.JSON;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.mongodb.MongoInternalException;
+import com.mongodb.client.MongoDatabase;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.bson.Document;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +34,7 @@ import java.util.Properties;
  */
 public class TestingTemplate extends BaseController {
 
-    protected static Mongo mongoInstance;
+    protected static MongoClient mongoInstance;
 
     private static Properties prop;
     private static String MONGO_CONFIG_FILE = "src/test/resources/mongo.config";
@@ -81,10 +85,10 @@ public class TestingTemplate extends BaseController {
 		}
 	}
 
-    public static Mongo getTestMongoInstance() {
+    public static MongoClient getTestMongoInstance() {
         try {
-            Mongo mongo = new Mongo(getMongoHost(), getMongoPort());
-            DB adminDB = mongo.getDB("admin");
+            MongoClient mongo = new MongoClient(getMongoHost(), getMongoPort());
+            MongoDatabase database = mongo.getDatabase("admin");
             //need to change
             //adminDB.authenticate(getMongoUsername(), getMongoPassword().toCharArray());
             return mongo;
@@ -95,8 +99,9 @@ public class TestingTemplate extends BaseController {
     }
 
     protected String loginAndGetConnectionId(HttpServletRequest request) {
-        String response = null;//new LoginController().authenticateUser(getMongoUsername(), getMongoPassword(), getMongoHost(), String.valueOf(getMongoPort()), null, request);
-        BasicDBObject responseObject = (BasicDBObject) JSON.parse(response);
+        String response = new LoginController().authenticateUser(getMongoUsername(), getMongoPassword(), getMongoHost(), String.valueOf(getMongoPort()), null, request);
+        
+        BasicDBObject responseObject = (BasicDBObject)JSON.parse(response);
         return (String) ((BasicDBObject)((BasicDBObject) responseObject.get("response")).get("result")).get("connectionId");
     }
 

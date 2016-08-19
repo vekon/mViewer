@@ -34,7 +34,12 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.CreateCollectionOptions;
+
 import org.apache.log4j.Logger;
+import org.bson.Document;
 import org.json.JSONException;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -43,7 +48,9 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -82,7 +89,7 @@ public class DocumentControllerTest extends TestingTemplate {
      * then tested ok.
      */
 
-//    @Test
+    @Test
     public void getDocRequest() throws DocumentException, JSONException {
 
         // ArrayList of several test Objects - possible inputs
@@ -96,23 +103,33 @@ public class DocumentControllerTest extends TestingTemplate {
         testCollNames.add("foo");
         testCollNames.add("");
 
-        List<DBObject> testDocumentNames = new ArrayList<DBObject>();
-        testDocumentNames.add(new BasicDBObject("test", "test"));
+        List<Document> testDocumentNames = new ArrayList<Document>();
+        testDocumentNames.add(new Document("test", "test"));
 
         for (final String dbName : testDbNames) {
             for (final String collName : testCollNames) {
-                for (final DBObject documentName : testDocumentNames)
+                for (final Document documentName : testDocumentNames)
                     TestingTemplate.execute(logger, new ResponseCallback() {
                         public Object execute() throws Exception {
                             try {
                                 if (dbName != null && collName != null) {
                                     if (!dbName.equals("") && !collName.equals("")) {
-                                        if (!mongoInstance.getDB(dbName).getCollectionNames().contains(collName)) {
-                                            DBObject options = new BasicDBObject();
-                                            mongoInstance.getDB(dbName).createCollection(collName, options);
+                                    	
+                                    	MongoCursor<String> iterator = mongoInstance.getDatabase(dbName).listCollectionNames().iterator();
+        								
+        								Set<String> collectionNames = new HashSet<>();
+        								
+        								while (iterator.hasNext()) {
+        									collectionNames.add(iterator.next());
+        									
+        								}
+                                    	
+                                        if (!collectionNames.contains(collName)) {
+                                            CreateCollectionOptions options = new CreateCollectionOptions();
+                                            mongoInstance.getDatabase(dbName).createCollection(collName, options);
                                         }
 
-                                        mongoInstance.getDB(dbName).getCollection(collName).insert(documentName);
+                                        mongoInstance.getDatabase(dbName).getCollection(collName).insertOne(documentName);
                                     }
                                 }
 
@@ -189,19 +206,27 @@ public class DocumentControllerTest extends TestingTemplate {
         testCollNames.add("foo");
         testCollNames.add("");
 
-        List<DBObject> testDocumentNames = new ArrayList<DBObject>();
-        testDocumentNames.add(new BasicDBObject("test", "test"));
+        List<Document> testDocumentNames = new ArrayList<>();
+        testDocumentNames.add(new Document("test", "test"));
         for (final String dbName : testDbNames) {
             for (final String collName : testCollNames) {
-                for (final DBObject documentName : testDocumentNames)
+                for (final Document documentName : testDocumentNames)
                     TestingTemplate.execute(logger, new ResponseCallback() {
                         public Object execute() throws Exception {
                             try {
                                 if (dbName != null && collName != null) {
                                     if (!dbName.equals("") && !collName.equals("")) {
-                                        if (!mongoInstance.getDB(dbName).getCollectionNames().contains(collName)) {
-                                            DBObject options = new BasicDBObject();
-                                            mongoInstance.getDB(dbName).createCollection(collName, options);
+                                    	MongoCursor<String> iterator = mongoInstance.getDatabase(dbName).listCollectionNames().iterator();
+        								
+        								Set<String> collectionNames = new HashSet<>();
+        								
+        								while (iterator.hasNext()) {
+        									collectionNames.add(iterator.next());
+        									
+        								}
+                                        if (!collectionNames.contains(collName)) {
+                                            CreateCollectionOptions options = new CreateCollectionOptions();
+                                            mongoInstance.getDatabase(dbName).createCollection(collName, options);
                                         }
                                     }
                                 }
@@ -230,15 +255,15 @@ public class DocumentControllerTest extends TestingTemplate {
                                         assertEquals(ErrorCodes.COLLECTION_NAME_EMPTY, code);// DB
                                         // exists
                                     } else {
-                                        List<DBObject> documentList = new ArrayList<DBObject>();
+                                        List<Document> documentList = new ArrayList<>();
 
-                                        DBCursor cursor = mongoInstance.getDB(dbName).getCollection(collName).find();
+                                        MongoCursor<Document> cursor = mongoInstance.getDatabase(dbName).getCollection(collName).find().iterator();
                                         while (cursor.hasNext()) {
                                             documentList.add(cursor.next());
                                         }
 
                                         boolean flag = false;
-                                        for (DBObject document : documentList) {
+                                        for (Document document : documentList) {
                                             for (String key : documentName.keySet()) {
                                                 if (document.get(key) != null) {
                                                     assertEquals(document.get(key), documentName.get(key));
@@ -253,7 +278,7 @@ public class DocumentControllerTest extends TestingTemplate {
                                             assert (false);
                                         }
                                         // Delete the document
-                                        mongoInstance.getDB(dbName).getCollection(collName).remove(documentName);
+                                        mongoInstance.getDatabase(dbName).getCollection(collName).findOneAndDelete(documentName);
                                     }
                                 }
 

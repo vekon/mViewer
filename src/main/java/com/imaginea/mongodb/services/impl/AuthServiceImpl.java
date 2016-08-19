@@ -58,13 +58,18 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private boolean checkAuthMode(ConnectionDetails connectionDetails) {
-        Mongo mongo = null;
+        MongoClient mongo = null;
         try {
-            mongo = new Mongo(connectionDetails.getHostIp(), connectionDetails.getHostPort());
-            mongo.getDatabaseNames();
+            mongo = new MongoClient(connectionDetails.getHostIp(), connectionDetails.getHostPort());
+            mongo.listDatabaseNames();
             return false;
         } catch (Exception e) {
             return true;
+        }finally{
+        	if(mongo != null){
+        		mongo.close();
+        		mongo = null;
+        	}
         }
     }
 
