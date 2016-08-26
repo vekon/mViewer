@@ -5,60 +5,60 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class UserLoginData {
 
-	private String userName;
-	private String password;
-	private String host;
-	private String port;
-	private String databases;
-	
-	public UserLoginData() {
-		// TODO Auto-generated constructor stub
-	}
+  private String userName;
+  private String password;
+  private String host;
+  private String port;
+  private String databases;
 
-	public String getUserName() {
-		return userName;
-	}
+  public UserLoginData() {
+    // TODO Auto-generated constructor stub
+  }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+  public String getUserName() {
+    return userName;
+  }
 
-	public String getPassword() {
-		return password;
-	}
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+  public String getPassword() {
+    return password;
+  }
 
-	public String getHost() {
-		return host;
-	}
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-	public void setHost(String host) {
-		this.host = host;
-	}
+  public String getHost() {
+    return host;
+  }
 
-	public String getPort() {
-		return port;
-	}
+  public void setHost(String host) {
+    this.host = host;
+  }
 
-	public void setPort(String port) {
-		this.port = port;
-	}
+  public String getPort() {
+    return port;
+  }
 
-	public String getDatabases() {
-		return databases;
-	}
+  public void setPort(String port) {
+    this.port = port;
+  }
 
-	public void setDatabases(String databases) {
-		this.databases = databases;
-	}
+  public String getDatabases() {
+    return databases;
+  }
 
-	@Override
-	public String toString() {
-		return "UserLoginData [userName=" + userName + ", password=" + password + ", host=" + host + ", port=" + port
-				+ ", databases=" + databases + "]";
-	}
-	
+  public void setDatabases(String databases) {
+    this.databases = databases;
+  }
+
+  @Override
+  public String toString() {
+    return "UserLoginData [userName=" + userName + ", password=" + password + ", host=" + host
+        + ", port=" + port + ", databases=" + databases + "]";
+  }
+
 }

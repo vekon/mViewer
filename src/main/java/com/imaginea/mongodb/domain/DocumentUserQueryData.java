@@ -5,70 +5,70 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class DocumentUserQueryData {
 
-	private String query;
-	private String fields;
-	private String limit;
-	private String skip;
-	private String sortBy;
-	private boolean allKeys;
-	
-	public DocumentUserQueryData() {
-		// TODO Auto-generated constructor stub
-	}
+  private String query;
+  private String fields;
+  private String limit;
+  private String skip;
+  private String sortBy;
+  private boolean allKeys;
 
-	public String getQuery() {
-		return query;
-	}
+  public DocumentUserQueryData() {
+    // TODO Auto-generated constructor stub
+  }
 
-	public void setQuery(String query) {
-		this.query = query;
-	}
+  public String getQuery() {
+    return query;
+  }
 
-	public String getFields() {
-		return fields;
-	}
+  public void setQuery(String query) {
+    this.query = query;
+  }
 
-	public void setFields(String fields) {
-		this.fields = fields;
-	}
+  public String getFields() {
+    return fields;
+  }
 
-	public String getLimit() {
-		return limit;
-	}
+  public void setFields(String fields) {
+    this.fields = fields;
+  }
 
-	public void setLimit(String limit) {
-		this.limit = limit;
-	}
+  public String getLimit() {
+    return limit;
+  }
 
-	public String getSkip() {
-		return skip;
-	}
+  public void setLimit(String limit) {
+    this.limit = limit;
+  }
 
-	public void setSkip(String skip) {
-		this.skip = skip;
-	}
+  public String getSkip() {
+    return skip;
+  }
 
-	public String getSortBy() {
-		return sortBy;
-	}
+  public void setSkip(String skip) {
+    this.skip = skip;
+  }
 
-	public void setSortBy(String sortBy) {
-		this.sortBy = sortBy;
-	}
+  public String getSortBy() {
+    return sortBy;
+  }
 
-	public boolean isAllKeys() {
-		return allKeys;
-	}
+  public void setSortBy(String sortBy) {
+    this.sortBy = sortBy;
+  }
 
-	public void setAllKeys(boolean allKeys) {
-		this.allKeys = allKeys;
-	}
+  public boolean isAllKeys() {
+    return allKeys;
+  }
 
-	@Override
-	public String toString() {
-		return "DocumentUserQueryData [query=" + query + ", fields=" + fields + ", limit=" + limit + ", skip=" + skip
-				+ ", sortBy=" + sortBy + ", allKeys=" + allKeys + "]";
-	}
-	
-	
+  public void setAllKeys(boolean allKeys) {
+    this.allKeys = allKeys;
+  }
+
+  @Override
+  public String toString() {
+    return "DocumentUserQueryData [query=" + query + ", fields=" + fields + ", limit=" + limit
+        + ", skip=" + skip + ", sortBy=" + sortBy + ", allKeys=" + allKeys + "]";
+  }
+
+
 }
