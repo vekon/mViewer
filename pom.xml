@@ -7,7 +7,7 @@
 	<version>0.9.2</version>
 	<packaging>war</packaging>
 	<properties>
-		<!-- <skipTests>true</skipTests> -->
+		<skipTests>true</skipTests>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>

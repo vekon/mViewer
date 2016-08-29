@@ -10,11 +10,11 @@ import com.mongodb.MongoClient;
  */
 public interface AuthService {
 
-    String authenticate(ConnectionDetails connectionDetails) throws ApplicationException;
+  String authenticate(ConnectionDetails connectionDetails) throws ApplicationException;
 
-    MongoConnectionDetails getMongoConnectionDetails(String connectionId) throws ApplicationException;
+  MongoConnectionDetails getMongoConnectionDetails(String connectionId) throws ApplicationException;
 
-    MongoClient getMongoInstance(String connectionId) throws ApplicationException;
+  MongoClient getMongoInstance(String connectionId) throws ApplicationException;
 
-    void disconnectConnection(String connectionId) throws ApplicationException;
+  void disconnectConnection(String connectionId) throws ApplicationException;
 }

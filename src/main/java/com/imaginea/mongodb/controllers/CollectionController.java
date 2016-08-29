@@ -1,17 +1,13 @@
 /*
- * Copyright (c) 2011 Imaginea Technologies Private Ltd.
- * Hyderabad, India
+ * Copyright (c) 2011 Imaginea Technologies Private Ltd. Hyderabad, India
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in
+ * writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
  */
 package com.imaginea.mongodb.controllers;
 
@@ -36,17 +32,15 @@ import com.imaginea.mongodb.services.impl.CollectionServiceImpl;
 import io.swagger.annotations.Api;
 
 /**
- * Defines resources for performing create/drop operations on collections
- * present inside databases in Mongo we are currently connected to. Also provide
- * resources to get list of all collections in a database present in mongo and
- * also statistics of a particular collection.
+ * Defines resources for performing create/drop operations on collections present inside databases
+ * in Mongo we are currently connected to. Also provide resources to get list of all collections in
+ * a database present in mongo and also statistics of a particular collection.
  * <p/>
- * These resources map different HTTP requests made by the client to access
- * these resources to services file which performs these operations. The
- * resources also form a JSON response using the output received from the
- * services files. GET and POST request resources for collections are defined
- * here. For PUT and DELETE functionality , a POST request with an action
- * parameter taking values PUT and DELETE is made.
+ * These resources map different HTTP requests made by the client to access these resources to
+ * services file which performs these operations. The resources also form a JSON response using the
+ * output received from the services files. GET and POST request resources for collections are
+ * defined here. For PUT and DELETE functionality , a POST request with an action parameter taking
+ * values PUT and DELETE is made.
  *
  * @author Rachit Mittal
  * @since 4 July 2011
@@ -54,158 +48,150 @@ import io.swagger.annotations.Api;
 @Path("/{dbName}/collection")
 @Api(value = "/{dbName}/collection", description = "Mongo Database Collection Operations")
 public class CollectionController extends BaseController {
-	private final static Logger logger = Logger.getLogger(CollectionController.class);
+  private final static Logger logger = Logger.getLogger(CollectionController.class);
 
-	/**
-	 * Maps GET Request to get list of collections inside databases present in
-	 * mongo db to a service function that returns the list. Also forms the JSON
-	 * response for this request and sent it to client. In case of any exception
-	 * from the service files an error object if formed.
-	 *
-	 * @param dbName
-	 *            Name of database
-	 * @param selectedCollection
-	 *            Name of selected Collection
-	 * @param connectionId
-	 *            Mongo Db Configuration provided by user to connect to.
-	 * @param request
-	 *            Get the HTTP request context to extract session parameters
-	 * @return String of JSON Format with list of all collections.
-	 */
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/{collectionName}/isCapped")
-	public String isCappedCollection(@PathParam("dbName") final String dbName,
-			@PathParam("collectionName") final String selectedCollection,
-			@QueryParam("connectionId") final String connectionId, @Context final HttpServletRequest request) {
+  /**
+   * Maps GET Request to get list of collections inside databases present in mongo db to a service
+   * function that returns the list. Also forms the JSON response for this request and sent it to
+   * client. In case of any exception from the service files an error object if formed.
+   *
+   * @param dbName Name of database
+   * @param selectedCollection Name of selected Collection
+   * @param connectionId Mongo Db Configuration provided by user to connect to.
+   * @param request Get the HTTP request context to extract session parameters
+   * @return String of JSON Format with list of all collections.
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/{collectionName}/isCapped")
+  public String isCappedCollection(@PathParam("dbName") final String dbName,
+      @PathParam("collectionName") final String selectedCollection,
+      @QueryParam("connectionId") final String connectionId,
+      @Context final HttpServletRequest request) {
 
-		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
-			public Object execute() throws Exception {
-				
-				CollectionService collectionService = new CollectionServiceImpl(connectionId);
-			
-				return collectionService.isCappedCollection(dbName, selectedCollection);
-			}
-		});
-		return response;
-	}
+    String response =
+        new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+          public Object execute() throws Exception {
 
-	/**
-	 * Maps GET Request to get list of collections inside databases present in
-	 * mongo db to a service function that returns the list. Also forms the JSON
-	 * response for this request and sent it to client. In case of any exception
-	 * from the service files an error object if formed.
-	 *
-	 * @param dbName
-	 *            Name of database
-	 * @param connectionId
-	 *            Mongo Db Configuration provided by user to connect to.
-	 * @param request
-	 *            Get the HTTP request context to extract session parameters
-	 * @return String of JSON Format with list of all collections.
-	 */
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public String getCollList(@PathParam("dbName") final String dbName,
-			@QueryParam("connectionId") final String connectionId, @Context final HttpServletRequest request) {
+            CollectionService collectionService = new CollectionServiceImpl(connectionId);
 
-		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
-			public Object execute() throws Exception {
-				CollectionService collectionService = new CollectionServiceImpl(connectionId);
-				return collectionService.getCollList(dbName);
-			}
-		});
-		return response;
-	}
+            return collectionService.isCappedCollection(dbName, selectedCollection);
+          }
+        });
+    return response;
+  }
 
-	/**
-	 * Maps POST Request to perform create/drop on collections inside databases
-	 * present in mongo db to a service function that returns the list. Also
-	 * forms the JSON response for this request and sent it to client. In case
-	 * of any exception from the service files an error object if formed.
-	 *
-	 * @param dbName
-	 *            Name of Database
-	 * @param isCapped
-	 *            Specify if the collection is capped
-	 * @param capSize
-	 *            Specify the capSize of collection
-	 * @param maxDocs
-	 *            specify maximum no of documents in the collection
-	 * @param selectedCollection
-	 *            Name of collection for which to perform create/drop operation
-	 *            depending on action parameter
-	 * @param action
-	 *            Query Parameter with value PUT for identifying a create
-	 *            database request and value DELETE for dropping a database.
-	 * @param request
-	 *            Get the HTTP request context to extract session parameters
-	 * @param connectionId
-	 *            MongoDB Configuration provided by user to connect to.
-	 * @return String with status of operation performed.
-	 */
-	@POST
-	@Path("/{collectionName}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String postCollRequest(@PathParam("dbName") final String dbName,
-			@FormParam("newCollName") final String newCollName,
-			@FormParam("isCapped") final String isCapped, @FormParam("capSize") final int capSize,
-			@FormParam("maxDocs") final int maxDocs, @FormParam("autoIndexId") final String autoIndexId,
-			@QueryParam("connectionId") final String connectionId, @Context final HttpServletRequest request) {
+  /**
+   * Maps GET Request to get list of collections inside databases present in mongo db to a service
+   * function that returns the list. Also forms the JSON response for this request and sent it to
+   * client. In case of any exception from the service files an error object if formed.
+   *
+   * @param dbName Name of database
+   * @param connectionId Mongo Db Configuration provided by user to connect to.
+   * @param request Get the HTTP request context to extract session parameters
+   * @return String of JSON Format with list of all collections.
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getCollList(@PathParam("dbName") final String dbName,
+      @QueryParam("connectionId") final String connectionId,
+      @Context final HttpServletRequest request) {
 
-		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
-			public Object execute() throws Exception {
-				CollectionService collectionService = new CollectionServiceImpl(connectionId);
-				String status = null;
-				status = collectionService.insertCollection(dbName, newCollName,
-						(isCapped != null && isCapped.equals("on")), capSize, maxDocs,
-						(autoIndexId != null && autoIndexId.equals("on")));
-				return status;
-			}
-		});
-		return response;
-	}
+    String response =
+        new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+          public Object execute() throws Exception {
+            CollectionService collectionService = new CollectionServiceImpl(connectionId);
+            return collectionService.getCollList(dbName);
+          }
+        });
+    return response;
+  }
 
-	@PUT
-	@Path("/{collectionName}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String updateCollRequest(@PathParam("dbName") final String dbName,
-			@PathParam("collectionName") final String selectedCollection,
-			@FormParam("newCollName") final String newCollName, 
-			@FormParam("isCapped") final String isCapped, @FormParam("capSize") final int capSize,
-			@FormParam("maxDocs") final int maxDocs, @FormParam("autoIndexId") final String autoIndexId,
-			@QueryParam("connectionId") final String connectionId, @Context final HttpServletRequest request) {
+  /**
+   * Maps POST Request to perform create/drop on collections inside databases present in mongo db to
+   * a service function that returns the list. Also forms the JSON response for this request and
+   * sent it to client. In case of any exception from the service files an error object if formed.
+   *
+   * @param dbName Name of Database
+   * @param isCapped Specify if the collection is capped
+   * @param capSize Specify the capSize of collection
+   * @param maxDocs specify maximum no of documents in the collection
+   * @param selectedCollection Name of collection for which to perform create/drop operation
+   *        depending on action parameter
+   * @param action Query Parameter with value PUT for identifying a create database request and
+   *        value DELETE for dropping a database.
+   * @param request Get the HTTP request context to extract session parameters
+   * @param connectionId MongoDB Configuration provided by user to connect to.
+   * @return String with status of operation performed.
+   */
+  @POST
+  @Path("/{collectionName}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String postCollRequest(@PathParam("dbName") final String dbName,
+      @FormParam("newCollName") final String newCollName,
+      @FormParam("isCapped") final String isCapped, @FormParam("capSize") final int capSize,
+      @FormParam("maxDocs") final int maxDocs, @FormParam("autoIndexId") final String autoIndexId,
+      @QueryParam("connectionId") final String connectionId,
+      @Context final HttpServletRequest request) {
 
-		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
-			public Object execute() throws Exception {
-				CollectionService collectionService = new CollectionServiceImpl(connectionId);
-				String status = null;
+    String response =
+        new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+          public Object execute() throws Exception {
+            CollectionService collectionService = new CollectionServiceImpl(connectionId);
+            String status = null;
+            status = collectionService.insertCollection(dbName, newCollName,
+                (isCapped != null && isCapped.equals("on")), capSize, maxDocs,
+                (autoIndexId != null && autoIndexId.equals("on")));
+            return status;
+          }
+        });
+    return response;
+  }
 
-				status = collectionService.updateCollection(dbName, selectedCollection, newCollName,
-						(isCapped != null && isCapped.equals("on")), capSize, maxDocs,
-						(autoIndexId != null && autoIndexId.equals("on")));
+  @PUT
+  @Path("/{collectionName}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String updateCollRequest(@PathParam("dbName") final String dbName,
+      @PathParam("collectionName") final String selectedCollection,
+      @FormParam("newCollName") final String newCollName,
+      @FormParam("isCapped") final String isCapped, @FormParam("capSize") final int capSize,
+      @FormParam("maxDocs") final int maxDocs, @FormParam("autoIndexId") final String autoIndexId,
+      @QueryParam("connectionId") final String connectionId,
+      @Context final HttpServletRequest request) {
 
-				return status;
-			}
-		});
-		return response;
-	}
+    String response =
+        new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+          public Object execute() throws Exception {
+            CollectionService collectionService = new CollectionServiceImpl(connectionId);
+            String status = null;
 
-	@DELETE
-	@Path("/{collectionName}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String deleteCollRequest(@PathParam("dbName") final String dbName,
-			@PathParam("collectionName") final String selectedCollection,
-			@QueryParam("connectionId") final String connectionId, @Context final HttpServletRequest request) {
-		String response = new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
-			public Object execute() throws Exception {
-				CollectionService collectionService = new CollectionServiceImpl(connectionId);
+            status = collectionService.updateCollection(dbName, selectedCollection, newCollName,
+                (isCapped != null && isCapped.equals("on")), capSize, maxDocs,
+                (autoIndexId != null && autoIndexId.equals("on")));
 
-				String status = null;
-				status = collectionService.deleteCollection(dbName, selectedCollection);
-				return status;
-			}
-		});
-		return response;
-	}
+            return status;
+          }
+        });
+    return response;
+  }
+
+  @DELETE
+  @Path("/{collectionName}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String deleteCollRequest(@PathParam("dbName") final String dbName,
+      @PathParam("collectionName") final String selectedCollection,
+      @QueryParam("connectionId") final String connectionId,
+      @Context final HttpServletRequest request) {
+    String response =
+        new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+          public Object execute() throws Exception {
+            CollectionService collectionService = new CollectionServiceImpl(connectionId);
+
+            String status = null;
+            status = collectionService.deleteCollection(dbName, selectedCollection);
+            return status;
+          }
+        });
+    return response;
+  }
 }
