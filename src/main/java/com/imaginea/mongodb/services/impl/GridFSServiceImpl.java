@@ -14,15 +14,17 @@ package com.imaginea.mongodb.services.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+import org.bson.BsonObjectId;
+import org.bson.BsonValue;
 import org.bson.Document;
+import org.bson.codecs.BsonValueCodec;
 import org.bson.types.ObjectId;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -50,13 +52,11 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
-import com.mongodb.client.gridfs.GridFSFindIterable;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import com.mongodb.client.gridfs.model.GridFSUploadOptions;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
-import com.sun.research.ws.wadl.Doc;
 
 /**
  * Defines services definitions for performing operations like create/drop on collections inside a
@@ -212,20 +212,32 @@ public class GridFSServiceImpl implements GridFSService {
     MongoCursor<GridFSFile> it =
         gridFS.find(queryObj).sort(sortObj).skip(filesSkip).limit(filesLimit).iterator();
 
-    List<GridFSFile> fileList = new ArrayList<>();
+    JSONArray fileList = new JSONArray();
     while (it.hasNext()) {
       GridFSFile fsFile = it.next();
 
 
+      JSONObject file = new JSONObject();
 
       System.out.println(fsFile.toString());
       System.out.println(fsFile.getId().asObjectId().getValue().toString());
 
-      fileList.add(fsFile);
+      file.put("_id", fsFile.getId().asObjectId().getValue());
+      file.put("fileName", fsFile.getFilename());
+      file.put("length", fsFile.getLength());
+      file.put("chunkSize", fsFile.getChunkSize());
+      file.put("uploadDate", fsFile.getUploadDate());
+      file.put("md5", fsFile.getMD5());
+      if (fsFile.getMetadata() != null) {
+        file.put("metadata", fsFile.getMetadata());
+      }
+
+
+      fileList.put(file);
 
     }
     JSONObject result = new JSONObject();
-    long count = fileList.size();
+    long count = fileList.length();
     result.put("documents", fileList);
     result.put("editable", true);
     result.put("count", count);
@@ -286,13 +298,34 @@ public class GridFSServiceImpl implements GridFSService {
 
             "Database with dbName [ " + dbName + "] does not exist");
       }
-      Object docId = JSON.parse(_id);
-      BasicDBObject objectId = new BasicDBObject("_id", docId);
-      GridFS gridFS = new GridFS(mongoInstance.getDB(dbName), bucketName);
-      GridFSDBFile gridFSDBFile = gridFS.findOne(objectId);
-      String tempDir = System.getProperty("java.io.tmpdir");
-      tempFile = new File(tempDir + "/" + gridFSDBFile.getFilename());
-      gridFSDBFile.writeTo(tempFile);
+
+      System.out.println("_id " + _id);
+
+      ObjectId objectId = new ObjectId(_id);
+
+      MongoDatabase db = mongoInstance.getDatabase(dbName);
+
+      GridFSBucket gridFS = GridFSBuckets.create(db, bucketName);
+
+      Document id = new Document();
+
+      id.put("_id", objectId);
+
+      GridFSFile fsFile = gridFS.find(id).first();
+
+      if (fsFile != null) {
+
+        String tempDir = System.getProperty("java.io.tmpdir");
+
+        tempFile = new File(tempDir + "/" + fsFile.getFilename());
+
+        FileOutputStream streamToDownloadTo = new FileOutputStream(tempFile);
+
+        gridFS.downloadToStream(objectId, streamToDownloadTo);
+
+        streamToDownloadTo.close();
+
+      }
 
     } catch (MongoException m) {
       throw new CollectionException(ErrorCodes.GET_COLLECTION_LIST_EXCEPTION, m.getMessage());
@@ -338,14 +371,20 @@ public class GridFSServiceImpl implements GridFSService {
             "DB [" + dbName + "] DOES NOT EXIST");
       }
 
-      GridFS gridFS = new GridFS(mongoInstance.getDB(dbName), bucketName);
-      GridFSInputFile fsInputFile = gridFS.createFile(inputStream, fileData.getFileName());
-      fsInputFile.setContentType(formData.getMediaType().toString());
-      fsInputFile.save();
-      String objectId = JSON.serialize(fsInputFile.getId());
+      MongoDatabase db = mongoInstance.getDatabase(dbName);
+
+      GridFSBucket gridFS = GridFSBuckets.create(db, bucketName);
+
+
+      GridFSUploadOptions options = new GridFSUploadOptions().chunkSizeBytes(1024)
+          .metadata(new Document("type", "presentation"));
+
+      ObjectId fileId = gridFS.uploadFromStream(fileData.getFileName(), inputStream, options);
+
+      String objectId = JSON.serialize(fileId);
       JSONObject obj = new JSONObject();
-      obj.put("name", fsInputFile.getFilename());
-      obj.put("size", fsInputFile.getLength());
+      obj.put("name", fileData.getFileName());
+      // obj.put("size", fileData.);
       obj.put("url",
           String.format("services/%s/%s/gridfs/getfile?id=%s&download=%s&connectionId=%s&ts=%s",
               dbName, bucketName, objectId, false, connectionId, new Date()));
@@ -390,7 +429,7 @@ public class GridFSServiceImpl implements GridFSService {
     }
 
     String result = null;
-    GridFSDBFile gridFSDBFile = null;
+    GridFSFile gridFSFile = null;
     try {
       if (!databaseService.getDbList().contains(dbName)) {
         throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
@@ -400,22 +439,29 @@ public class GridFSServiceImpl implements GridFSService {
         throw new DocumentException(ErrorCodes.DOCUMENT_EMPTY, "File is empty");
       }
 
-      GridFS gridFS = new GridFS(mongoInstance.getDB(dbName), bucketName);
-      Object docId = JSON.parse(_id);
-      BasicDBObject objectId = new BasicDBObject("_id", docId);
-      gridFSDBFile = gridFS.findOne(objectId);
 
-      if (gridFSDBFile == null) {
+      ObjectId objectId = new ObjectId(_id);
+
+      MongoDatabase db = mongoInstance.getDatabase(dbName);
+
+      GridFSBucket gridFS = GridFSBuckets.create(db, bucketName);
+
+      Document id = new Document();
+
+      id.put("_id", objectId);
+
+      gridFSFile = gridFS.find(id).first();
+      if (gridFSFile == null) {
         throw new DocumentException(ErrorCodes.DOCUMENT_DOES_NOT_EXIST,
             "Document does not exist !");
       }
 
-      gridFS.remove(objectId);
+      gridFS.delete(objectId);
 
     } catch (MongoException e) {
       throw new DocumentException(ErrorCodes.DOCUMENT_DELETION_EXCEPTION, e.getMessage());
     }
-    result = "File [" + gridFSDBFile.getFilename() + "] has been deleted.";
+    result = "File [" + gridFSFile.getFilename() + "] has been deleted.";
     return result;
   }
 

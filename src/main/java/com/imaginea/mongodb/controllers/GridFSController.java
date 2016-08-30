@@ -16,6 +16,7 @@ import java.io.InputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -38,12 +39,17 @@ import com.imaginea.mongodb.services.GridFSService;
 import com.imaginea.mongodb.services.impl.GridFSServiceImpl;
 import com.imaginea.mongodb.utils.ApplicationUtils;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 /**
  * Defines handlers for performing CRUD operations on files stored in GridFS.
  *
  * @author Srinath Anantha
  */
 @Path("/{dbName}/{bucketName}/gridfs")
+@Api(value="/{dbName}/{bucketName}/gridfs" , description="GridFS operations service")
 public class GridFSController extends BaseController {
   private final static Logger logger = Logger.getLogger(GridFSController.class);
 
@@ -93,8 +99,9 @@ public class GridFSController extends BaseController {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("getfiles")
+  @ApiOperation(value = "getfiles" , notes="To get all files containing by specified GridFSBucket")
   public String getFileList(@PathParam("dbName") final String dbName,
-      @PathParam("bucketName") final String bucketName, @QueryParam("query") final String query,
+      @PathParam("bucketName") final String bucketName, @ApiParam(value="Specify MongoDB GridFS filter query") @QueryParam("query") final String query,
       @QueryParam("fields") final String keys, @QueryParam("limit") final String limit,
       @QueryParam("skip") final String skip, @QueryParam("sortBy") final String sortBy,
       @QueryParam("connectionId") final String connectionId,
@@ -131,7 +138,7 @@ public class GridFSController extends BaseController {
     return response.replace("\\", "").replace("\"{", "{").replace("}\"", "}");
   }
 
-  /**
+  /** 
    * Request handler for retrieving the specified file stored in GridFS.
    *
    * @param dbName Name of Database
@@ -143,8 +150,9 @@ public class GridFSController extends BaseController {
    */
   @GET
   @Path("getfile")
+  @ApiOperation(value="getfile" , notes="To get GridFS File in Specified GridFSBucket by specifying fileId")
   public Response getFile(@PathParam("dbName") final String dbName,
-      @PathParam("bucketName") final String bucketName, @QueryParam("id") final String id,
+      @PathParam("bucketName") final String bucketName, @ApiParam(value="GridFS fileId") @QueryParam("id") final String id,
       @QueryParam("download") final boolean download,
       @QueryParam("connectionId") final String connectionId) throws ApplicationException {
     GridFSService gridFSService = new GridFSServiceImpl(connectionId);
@@ -211,11 +219,12 @@ public class GridFSController extends BaseController {
    * @param request Get the HTTP request context to extract session parameters
    * @return Status message.
    */
-  @GET
+  @DELETE
   @Produces(MediaType.APPLICATION_JSON)
   @Path("dropfile")
+  @ApiOperation(value="dropfile" , notes="To drop file from GridFSBucket by specifying fileId")
   public String dropFile(@PathParam("dbName") final String dbName,
-      @PathParam("bucketName") final String bucketName, @QueryParam("id") final String _id,
+      @PathParam("bucketName") final String bucketName,@ApiParam("GridFS fileId") @QueryParam("id") final String _id,
       @QueryParam("connectionId") final String connectionId,
       @Context final HttpServletRequest request) {
 
@@ -246,7 +255,7 @@ public class GridFSController extends BaseController {
    * @param request Get the HTTP request context to extract session parameters
    * @return String with Status of operation performed.
    */
-  @GET
+  @DELETE
   @Produces(MediaType.APPLICATION_JSON)
   @Path("dropbucket")
   public String dropBucket(@PathParam("dbName") final String dbName,
