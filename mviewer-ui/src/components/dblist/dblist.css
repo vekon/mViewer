@@ -11,10 +11,8 @@
     margin-top: 55px;
 }
 
-
 .visible {
     transform:translate3d(70px, 0, 0);
-    /*transition: trasform ease 0.5s;*/
 }
 
 .left {
@@ -23,9 +21,7 @@
     position: relative;;
 }
 
-
 .menuItem {
-    /*float:left;*/
     width:100%;
     margin:0;
     padding:10px 15px;
@@ -35,29 +31,30 @@
 }
 
 .menuItem :hover {
-      color:#F0F0F0;
+    color:#F0F0F0;
 }
 
 
 .menuItem button {
-  background-color: inherit;
-  color: #fff;
-  border: 0;
-  font-family: 'Lato';
-  padding: 10px;
-  cursor: pointer;
+    background-color: inherit;
+    color: #fff;
+    border: 0;
+    font-family: 'Lato';
+    padding: 10px;
+    cursor: pointer;
 }
+
 .menuItem:hover,
 .menuItem button:hover {
-      background-color:#070F30;
+    background-color:#070F30;
 }
 
 .highlight {
-  background-color: #070F30;
+    background-color: #070F30;
 }
 
 .menuItem i {
-  padding: 10px;
+    padding: 10px;
 }
 
 .menuTitle {

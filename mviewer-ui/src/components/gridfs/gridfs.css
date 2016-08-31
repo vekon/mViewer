@@ -16,7 +16,7 @@
     font-size: 70%;
 }
 .breadCrumb li {
-    display: inline;
+  display: inline;
 }
 
 .breadCrumb li+li:before {
@@ -28,9 +28,4 @@
 .breadCrumb li a {
   color: green;
   text-decoration: none;
-}
-
-ul.ReactTabs__TabList,
-.react-tabs [role=tablist] {
-    font-size: 16px;
 }

@@ -49,11 +49,8 @@
   cursor: pointer;
 }
 
-.sideNav li
-{
-  /*padding: 20% 0;*/
+.sideNav li {
   padding: 0;
-  /*border-bottom: 1px groove #85adad;*/
   transition: background-color 0.2s;
   border-bottom: 1px solid #072430;
 	border-top: 1px solid #5d7979;
@@ -71,9 +68,3 @@
   background-color: #0D313D !important;
 }
 
-
-/*.sideNav li::after {
-  content: "\2014\2014\2014\2014";
-  overflow-x: hidden;
-  width: 80%;
-}*/
