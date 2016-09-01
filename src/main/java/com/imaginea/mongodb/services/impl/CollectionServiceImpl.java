@@ -97,7 +97,14 @@ public class CollectionServiceImpl implements CollectionService {
       MongoCursor<String> iterator = listCollectionNames.iterator();
 
       while (iterator.hasNext()) {
-        collectionList.add(iterator.next());
+        
+        String colName = iterator.next();
+        
+        if(colName.contains(".files") || colName.contains(".chunks")){
+          continue;
+        }
+        
+        collectionList.add(colName);
 
       }
 

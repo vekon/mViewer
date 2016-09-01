@@ -289,25 +289,25 @@ YUI.add('utility', function(Y) {
             return "services/[0]/[1]/document?connectionId=[2]&action=DELETE&ts=[3]".format(sm.currentDB(), sm.currentColl(), sm.connectionId(), sm.now());
         },
         addGridFS: function(bucketName) {
-            return "services/[0]/[1]/gridfs/create?connectionId=[2]&ts=[3]".format(sm.currentDB(), bucketName, sm.connectionId(), sm.now());
+            return "services/[0]/gridfs/[1]/create?connectionId=[2]&ts=[3]".format(sm.currentDB(), bucketName, sm.connectionId(), sm.now());
         },
         getFilesCount: function() {
-            return "services/[0]/[1]/gridfs/count?connectionId=[2]&ts=[3]".format(sm.currentDB(), sm.currentBucket(), sm.connectionId(), sm.now());
+            return "services/[0]/gridfs/[1]/count?connectionId=[2]&ts=[3]".format(sm.currentDB(), sm.currentBucket(), sm.connectionId(), sm.now());
         },
         getFiles: function() {
-            return "services/[0]/[1]/gridfs/getfiles?connectionId=[2]&ts=[3]".format(sm.currentDB(), sm.currentBucket(), sm.connectionId(), sm.now());
+            return "services/[0]/gridfs/[1]/getfiles?connectionId=[2]&ts=[3]".format(sm.currentDB(), sm.currentBucket(), sm.connectionId(), sm.now());
         },
         getFile: function(id, download) {
-            return "services/[0]/[1]/gridfs/getfile?id=[2]&download=[3]&connectionId=[4]&ts=[5]".format(sm.currentDB(), sm.currentBucket(), id, download, sm.connectionId(), sm.now());
+            return "services/[0]/gridfs/[1]/getfile?id=[2]&download=[3]&connectionId=[4]&ts=[5]".format(sm.currentDB(), sm.currentBucket(), id, download, sm.connectionId(), sm.now());
         },
         insertFile: function() {
-            return "services/[0]/[1]/gridfs/uploadfile?connectionId=[2]&ts=[3]".format(sm.currentDB(), sm.currentBucket(), sm.connectionId(), sm.now());
+            return "services/[0]/gridfs/[1]/uploadfile?connectionId=[2]&ts=[3]".format(sm.currentDB(), sm.currentBucket(), sm.connectionId(), sm.now());
         },
         deleteFile: function(id) {
-            return "services/[0]/[1]/gridfs/dropfile?id=[2]&connectionId=[3]&ts=[4]".format(sm.currentDB(), sm.currentBucket(), id, sm.connectionId(), sm.now());
+            return "services/[0]/gridfs/[1]/dropfile?id=[2]&connectionId=[3]&ts=[4]".format(sm.currentDB(), sm.currentBucket(), id, sm.connectionId(), sm.now());
         },
         dropBucket: function() {
-            return "services/[0]/[1]/gridfs/dropbucket?connectionId=[2]&ts=[3]".format(sm.currentDB(), sm.currentBucket(), sm.connectionId(), sm.now());
+            return "services/[0]/gridfs/[1]/dropbucket?connectionId=[2]&ts=[3]".format(sm.currentDB(), sm.currentBucket(), sm.connectionId(), sm.now());
         },
         bucketStatistics: function(ext) {
             return "services/stats/db/[0]/collection/[1]?connectionId=[2]&ts=[3]".format(sm.currentDB(), sm.currentBucket() + ext, sm.connectionId(), sm.now());

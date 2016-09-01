@@ -25,11 +25,15 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 
+import com.imaginea.mongodb.controllers.BaseController.ResponseCallback;
+import com.imaginea.mongodb.controllers.BaseController.ResponseTemplate;
 import com.imaginea.mongodb.domain.DatabaseUserQueryData;
 import com.imaginea.mongodb.exceptions.ErrorCodes;
 import com.imaginea.mongodb.exceptions.InvalidMongoCommandException;
 import com.imaginea.mongodb.services.DatabaseService;
+import com.imaginea.mongodb.services.GridFSService;
 import com.imaginea.mongodb.services.impl.DatabaseServiceImpl;
+import com.imaginea.mongodb.services.impl.GridFSServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -78,7 +82,8 @@ public class DatabaseController extends BaseController {
         });
     return response;
   }
-
+  
+  
   /**
    * Maps POST Request to perform create/drop operations on databases present in mongo db to a
    * service function that returns the list. Also forms the JSON response for this request and sent

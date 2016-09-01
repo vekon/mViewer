@@ -28,9 +28,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import com.imaginea.mongodb.controllers.BaseController.ResponseCallback;
+import com.imaginea.mongodb.controllers.BaseController.ResponseTemplate;
 import com.imaginea.mongodb.exceptions.ApplicationException;
 import com.imaginea.mongodb.exceptions.DocumentException;
 import com.imaginea.mongodb.exceptions.ErrorCodes;
@@ -48,14 +50,30 @@ import io.swagger.annotations.ApiParam;
  *
  * @author Srinath Anantha
  */
-@Path("/{dbName}/{bucketName}/gridfs")
-@Api(value="/{dbName}/{bucketName}/gridfs" , description="GridFS operations service")
+@Path("/{dbName}/gridfs")
+@Api(value="/{dbName}/gridfs" , description="GridFS operations service")
 public class GridFSController extends BaseController {
   private final static Logger logger = Logger.getLogger(GridFSController.class);
 
+
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("create")
+  public String getGridFSBuckets(@PathParam("dbName") final String dbName,
+      @QueryParam("connectionId") final String connectionId,
+      @Context final HttpServletRequest request) {
+    String response =
+        new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+          public Object execute() throws Exception {
+            GridFSService gridFSService = new GridFSServiceImpl(connectionId);
+            return gridFSService.getAllBuckets(dbName);
+          }
+        });
+    return response;
+  }
+
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/{bucketName}/create")
   public String createGridFSStore(@PathParam("dbName") final String dbName,
       @PathParam("bucketName") final String bucketName,
       @QueryParam("connectionId") final String connectionId,
@@ -72,7 +90,7 @@ public class GridFSController extends BaseController {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/count")
+  @Path("/{bucketName}/count")
   public String getCount(@PathParam("dbName") final String dbName,
       @PathParam("bucketName") final String bucketName,
       @QueryParam("connectionId") final String connectionId,
@@ -98,7 +116,7 @@ public class GridFSController extends BaseController {
    */
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("getfiles")
+  @Path("/{bucketName}/getfiles")
   @ApiOperation(value = "getfiles" , notes="To get all files containing by specified GridFSBucket")
   public String getFileList(@PathParam("dbName") final String dbName,
       @PathParam("bucketName") final String bucketName, @ApiParam(value="Specify MongoDB GridFS filter query") @QueryParam("query") final String query,
@@ -149,7 +167,7 @@ public class GridFSController extends BaseController {
    * @return Requested multipartfile for viewing or download based on 'download' param.
    */
   @GET
-  @Path("getfile")
+  @Path("/{bucketName}/getfile")
   @ApiOperation(value="getfile" , notes="To get GridFS File in Specified GridFSBucket by specifying fileId")
   public Response getFile(@PathParam("dbName") final String dbName,
       @PathParam("bucketName") final String bucketName, @ApiParam(value="GridFS fileId") @QueryParam("id") final String id,
@@ -186,13 +204,12 @@ public class GridFSController extends BaseController {
    *         deletion url as JSON Array string.
    */
   @POST
-  @Consumes(MediaType.MULTIPART_FORM_DATA)
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("uploadfile")
+  @Consumes(MediaType.MULTIPART_FORM_DATA)
+  @Path("/{bucketName}/uploadfile")
   public String uploadFile(@PathParam("dbName") final String dbName,
       @PathParam("bucketName") final String bucketName,
-      @FormDataParam("addFileDialog") final FormDataBodyPart fileDialogData,
-      @FormDataParam("files") final FormDataBodyPart formData,
+      @FormDataParam("files") final FormDataContentDisposition formData,      
       @FormDataParam("files") final InputStream inputStream,
       @QueryParam("connectionId") final String connectionId,
       @Context final HttpServletRequest request) {
@@ -221,7 +238,7 @@ public class GridFSController extends BaseController {
    */
   @DELETE
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("dropfile")
+  @Path("/{bucketName}/dropfile")
   @ApiOperation(value="dropfile" , notes="To drop file from GridFSBucket by specifying fileId")
   public String dropFile(@PathParam("dbName") final String dbName,
       @PathParam("bucketName") final String bucketName,@ApiParam("GridFS fileId") @QueryParam("id") final String _id,
@@ -257,7 +274,7 @@ public class GridFSController extends BaseController {
    */
   @DELETE
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("dropbucket")
+  @Path("/{bucketName}/dropbucket")
   public String dropBucket(@PathParam("dbName") final String dbName,
       @PathParam("bucketName") final String bucketName,
       @QueryParam("connectionId") final String connectionId,

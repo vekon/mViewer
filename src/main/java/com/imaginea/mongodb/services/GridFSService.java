@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Set;
 
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +41,8 @@ public interface GridFSService {
    * @param bucketName Name of GridFS Bucket
    * @return Status message.
    */
+  
+  
   public String createStore(String dbName, String bucketName)
       throws DatabaseException, CollectionException, GridFSException;
 
@@ -83,7 +85,7 @@ public interface GridFSService {
    *         deletion url as JSON Array string.
    */
   public JSONArray insertFile(String dbName, String bucketName, String connectionId,
-      InputStream inputStream, FormDataBodyPart formData) throws ApplicationException;
+      InputStream inputStream, FormDataContentDisposition fileData) throws ApplicationException;
 
   /**
    * Service handler for dropping a file from GridFS.
