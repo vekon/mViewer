@@ -19,18 +19,14 @@
 
 package com.imaginea.mongodb.controllers;
 
-import com.imaginea.mongodb.exceptions.ApplicationException;
-import com.imaginea.mongodb.exceptions.DocumentException;
-import com.imaginea.mongodb.exceptions.ErrorCodes;
-import com.imaginea.mongodb.utils.JSON;
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.MongoException;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.model.CreateCollectionOptions;
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.bson.Document;
@@ -40,13 +36,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
+import com.imaginea.mongodb.exceptions.ApplicationException;
+import com.imaginea.mongodb.exceptions.DocumentException;
+import com.imaginea.mongodb.exceptions.ErrorCodes;
+import com.imaginea.mongodb.utils.JSON;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.MongoException;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.CreateCollectionOptions;
 
 /**
  * Tests the document request dispatcher resource that handles the GET and POST request for
@@ -229,8 +228,8 @@ public class DocumentControllerTest extends TestingTemplate {
                   }
                 }
 
-                String resp = testDocumentController.postDocsRequest(dbName, collName, "PUT",
-                    documentName.toString(), null, null, connectionId, request);
+                String resp = testDocumentController.insertDocsRequest(dbName, collName, 
+                    documentName.toString(),  connectionId, request);
                 DBObject response = (BasicDBObject) JSON.parse(resp);
 
                 if (dbName == null) {

@@ -328,10 +328,10 @@ YUI.add('utility', function(Y) {
             return "graphs.html?connectionId=[0]&ts=[1]".format(sm.connectionId(), sm.now());
         },
         graphInitiate: function() {
-            return "graphs/initiate?connectionId=[0]&ts=[1]".format(sm.connectionId(), sm.now());
+            return "services/graphs/initiate?connectionId=[0]&ts=[1]".format(sm.connectionId(), sm.now());
         },
         graphQuery: function() {
-            return "graphs/query?connectionId=[0]&ts=[1]".format(sm.connectionId(), sm.now());
+            return "services/graphs/query?connectionId=[0]&ts=[1]".format(sm.connectionId(), sm.now());
         }
     };
 

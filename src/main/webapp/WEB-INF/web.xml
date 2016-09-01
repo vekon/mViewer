@@ -27,22 +27,13 @@
 		<load-on-startup>1</load-on-startup>
 
 	</servlet>
-	<servlet>
-		<servlet-name>Mongo Graphs</servlet-name>
-		<servlet-class>com.imaginea.mongodb.controllers.GraphController</servlet-class>
-	</servlet>
-
+	
 	<!-- Servlet Mapping -->
 	<servlet-mapping>
 		<servlet-name>Jersey Servlet</servlet-name>
 		<url-pattern>/services/*</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Mongo Graphs</servlet-name>
-		<url-pattern>/graphs/initiate</url-pattern>
-		<url-pattern>/graphs/query</url-pattern>
-	</servlet-mapping>
-
+	
 	<!-- Swagger Configuration -->
 
 	<servlet>

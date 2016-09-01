@@ -12,12 +12,13 @@
 package com.imaginea.mongodb.controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.bson.Document;
@@ -25,20 +26,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.imaginea.mongodb.controllers.BaseController.ResponseCallback;
-import com.imaginea.mongodb.controllers.BaseController.ResponseTemplate;
 import com.imaginea.mongodb.exceptions.ErrorCodes;
 import com.imaginea.mongodb.services.AuthService;
 import com.imaginea.mongodb.services.impl.AuthServiceImpl;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
+import io.swagger.annotations.Api;
+
 /**
  * Return values of queries,updates,inserts and deletes being performed on Mongo Db per sec.
  *
  * @author Aditya Gaur, Rachit Mittal
  */
-public class GraphController extends HttpServlet {
+
+@Path("/graphs")
+@Api(value = "/graphs", description = "MongoDB Graphs Controller")
+public class GraphController extends BaseController {
   private static final long serialVersionUID = -1539358875210511143L;
 
   private static JSONArray array;
@@ -60,31 +64,14 @@ public class GraphController extends HttpServlet {
 
   private static Logger logger = Logger.getLogger(GraphController.class);
 
-  /**
-   * Constructor for Servlet and also configures Logger.
-   *
-   * @throws IOException If Log file cannot be written
-   */
-  public GraphController() throws IOException {
-    super();
-  }
 
-  /**
-   * Handles the HTTP <code>GET</code> method.
-   *
-   * @param request servlet request
-   * @param response servlet response
-   * @throws ServletException if a servlet-specific error occurs
-   * @throws IOException if an I/O error occurs
-   */
-  @Override
-  protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
-      throws ServletException, IOException {
-    // Declare Response Objects and PrintWriter
-    response.setContentType("application/x-json");
-    PrintWriter out = response.getWriter();
+  @GET
+  @Path("/initiate")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String initiateGraphsRequest(@QueryParam("connectionId") final String connectionId,
+      @QueryParam("pollingTime") final String pollingTime, final HttpServletRequest request)
+      throws IOException {
 
-    final String connectionId = request.getParameter("connectionId");
     String result =
         new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
           public Object execute() throws Exception {
@@ -92,22 +79,40 @@ public class GraphController extends HttpServlet {
             // Need a Db to get ServerStats
             MongoDatabase db = mongoInstance.getDatabase("admin");
 
-            String uri = request.getRequestURI();
+
             Object result = null;
-            if (uri != null) {
-              if (uri.substring(uri.lastIndexOf('/')).equals("/query")) {
-                result = processQuery(db);
-              } else if (uri.substring(uri.lastIndexOf('/')).equals("/initiate")) {
-                if (request.getParameter("pollingTime") != null) {
-                  jump = Integer.parseInt(request.getParameter("pollingTime"));
-                }
-                result = processInitiate(db);
-              }
+            if (pollingTime != null) {
+              jump = Integer.parseInt(pollingTime);
             }
+            result = processInitiate(db);
+
             return result;
           }
         });
-    out.write(result);
+    return result;
+
+  }
+
+
+  @GET
+  @Path("/query")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String queryGraphsRequest(@QueryParam("connectionId") final String connectionId,
+      final HttpServletRequest request) throws IOException {
+
+    String result =
+        new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+          public Object execute() throws Exception {
+            MongoClient mongoInstance = authService.getMongoInstance(connectionId);
+            // Need a Db to get ServerStats
+            MongoDatabase db = mongoInstance.getDatabase("admin");
+
+            Object result = null;
+            result = processQuery(db);
+            return result;
+          }
+        });
+    return result;
 
   }
 

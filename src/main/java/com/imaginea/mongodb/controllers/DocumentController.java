@@ -16,10 +16,11 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -39,7 +40,6 @@ import com.imaginea.mongodb.exceptions.ErrorCodes;
 import com.imaginea.mongodb.exceptions.InvalidMongoCommandException;
 import com.imaginea.mongodb.services.DocumentService;
 import com.imaginea.mongodb.services.impl.DocumentServiceImpl;
-import com.imaginea.mongodb.utils.JSON;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
@@ -195,20 +195,16 @@ public class DocumentController extends BaseController {
             long count = mongoInstance.getDatabase(dbName).getCollection(collectionName).count();
             FindIterable<Document> findIterable =
                 mongoInstance.getDatabase(dbName).getCollection(collectionName).find();
-
-
-
             if (!allKeys) {
               findIterable.limit(10);
             }
-
             MongoCursor<Document> cursor = findIterable.iterator();
-
-
             Set<String> completeSet = new HashSet<String>();
-            while (cursor.hasNext()) {
-              Document doc = cursor.next();
-              getNestedKeys(doc, completeSet, "");
+            if (cursor.hasNext()) {
+              while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                getNestedKeys(doc, completeSet, "");
+              }
             }
             completeSet.remove("_id");
             JSONObject result = new JSONObject();
@@ -239,28 +235,70 @@ public class DocumentController extends BaseController {
   }
 
   /**
-   * Maps POST Request to perform operations like update/delete/insert document inside a collection
-   * inside a database present in mongo db to a service function that returns the list. Also forms
-   * the JSON response for this request and sent it to client. In case of any exception from the
-   * service files an error object if formed.
+   * Maps POST Request to perform operation insert document inside a collection inside a database
+   * present in mongo db to a service function that returns the list. Also forms the JSON response
+   * for this request and sent it to client. In case of any exception from the service files an
+   * error object if formed.
    *
    * @param dbName Name of Database
    * @param collectionName Name of Collection
    * @param documentData Contains the document to be inserted
-   * @param _id Object id of document to delete or update
-   * @param keys new Document values in case of update
-   * @param action Query Parameter with value PUT for identifying a create database request and
-   *        value DELETE for dropping a database.
+   * 
    * @param connectionId Mongo Db Configuration provided by user to connect to.
    * @param request Get the HTTP request context to extract session parameters
    * @return String with Status of operation performed.
    */
   @POST
   @Produces(MediaType.APPLICATION_JSON)
-  public String postDocsRequest(@PathParam("dbName") final String dbName,
+  public String insertDocsRequest(@PathParam("dbName") final String dbName,
       @PathParam("collectionName") final String collectionName,
-      @DefaultValue("POST") @QueryParam("action") final String action,
-      @FormParam("document") final String documentData, @FormParam("_id") final String _id,
+      @FormParam("document") final String documentData,
+      @QueryParam("connectionId") final String connectionId,
+      @Context final HttpServletRequest request) {
+
+    String response =
+        new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+          public Object execute() throws Exception {
+
+            DocumentService documentService = new DocumentServiceImpl(connectionId);
+            JSONObject resultJSON = new JSONObject();
+            String result = null;
+            if ("".equals(documentData)) {
+              ApplicationException e = new DocumentException(ErrorCodes.DOCUMENT_DOES_NOT_EXIST,
+                  "Document Data Missing in Request Body");
+              result = formErrorResponse(logger, e);
+            } else {
+              Document document = Document.parse(documentData);
+              result = documentService.insertDocument(dbName, collectionName, document);
+            }
+
+            resultJSON.put("result", result);
+            return resultJSON;
+          }
+        });
+    return response;
+  }
+
+  /**
+   * Maps PUT Request to perform operation update document inside a collection inside a database
+   * present in mongo db to a service function that returns the list. Also forms the JSON response
+   * for this request and sent it to client. In case of any exception from the service files an
+   * error object if formed.
+   * 
+   * @param dbName Name of Database
+   * @param collectionName Name of Collection
+   * @param _id Object id of document to delete or update
+   * @param keys new Document values in case of update
+   * @param connectionId Mongo Db Configuration provided by user to connect to.
+   * @param request Get the HTTP request context to extract session parameters
+   * 
+   * @return String with Status of operation performed.
+   */
+
+  @PUT
+  @Produces(MediaType.APPLICATION_JSON)
+  public String updateDocsRequest(@PathParam("dbName") final String dbName,
+      @PathParam("collectionName") final String collectionName, @FormParam("_id") final String _id,
       @FormParam("keys") final String keys, @QueryParam("connectionId") final String connectionId,
       @Context final HttpServletRequest request) {
 
@@ -271,56 +309,65 @@ public class DocumentController extends BaseController {
             DocumentService documentService = new DocumentServiceImpl(connectionId);
             JSONObject resultJSON = new JSONObject();
             String result = null;
-            RequestMethod method = null;
-            for (RequestMethod m : RequestMethod.values()) {
-              if ((m.toString()).equals(action)) {
-                method = m;
-                break;
-              }
-            }
-            switch (method) {
-              case PUT: {
-                if ("".equals(documentData)) {
-                  ApplicationException e = new DocumentException(ErrorCodes.DOCUMENT_DOES_NOT_EXIST,
-                      "Document Data Missing in Request Body");
-                  result = formErrorResponse(logger, e);
-                } else {
-                  Document document = (Document) JSON.parse(documentData);
-                  result = documentService.insertDocument(dbName, collectionName, document);
-                }
-                break;
-              }
-              case DELETE: {
-                if ("".equals(_id)) {
-                  ApplicationException e = new DocumentException(ErrorCodes.DOCUMENT_DOES_NOT_EXIST,
-                      "Document Data Missing in Request Body");
-                  result = formErrorResponse(logger, e);
-                } else {
-                  result = documentService.deleteDocument(dbName, collectionName, _id);
-                }
-                break;
-              }
-              case POST: {
-                if ("".equals(_id) || "".equals(keys)) {
-                  ApplicationException e = new DocumentException(ErrorCodes.DOCUMENT_DOES_NOT_EXIST,
-                      "Document Data Missing in Request Body");
-                  formErrorResponse(logger, e);
-                } else {
-                  // New Document Keys
-                  Document newDoc = (Document) JSON.parse(keys);
-                  result = documentService.updateDocument(dbName, collectionName, _id, newDoc);
-                  Set<String> completeSet = new HashSet<String>();
-                  getNestedKeys(newDoc, completeSet, "");
-                  completeSet.remove("_id");
-                  resultJSON.put("keys", completeSet);
-                }
-                break;
-              }
 
-              default: {
-                result = "Action parameter value is wrong";
-                break;
-              }
+            if ("".equals(_id) || "".equals(keys)) {
+              ApplicationException e = new DocumentException(ErrorCodes.DOCUMENT_DOES_NOT_EXIST,
+                  "Document Data Missing in Request Body");
+              formErrorResponse(logger, e);
+            } else {
+              // New Document Keys
+              Document newDoc = Document.parse(keys);
+              result = documentService.updateDocument(dbName, collectionName, _id, newDoc);
+              Set<String> completeSet = new HashSet<String>();
+              getNestedKeys(newDoc, completeSet, "");
+              completeSet.remove("_id");
+              resultJSON.put("keys", completeSet);
+            }
+
+            resultJSON.put("result", result);
+            return resultJSON;
+          }
+        });
+    return response;
+  }
+
+  /**
+   * Maps DELETE Request to perform operation delete document inside a collection inside a database
+   * present in mongo db to a service function that returns the list. Also forms the JSON response
+   * for this request and sent it to client. In case of any exception from the service files an
+   * error object if formed.
+   * 
+   * @param dbName Name of Database
+   * @param collectionName Name of Collection
+   * @param _id Object id of document to delete or update
+   *
+   * @param connectionId Mongo Db Configuration provided by user to connect to.
+   * @param request Get the HTTP request context to extract session parameters
+   * 
+   * @return String with Status of operation performed.
+   */
+
+  @DELETE
+  @Produces(MediaType.APPLICATION_JSON)
+  public String deleteDocsRequest(@PathParam("dbName") final String dbName,
+      @PathParam("collectionName") final String collectionName, @FormParam("_id") final String _id,
+      @QueryParam("connectionId") final String connectionId,
+      @Context final HttpServletRequest request) {
+
+    String response =
+        new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+          public Object execute() throws Exception {
+
+            DocumentService documentService = new DocumentServiceImpl(connectionId);
+            JSONObject resultJSON = new JSONObject();
+            String result = null;
+
+            if ("".equals(_id)) {
+              ApplicationException e = new DocumentException(ErrorCodes.DOCUMENT_DOES_NOT_EXIST,
+                  "Document Data Missing in Request Body");
+              result = formErrorResponse(logger, e);
+            } else {
+              result = documentService.deleteDocument(dbName, collectionName, _id);
             }
             resultJSON.put("result", result);
             return resultJSON;
@@ -328,4 +375,5 @@ public class DocumentController extends BaseController {
         });
     return response;
   }
+
 }
