@@ -92,6 +92,8 @@ public class GridFSServiceImpl implements GridFSService {
     collectionService = new CollectionServiceImpl(connectionId);
   }
 
+
+
   /**
    * Service implementation for creating GridFS store in the specified database.
    *
@@ -347,7 +349,7 @@ public class GridFSServiceImpl implements GridFSService {
    *         deletion url as JSON Array string.
    */
   public JSONArray insertFile(String dbName, String bucketName, String connectionId,
-      InputStream inputStream, FormDataBodyPart formData) throws ApplicationException {
+      InputStream inputStream, FormDataContentDisposition fileData) throws ApplicationException {
     if (dbName == null) {
       throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
 
@@ -364,7 +366,7 @@ public class GridFSServiceImpl implements GridFSService {
     }
 
     JSONArray result = new JSONArray();
-    FormDataContentDisposition fileData = formData.getFormDataContentDisposition();
+
     try {
       if (!databaseService.getDbList().contains(dbName)) {
         throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
@@ -480,12 +482,19 @@ public class GridFSServiceImpl implements GridFSService {
           "DB [" + dbName + "] DOES NOT EXIST");
     }
 
-    Set<String> collList = collectionService.getCollList(dbName);
+    MongoCursor<String> iterator =
+        mongoInstance.getDatabase(dbName).listCollectionNames().iterator();
+
     Set<String> bucketsList = new HashSet<String>();
-    for (String collection : collList) {
-      int pos = collection.lastIndexOf(".files");
-      if (pos > 0) {
-        bucketsList.add(collection.substring(0, pos));
+    if (iterator.hasNext()) {
+      while (iterator.hasNext()) {
+
+        String collection = iterator.next();
+
+        int pos = collection.lastIndexOf(".files");
+        if (pos > 0) {
+          bucketsList.add(collection.substring(0, pos));
+        }
       }
     }
     return bucketsList;
@@ -568,4 +577,6 @@ public class GridFSServiceImpl implements GridFSService {
     }
     return result;
   }
+
+
 }
