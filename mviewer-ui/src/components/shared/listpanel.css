@@ -12,6 +12,7 @@
     border-left: solid 1px #555
 }
 
+
 .visible {
     transform:translate3d(320px, 0, 0);
     overflow-y: auto;
@@ -22,6 +23,7 @@
     transform:translate3d(-500px,0,0);
     position: relative;;
 }
+
 
 .menuItem {
     width:100%;
@@ -35,20 +37,21 @@
 
 .menuItem:hover,
 .menuItem button:hover {
-    background-color:#070F30;
+     background-color:#070F30;
 }
 
 .highlight {
     background-color:#070F30;
 }
 
+
 .menuItem button {
-    background-color: inherit;
-    color: #fff;
-    border: 0;
-    font-family: 'Lato';
-    padding: 10px;
-    cursor: pointer;
+  background-color: inherit;
+  color: #fff;
+  border: 0;
+  font-family: 'Lato';
+  padding: 10px;
+  cursor: pointer;
 }
 
 .menuItem i {
@@ -61,4 +64,13 @@
     background-color: #fff;
     color: #0CB9F2;
     font-family: 'Lato';
+}
+
+.removeIcon {
+  color: #85adad;
+  display: block;
+  text-align: center;
+  font-size: 20px;
+  margin-top: -38px;
+  margin-left: 180px;
 }

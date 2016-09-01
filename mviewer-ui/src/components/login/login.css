@@ -84,8 +84,6 @@ input[type=password] {
 }
 
 .innerForm {
-    /*    margin-left: 25%;*/
-
     padding: 5%;
     border: 1px solid #dedede;
     border-radius: 5px;
@@ -121,7 +119,6 @@ h2 {
 h2:after {
     display: block;
     height: 2px;
-    /*    background-color: #3679f8;*/
     color: #3679f8;
     content: "\2014 DB List \2014";
     font-size: 10px;
@@ -159,22 +156,16 @@ input[type=submit]:active {
 .errorMessage {
     color: red;
     margin: 5px 0;
-    /*  display: inline-block;*/
-
     text-align: center;
     border: 1px solid red;
     width: 66%;
 }
 .errorMessage.hidden {
-    /*    composes: .errorMessage;*/
-
     display: none;
 }
 .errorMessage.show {
     color: #FF9696;
     margin: 5px 0;
-    /*  display: inline-block;*/
-
     text-align: center;
     border: 1px solid #FF9696;
     width: 66%;

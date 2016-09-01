@@ -8,9 +8,7 @@
 
 /*Main Navigation*/
 .mainNav {
-/*    float: right;*/
     list-style: none;
-    /*margin-top: 5%;*/
     background: #070F30;
     height: 55px;
     padding: 0 5px;
@@ -19,7 +17,6 @@
 .mainNav li {
     display: inline-block;
     margin-left: 1%;
-
     padding-top: 1%;
 }
 
@@ -27,7 +24,6 @@
 .mainNav li a:visited {
     padding: 0 0 0 5px;
     color : #a08eb0;  
-    /*color : #7D6592;*/
     text-decoration: none;
     text-transform: uppercase;
     font-size: 60%;
@@ -53,7 +49,6 @@
 }
 
 /*Logo*/
-
 .logo{
     height: auto;
     width: auto;
@@ -102,9 +97,7 @@
     visibility: hidden;
 }
 
-
 /*Header*/
-
 header {
     background: #f2f2f2;
 }

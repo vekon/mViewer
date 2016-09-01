@@ -28,7 +28,6 @@ var config = {
     port: 3000
   },
 
-
     module: {
         loaders: [{
                 test: /\.jsx?/,
@@ -43,8 +42,11 @@ var config = {
 
       },
 
+      {test: /\.json$/, loader: 'json-loader'}
+
         ]
     },
+
     plugins: [
         new ExtractTextPlugin('styles.css'),
         HTMLWebpackPluginConfig,
@@ -56,6 +58,7 @@ var config = {
             ])
 
     ]
+
 
 };
 

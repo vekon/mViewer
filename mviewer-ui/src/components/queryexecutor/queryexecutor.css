@@ -1,10 +1,5 @@
-.mainContainer {
-
-}
-
-
 .buffer {
-    font-size: 70%;
+   font-size: 70%;
 }
 
 .tab{
@@ -13,33 +8,24 @@
    font-weight: 600;
 }
 
-.form {
-
-}
-
-.navigable {
-
-}
-
 .textAreaContainer {
   display: inline-block;
-  width: 100%;
+  width: 75%;
   height: 100%;
 }
 
 .queryBoxDiv{
   display: inline-block;
   width: 50%;
-  /*height: 30%;*/
   height: 220px;
   padding: 1%;
 }
+
 .queryBoxlabels {
   padding-bottom: 1%;
 }
 
 .queryBox {
-
   width: 100%;
   height: 100%;
   outline: none;
@@ -48,29 +34,70 @@
   transition: all ease-in-out .2s;
 }
 
-.parametersDiv{
+.parametersDiv,
+.parametersDiv1{
   display: inline-block;
   position: absolute;
-  margin-top: 2%;
   padding-left: 1%;
 }
 
-.parametersDiv label {
+.parametersDiv {
+  margin-left: 10%;
+  margin-top: 0.8%;
+}
+.parametersDiv1 {
+  margin-left: -10%;
+  margin-top: 2.1%
+}
+
+.queryAttributesDiv {
+  display: inline-block;
+    position: absolute;
+    margin-top: 2.7%;
+    padding-left: 1%;
+    width: 18%;
+    margin-left: -130px;
+    border: 1.5px solid #4968a7;
+    height: 29.5%;
+    overflow-y: auto;
+}
+
+.parametersDiv label,
+ parametersDiv1 label {
   display: inline-block;
   padding-top: 5px;
   padding-bottom: 2px;
 }
 
-.parametersDiv input {
+.parametersDiv input,
+.parametersDiv1 input {
   color: inherit !important;
   transition: all ease-in-out .2s;
+  margin-top: 1%;
 }
 
 .parametersDiv input:focus,
 .parametersDiv select:focus,
+.parametersDiv1 input:focus,
+.parametersDiv1 select:focus,
 .queryBox:focus {
   box-shadow: 0 0 5px #4978a7;
   border: 1px solid #4978a7;
+}
+
+.attributeList{
+    list-style-type: none;
+    margin-top: 4%;
+}
+
+.attributesLabel {
+    position: absolute;
+    margin-left: -130px;
+    margin-top: 1%;
+}
+
+.attributesSpan {
+  margin-left: 5%;
 }
 
 .bttnNavigable {
@@ -84,6 +111,7 @@
     border-radius: 3px;
     cursor: pointer;
     transition: background-color .2s, border .2s;
+    margin-top: 2.5%;
 }
 .bttnNavigable:hover {
   background-color: #576d96;
@@ -91,17 +119,26 @@
   cursor: pointer;
 }
 
-.parametersDiv select {
-padding: 6px;
-width: 100%;
-border-radius: 2px;
-height: 30px;
-border: 1.5px solid #4968a7;
-background-color: inherit;
-color: inherit;
-font-size: 11px;
+.parametersDiv select,
+.parametersDiv1 select {
+  padding: 6px;
+  width: 100%;
+  border-radius: 2px;
+  height: 30px;
+  border: 1.5px solid #4968a7;
+  background-color: inherit;
+  color: inherit;
+  font-size: 11px;
 }
 
+.checkboxSpan {
+  margin-right: 2%;
+}
+
+.attributesItems {
+  margin-bottom: 2%;
+  word-break: break-all;
+}
 
 .resultContainer {
   overflow-y: auto;
@@ -114,9 +151,40 @@ font-size: 11px;
   width: 48%;
   margin-left: 1%;
   height: 30%;
-  margin-top: 25;
+  margin-top: 1%;
   display: block;
   overflow: auto;
-  margin-bottom: 3%;
+  margin-bottom: 1%;
   resize: none;
+}
+
+.treeTab {
+  margin-top: 2% !important;
+  padding-left: 1% !important;
+  font-size: 70% !important;
+}
+
+.disabled {
+      pointer-events: none;
+      cursor: default;
+      text-decoration: none;
+      color: #a08eb0;
+}
+
+.paginator {
+  font-size: 70%;
+  margin-left: 1%;
+}
+
+.paginator label {
+  padding: 0 3px;
+}
+
+.paginator a {
+  text-decoration: none;
+  padding: 0 3px;
+}
+
+.paginator a:hover {
+  text-decoration: underline;
 }
