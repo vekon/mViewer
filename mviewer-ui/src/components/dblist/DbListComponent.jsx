@@ -39,7 +39,15 @@ class DbListComponent extends React.Component {
       crossDomain: false,
       url : Config.host+'/mViewer-0.9.2/services/login/details?connectionId='+ this.state.connectionId,
       success: function(data) {
-        that.setState({dbNames: data.response.result.dbNames});
+        if (typeof(data.response.result) != 'undefined')
+          {
+            that.setState({dbNames: data.response.result.dbNames});
+          }
+        else {
+          {
+            window.location.hash='#?code=INVALID_CONNECTION';
+          }
+        }
       }, error: function(jqXHR, exception) {
       }
     });

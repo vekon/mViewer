@@ -32,6 +32,8 @@
   resize: none;
   border: 1.5px solid #4968a7;
   transition: all ease-in-out .2s;
+  font-family: 'Lato';
+  font-weight: 300;
 }
 
 .parametersDiv,
@@ -156,6 +158,8 @@
   overflow: auto;
   margin-bottom: 1%;
   resize: none;
+  font-family: 'Lato';
+  font-weight: 300;
 }
 
 .treeTab {

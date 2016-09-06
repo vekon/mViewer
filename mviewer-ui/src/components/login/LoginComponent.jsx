@@ -50,6 +50,10 @@ class LoginComponent extends React.Component {
   }
 
   componentDidMount() {
+    if (typeof(this.props.location.query.code) != 'undefined' )
+    {
+      this.setState({message: 'You are not connected to Mongo DB'}); 
+    }
     var that = this;
     $(function() {
       $('form').on('submit', function(e) {

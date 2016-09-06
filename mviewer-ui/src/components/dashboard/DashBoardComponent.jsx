@@ -2,6 +2,7 @@ import React from 'react'
 import dashStyles from './dashBoard.css'
 import $ from 'jquery'
 import SideNav from '../sidenav/SideNavComponent.jsx';
+import Config from '../../../config.json';
 
 class DashBoardComponent extends React.Component {
 
@@ -10,6 +11,23 @@ class DashBoardComponent extends React.Component {
     this.state = {
       connectionId:this.props.location.query.connectionId,
     }
+  }
+
+  disconnect(){
+    $.ajax({
+      type: "GET",
+      dataType: 'json',
+      credentials: 'same-origin',
+      crossDomain: false,
+      url : Config.host+'/mViewer-0.9.2/services/disconnect?connectionId=' + this.state.connectionId,
+      success: function(data) {
+        if(data.response.result==='User Logged Out')
+          {
+              window.location.hash = '#';
+          }
+      }, error: function(jqXHR, exception) {
+      }
+    });
   }
 
   render() {
@@ -29,6 +47,7 @@ class DashBoardComponent extends React.Component {
                 <ul className={dashStyles.mainNav + ' ' + dashStyles.clearfix} >
                   <li><a href="#mongoGraphs"><i className={"fa fa-envira " + dashStyles.icon} aria-hidden="true"></i><span>Mongo Graph</span></a></li>
                   <li><a href="#serverStatics"><i className={"fa fa-area-chart " + dashStyles.icon} aria-hidden="true"></i><span>Server Statistics</span></a></li>
+                  <li className={dashStyles.disconnect}><a href="javascript:void(0);" onClick={this.disconnect.bind(this)}><span>Disconnect</span></a></li>
                 </ul>
                </div>
              </nav>
