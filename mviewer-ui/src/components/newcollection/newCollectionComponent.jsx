@@ -56,11 +56,7 @@ class newCollectionComponent extends React.Component {
   }
 
   handleChange(key){
-    return function(e) {
-      var state = {};
-      state[key] = e.target.value;
-      this.setState(state);
-    }.bind(this);
+    return true;
   }
 
   handleCheck(){
@@ -73,7 +69,6 @@ class newCollectionComponent extends React.Component {
 
   clickHandler(){
     var methodType = 'POST';
-    // var collectionName = this.props.currentItem;
     var that =this;
     var data = $("form").serialize().split("&");
     var obj={};
@@ -180,17 +175,17 @@ class newCollectionComponent extends React.Component {
            <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
              <div className={ newCollectionStyles.formContainer}>
                <div className={newCollectionStyles.inputBox}>
-                 <TextInput type="text" name="newCollName" id="newCollName" placeholder="collection name" value={this.state.name} validations='isRequired' onChange={this.handleChange('name')} validationError="Collection name must not be empty" />
+                 <TextInput type="text" name="newCollName" id="newCollName" placeholder="collection name" value={this.state.name} validations='isRequired' onChange={this.handleChange.bind(this)} validationError="Collection name must not be empty" />
                </div>
                <div className={newCollectionStyles.inputBox}>
                  <label>Capped:</label>
                  <input type="checkbox" name="isCapped" id="isCapped"  onChange={this.handleCheck.bind(this)} checked={this.state.cap}  />
                </div>
                <div className={newCollectionStyles.inputBox}>
-                 <TextInput type="text" name="capSize" id="capSize" placeholder="size (bytes)" value={this.state.size} onChange={this.handleChange( 'size')} validations={'isRequired1:'+this.state.cap+',isNumeric1:'+this.state.cap} checkforOtherErrors ={this.state.submitted} validationErrors={{isNumeric1: 'Please enter the size in numeric', isRequired1: 'Please enter the size'}} shouldBeDisabled = {!this.state.cap}  />
+                 <TextInput type="text" name="capSize" id="capSize" placeholder="size (bytes)" value={this.state.size} onChange={this.handleChange.bind(this)} validations={'isRequired1:'+this.state.cap+',isNumeric1:'+this.state.cap} checkforOtherErrors ={this.state.submitted} validationErrors={{isNumeric1: 'Please enter the size in numeric', isRequired1: 'Please enter the size'}} shouldBeDisabled = {!this.state.cap}  />
                </div>
                <div className={newCollectionStyles.inputBox}>
-                 <TextInput type="text" name="maxDocs" id="maxDocs" placeholder="max Documents (optional)" value={this.state.max} onChange={this.handleChange( 'max')} shouldBeDisabled = {!this.state.cap}  />
+                 <TextInput type="text" name="maxDocs" id="maxDocs" placeholder="max Documents (optional)" value={this.state.max} onChange={this.handleChange.bind(this)} shouldBeDisabled = {!this.state.cap}  />
                </div>
                <div className={newCollectionStyles.inputBox}>
                  <label>Auto Indent:</label>

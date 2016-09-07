@@ -7,7 +7,7 @@ class HomeComponent extends React.Component {
   render () {
     return(
       <div className={homeStyles.mainContainer}>
-        <CreatDb></CreatDb>
+        <CreatDb fromHome = {this.props}></CreatDb>
       </div>
     );
   }

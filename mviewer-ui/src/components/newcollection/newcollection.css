@@ -1,13 +1,3 @@
-.content {
-    top: 50%;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-    width: 25%;
-}
-
 .two h3{
     font: 110%;
     text-align: center;
@@ -22,6 +12,7 @@
     font-size: 11px;
     color: black !important;
     height: 30px;
+    width: 100%;
 }
 
 .inputBox label {
@@ -61,6 +52,8 @@
 .formContainer {
     margin-left: 19%;
     margin-top: 15%;
+    margin-right: auto;
+    width: 62%;
 }
 
 .help {
@@ -82,13 +75,14 @@
 }
 
 .errorMessage.show {
-    color: #FF9696;
+    color: red;
     margin: 5px 0;
     text-align: center;
     border: 1px solid #FF9696;
     width: 100%;
     border-radius: 3px;
     line-height: 3;
+    width: 100%;
 }
 
 
@@ -116,6 +110,7 @@
     margin-left: 0px;
     border-radius: 3px;
     height: 30px;
+    width: 100%;
     /*margin-top:15px;*/
 }
 .submit:hover,

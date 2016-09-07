@@ -8,11 +8,24 @@ Formsy.addValidationRule('isRequired', (values, value) => {
 });
 
 Formsy.addValidationRule('isRequired1', (values, value, otherField) => {
-  return ((typeof value !== 'undefined' && value !== '' && value !== false) || (otherField==false && value=='')) ;
+  return ((typeof value !== 'undefined' && value !== '' && value !== false ) || (otherField==false && value=='')) ;
+});
+
+Formsy.addValidationRule('isRequired2', (values, value, otherField) => {
+  return ((typeof value !== 'undefined' && value !== '' && value !== false && value!=null)||(otherField == false && value ==null )) ;
 });
 
 Formsy.addValidationRule('isNumeric1', (values, value, otherField) => {
-  return (value.match(/^[0-9]+$/) || (otherField==false && !value.match(/^[0-9]+$/))) ;
+  return (value.match(/^[0-9]+$/) || (otherField==false && !value.match(/^[0-9]+$/)));
+});
+
+Formsy.addValidationRule('isAlpha1', (values, value, otherField) => {
+  if (value !== null){
+    return (value.match(/^[\w&.\-]+$/));
+  }
+  else {
+    return true;
+  }
 });
 
 const TextInput = React.createClass({
@@ -22,6 +35,8 @@ const TextInput = React.createClass({
   // turn will validate it and the rest of the form
   changeValue(event) {
     this.setValue(event.currentTarget['value']);
+    // this.refs.great.great();
+    this.props.onChange();
   },
 
   render() {
