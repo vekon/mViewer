@@ -28,7 +28,7 @@ class CreateDbComponent extends React.Component {
     this.setState({modalIsOpen: false});
     if(this.state.successMessage==true)
     {
-      //need to check on where to navigate
+      window.location.hash = '#/dashboard/home?connectionId='+this.props.fromHome.connectionId;
     }
   }
 

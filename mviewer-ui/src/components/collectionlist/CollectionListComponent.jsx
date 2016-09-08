@@ -51,6 +51,25 @@ class CollectionList extends React.Component {
     this.setState({ visible: false});
   }
 
+  refreshCollectionList(){
+    // this.setState({selectedDB:db});
+    var that = this;
+      $.ajax({
+        type: "GET",
+        dataType: 'json',
+        credentials: 'same-origin',
+        crossDomain: false,
+        url : Config.host+'/mViewer-0.9.2/services/'+ that.state.selectedDB +'/collection?connectionId=' + this.state.connectionId,
+        success: function(data) {
+          that.setState({collections: data.response.result});
+        }, error: function(jqXHR, exception) {
+        }
+      });
+      // this.setState({ visible: true }, function(){
+      //   that.setState({selectedItem:null});
+      // });
+  }
+
 
   render () {
     var that=this;
@@ -60,8 +79,11 @@ class CollectionList extends React.Component {
       return <CollectionItem
               key={item}
               name={item}
+              dbName={this.state.selectedDB}
               onClick={this.clickHandler.bind(this,idx,item)}
               isSelected={that.state.selectedItem==idx}
+              connectionId={this.state.connectionId}
+              refreshCollectionList={this.refreshCollectionList.bind(this)}
              />;
       }.bind(this));
      return (

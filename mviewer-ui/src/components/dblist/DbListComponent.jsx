@@ -53,6 +53,29 @@ class DbListComponent extends React.Component {
     });
   }
 
+  refreshDbList(){
+    var that = this;
+    $.ajax({
+      type: "GET",
+      dataType: 'json',
+      credentials: 'same-origin',
+      crossDomain: false,
+      url : Config.host+'/mViewer-0.9.2/services/login/details?connectionId='+ this.state.connectionId,
+      success: function(data) {
+        if (typeof(data.response.result) != 'undefined')
+          {
+            that.setState({dbNames: data.response.result.dbNames});
+          }
+        else {
+          {
+            window.location.hash='#?code=INVALID_CONNECTION';
+          }
+        }
+      }, error: function(jqXHR, exception) {
+      }
+    });
+  }
+
   show (x) {
     var that = this;
     this.setState({ visible: !this.state.visible }, function(){
@@ -74,6 +97,8 @@ class DbListComponent extends React.Component {
               name={item}
               onClick={this.clickHandler.bind(this,idx)}
               isSelected={this.state.selectedItem==idx}
+              connectionId = {this.state.connectionId}
+              refreshDbList={this.refreshDbList.bind(this)}
               />;
       }.bind(this));
     return(

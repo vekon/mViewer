@@ -55,12 +55,14 @@
 .queryAttributesDiv {
   display: inline-block;
     position: absolute;
-    margin-top: 2.7%;
+    /*margin-top: 2.7%;*/
+    margin-top: 3%;
     padding-left: 1%;
     width: 18%;
     margin-left: -130px;
     border: 1.5px solid #4968a7;
-    height: 29.5%;
+    /*height: 29.5%;*/
+    height: 197px;
     overflow-y: auto;
 }
 
@@ -96,6 +98,8 @@
     position: absolute;
     margin-left: -130px;
     margin-top: 1%;
+    display: inline-block !important;
+    width: 20%;
 }
 
 .attributesSpan {
