@@ -17,6 +17,10 @@ class SideNavComponent extends React.Component {
     }
   }
 
+  refreshDb(){
+    this.refs.left.refreshDbList();
+  }
+
   showLeft (e) {
     this.setState({ selectedItem: e.currentTarget.dataset.id });
     this.refs.left.show();

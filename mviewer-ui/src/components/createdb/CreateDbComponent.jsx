@@ -77,6 +77,7 @@ class CreateDbComponent extends React.Component {
           if (data.response.result) {
             that.setState({message:'Database '+obj['name']+ ' was successfully created'});
             that.setState({successMessage:true});
+            that.props.refreshDb();
           }
           if (data.response.error) {
             that.setState({successMessage:false});
