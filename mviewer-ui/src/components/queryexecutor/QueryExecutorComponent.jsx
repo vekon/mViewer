@@ -115,6 +115,10 @@ class QueryExecutorComponent extends React.Component {
             that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
           } else {
           }
+          if(data.response.result.count==0){
+            that.setState({startLabel: 0});
+            that.setState({endLabel: 0});
+          }
         }
         if(data.response.error) {
           that.setState({collectionObjects:[]});
