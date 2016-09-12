@@ -30,7 +30,6 @@
   text-decoration: none;
 }
 
-ul.ReactTabs__TabList,
-.react-tabs [role=tablist] {
-    font-size: 16px;
+.tabs {
+  font-size: 70% !important;
 }

@@ -32,7 +32,7 @@ class CollectionsComponent extends React.Component {
           <li><a href="#">{this.props.location.query.collection}</a></li>
         </ul>
         <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
-          <TabList>
+          <TabList className={collectionsStyles.tabs}>
             <Tab>Query Executor</Tab>
             <Tab>Add Document</Tab>
             <Tab>Update Collection</Tab>

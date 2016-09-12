@@ -30,6 +30,10 @@ class SideNavComponent extends React.Component {
     this.setState({selectedDB: item});
   }
 
+  clearActiveClass(){
+    this.setState({selectedItem: 0});
+  }
+
   render () {
     return(
       <div className ={sideNavStyles.mainContainer}>

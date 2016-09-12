@@ -47,6 +47,8 @@
     font-family: 'Lato';
     padding: 10px;
     cursor: pointer;
+    width: 70%;
+    text-align: left;
 }
 
 .menuItem:hover,
