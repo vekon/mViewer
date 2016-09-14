@@ -1,3 +1,7 @@
+.modalContainer span {
+  cursor: pointer;
+}
+
 .two h3{
     font: 110%;
     text-align: center;
@@ -118,4 +122,22 @@
     background-color: #576d96;
     border: 1px solid #576d96;
     cursor: pointer;
+}
+
+
+.updateButton {
+float: right;
+display: inline;
+margin-top: 1%;
+margin-right: 4%;
+font-size: 70%;
+cursor: pointer;
+}
+
+.updateButton i {
+  padding-right: 5px;
+}
+
+.updateButton span {
+  display: inline;
 }

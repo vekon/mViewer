@@ -2,8 +2,8 @@ import React from 'react'
 import newCollectionStyles from './newcollection.css'
 import $ from 'jquery'
 import Modal from 'react-modal'
-import { Form } from 'formsy-react';
-import TextInput from '../TextInput/TextInputComponent.jsx';
+import { Form } from 'formsy-react'
+import TextInput from '../TextInput/TextInputComponent.jsx'
 import Config from '../../../config.json';
 
 class newCollectionComponent extends React.Component {
@@ -35,7 +35,8 @@ class newCollectionComponent extends React.Component {
     this.setState({modalIsOpen: false});
     if(this.state.successMessage==true)
     {
-      window.location.hash = '#/dashboard/collections?connectionId='+this.props.connectionId+'&db='+this.props.currentDb+'&collection='+this.state.newCollection + '&queryType="collection"';
+      this.props.refreshCollectionList(this.props.currentDb);
+      this.props.refreshRespectiveData(this.state.newCollection);
     }
   }
 
@@ -87,6 +88,7 @@ class newCollectionComponent extends React.Component {
       this.setState({ newCollection: obj['newCollName']});
     }
 
+
     $.ajax({
       type: methodType,
       cache: false,
@@ -95,24 +97,22 @@ class newCollectionComponent extends React.Component {
         'X-Requested-With': 'XMLHttpRequest'
       },
       crossDomain: false,
-      url: Config.host+'/mViewer-0.9.2/services/'+this.props.currentDb+'/collection/'+this.state.newCollection+'?connectionId='+this.props.connectionId,
+      url: Config.host+'/mViewer-0.9.2/services/'+this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId,
       data : obj,
       success: function(data) {
         if (data.response.result) {
           if(that.props.addOrUpdate == 2){
             var successResult = data.response.result.replace(/[\[\]']/g,'' );
             that.setState({message:successResult});
+            that.state.newCollection = obj['newCollName'];
           }
           else {
             that.setState({message:'Collection '+obj['newCollName']+ ' was successfully added to database ' + that.props.currentDb});
+            that.state.newCollection = obj['newCollName'];
           }
-          // console.log(data);
           that.setState({successMessage:true});
-          that.setState({newCollection:obj['newCollName']});
-
         }
         if (data.response.error) {
-          console.log(data);
           if (data.response.error.code === 'COLLECTION_ALREADY_EXISTS'){
             that.setState({successMessage:false});
             that.setState({message:'Collection '+obj['newCollName']+ ' already exists in database ' + that.props.currentDb});
@@ -135,6 +135,17 @@ class newCollectionComponent extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.addOrUpdate == 2){
+      this.setState({name :nextProps.currentItem});
+      this.getCappedData.call(this);
+      this.setState({title:'Update Collection'});
+    }
+    else {
+      this.setState({title:'Add Collection'});
+    }
+  }
+
   getCappedData(){
     var that =this;
     $.ajax({
@@ -142,7 +153,7 @@ class newCollectionComponent extends React.Component {
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+'/mViewer-0.9.2/services/'+ this.props.currentDb +'/collection/'+this.props.currentItem+'/isCapped?connectionId=' + this.props.connectionId,
+      url : Config.host+'/mViewer-0.9.2/services/'+ this.props.currentDb +'/collection/'+this.state.name+'/isCapped?connectionId=' + this.props.connectionId,
       success: function(data) {
           that.setState({cap:data.response.result});
       }, error: function(jqXHR, exception) {
@@ -164,8 +175,8 @@ class newCollectionComponent extends React.Component {
     };
 
     return(
-      <div>
-       <button onClick={this.openModal.bind(this)}>Update collection</button>
+      <div className={newCollectionStyles.modalContainer}>
+        {this.props.addOrUpdate=='1'? <span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Collection</span> : <span className={newCollectionStyles.updateButton} onClick={this.openModal.bind(this)}><i className="fa fa-pencil" aria-hidden="true"></i>Update Collection</span>}
        <Modal
          isOpen={this.state.modalIsOpen}
          onRequestClose={this.closeModal.bind(this)}

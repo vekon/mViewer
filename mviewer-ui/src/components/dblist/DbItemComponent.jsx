@@ -1,6 +1,5 @@
 import React from 'react'
 import dbListStyles from './dblist.css'
-import sharedStyles from '../shared/listpanel.css'
 import $ from 'jquery'
 import DeleteComponent from '../deletecomponent/DeleteComponent.jsx'
 
@@ -31,7 +30,7 @@ class DbItemComponent extends React.Component {
           <i className="fa fa-database" aria-hidden="true"></i>
         </span>
         <button onClick={this.props.onClick} value={this.props.name}>{this.props.name}</button>
-        <i className={"fa fa-remove " +  sharedStyles.removeIcon} aria-hidden="true" onClick={this.openModal.bind(this)}></i>
+        <i className={"fa fa-remove " +  dbListStyles.removeIcon} aria-hidden="true" onClick={this.openModal.bind(this)}></i>
           {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'database' dbName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent> : ''}
       </div>
     );

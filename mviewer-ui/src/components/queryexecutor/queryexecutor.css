@@ -1,3 +1,8 @@
+.mainContainer{
+  padding-top: 6%;
+  margin-left: 19%;
+}
+
 .buffer {
    font-size: 70%;
 }
@@ -10,7 +15,7 @@
 
 .textAreaContainer {
   display: inline-block;
-  width: 75%;
+  width: 96%;
   height: 100%;
 }
 
@@ -44,8 +49,8 @@
 }
 
 .parametersDiv {
-  margin-left: 10%;
-  margin-top: 0.8%;
+  margin-left: 20.1%;
+  margin-top: 0.3%;
 }
 .parametersDiv1 {
   margin-left: -10%;
@@ -58,11 +63,11 @@
     /*margin-top: 2.7%;*/
     margin-top: 3%;
     padding-left: 1%;
-    width: 18%;
-    margin-left: -130px;
+    width: 19%;
+    margin-left: 0;
     border: 1.5px solid #4968a7;
     /*height: 29.5%;*/
-    height: 197px;
+    height: 199px;
     overflow-y: auto;
 }
 
@@ -70,7 +75,7 @@
  parametersDiv1 label {
   display: inline-block;
   padding-top: 5px;
-  padding-bottom: 2px;
+  padding-bottom: 3%;
 }
 
 .parametersDiv input,
@@ -96,7 +101,7 @@
 
 .attributesLabel {
     position: absolute;
-    margin-left: -130px;
+    margin-left: 0;
     margin-top: 1%;
     display: inline-block !important;
     width: 20%;
@@ -154,7 +159,7 @@
 
 .results
 {
-  width: 48%;
+  width: 93%;
   margin-left: 1%;
   height: 30%;
   margin-top: 1%;
@@ -164,10 +169,11 @@
   resize: none;
   font-family: 'Lato';
   font-weight: 300;
+  background: #ccc;
 }
 
 .treeTab {
-  margin-top: 2% !important;
+  margin-top: 3% !important;
   padding-left: 1% !important;
   font-size: 70% !important;
 }
@@ -181,7 +187,9 @@
 
 .paginator {
   font-size: 70%;
-  margin-left: 1%;
+  margin-right: 5%;
+  float: right;
+  margin-top: -4%;
 }
 
 .paginator label {
@@ -195,4 +203,49 @@
 
 .paginator a:hover {
   text-decoration: underline;
+}
+
+
+.deleteButton {
+float: right;
+display: inline;
+margin-top: 1%;
+margin-right: 6%;
+font-size: 70%;
+cursor: pointer;
+}
+
+.deleteButton i {
+  padding-right: 5px;
+}
+
+.deleteButton span {
+  display: inline;
+}
+
+
+.treeTab {
+  width: 93%;
+  border-top: 1px solid #7a8285;
+  border-bottom: 1px solid #7a8285;
+  margin-left: 1%;
+}
+
+.treeTab li {
+  display: inline;
+}
+
+.treeTab li span {
+  display: inline-block;
+  width: 10%;
+  font-size: 90%;
+  text-align: center;
+  font-family: 'Lato';
+  cursor: pointer;
+}
+
+.activeTab {
+   background: #7a8285;
+   color: #fff;
+   padding: 1%;
 }

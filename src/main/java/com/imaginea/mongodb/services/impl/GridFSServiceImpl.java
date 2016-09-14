@@ -381,6 +381,8 @@ public class GridFSServiceImpl implements GridFSService {
       GridFSUploadOptions options = new GridFSUploadOptions().chunkSizeBytes(1024)
           .metadata(new Document("type", "presentation"));
 
+	System.out.println("fileName "+fileData.getFileName());
+
       ObjectId fileId = gridFS.uploadFromStream(fileData.getFileName(), inputStream, options);
 
       String objectId = JSON.serialize(fileId);

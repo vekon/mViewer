@@ -16,7 +16,7 @@ class DeleteComponent extends React.Component {
   }
 
   closeModal() {
-    this.props.closeModal();
+    this.props.closeModal(this.state.successMessage);
   }
 
   clickHandlerYes(){

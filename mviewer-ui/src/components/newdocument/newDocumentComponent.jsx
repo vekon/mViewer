@@ -27,7 +27,7 @@ class newDocumentComponent extends React.Component {
     this.setState({modalIsOpen: false});
     if(this.state.successMessage==true)
     {
-      window.location.hash = '#/dashboard/collections?connectionId='+this.props.connectionId+'&db='+this.props.currentDb+'&collection='+this.props.currentItem + '&queryType="collection"';
+      this.props.refreshDocuments();
     }
   }
 
@@ -38,7 +38,6 @@ class newDocumentComponent extends React.Component {
       this.setState(state);
     }.bind(this);
   }
-
 
   clickHandler(){
     var that =this;
@@ -92,7 +91,7 @@ class newDocumentComponent extends React.Component {
 
     return(
       <div>
-       <button onClick={this.openModal.bind(this)}>Add Document</button>
+       <span className={newDocumentStyles.addButton} onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Document</span>
        <Modal
          isOpen={this.state.modalIsOpen}
          onRequestClose={this.closeModal.bind(this)}

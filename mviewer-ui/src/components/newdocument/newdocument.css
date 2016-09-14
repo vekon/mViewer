@@ -91,3 +91,21 @@
     border: 1px solid #576d96;
     cursor: pointer;
 }
+
+
+.addButton {
+float: right;
+display: inline;
+margin-top: 1%;
+margin-right: 4%;
+font-size: 70%;
+cursor: pointer;
+}
+
+.addButton i {
+  padding-right: 5px;
+}
+
+.addButton span {
+  display: inline;
+}

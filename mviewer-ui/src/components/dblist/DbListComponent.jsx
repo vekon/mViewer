@@ -6,9 +6,11 @@ import CollectionList from '../collectionlist/CollectionListComponent.jsx'
 import GridFSList from '../gridfslist/GridFSListComponent.jsx'
 import DbItem from './DbItemComponent.jsx'
 import modalStyles from '../shared/modal.css'
-import modal from 'react-modal'
 import ReactDOM  from 'react-dom'
-import Config from '../../../config.json';
+import { Form } from 'formsy-react'
+import TextInput from '../TextInput/TextInputComponent.jsx';
+import Modal from 'react-modal'
+import Config from '../../../config.json'
 class DbListComponent extends React.Component {
 
   constructor(props) {
@@ -17,17 +19,52 @@ class DbListComponent extends React.Component {
       dbNames:['test1', 'test2', 'test3'],
       connectionId: this.props.propps.connectionId,
       dbStats: {},
-      visible: false,
+      visible: true,
       selectedItem: null,
+      selectedDb: null,
+      modalIsOpen: false,
+      name: null,
+      error:false,
       selectedNav: this.props.selectedNav
     }
-    modal.setAppElement(document.body)
+  }
+
+  openModal() {
+    this.setState({modalIsOpen: true});
+    this.setState({message: ''});
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
+  }
+  enableButton() {
+    return function() {
+      this.setState({
+        canSubmit: true
+      });
+    }.bind(this);
+  }
+
+  disableButton() {
+    return function() {
+      this.setState({
+        canSubmit: false
+      });
+    }.bind(this);
+  }
+
+  handleChange(key){
+   this.setState({successMessage:false});
+   this.setState({message:''});
   }
 
   clickHandler (idx, e) {
+    var that = this;
+    this.setState({ visible: !this.state.visible });
     this.setState({selectedItem: idx});
     this.props.selectedDB(e.target.value);
-    this.refs.left.show(e.target.value);
+    this.setState({selectedDb : e.target.value});
+    window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+e.target.value + '&queryType="collection"&collapsed='+this.state.visible;
   }
 
   componentDidMount(){
@@ -76,19 +113,68 @@ class DbListComponent extends React.Component {
     });
   }
 
-  show (x) {
-    var that = this;
-    this.setState({ visible: !this.state.visible }, function(){
-      that.setState({selectedItem:null});
-    });
-    this.refs.left.hide(x);
-  }
-
   changeHandler(){
     this.setState({visible:false});
   }
 
+  collapsedDivHandler(){
+    var that =this;
+    this.setState({visible: !this.state.visible}, function(){
+      window.location.hash = '#/dashboard/collections?connectionId='+that.props.propps.connectionId+'&db='+that.state.selectedDb + '&queryType="collection"&collapsed='+false;
+    });
+
+  }
+
+  clickHandlerModal(){
+    var that =this;
+    var data = $("form").serialize().split("&");
+    var obj={};
+    for(var key in data)
+    {
+      obj[data[key].split("=")[0]] = data[key].split("=")[1];
+    }
+    if (obj['name']!=''){
+      $.ajax({
+        type: 'POST',
+        cache: false,
+        dataType: 'json',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        crossDomain: false,
+        url: Config.host+'/mViewer-0.9.2/services/db/'+obj['name']+'?connectionId='+this.props.propps.connectionId,
+        data : obj,
+        success: function(data) {
+          if (data.response.result) {
+            that.setState({message:'Database '+obj['name']+ ' was successfully created'});
+            that.setState({successMessage:true});
+            that.refreshDbList();
+          }
+          if (data.response.error) {
+            that.setState({successMessage:false});
+            that.setState({message:'Database '+obj['name']+ ' already exists'});
+          }
+        }, error: function(jqXHR, exception) {
+      }
+     });
+    }
+    else{
+      this.setState({error : true})
+    }
+  }
+
   render () {
+    const customStyles = {
+      content : {
+        top                   : '50%',
+        left                  : '53%',
+        right                 : 'auto',
+        width                 : '25%',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, -50%)'
+      }
+    };
     var that = this;
     var items = this.state.dbNames.map(function (item, idx) {
       var is_selected = this.state.selectedItem == idx;
@@ -96,7 +182,7 @@ class DbListComponent extends React.Component {
               key={item}
               name={item}
               onClick={this.clickHandler.bind(this,idx)}
-              isSelected={this.state.selectedItem==idx}
+              isSelected={this.state.selectedDb==item}
               connectionId = {this.state.connectionId}
               refreshDbList={this.refreshDbList.bind(this)}
               />;
@@ -104,15 +190,36 @@ class DbListComponent extends React.Component {
     return(
      <div>
        <div className={dbListStyles.menu}>
-         <div className={(this.state.visible ? dbListStyles.visible   : this.props.alignment)  }>
-           <h5 className={dbListStyles.menuTitle}>DATABASES</h5>
+         <div className={(this.state.visible ? dbListStyles.visible   : dbListStyles.collapsed)  }>
+           <h5 className={dbListStyles.menuTitle}><span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Database</span></h5>
            {items}
         </div>
+        <div className={this.state.visible ?dbListStyles.collapsedDiv: dbListStyles.openDiv} >
+          <span className={dbListStyles.arrow}>
+            <i className="fa fa-chevron-right" aria-hidden="true" onClick={this.collapsedDivHandler.bind(this)}></i>
+          </span>
+          <span className={dbListStyles.collapsedData}>{this.state.selectedDb}</span>
+        </div>
      </div>
-     { this.props.selectedNav == 3 ?
-        <GridFSList ref="left" alignment={dbListStyles.left} propps = {this.props.propps} visible={this.state.visible} onClick = {that.changeHandler.bind(that)}> </GridFSList>
-        : <CollectionList ref="left" alignment={dbListStyles.left} propps = {this.props.propps} visible={this.state.visible} onClick = {that.changeHandler.bind(that)} ></CollectionList>
-     }
+     <Modal
+       isOpen={this.state.modalIsOpen}
+       onRequestClose={this.closeModal.bind(this)}
+       style = {customStyles}>
+       <div className={dbListStyles.two}>
+         <h3>Create Database</h3>
+         <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
+           <div className={ dbListStyles.formContainer}>
+             <div className={dbListStyles.inputBox}>
+               <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name' }}  />
+             </div>
+             <div>
+               <button onClick={this.clickHandlerModal.bind(this)} value='SUBMIT' className={dbListStyles.submit} disabled={!this.state.canSubmit}>SUBMIT</button>
+             </div>
+           </div>
+         </Form>
+          <div className={!this.state.successMessage? (dbListStyles.errorMessage + ' ' + (this.state.message!='' ? dbListStyles.show : dbListStyles.hidden)) : (this.state.message != '' ? dbListStyles.successMessage : '')}>{this.state.message}</div>
+       </div>
+     </Modal>
     </div>
     );
   }
