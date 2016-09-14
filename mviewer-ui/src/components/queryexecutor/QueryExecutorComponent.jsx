@@ -4,7 +4,10 @@ import TreeView from '../treeview/TreeViewComponent.jsx'
 import $ from 'jquery'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import Config from '../../../config.json'
-import update from 'react-addons-update';
+import update from 'react-addons-update'
+import DeleteComponent from '../deletecomponent/DeleteComponent.jsx'
+import NewCollection from '../newcollection/newCollectionComponent.jsx'
+import NewDocument from '../newdocument/newDocumentComponent.jsx'
 
 class QueryExecutorComponent extends React.Component {
 
@@ -26,9 +29,23 @@ class QueryExecutorComponent extends React.Component {
             skipValue:0,
             limitValue:10,
             fields: [],
+            modalIsOpen: false,
             query: this.props.queryType == '"collection"' ? 'db.'+this.props.currentItem+'.find({})' :
                    'db.'+this.props.currentItem+'.files.find({})'
       }
+  }
+
+  openModal() {
+    this.setState({modalIsOpen: true});
+    this.setState({message: ''});
+  }
+
+  closeModal(successMessage) {
+    this.setState({modalIsOpen: false});
+    if (successMessage == true){
+      this.props.refreshCollectionList(false);
+    }
+
   }
 
   getAttributes (currentDb,currentItem, connectionId) {
@@ -115,6 +132,10 @@ class QueryExecutorComponent extends React.Component {
             that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
           } else {
           }
+          if(data.response.result.count==0){
+            that.setState({startLabel: 0});
+            that.setState({endLabel: 0});
+          }
         }
         if(data.response.error) {
           that.setState({collectionObjects:[]});
@@ -162,6 +183,10 @@ class QueryExecutorComponent extends React.Component {
       }, error: function(jqXHR, exception) {
       }
      });
+  }
+
+  refreshDocuments(){
+    this.clickHandler();
   }
 
   attributeHandler(r) {
@@ -306,6 +331,10 @@ class QueryExecutorComponent extends React.Component {
 
     return(
       <div className = {queryExecutorStyles.mainContainer}>
+        <span className={queryExecutorStyles.deleteButton} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete Collection</span></span>
+        {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'collection' dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : ''}
+        <NewCollection queryType='collection' currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} addOrUpdate={2} refreshCollectionList={this.props.refreshCollectionList.bind(this)} refreshRespectiveData = {this.props.refreshRespectiveData.bind(this)}/>
+        <NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refreshDocuments={this.refreshDocuments.bind(this)}></NewDocument>
         <div className={queryExecutorStyles.buffer}>
           <div id="queryExecutor" className={queryExecutorStyles.tab}>Query Executor</div>
           <div className={queryExecutorStyles.queryBoxDiv}>
@@ -347,8 +376,8 @@ class QueryExecutorComponent extends React.Component {
         <div className={queryExecutorStyles.resultContainer} key={this.props.currentItem}>
           <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
             <TabList className={queryExecutorStyles.treeTab}>
-              <Tab>JSON</Tab>
-              <Tab>Tree Table</Tab>
+              <Tab><span className={this.state.selectedTab==0 ? queryExecutorStyles.activeTab : ''}>JSON</span></Tab>
+              <Tab><span className={this.state.selectedTab==1 ? queryExecutorStyles.activeTab : ''}>Tree Table</span></Tab>
             </TabList>
             <TabPanel>
               <div id='paginator' className={queryExecutorStyles.paginator}>

@@ -23,7 +23,7 @@
 .mainNav li a:link,
 .mainNav li a:visited {
     padding: 0 0 0 5px;
-    color : #a08eb0;  
+    color : #a08eb0;
     text-decoration: none;
     text-transform: uppercase;
     font-size: 60%;
@@ -105,4 +105,13 @@ header {
 .banner {
     background: #61b2f7 !important;
     padding: 1% 2%;
+}
+
+.disconnect {
+  margin-right: 5%;
+  float: right;
+}
+
+.disconnect::before {
+  content: '' !important;
 }

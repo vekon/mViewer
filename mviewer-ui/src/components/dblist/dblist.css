@@ -2,17 +2,24 @@
     display:block;
     z-index:2;
     top:0;
-    width:250px;
+    width:15%;
     position: absolute;
     height:100%;
-    transition: transform ease 0.3s;
+    transition: transform ease 0.5s;
     color: #ccc;
     background:#0e1d5d;
     margin-top: 55px;
+    transition: width ease 0.5s;
+    transition: visibility 0s, opacity 0.5s linear;
 }
 
 .visible {
     transform:translate3d(70px, 0, 0);
+    overflow: auto;
+}
+
+.visible div:last-child {
+  margin-bottom: 25%;
 }
 
 .left {
@@ -27,6 +34,7 @@
     padding:10px 15px;
     border-bottom:solid 1px #555;
     cursor:pointer;
+    font-size: 70%;
     color:#B0B0B0;
 }
 
@@ -40,8 +48,11 @@
     color: #fff;
     border: 0;
     font-family: 'Lato';
-    padding: 10px;
+    /*padding: 10px;*/
     cursor: pointer;
+    width: 60%;
+    text-align: left;
+    font-size: 70%
 }
 
 .menuItem:hover,
@@ -63,4 +74,177 @@
     background-color: #fff;
     color: #0CB9F2;
     font-family: 'Lato';
+    font-size: 70%;
+}
+
+
+.removeIcon {
+  color: #85adad;
+  display: block;
+  text-align: center;
+  font-size: 70%;
+  margin-top: -20%;
+  margin-left: 90%;
+}
+
+.collapsed {
+  width: 5% !important;
+  margin-left: 70px;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+.collapsedDiv{
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+.openDiv {
+display: inline-block !important;
+visibility: visible !important;
+width: 5% !important;
+margin-left: 70px !important;
+opacity: 1 !important;
+}
+
+
+.collapsedData {
+  -webkit-transform: rotate(90deg);
+  display: inline-block;
+  margin-top: 350%;
+  width : 100%;
+  font-size: 70%;
+}
+
+
+.arrow {
+  margin-left: 40%;
+  margin-top: 50%;
+  display: inline-block;
+  cursor: pointer;
+}
+
+
+
+/*Styles for modal*/
+
+.two h3{
+    text-align: center;
+    margin-bottom: -10%;
+    padding: 5px;
+}
+
+.inputBox div input[type=text] {
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid #4968a7;
+    background-color: inherit;
+    font-size: 11px;
+    color: black !important;
+    height: 30px;
+    width: 100%;
+}
+
+.inputBox label {
+    font-size: 60%;
+    color: black;
+}
+
+.inputBox div input[type=checkbox] {
+    display: inline;
+}
+
+.TextInput error input[type=text] {
+    border-color: #8c4141;
+    width: 166px;
+}
+
+.validationError {
+    border-color: #8c4141;
+    width: 166px;
+}
+
+.inputBox {
+    margin-bottom: 7px;
+}
+
+.innerForm {
+    padding: 5%;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+    background-color: #ffffff
+}
+
+.inputLabel {
+    margin-left: 25% !important;
+}
+
+.formContainer {
+    margin-left: 19%;
+    margin-top: 15%;
+    margin-right: auto;
+    width: 62%;
+}
+
+.help {
+    margin-top: 8px;
+    width: 100%;
+}
+
+.errorMessage {
+    color: red;
+    margin: 5px 0;
+    text-align: center;
+    border: 1px solid red;
+    width: 100%;
+    font-size: 50%;
+}
+
+.errorMessage.hidden {
+    display: none;
+}
+
+.errorMessage.show {
+    color: #FF9696;
+    margin: 5px 0;
+    text-align: center;
+    border: 1px solid #FF9696;
+    width: 100%;
+    border-radius: 3px;
+    line-height: 3;
+}
+
+
+.successMessage {
+    color: green;
+    margin: 5px 0;
+    text-align: center;
+    border: 1px solid green;
+    width: 100%;
+    border-radius: 3px;
+    line-height: 3;
+    font-size: 50%
+}
+
+
+/*Buttons*/
+.submit
+ {
+    /*padding: 10px 30px;*/
+    border: 1px solid #3679f8;
+    width: 157px;
+    background-color: #26344e;
+    font-size: 12px;
+    color: white;
+    margin-left: 0px;
+    border-radius: 3px;
+    height: 30px;
+    width: 100%;
+    /*margin-top:15px;*/
+}
+.submit:hover,
+.submit:active {
+    background-color: #576d96;
+    border: 1px solid #576d96;
+    cursor: pointer;
 }

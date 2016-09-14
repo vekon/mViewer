@@ -1,3 +1,6 @@
+.ReactModal__Overlay {
+  z-index: 999999999999999;
+}
 
 .mainBody {
 	border: 0;
