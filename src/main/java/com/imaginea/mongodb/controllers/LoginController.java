@@ -67,7 +67,6 @@ public class LoginController extends BaseController {
       @ApiParam(value = "user login data in json format", required = true) final UserLoginData userLoginData,
       @Context final HttpServletRequest request) {
 
-    System.out.println("Request comes as JSON object");
     String response = ErrorTemplate.execute(logger, new ResponseCallback() {
       public Object execute() throws Exception {
         if ("".equals(userLoginData.getHost()) || "".equals(userLoginData.getPort())) {
@@ -134,8 +133,7 @@ public class LoginController extends BaseController {
       @Context final HttpServletRequest request) {
 
 
-    System.out.println("Request From Form");
-
+    
     String response = ErrorTemplate.execute(logger, new ResponseCallback() {
       public Object execute() throws Exception {
         if ("".equals(host) || "".equals(mongoPort)) {

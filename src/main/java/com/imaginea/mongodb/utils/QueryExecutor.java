@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -228,9 +229,15 @@ public class QueryExecutor {
     ArrayList<Document> dataList = new ArrayList<Document>();
     if (iterator.hasNext()) {
       while (iterator.hasNext()) {
-        dataList.add(iterator.next());
+        Document document = iterator.next();
+        ObjectId objectId = (ObjectId)document.get("_id");
+        
+        document.put("_id", objectId.toHexString());
+        dataList.add(document);
       }
     }
+    
+    
     return ApplicationUtils.constructResponse(true, mongoCollection.count(queryObj), dataList);
   }
 
