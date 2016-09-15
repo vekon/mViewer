@@ -121,8 +121,7 @@ public class GridFSServiceImpl implements GridFSService {
     } else {
       try {
 
-        System.out.println("creating gridfs");
-
+        
         GridFSBucket gridFSBucket =
             GridFSBuckets.create(mongoInstance.getDatabase(dbName), bucketName);
 
@@ -221,9 +220,7 @@ public class GridFSServiceImpl implements GridFSService {
 
       JSONObject file = new JSONObject();
 
-      System.out.println(fsFile.toString());
-      System.out.println(fsFile.getId().asObjectId().getValue().toString());
-
+      
       file.put("_id", fsFile.getId().asObjectId().getValue());
       file.put("fileName", fsFile.getFilename());
       file.put("length", fsFile.getLength());
@@ -301,7 +298,6 @@ public class GridFSServiceImpl implements GridFSService {
             "Database with dbName [ " + dbName + "] does not exist");
       }
 
-      System.out.println("_id " + _id);
 
       ObjectId objectId = new ObjectId(_id);
 
@@ -380,8 +376,6 @@ public class GridFSServiceImpl implements GridFSService {
 
       GridFSUploadOptions options = new GridFSUploadOptions().chunkSizeBytes(1024)
           .metadata(new Document("type", "presentation"));
-
-	System.out.println("fileName "+fileData.getFileName());
 
       ObjectId fileId = gridFS.uploadFromStream(fileData.getFileName(), inputStream, options);
 

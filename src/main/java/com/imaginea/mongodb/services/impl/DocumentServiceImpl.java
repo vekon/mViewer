@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,6 +38,9 @@ import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 
 /**
  * Defines services definitions for performing operations like create/update/delete on documents
@@ -223,7 +227,7 @@ public class DocumentServiceImpl implements DocumentService {
       throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection Name Empty");
     }
     String result = null;
-    Document documentData = null;
+
     try {
       if (!databaseService.getDbList().contains(dbName)) {
         throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
@@ -238,7 +242,9 @@ public class DocumentServiceImpl implements DocumentService {
         throw new DocumentException(ErrorCodes.DOCUMENT_EMPTY, "Document is empty");
       }
 
-      Object newId = newData.get("_id");
+      String newId = (String) newData.get("_id");
+
+
       if (newId == null) {
         throw new DocumentException(ErrorCodes.INVALID_OBJECT_ID, "Object Id is invalid.");
       }
@@ -246,8 +252,9 @@ public class DocumentServiceImpl implements DocumentService {
         throw new DocumentException(ErrorCodes.INVALID_OBJECT_ID, "Object Id is invalid.");
       }
 
-      Object docId = JSON.parse(_id);
-      if (!newId.equals(docId)) {
+
+      ObjectId docId = new ObjectId(_id);
+      if (!newId.equals(_id)) {
         throw new DocumentException(ErrorCodes.UPDATE_OBJECT_ID_EXCEPTION,
             "_id cannot be updated.");
       } else {
@@ -255,28 +262,32 @@ public class DocumentServiceImpl implements DocumentService {
         // as newData as id of string type but we need ObjectId type
         newData.put("_id", docId);
       }
-      Document query = new Document("_id", docId);
 
       MongoCollection<Document> collection =
           mongoInstance.getDatabase(dbName).getCollection(collectionName);
 
-      documentData = collection.findOneAndUpdate(query, newData);
+      Document updateData = new Document("$set", newData);
 
-      if (documentData == null) {
+      Document document = collection.find(Filters.eq("_id", docId)).first();
+
+      if (document != null) {
+
+        collection.updateOne(Filters.eq("_id", docId), updateData);
+        
+      } else {
         throw new DocumentException(ErrorCodes.DOCUMENT_DOES_NOT_EXIST,
             "Document does not exist !");
       }
 
-
-
     } catch (IllegalArgumentException e) {
       // When error converting object Id
+
       throw new DocumentException(ErrorCodes.INVALID_OBJECT_ID, "Object Id is invalid.");
 
     } catch (MongoException e) {
       throw new DocumentException(ErrorCodes.DOCUMENT_UPDATE_EXCEPTION, e.getMessage());
     }
-    result = "Document: [" + documentData + "] has been updated.";
+    result = "Document: [" + newData + "] has been updated.";
 
     return result;
   }
@@ -335,8 +346,11 @@ public class DocumentServiceImpl implements DocumentService {
       }
 
       Document query = new Document();
-      Object docId = JSON.parse(_id);
+
+      ObjectId docId = new ObjectId(_id);
+
       query.put("_id", docId);
+
       MongoCollection<Document> collection =
           this.mongoInstance.getDatabase(dbName).getCollection(collectionName);
       documentData = collection.find(query).first();
@@ -346,8 +360,8 @@ public class DocumentServiceImpl implements DocumentService {
             "Document does not exist !");
       }
 
-      mongoInstance.getDatabase(dbName).getCollection(collectionName)
-          .findOneAndDelete(documentData);
+      DeleteResult deleteOne =
+          mongoInstance.getDatabase(dbName).getCollection(collectionName).deleteOne(query);
 
     } catch (MongoException e) {
       throw new DocumentException(ErrorCodes.DOCUMENT_DELETION_EXCEPTION, e.getMessage());
