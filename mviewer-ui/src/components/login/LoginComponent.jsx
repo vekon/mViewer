@@ -72,7 +72,7 @@ class LoginComponent extends React.Component {
             'X-Requested-With': 'XMLHttpRequest'
           },
           crossDomain: false,
-          url: Config.host+'/mViewer-0.9.2/services/login/',
+          url: Config.host+Config.service_path+'/services/login/',
           data : obj,
           success: function(data) {
             if (data.response.result) {

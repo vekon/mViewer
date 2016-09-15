@@ -56,7 +56,7 @@ class newDocumentComponent extends React.Component {
         'X-Requested-With': 'XMLHttpRequest'
       },
       crossDomain: false,
-      url: Config.host+'/mViewer-0.9.2/services/'+this.props.currentDb+'/'+this.props.currentItem+'/document?connectionId='+this.props.connectionId,
+      url: Config.host+Config.service_path+'/services/'+this.props.currentDb+'/'+this.props.currentItem+'/document?connectionId='+this.props.connectionId,
       data : obj,
       success: function(data) {
         if (data.response.result) {

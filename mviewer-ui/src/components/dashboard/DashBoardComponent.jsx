@@ -19,7 +19,7 @@ class DashBoardComponent extends React.Component {
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+'/mViewer-0.9.2/services/disconnect?connectionId=' + this.state.connectionId,
+      url : Config.host+Config.service_path+'/services/disconnect?connectionId=' + this.state.connectionId,
       success: function(data) {
         if(data.response.result==='User Logged Out')
           {

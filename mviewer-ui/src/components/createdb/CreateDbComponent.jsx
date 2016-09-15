@@ -71,7 +71,7 @@ class CreateDbComponent extends React.Component {
           'X-Requested-With': 'XMLHttpRequest'
         },
         crossDomain: false,
-        url: Config.host+'/mViewer-0.9.2/services/db/'+obj['name']+'?connectionId='+this.props.fromHome.connectionId,
+        url: Config.host+Config.service_path+'/services/db/'+obj['name']+'?connectionId='+this.props.fromHome.connectionId,
         data : obj,
         success: function(data) {
           if (data.response.result) {

@@ -74,7 +74,7 @@ class DbListComponent extends React.Component {
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+'/mViewer-0.9.2/services/login/details?connectionId='+ this.state.connectionId,
+      url : Config.host+Config.service_path+'/services/login/details?connectionId='+ this.state.connectionId,
       success: function(data) {
         if (typeof(data.response.result) != 'undefined')
           {
@@ -97,7 +97,7 @@ class DbListComponent extends React.Component {
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+'/mViewer-0.9.2/services/login/details?connectionId='+ this.state.connectionId,
+      url : Config.host+Config.service_path+'/services/login/details?connectionId='+ this.state.connectionId,
       success: function(data) {
         if (typeof(data.response.result) != 'undefined')
           {
@@ -142,7 +142,7 @@ class DbListComponent extends React.Component {
           'X-Requested-With': 'XMLHttpRequest'
         },
         crossDomain: false,
-        url: Config.host+'/mViewer-0.9.2/services/db/'+obj['name']+'?connectionId='+this.props.propps.connectionId,
+        url: Config.host+Config.service_path+'/services/db/'+obj['name']+'?connectionId='+this.props.propps.connectionId,
         data : obj,
         success: function(data) {
           if (data.response.result) {

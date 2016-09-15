@@ -40,7 +40,7 @@ class CollectionList extends React.Component {
         dataType: 'json',
         credentials: 'same-origin',
         crossDomain: false,
-        url : Config.host+'/mViewer-0.9.2/services/'+ db +'/collection?connectionId=' + this.state.connectionId,
+        url : Config.host+Config.service_path+'/services/'+ db +'/collection?connectionId=' + this.state.connectionId,
         success: function(data) {
           if(typeof(data.response.result) !== 'undefined'){
             that.setState({collections: data.response.result});
@@ -63,7 +63,7 @@ class CollectionList extends React.Component {
         dataType: 'json',
         credentials: 'same-origin',
         crossDomain: false,
-        url : Config.host+'/mViewer-0.9.2/services/'+ this.props.selectedDB +'/collection?connectionId=' + this.state.connectionId,
+        url : Config.host+Config.service_path+'/services/'+ this.props.selectedDB +'/collection?connectionId=' + this.state.connectionId,
         success: function(data) {
           that.setState({collections: data.response.result});
         }, error: function(jqXHR, exception) {
@@ -78,7 +78,7 @@ class CollectionList extends React.Component {
         dataType: 'json',
         credentials: 'same-origin',
         crossDomain: false,
-        url : Config.host+'/mViewer-0.9.2/services/'+ nextProps.selectedDB +'/collection?connectionId=' + this.state.connectionId,
+        url : Config.host+Config.service_path+'/services/'+ nextProps.selectedDB +'/collection?connectionId=' + this.state.connectionId,
         success: function(data) {
           that.setState({collections: data.response.result});
         }, error: function(jqXHR, exception) {

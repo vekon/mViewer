@@ -97,7 +97,7 @@ class newCollectionComponent extends React.Component {
         'X-Requested-With': 'XMLHttpRequest'
       },
       crossDomain: false,
-      url: Config.host+'/mViewer-0.9.2/services/'+this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId,
+      url: Config.host+Config.service_path+'/services/'+this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId,
       data : obj,
       success: function(data) {
         if (data.response.result) {
@@ -153,7 +153,7 @@ class newCollectionComponent extends React.Component {
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+'/mViewer-0.9.2/services/'+ this.props.currentDb +'/collection/'+this.state.name+'/isCapped?connectionId=' + this.props.connectionId,
+      url : Config.host+Config.service_path+'/services/'+ this.props.currentDb +'/collection/'+this.state.name+'/isCapped?connectionId=' + this.props.connectionId,
       success: function(data) {
           that.setState({cap:data.response.result});
       }, error: function(jqXHR, exception) {

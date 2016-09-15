@@ -24,10 +24,10 @@ class DeleteComponent extends React.Component {
     var type = this.props.title;
     var deleteUrl ='';
     if(type === 'database'){
-      deleteUrl = Config.host+'/mViewer-0.9.2/services/db/'+this.props.dbName+'?connectionId='+this.props.connectionId;
+      deleteUrl = Config.host+Config.service_path+'/services/db/'+this.props.dbName+'?connectionId='+this.props.connectionId;
     }
     if(type === 'collection'){
-      deleteUrl = Config.host+'/mViewer-0.9.2/services/'+this.props.dbName+'/collection/'+this.props.collectionName+'?connectionId='+this.props.connectionId;
+      deleteUrl = Config.host+Config.service_path+'/services/'+this.props.dbName+'/collection/'+this.props.collectionName+'?connectionId='+this.props.connectionId;
     }
     $.ajax({
       type: "DELETE",

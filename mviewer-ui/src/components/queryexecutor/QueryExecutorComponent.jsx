@@ -55,7 +55,7 @@ class QueryExecutorComponent extends React.Component {
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+'/mViewer-0.9.2/services/'+currentDb+'/'+currentItem+'/document/keys?connectionId='+connectionId+'&allKeys=true',
+      url : Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document/keys?connectionId='+connectionId+'&allKeys=true',
       success: function(data) {
         var arr = data.response.result.keys;
         var newArr = [];
@@ -78,7 +78,7 @@ class QueryExecutorComponent extends React.Component {
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+'/mViewer-0.9.2/services/'+currentDb+'/'+currentItem+'/document?query=db.'+currentItem+'.find(%7B%7D)&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&allKeys=true',
+      url : Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document?query=db.'+currentItem+'.find(%7B%7D)&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&allKeys=true',
       success: function(data) {
         var array = data.response.result.documents;
         that.setState({collectionObjects:array});
@@ -109,7 +109,7 @@ class QueryExecutorComponent extends React.Component {
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+'/mViewer-0.9.2/services/'+currentDb+'/'+currentItem+'/document?query='+'db.'+currentItem+'.find({})'+'&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&allKeys=true',
+      url : Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document?query='+'db.'+currentItem+'.find({})'+'&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&allKeys=true',
       success: function(data) {
         if(data.response.result!=undefined)
         {
@@ -163,7 +163,7 @@ class QueryExecutorComponent extends React.Component {
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+'/mViewer-0.9.2/services/'+this.props.currentDb+'/'+this.props.currentItem+'/document?query='+this.state.query+'&connectionId='+this.props.connectionId+'&fields=' + attributes +'&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected,
+      url : Config.host+Config.service_path+'/services/'+this.props.currentDb+'/'+this.props.currentItem+'/document?query='+this.state.query+'&connectionId='+this.props.connectionId+'&fields=' + attributes +'&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected,
       success: function(data) {
         if(data.response.result!=undefined)
         {
@@ -295,7 +295,7 @@ class QueryExecutorComponent extends React.Component {
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+'/mViewer-0.9.2/services/'+this.props.currentDb+'/'+this.props.currentItem+'/document?query='+this.state.query+'&connectionId='+this.props.connectionId+'&fields=' +attributes+ '&limit='+limitValue+'&skip='+skipValue+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected,
+      url : Config.host+Config.service_path+'/services/'+this.props.currentDb+'/'+this.props.currentItem+'/document?query='+this.state.query+'&connectionId='+this.props.connectionId+'&fields=' +attributes+ '&limit='+limitValue+'&skip='+skipValue+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected,
       success: function(data) {
         if(data.response.result!=undefined)
         {
