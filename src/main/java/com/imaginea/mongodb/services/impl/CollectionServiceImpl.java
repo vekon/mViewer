@@ -341,7 +341,6 @@ public class CollectionServiceImpl implements CollectionService {
         throw new CollectionException(ErrorCodes.COLLECTION_DOES_NOT_EXIST, "Collection with name ["
             + collectionName + "] DOES NOT EXIST in Database [" + dbName + "]");
       }
-      System.out.println("im in delete collection service");
       mongoInstance.getDatabase(dbName).getCollection(collectionName).drop();
     } catch (MongoException m) {
       throw new CollectionException(ErrorCodes.COLLECTION_DELETION_EXCEPTION, m.getMessage());

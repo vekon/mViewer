@@ -145,10 +145,15 @@ public class ApplicationUtils {
 
   public static JSONObject constructResponse(boolean isEditable, long size, List docs)
       throws JSONException {
+    
+    
+    
     JSONObject result = new JSONObject();
     result.put("documents", docs);
     result.put("count", size);
     result.put("editable", isEditable);
+    
+    
     return result;
   }
 
