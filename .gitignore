@@ -8,3 +8,4 @@ target/
 *.iml
 mviewer-ui/node_modules
 mviewer-ui/build
+mviewer-ui/node

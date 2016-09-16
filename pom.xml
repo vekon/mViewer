@@ -32,6 +32,12 @@
 						</configuration>
 					</execution>
 					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+					</execution>
+					<execution>
 						<id>webpack build</id>
 						<goals>
 							<goal>webpack</goal>
