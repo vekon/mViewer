@@ -86,3 +86,29 @@
   margin-top: -20%;
   margin-left: 90%;
 }
+
+.searchInput input {
+    outline: none;
+    padding: 5px 5px 5px 20px;
+    border: 6px solid #ccc;
+    width: 100%;
+}
+
+.searchInput::before {
+  content: "\26b2";
+  display: block;
+  position: absolute;
+  width: 15px;
+  z-index: 3;
+  height: 15px;
+  transform: rotate(-45deg);
+  font-size: 20px;
+  top: 12%;
+  left: 3%;
+  line-height: 32px;
+
+}
+
+.searchInput {
+  position: relative;
+}

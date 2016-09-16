@@ -136,15 +136,17 @@ class newCollectionComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.addOrUpdate == 2){
+    if(nextProps.addOrUpdate == 2 ){
       this.setState({name :nextProps.currentItem});
       this.getCappedData.call(this);
       this.setState({title:'Update Collection'});
+      this.setState({successMessage:false});
     }
     else {
       this.setState({title:'Add Collection'});
     }
   }
+
 
   getCappedData(){
     var that =this;

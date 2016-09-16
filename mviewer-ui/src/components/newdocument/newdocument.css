@@ -97,7 +97,7 @@
 float: right;
 display: inline;
 margin-top: 1%;
-margin-right: 4%;
+margin-right: 2%;
 font-size: 70%;
 cursor: pointer;
 }
@@ -107,5 +107,23 @@ cursor: pointer;
 }
 
 .addButton span {
+  display: inline;
+}
+
+
+.editButton {
+float: right;
+display: inline;
+margin-top: 1%;
+margin-right: 4%;
+font-size: 70%;
+cursor: pointer;
+}
+
+.editButton i {
+  padding-right: 5px;
+}
+
+.editButton span {
   display: inline;
 }

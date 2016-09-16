@@ -8,7 +8,8 @@ import update from 'react-addons-update'
 import DeleteComponent from '../deletecomponent/DeleteComponent.jsx'
 import NewCollection from '../newcollection/newCollectionComponent.jsx'
 import NewDocument from '../newdocument/newDocumentComponent.jsx'
-
+import CollectionStats from '../collectionstats/CollectionStatsComponent.jsx'
+import Document from '../document/DocumentComponent.jsx'
 class QueryExecutorComponent extends React.Component {
 
   constructor(props) {
@@ -30,6 +31,7 @@ class QueryExecutorComponent extends React.Component {
             limitValue:10,
             fields: [],
             modalIsOpen: false,
+            singleDocument: '',
             query: this.props.queryType == '"collection"' ? 'db.'+this.props.currentItem+'.find({})' :
                    'db.'+this.props.currentItem+'.files.find({})'
       }
@@ -78,7 +80,7 @@ class QueryExecutorComponent extends React.Component {
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document?query=db.'+currentItem+'.find(%7B%7D)&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&allKeys=true',
+      url : Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document?query=db.'+currentItem+'.find(%7B%7D)&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy={_id:-1}&allKeys=true',
       success: function(data) {
         var array = data.response.result.documents;
         that.setState({collectionObjects:array});
@@ -93,6 +95,7 @@ class QueryExecutorComponent extends React.Component {
       }
      });
   }
+
 
   componentWillReceiveProps(nextProps){
     this.setState({query:'db.'+nextProps.currentItem+'.find({})'});
@@ -109,7 +112,7 @@ class QueryExecutorComponent extends React.Component {
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document?query='+'db.'+currentItem+'.find({})'+'&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&allKeys=true',
+      url : Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document?query='+'db.'+currentItem+'.find({})'+'&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy={_id:-1}&allKeys=true',
       success: function(data) {
         if(data.response.result!=undefined)
         {
@@ -318,19 +321,19 @@ class QueryExecutorComponent extends React.Component {
   }
 
   handleSelect(index){
-    this.setState({selectedTab:index});
   }
 
   render () {
     var i =0;
     var that = this;
     var items =null;
-    var items = this.state.collectionObjects.map(function (collection) {
-      return <textarea className={queryExecutorStyles.results} key={collection._id["counter"] || collection._id } value={JSON.stringify(collection,null,4)} onChange={this.hand.bind(this)}></textarea>
+    var items = this.state.collectionObjects.map(function (collection ,i) {
+      return <Document  key={collection._id["counter"] || collection._id } uId={collection._id} key1={collection._id["counter"] || collection._id} value={JSON.stringify(collection,null,4)} onChange={this.hand.bind(this)} currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refreshDocuments={this.refreshDocuments.bind(this)}></Document>
     }.bind(this));
 
     return(
       <div className = {queryExecutorStyles.mainContainer}>
+        <CollectionStats selectedDB={this.props.currentDb} selectedCollection={this.props.currentItem} connectionId={this.props.connectionId}></CollectionStats>
         <span className={queryExecutorStyles.deleteButton} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete Collection</span></span>
         {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'collection' dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : ''}
         <NewCollection queryType='collection' currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} addOrUpdate={2} refreshCollectionList={this.props.refreshCollectionList.bind(this)} refreshRespectiveData = {this.props.refreshRespectiveData.bind(this)}/>
@@ -399,7 +402,7 @@ class QueryExecutorComponent extends React.Component {
                 <a id='next' className = {(this.state.skipValue >= this.state.totalCount - this.state.limitValue)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='Next'>Next &rsaquo;</a>
                 <a id='last' className = {(this.state.skipValue + this.state.limitValue >= this.state.totalCount )? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='Last'>Last &raquo;</a>
               </div>
-              <TreeView collectionObjects = {this.state.collectionObjects}></TreeView>
+              <TreeView collectionObjects = {this.state.collectionObjects} currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refreshDocuments={this.refreshDocuments.bind(this)}></TreeView>
             </TabPanel>
           </Tabs>
         </div>
