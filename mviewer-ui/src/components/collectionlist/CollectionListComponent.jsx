@@ -3,7 +3,8 @@ import collectionListStyles from '../shared/listpanel.css'
 import $ from 'jquery'
 import CollectionItem from './CollectionItemComponent.jsx'
 import NewCollection from '../newcollection/newCollectionComponent.jsx'
-import Config from '../../../config.json';
+import SearchInput, {createFilter} from 'react-search-input'
+import Config from '../../../config.json'
 class CollectionList extends React.Component {
 
   constructor(props) {
@@ -16,6 +17,7 @@ class CollectionList extends React.Component {
       visible: false,
       selectedItem: null,
       loading: 'Loading',
+      searchTerm: '',
       selectedCollection:null
     }
   }
@@ -87,42 +89,39 @@ class CollectionList extends React.Component {
 
   }
 
+  searchUpdated (term) {
+    this.setState({searchTerm: term})
+  }
+
   render () {
     var that=this;
-    var items=null;
-    if(typeof(that.state.collections) !== 'undefined')
-    {
-      var items = that.state.collections.map(function (item, idx) {
-        var is_selected = that.state.selectedItem == idx;
-        return <CollectionItem
-                key={item}
-                name={item}
-                dbName={this.state.selectedDB}
-                onClick={this.clickHandler.bind(this,idx,item)}
-                isSelected={that.state.selectedCollection==item}
-                connectionId={this.state.connectionId}
-                refreshCollectionList={this.refreshCollectionList.bind(this)}
-               />;
-        }.bind(this));
+    var filteredData = null;
+    if (this.state.collections != undefined){
+      filteredData = this.state.collections.filter(createFilter(this.state.searchTerm));
+    }
        return (
          <div className={collectionListStyles.menu} key = {this.props.visible}>
            <div className={(this.props.visible ?(this.state.visible ? collectionListStyles.visible : this.props.alignment): this.props.alignment ) }>
+             <SearchInput className={collectionListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
              <h5 className={collectionListStyles.menuTitle}><NewCollection queryType= {this.props.propps.location.query.queryType} currentDb={this.props.selectedDB} currentItem={''} connectionId={this.props.propps.connectionId} addOrUpdate={'1'} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}/></h5>
-             {items}
+               { this.state.collections != undefined ?
+                 (filteredData.map((item,idx) => {
+                   return(
+                     <CollectionItem
+                      key={item}
+                      name={item}
+                      dbName={this.state.selectedDB}
+                      onClick={this.clickHandler.bind(this,idx,item)}
+                      isSelected={this.state.selectedCollection==item}
+                      connectionId={this.state.connectionId}
+                      refreshCollectionList={this.refreshCollectionList.bind(this)}
+                     />)
+                })): null}
+
             </div>
         </div>
-       );
-     }
-     else {
-       return(
-         <div className={collectionListStyles.menu} key = {this.props.visible}>
-           <div className={(this.props.visible ?(this.state.visible ? collectionListStyles.visible : this.props.alignment): this.props.alignment ) }>
-             <h5 className={collectionListStyles.menuTitle}><NewCollection queryType= {this.props.propps.location.query.queryType} currentDb={this.props.selectedDB} currentItem={''} connectionId={this.props.propps.connectionId} addOrUpdate={'1'} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}/></h5>
-            </div>
-        </div>
-       );
-     }
-  }
+      );
+}
 }
 
 export default CollectionList;

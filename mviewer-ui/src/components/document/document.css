@@ -1,0 +1,55 @@
+.results
+{
+  width: 93%;
+  margin-left: 1%;
+  height: 30%;
+  margin-top: 1%;
+  display: block;
+  overflow: hidden;
+  margin-bottom: 1%;
+  resize: none;
+  font-family: 'Lato';
+  font-weight: 300;
+  background: #ccc;
+}
+
+.results textarea {
+  height: 101%;
+  background: #ccc;
+  font-family: 'Lato';
+  width: 100%;
+  resize: none;
+  overflow: auto;
+  border: 0;
+  padding: 1% 0;
+}
+
+
+.deleteButton {
+  position: absolute;
+  margin-left: 73%;
+  display: inline-block;
+  font-size: 80%;
+  margin-top: 0.7%;
+}
+
+.editButton {
+  position: absolute;;
+  margin-left: 69%;
+  display: inline-block;
+}
+
+.deleteButton i, .editButton i {
+  cursor: pointer;
+}
+
+
+/*-------Clear Floats-------*/
+/*.clearfix { zoom : 1}
+.clearfix:after {
+    content: '.';
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}*/

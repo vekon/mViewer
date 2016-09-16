@@ -68,9 +68,7 @@
   text-align: left;
 }
 
-.deleteButton button {
-  background: none;
-  border: none;
+.deleteButton i {
   cursor: pointer;
 }
 

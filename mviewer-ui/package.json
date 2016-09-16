@@ -31,6 +31,7 @@
     "react-paginate": "^2.2.3",
     "react-redux": "^4.4.5",
     "react-router": "^2.6.1",
+    "react-search-input": "^0.10.3",
     "react-sidebar": "^2.2.1",
     "react-tabs": "^0.7.0",
     "react-treeview": "^0.4.5",

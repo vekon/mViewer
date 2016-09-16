@@ -11,6 +11,7 @@ import { Form } from 'formsy-react'
 import TextInput from '../TextInput/TextInputComponent.jsx';
 import Modal from 'react-modal'
 import Config from '../../../config.json'
+import SearchInput, {createFilter} from 'react-search-input'
 class DbListComponent extends React.Component {
 
   constructor(props) {
@@ -25,6 +26,7 @@ class DbListComponent extends React.Component {
       modalIsOpen: false,
       name: null,
       error:false,
+      searchTerm: '',
       selectedNav: this.props.selectedNav
     }
   }
@@ -163,6 +165,10 @@ class DbListComponent extends React.Component {
     }
   }
 
+  searchUpdated (term) {
+    this.setState({searchTerm: term})
+  }
+
   render () {
     const customStyles = {
       content : {
@@ -176,23 +182,24 @@ class DbListComponent extends React.Component {
       }
     };
     var that = this;
-    var items = this.state.dbNames.map(function (item, idx) {
-      var is_selected = this.state.selectedItem == idx;
-      return <DbItem
-              key={item}
-              name={item}
-              onClick={this.clickHandler.bind(this,idx)}
-              isSelected={this.state.selectedDb==item}
-              connectionId = {this.state.connectionId}
-              refreshDbList={this.refreshDbList.bind(this)}
-              />;
-      }.bind(this));
+    const filteredData = this.state.dbNames.filter(createFilter(this.state.searchTerm));
     return(
      <div>
        <div className={dbListStyles.menu}>
          <div className={(this.state.visible ? dbListStyles.visible   : dbListStyles.collapsed)  }>
+           <SearchInput className={dbListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
            <h5 className={dbListStyles.menuTitle}><span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Database</span></h5>
-           {items}
+             {filteredData.map((item,idx) => {
+               return(
+                 <DbItem
+                 key={item}
+                 name={item}
+                 onClick={this.clickHandler.bind(this,idx)}
+                 isSelected={this.state.selectedDb==item}
+                 connectionId = {this.state.connectionId}
+                 refreshDbList={this.refreshDbList.bind(this)}
+                 />)
+             })}
         </div>
         <div className={this.state.visible ?dbListStyles.collapsedDiv: dbListStyles.openDiv} >
           <span className={dbListStyles.arrow}>

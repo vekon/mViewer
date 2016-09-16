@@ -71,7 +71,7 @@ class DbStatsComponent extends React.Component {
           <div className={dbStatsStyles.dbStats}>
             {this.state.message}
             <h3 className={dbStatsStyles.dbStatsHeader}> Statistics: { that.state.selectedDB } </h3>
-          <div>
+          <div className={dbStatsStyles.dbStatsBody}>
           <table>
             <tbody>
               <tr>

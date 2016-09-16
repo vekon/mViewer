@@ -21,6 +21,9 @@ class newDocumentComponent extends React.Component {
   openModal() {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
+    if(this.props.addOrEdit == 'Edit'){
+      this.setState({newDocument: this.props.documentValue});
+    }
   }
 
   closeModal() {
@@ -43,13 +46,16 @@ class newDocumentComponent extends React.Component {
     var that =this;
     var data = $("form").serialize().split("&");
     var obj={};
-
+    if(this.props.addOrEdit == 'Edit'){
+      obj['_id'] = this.props.uId;
+    }
     for(var key in data)
     {
       obj[data[key].split("=")[0]] = unescape(data[key].split("=")[1]);
     }
+
     $.ajax({
-      type: "POST",
+      type: (this.props.addOrEdit != 'Edit'? 'POST' : 'PUT'),
       cache: false,
       dataType: 'json',
       headers: {
@@ -61,7 +67,13 @@ class newDocumentComponent extends React.Component {
       success: function(data) {
         if (data.response.result) {
           that.setState({successMessage:true});
-          that.setState({message:'Document was successfully added to collection ' + that.props.currentItem});
+          if (that.props.addOrEdit != 'Edit')
+          {
+            that.setState({message:'Document was successfully added to collection ' + that.props.currentItem});
+          }
+          else {
+            that.setState({message:'Document was successfully Updated'});
+          }
         }
         if (data.response.error) {
           if (data.response.error){
@@ -70,7 +82,6 @@ class newDocumentComponent extends React.Component {
           }
         }
       }, error: function(jqXHR, exception) {
-
     }
   });
 
@@ -91,16 +102,16 @@ class newDocumentComponent extends React.Component {
 
     return(
       <div>
-       <span className={newDocumentStyles.addButton} onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Document</span>
+       <span className={this.props.addOrEdit != 'Edit' ?newDocumentStyles.addButton : newDocumentStyles.editButton} onClick= {this.openModal.bind(this)} >{this.props.addOrEdit != 'Edit' ? (<i className="fa fa-plus-circle" aria-hidden="true"></i> ) : (<i className="fa fa-pencil" aria-hidden="true"></i> )}  {this.props.addOrEdit!='Edit' ? <span>Add Document</span> : null} </span>
        <Modal
          isOpen={this.state.modalIsOpen}
          onRequestClose={this.closeModal.bind(this)}
          style = {customStyles}>
          <div className={newDocumentStyles.two}>
-           <h3>Add Document</h3>
+           {this.props.addOrEdit !='Edit' ? <h3>Add Document</h3> : <h3>Edit Document</h3>}
             <form>
-              <label>Enter JSON data</label>
-              <textarea value ={this.state.newDocument} name='document' id='document' onChange={this.handleChange('newDocument')}></textarea>
+              {this.props.addOrEdit !='Edit' ? <label>Enter JSON data</label> : <label>Edit JSON data</label>}
+              <textarea value ={this.state.newDocument} name={this.props.addOrEdit != 'Edit' ? 'document' : 'keys'} id='document' onChange={this.handleChange('newDocument')}></textarea>
             </form>
             <div className={newDocumentStyles.buttonContainer}>
                 <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={newDocumentStyles.submit}>SUBMIT</button>

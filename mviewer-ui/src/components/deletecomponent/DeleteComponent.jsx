@@ -11,7 +11,7 @@ class DeleteComponent extends React.Component {
     this.state = {
       modalIsOpen: false,
       message:'',
-      successMessage: false,
+      successMessage: false
     }
   }
 
@@ -22,6 +22,7 @@ class DeleteComponent extends React.Component {
   clickHandlerYes(){
     var that = this;
     var type = this.props.title;
+    var obj={};
     var deleteUrl ='';
     if(type === 'database'){
       deleteUrl = Config.host+Config.service_path+'/services/db/'+this.props.dbName+'?connectionId='+this.props.connectionId;
@@ -29,13 +30,20 @@ class DeleteComponent extends React.Component {
     if(type === 'collection'){
       deleteUrl = Config.host+Config.service_path+'/services/'+this.props.dbName+'/collection/'+this.props.collectionName+'?connectionId='+this.props.connectionId;
     }
+    if(type== 'document'){
+      deleteUrl = Config.host+Config.service_path+'/services/'+this.props.dbName+'/'+this.props.collectionName+'/document?connectionId='+this.props.connectionId;
+        obj["_id"] = this.props.uId;
+    }
+
     $.ajax({
       type: "DELETE",
       cache: false,
       dataType: 'json',
+      contentType: 'application/x-www-form-urlencoded',
       headers: {
         'X-Requested-With': 'XMLHttpRequest'
       },
+      data:obj,
       crossDomain: false,
       url: deleteUrl,
       success: function(data) {
