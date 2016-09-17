@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { Form } from 'formsy-react';
 import TextInput from '../TextInput/TextInputComponent.jsx';
 import $ from 'jquery';
-import Config from '../../../config.json';
+import service from '../../gateway/service.js';
 import { browserHistory, hashHistory } from 'react-router';
 
 class LoginComponent extends React.Component {
@@ -64,28 +64,26 @@ class LoginComponent extends React.Component {
         {
           obj[data[key].split("=")[0]] = data[key].split("=")[1];
         }
-        $.ajax({
-          type: "POST",
-          cache: false,
-          dataType: 'json',
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-          },
-          crossDomain: false,
-          url: Config.host+Config.service_path+'/services/login/',
-          data : obj,
-          success: function(data) {
-            if (data.response.result) {
-              that.setState({message: data.response.result['success']});
-              hashHistory.push({ pathname: '/dashboard/home', query: { host: that.state.host, port: that.state.port, username: that.state.username,
-                                 password: that.state.password, connectionId: data.response.result.connectionId } });
-            }
-            if (data.response.error) {
-              that.setState({message: data.response.error.message});
-            }
-          }, error: function(jqXHR, exception) {
-             that.setState({ message: 'Unexpected Error Occurred' }) }
-        });
+
+        var loginCall = service('POST', 'login', obj);
+        
+        loginCall.then(success, failure);
+
+        function success(data) {
+          if (data.response.result) {
+            that.setState({message: data.response.result['success']});
+            hashHistory.push({ pathname: '/dashboard/home', query: { host: that.state.host, port: that.state.port, username: that.state.username,
+                               password: that.state.password, connectionId: data.response.result.connectionId } });
+          }
+          if (data.response.error) {
+            that.setState({message: data.response.error.message});
+          }
+        }
+
+        function failure() {
+          that.setState({ message: 'Unexpected Error Occurred' }) 
+        }
+
       });
     });
   }
