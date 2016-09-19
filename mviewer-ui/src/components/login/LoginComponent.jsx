@@ -20,11 +20,41 @@ class LoginComponent extends React.Component {
       message: '',
       connectionId:''
     }
+
+    this.onSubmit = this.onSubmit.bind(this);
+    this.success = this.success.bind(this);
+    this.failure = this.failure.bind(this);
   }
 
-  submit(data) {
-            alert(JSON.stringify(data, null, 4));
-        }
+  onSubmit(data) {
+
+    var that = this;
+    var data = $("form").serialize().split("&");
+    var obj={};
+
+    for(var key in data){
+      obj[data[key].split("=")[0]] = data[key].split("=")[1];
+    }
+
+    var loginCall = service('POST', 'login', obj);
+    loginCall.then(this.success, this.failure);
+  }
+
+  success(data) {
+    if (data.response.result) {
+      this.setState({message: data.response.result['success']});
+      hashHistory.push({ pathname: '/dashboard/home', query: { host: this.state.host, port: this.state.port, username: this.state.username,
+                         password: this.state.password, connectionId: data.response.result.connectionId } });
+    }
+    if (data.response.error) {
+      this.setState({message: data.response.error.message});
+    }
+  }
+
+  failure() {
+    this.setState({ message: 'Unexpected Error Occurred' }) 
+  }
+
   enableButton() {
     return function() {
       this.setState({
@@ -50,42 +80,9 @@ class LoginComponent extends React.Component {
   }
 
   componentDidMount() {
-    if (typeof(this.props.location.query.code) != 'undefined' )
-    {
+    if (typeof(this.props.location.query.code) != 'undefined' ) {
       this.setState({message: 'You are not connected to Mongo DB'}); 
     }
-    var that = this;
-    $(function() {
-      $('form').on('submit', function(e) {
-        e.preventDefault();
-        var data = $("form").serialize().split("&");
-        var obj={};
-        for(var key in data)
-        {
-          obj[data[key].split("=")[0]] = data[key].split("=")[1];
-        }
-
-        var loginCall = service('POST', 'login', obj);
-        
-        loginCall.then(success, failure);
-
-        function success(data) {
-          if (data.response.result) {
-            that.setState({message: data.response.result['success']});
-            hashHistory.push({ pathname: '/dashboard/home', query: { host: that.state.host, port: that.state.port, username: that.state.username,
-                               password: that.state.password, connectionId: data.response.result.connectionId } });
-          }
-          if (data.response.error) {
-            that.setState({message: data.response.error.message});
-          }
-        }
-
-        function failure() {
-          that.setState({ message: 'Unexpected Error Occurred' }) 
-        }
-
-      });
-    });
   }
 
   render() {
@@ -100,7 +97,7 @@ class LoginComponent extends React.Component {
             </section>
            </div>
            <div className={styles.two}>
-            <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
+            <Form method='POST' onValid={this.enableButton()} onSubmit={this.onSubmit} onInvalid={this.disableButton()} >
               <div className={ styles.formContainer}>
                 <div className={styles.inputBox}>
                   <TextInput type="text" name="host" id="host" placeholder="Host" value={this.state.host} validations='isRequired' onChange={this.handleChange( 'host')} validationError="Host must not be empty" />
