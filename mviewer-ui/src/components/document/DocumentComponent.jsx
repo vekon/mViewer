@@ -15,7 +15,8 @@ class DocumentComponent extends React.Component {
       message:'',
       successMessage: false,
       value:this.props.value,
-      disabled: true
+      disabled: true,
+      _isMounted: false
     }
   }
 
@@ -40,12 +41,21 @@ class DocumentComponent extends React.Component {
   }
 
   closeModal(successMessage) {
-    this.setState({modalIsOpen: false});
-    if (successMessage == true){
-      this.props.refresh();
+    if(this.state._isMounted == true){
+      this.setState({modalIsOpen: false});
+      if (successMessage == true){
+        this.props.refresh('delete');
+      }
     }
   }
+  
+  componentDidMount(){
+    this.state._isMounted = true;
+  }
 
+  componentWillUnmount(){
+    this.state._isMounted = false;
+  }
   render () {
     return(
       <div className={documentStyles.results+' '+ documentStyles.clearfix}>
