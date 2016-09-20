@@ -23,7 +23,7 @@ class TreeViewComponent extends React.Component {
   closeModal(successMessage) {
     this.setState({modalIsOpen: false});
     if (successMessage == true){
-      this.props.refreshDocuments();
+      this.props.refresh();
     }
   }
 
@@ -37,7 +37,7 @@ class TreeViewComponent extends React.Component {
            <i className="fa fa-trash" aria-hidden="true" onClick={this.openModal.bind(this,collection._id)}></i>
        </span>
        <form method='DELETE'></form>
-         <TreeView data={collection} shouldExpandNode={() => false } keyPath ={['Document '+i]} key = {collection._id["counter"] || collection._id } getItemString={getItemString}/>
+         <TreeView data={collection} shouldExpandNode={() => false } keyPath ={this.props.queryType == "collection" ? ['Document '+i] : ['File '+i]} key = {collection._id["counter"] || collection._id } getItemString={getItemString}/>
      </div>)
    }.bind(this));
    return (
@@ -45,8 +45,8 @@ class TreeViewComponent extends React.Component {
        <span className={treeViewStyles.headContainer}>
          <span className={treeViewStyles.key}>Key</span> <span className={treeViewStyles.value}>Value</span>
        </span>
-       {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'document' dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} uId= {this.state.uId} ></DeleteComponent> : ''}
-       {items}
+       {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = {this.props.queryType == "collection" ? 'document' : 'file'} dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} uId= {this.state.uId} ></DeleteComponent> : ''}
+       {items.length>0 ? items : <span className={treeViewStyles.exceptionContainer}>No Records to be displayed</span>}
      </div>
    );
  }

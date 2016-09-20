@@ -10,6 +10,7 @@ import NewCollection from '../newcollection/newCollectionComponent.jsx'
 import NewDocument from '../newdocument/newDocumentComponent.jsx'
 import CollectionStats from '../collectionstats/CollectionStatsComponent.jsx'
 import Document from '../document/DocumentComponent.jsx'
+import NewFile from '../newfile/NewFileComponent.jsx'
 class QueryExecutorComponent extends React.Component {
 
   constructor(props) {
@@ -32,7 +33,7 @@ class QueryExecutorComponent extends React.Component {
             fields: [],
             modalIsOpen: false,
             singleDocument: '',
-            query: this.props.queryType == '"collection"' ? 'db.'+this.props.currentItem+'.find({})' :
+            query: this.props.queryType == "collection" ? 'db.'+this.props.currentItem+'.find({})' :
                    'db.'+this.props.currentItem+'.files.find({})'
       }
   }
@@ -75,30 +76,54 @@ class QueryExecutorComponent extends React.Component {
     var currentDb = this.props.currentDb;
     var currentItem = this.props.currentItem;
     var connectionId = this.props.connectionId;
+    var url = this.props.queryType == "collection" ? Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document?query='+this.state.query+'&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&allKeys=true' :
+              Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/getfiles?query='+this.state.query+'&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&connectionId='+connectionId;
     $.ajax({
       type: "GET",
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document?query=db.'+currentItem+'.find(%7B%7D)&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy={_id:-1}&allKeys=true',
+      url : url,
       success: function(data) {
         var array = data.response.result.documents;
         that.setState({collectionObjects:array});
-        that.props.queryType == '"collection"' ? that.getAttributes(currentDb,currentItem, connectionId) : null;
-        that.setState({totalCount:data.response.result.count});
-        if (that.state.skipValue < that.state.totalCount) {
-          var size = that.state.skipValue + that.state.limitValue;
-          that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
-          that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
-        }
-      }, error: function(jqXHR, exception) {
+        that.props.queryType == "collection" ? that.getAttributes(currentDb,currentItem, connectionId) : null;
+        that.props.queryType == "fs" ?
+            $.ajax({
+              type: "GET",
+              dataType: 'json',
+              credentials: 'same-origin',
+              crossDomain: false,
+              url :  Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId,
+              success: function(data) {
+                that.setState({totalCount:data.response.result.count});
+                if (that.state.skipValue < that.state.totalCount) {
+                  var size = that.state.skipValue + that.state.limitValue;
+                  that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
+                  that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
+                }
+              }, error: function(jqXHR, exception) {
+              }
+            })
+            : that.setState({totalCount:data.response.result.count});
+              if (that.state.skipValue < that.state.totalCount) {
+                var size = that.state.skipValue + that.state.limitValue;
+                that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
+                that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
+              };
+            if(data.response.error) {
+              that.setState({collectionObjects:[]});
+            }
+        }, error: function(jqXHR, exception) {
       }
-     });
+    });
   }
 
 
   componentWillReceiveProps(nextProps){
-    this.setState({query:'db.'+nextProps.currentItem+'.find({})'});
+    this.setState({selectedTab:0});
+    this.setState({query:this.props.queryType == "collection" ? 'db.'+this.props.currentItem+'.find({})' :
+                         'db.'+this.props.currentItem+'.files.find({})'});
     this.setState({collectionObjects:[]});
     this.setState({skip:0});
     this.setState({limit:10});
@@ -106,43 +131,83 @@ class QueryExecutorComponent extends React.Component {
     var currentDb = nextProps.currentDb;
     var currentItem = nextProps.currentItem;
     var connectionId = this.props.connectionId;
+    var url = this.props.queryType == "collection" ? Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document?query=db.'+currentItem+'.find(%7B%7D)&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&allKeys=true' :
+              Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/getfiles?query=db.'+currentItem+'.files.find(%7B%7D)&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&connectionId='+connectionId;
+    this.setState({query:nextProps.queryType == "collection" ? 'db.'+currentItem+'.find({})' :
+                                   'db.'+currentItem+'.files.find({})'});
+
     var that = this;
     $.ajax({
       type: "GET",
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document?query='+'db.'+currentItem+'.find({})'+'&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy={_id:-1}&allKeys=true',
+      url : url,
       success: function(data) {
         if(data.response.result!=undefined)
         {
           var array = data.response.result.documents;
           that.setState({collectionObjects:array});
-          that.props.queryType == '"collection"' ? that.getAttributes(currentDb,currentItem, connectionId) : null;
-          that.setState({totalCount:data.response.result.count});
-          if (data.response.result.count < 10)
-          {
-            that.setState({limitValue:data.response.result.count});
-            that.setState({skipValue:0});
-          }
-          else {
-            that.setState({limitValue:that.state.limit});
-            that.setState({skipValue:0});
-          }
-          if (that.state.skipValue < that.state.totalCount) {
-            var size = that.state.skipValue + that.state.limitValue;
-            that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
-            that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
-          } else {
-          }
-          if(data.response.result.count==0){
-            that.setState({startLabel: 0});
-            that.setState({endLabel: 0});
-          }
-        }
-        if(data.response.error) {
-          that.setState({collectionObjects:[]});
-        }
+          that.props.queryType == "collection" ? that.getAttributes(currentDb,currentItem, connectionId) : null;
+          that.props.queryType == "fs" ?
+              $.ajax({
+                type: "GET",
+                dataType: 'json',
+                credentials: 'same-origin',
+                crossDomain: false,
+                url :  Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId,
+                success: function(data) {
+                  that.setState({totalCount:data.response.result.count});
+                  that.setState({totalCount:data.response.result.count});
+                  if (data.response.result.count < 10)
+                  {
+                    that.setState({limitValue:data.response.result.count});
+                    that.setState({skipValue:0});
+                  }
+                  else {
+                    that.setState({limitValue:that.state.limit});
+                    that.setState({skipValue:0});
+                  }
+                  if (that.state.skipValue < that.state.totalCount) {
+                    var size = that.state.skipValue + that.state.limitValue;
+                    that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
+                    that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
+                  } else {
+                  }
+                  if(data.response.result.count==0){
+                    that.setState({startLabel: 0});
+                    that.setState({endLabel: 0});
+                  }
+                  if(data.response.error) {
+                    that.setState({collectionObjects:[]});
+                  }
+                }, error: function(jqXHR, exception) {
+                }
+              })
+            : that.setState({totalCount:data.response.result.count});
+              if (data.response.result.count < 10)
+              {
+                that.setState({limitValue:data.response.result.count});
+                that.setState({skipValue:0});
+              }
+              else {
+                that.setState({limitValue:that.state.limit});
+                that.setState({skipValue:0});
+              }
+              if (that.state.skipValue < that.state.totalCount) {
+                var size = that.state.skipValue + that.state.limitValue;
+                that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
+                that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
+              } else {
+              }
+              if(data.response.result.count==0){
+                that.setState({startLabel: 0});
+                that.setState({endLabel: 0});
+              }
+            }
+            if(data.response.error) {
+              that.setState({collectionObjects:[]});
+            }
       }, error: function(jqXHR, exception) {
       }
     });
@@ -154,6 +219,9 @@ class QueryExecutorComponent extends React.Component {
     that.setState({skipValue:parseInt(that.state.skip)});
     var attributes = [];
     var allSelected = true;
+    var currentDb = this.props.currentDb;
+    var currentItem = this.props.currentItem;
+    var connectionId = this.props.connectionId;
     this.state.fields.map(function(e) {
       if(e.selected){
         attributes.push(e.value);
@@ -161,35 +229,56 @@ class QueryExecutorComponent extends React.Component {
         allSelected = false;
       }
     });
+   var url = this.props.queryType == "collection" ? Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document?query=' + this.state.query + 'db.'+currentItem+'.find(%7B%7D)&connectionId='+connectionId+'&fields=' + attributes +'&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected :
+              Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/getfiles?query='+ this.state.query +'&fields=""&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&connectionId='+connectionId;
     $.ajax({
       type: "GET",
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+Config.service_path+'/services/'+this.props.currentDb+'/'+this.props.currentItem+'/document?query='+this.state.query+'&connectionId='+this.props.connectionId+'&fields=' + attributes +'&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected,
+      url : url,
       success: function(data) {
         if(data.response.result!=undefined)
         {
           var array = data.response.result.documents;
           that.setState({collectionObjects:array});
-          that.setState({totalCount:data.response.result.count})
-          if (that.state.skipValue < that.state.totalCount) {
-            var size = that.state.skipValue + that.state.limitValue;
-            that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
-            that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
-          } else {
-            }
-         }
-        if(data.response.error) {
-          that.setState({collectionObjects:[]});
+          that.props.queryType == "collection" ? that.getAttributes(currentDb,currentItem, connectionId) : null;
+          that.props.queryType == "fs" ?
+              $.ajax({
+              type: "GET",
+              dataType: 'json',
+              credentials: 'same-origin',
+              crossDomain: false,
+              url :  Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId,
+              success: function(data) {
+                that.setState({totalCount:data.response.result.count});
+                if (that.state.skipValue < that.state.totalCount) {
+                  var size = that.state.skipValue + that.state.limitValue;
+                  that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
+                  that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
+                }
+              }, error: function(jqXHR, exception) {
+              }
+            })
+            : that.setState({totalCount:data.response.result.count});
+              if (that.state.skipValue < that.state.totalCount) {
+                var size = that.state.skipValue + that.state.limitValue;
+                that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
+                that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
+              };
+          if(data.response.error) {
+            that.setState({collectionObjects:[]});
+          }
         }
       }, error: function(jqXHR, exception) {
       }
      });
   }
 
-  refreshDocuments(){
-    this.clickHandler();
+  refresh(){
+    // this.clickHandler();
+    this.getAttributes(this.props.currentDb, this.props.currentItem, this.props.connectionId);
+    this.paginationHandler();
   }
 
   attributeHandler(r) {
@@ -279,7 +368,14 @@ class QueryExecutorComponent extends React.Component {
         allSelected = false;
       }
     });
-    var position = e.target.id;
+    var position =''
+    if(e != undefined){
+      position = e.target.id;
+    }
+    else {
+      position = '';
+    }
+
     var skipValue = parseInt(this.state.skipValue), limitValue = parseInt(this.state.limit), countValue = parseInt(this.state.totalCount);
     if (position === "first") {
      skipValue = 0;
@@ -290,30 +386,58 @@ class QueryExecutorComponent extends React.Component {
     } else if (position === "last") {
       var docCountInLastPage = (countValue % limitValue == 0) ? limitValue : (countValue % limitValue);
       skipValue = countValue - docCountInLastPage;
+    } else if (position === "") {
+        countValue = countValue - 1;
+        if (countValue != 0 && skipValue == countValue) {
+          skipValue= skipValue - limitValue;
+        }
     }
+    var currentDb = this.props.currentDb;
+    var currentItem = this.props.currentItem;
+    var connectionId = this.props.connectionId;
     this.setState({skipValue:skipValue});
+    var url = this.props.queryType == "collection" ? Config.host+Config.service_path+'/services/'+this.props.currentDb+'/'+this.props.currentItem+'/document?query='+this.state.query+'&connectionId='+this.props.connectionId+'&fields=' +attributes+ '&limit='+limitValue+'&skip='+skipValue+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected:
+              Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/getfiles?query='+this.state.query+'&fields=""&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&connectionId='+connectionId;
+
     var that = this;
     $.ajax({
       type: "GET",
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : Config.host+Config.service_path+'/services/'+this.props.currentDb+'/'+this.props.currentItem+'/document?query='+this.state.query+'&connectionId='+this.props.connectionId+'&fields=' +attributes+ '&limit='+limitValue+'&skip='+skipValue+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected,
+      url : url,
       success: function(data) {
         if(data.response.result!=undefined)
         {
           var array = data.response.result.documents;
           that.setState({collectionObjects:array});
-          that.setState({totalCount:data.response.result.count})
-          if (that.state.skipValue < that.state.totalCount) {
-            var size = that.state.skipValue + that.state.limitValue;
-            that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
-            that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
-          } else {
+        that.props.queryType == "collection" ? that.getAttributes(currentDb,currentItem, connectionId) : null;
+        that.props.queryType == "fs" ?
+            $.ajax({
+              type: "GET",
+              dataType: 'json',
+              credentials: 'same-origin',
+              crossDomain: false,
+              url :  Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId,
+              success: function(data) {
+                that.setState({totalCount:data.response.result.count});
+                if (that.state.skipValue < that.state.totalCount) {
+                  var size = that.state.skipValue + that.state.limitValue;
+                  that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
+                  that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
+                }
+              }, error: function(jqXHR, exception) {
+              }
+            })
+            : that.setState({totalCount:data.response.result.count});
+              if (that.state.skipValue < that.state.totalCount) {
+                var size = that.state.skipValue + that.state.limitValue;
+                that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
+                that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
+              };
+          if(data.response.error) {
+            that.setState({collectionObjects:[]});
           }
-        }
-        if(data.response.error) {
-          that.setState({collectionObjects:[]});
         }
       }, error: function(jqXHR, exception) {
       }
@@ -321,6 +445,8 @@ class QueryExecutorComponent extends React.Component {
   }
 
   handleSelect(index){
+    this.setState({selectedTab:index}, function(){
+    });
   }
 
   render () {
@@ -328,16 +454,23 @@ class QueryExecutorComponent extends React.Component {
     var that = this;
     var items =null;
     var items = this.state.collectionObjects.map(function (collection ,i) {
-      return <Document  key={collection._id["counter"] || collection._id } uId={collection._id} key1={collection._id["counter"] || collection._id} value={JSON.stringify(collection,null,4)} onChange={this.hand.bind(this)} currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refreshDocuments={this.refreshDocuments.bind(this)}></Document>
+      return <Document  key={collection._id["counter"] || collection._id } uId={collection._id} key1={collection._id["counter"] || collection._id} value={JSON.stringify(collection,null,4)} onChange={this.hand.bind(this)} currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this)} queryType = {this.props.queryType} ></Document>
     }.bind(this));
 
     return(
       <div className = {queryExecutorStyles.mainContainer}>
-        <CollectionStats selectedDB={this.props.currentDb} selectedCollection={this.props.currentItem} connectionId={this.props.connectionId}></CollectionStats>
-        <span className={queryExecutorStyles.deleteButton} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete Collection</span></span>
-        {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'collection' dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : ''}
-        <NewCollection queryType='collection' currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} addOrUpdate={2} refreshCollectionList={this.props.refreshCollectionList.bind(this)} refreshRespectiveData = {this.props.refreshRespectiveData.bind(this)}/>
-        <NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refreshDocuments={this.refreshDocuments.bind(this)}></NewDocument>
+        { this.props.queryType == "collection" ?
+          <span><CollectionStats selectedDB={this.props.currentDb} selectedCollection={this.props.currentItem} connectionId={this.props.connectionId}></CollectionStats>
+          <span className={queryExecutorStyles.deleteButton} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete Collection</span></span>
+          {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'collection' dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : ''}
+          <NewCollection queryType='collection' currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} addOrUpdate={2} refreshCollectionList={this.props.refreshCollectionList.bind(this)} refreshRespectiveData = {this.props.refreshRespectiveData.bind(this)}/>
+          <NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this)} addOrEdit='Add' ></NewDocument></span>
+          : <span>
+            <span className={queryExecutorStyles.deleteButton} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete GridFS Bucket</span></span>
+            { this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'GridFS Bucket' dbName = {this.props.currentDb} gridFSName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : '' }
+             <NewFile currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this)}></NewFile>
+            </span>
+        }
         <div className={queryExecutorStyles.buffer}>
           <div id="queryExecutor" className={queryExecutorStyles.tab}>Query Executor</div>
           <div className={queryExecutorStyles.queryBoxDiv}>
@@ -349,7 +482,7 @@ class QueryExecutorComponent extends React.Component {
               </textarea>
             </div>
           </div>
-          { this.props.queryType == '"collection"' ?
+          { this.props.queryType == "collection" ?
              <label className={queryExecutorStyles.attributesLabel}>Attributes
                <span className={queryExecutorStyles.attributesSpan}>
                  <a onClick = {this.selectAllHandler()}>Select All</a> /
@@ -358,7 +491,7 @@ class QueryExecutorComponent extends React.Component {
              </label>
             : null
           }
-          { this.props.queryType == '"collection"' ?
+          { this.props.queryType == "collection" ?
             <div className={queryExecutorStyles.queryAttributesDiv}>
               <ol id="attributesList" className={queryExecutorStyles.attributeList}>
                 { this.state.fields.map(function(result) {
@@ -369,7 +502,7 @@ class QueryExecutorComponent extends React.Component {
             </div>
             : null
           }
-          <div className={this.props.queryType == '"collection"' ? queryExecutorStyles.parametersDiv : queryExecutorStyles.parametersDiv1}>
+          <div className={this.props.queryType == "collection" ? queryExecutorStyles.parametersDiv : queryExecutorStyles.parametersDiv1}>
             <label htmlFor="skip"> Skip(No. of records) </label><br /><input id="skip" type="text" onChange = {this.skipHandler()} name="skip" value={this.state.skip} data-search_name="skip" /><br />
             <label htmlFor="limit"> Max page size: </label><br /><span><select id="limit" name="limit" onChange = {this.limitHandler()} value={this.state.limit} data-search_name="max limit" ><option value="10">10</option><option value="25">25</option><option value="50">50</option></select></span><br />
             <label htmlFor="sort"> Sort by fields </label><br /><input id="sort" type="text" onChange = {this.sortHandler()}name="sort" value={this.state.sort} data-search_name="sort" /><br /><br />
@@ -391,7 +524,7 @@ class QueryExecutorComponent extends React.Component {
               <a id='next' className = {(this.state.skipValue >= this.state.totalCount - this.state.limitValue)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='Next'>Next &rsaquo;</a>
               <a id='last' className = {(this.state.skipValue + this.state.limitValue >= this.state.totalCount )? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='Last'>Last &raquo;</a>
               </div>
-              {items}
+              {items.length>0 ? items: <span className={queryExecutorStyles.exceptionContainer}>No Documents to be displayed</span>}
             </TabPanel>
             <TabPanel>
               <div id='paginator' className={queryExecutorStyles.paginator}>
@@ -402,7 +535,7 @@ class QueryExecutorComponent extends React.Component {
                 <a id='next' className = {(this.state.skipValue >= this.state.totalCount - this.state.limitValue)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='Next'>Next &rsaquo;</a>
                 <a id='last' className = {(this.state.skipValue + this.state.limitValue >= this.state.totalCount )? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='Last'>Last &raquo;</a>
               </div>
-              <TreeView collectionObjects = {this.state.collectionObjects} currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refreshDocuments={this.refreshDocuments.bind(this)}></TreeView>
+              <TreeView collectionObjects = {this.state.collectionObjects} currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this)} queryType={this.props.queryType}></TreeView>
             </TabPanel>
           </Tabs>
         </div>

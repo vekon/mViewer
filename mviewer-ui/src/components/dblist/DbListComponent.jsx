@@ -71,6 +71,12 @@ class DbListComponent extends React.Component {
 
   componentDidMount(){
     var that = this;
+    var url = window.location.href;
+    var params = url.split('?');
+    var n = params[1].search("&collapsed=true");
+    if (n!= -1) {
+      this.setState({visible:false});
+    }
     $.ajax({
       type: "GET",
       dataType: 'json',
@@ -169,6 +175,18 @@ class DbListComponent extends React.Component {
     this.setState({searchTerm: term})
   }
 
+  componentWillReceiveProps(){
+    var url = window.location.href;
+    var params = url.split('?');
+    var shouldCollapse = params[1].search("&collapsed=true");
+    if (shouldCollapse!= -1) {
+      this.setState({visible:false});
+    }
+    else{
+      this.setState({visible:true});
+    }
+  }
+
   render () {
     const customStyles = {
       content : {
@@ -201,11 +219,11 @@ class DbListComponent extends React.Component {
                  />)
              })}
         </div>
-        <div className={this.state.visible ?dbListStyles.collapsedDiv: dbListStyles.openDiv} >
+        <div className={this.state.visible ?dbListStyles.collapsedDiv: dbListStyles.openDiv} onClick={this.collapsedDivHandler.bind(this)} >
           <span className={dbListStyles.arrow}>
-            <i className="fa fa-chevron-right" aria-hidden="true" onClick={this.collapsedDivHandler.bind(this)}></i>
+            <i className="fa fa-chevron-right" aria-hidden="true" ></i>
           </span>
-          <span className={dbListStyles.collapsedData}>{this.state.selectedDb}</span>
+          <span className={dbListStyles.collapsedData}>{(this.state.selectedDb != null ? this.state.selectedDb : '') || (this.props.propps.propss != undefined ? this.props.propps.propss.location.query.db : null)}</span>
         </div>
      </div>
      <Modal

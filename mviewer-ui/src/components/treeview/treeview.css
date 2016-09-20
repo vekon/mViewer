@@ -71,6 +71,12 @@
 .deleteButton i {
   cursor: pointer;
 }
+.exceptionContainer {
+  display: block;
+  font-family: 'Lato';
+  font-size: 15px;
+  padding: 10px;
+}
 
 /*-------Clear Floats-------*/
 .clearfix { zoom : 1}

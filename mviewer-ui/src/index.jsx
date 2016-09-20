@@ -9,7 +9,6 @@ import PageNotFoundComponent from './components/pagenotfound/PageNotFoundCompone
 import HomeComponent from './components/home/HomeComponent.jsx';
 import DbStatsComponent from './components/dbstats/DbStatsComponent.jsx';
 import CollectionsComponent from  './components/collections/CollectionsComponent.jsx';
-import GridFSComponent from  './components/gridfs/GridFSComponent.jsx';
 
 render((
   <Router history={hashHistory}>
@@ -18,7 +17,6 @@ render((
         <Route path="/dashboard/home" component={HomeComponent} />
         <Route path="/dashboard/databases" component={DbStatsComponent} />
         <Route path="/dashboard/collections" component={CollectionsComponent} />
-        <Route path="/dashboard/gridfs" component={GridFSComponent} />
       </Route>
       <Route path="*" component = {PageNotFoundComponent}/>
     </Router>

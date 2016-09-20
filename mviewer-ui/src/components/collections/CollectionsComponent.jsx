@@ -4,6 +4,7 @@ import NewCollection from '../newcollection/newCollectionComponent.jsx'
 import NewDocument from '../newdocument/newDocumentComponent.jsx'
 import QueryExecutor from '../queryexecutor/QueryExecutorComponent.jsx'
 import CollectionList from '../collectionlist/CollectionListComponent.jsx'
+import GridFSList from '../gridfslist/GridFSListComponent.jsx'
 import $ from 'jquery'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 
@@ -34,6 +35,9 @@ class CollectionsComponent extends React.Component {
     this.setState({selectedCollection: collection});
   }
 
+  switchTab() {
+    this.setState({showQueryExecutor: false});
+  }
   refreshCollectionList(showQueryExecutor){
     this.refs.left.refreshCollectionList(this.props.location.query.db);
     if(showQueryExecutor==false){
@@ -55,21 +59,21 @@ class CollectionsComponent extends React.Component {
         </ul>: null}
         <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
           <TabList className={collectionsStyles.tabs}>
-            <Tab ><span className={this.state.selectedTab == 0 ? collectionsStyles.activeTab : ''}>Collections</span></Tab>
-            <Tab ><span className={this.state.selectedTab == 1 ? collectionsStyles.activeTab : ''}>GridFs</span></Tab>
-            <Tab ><span className={this.state.selectedTab == 2 ? collectionsStyles.activeTab : ''}>Statistics</span></Tab>
+            <Tab ><span className={this.state.selectedTab == 0 ? collectionsStyles.activeTab : '' } onClick={this.switchTab.bind(this)}>Collections</span></Tab>
+            <Tab ><span className={this.state.selectedTab == 1 ? collectionsStyles.activeTab : '' } onClick={this.switchTab.bind(this)}>GridFs</span></Tab>
+            <Tab ><span className={this.state.selectedTab == 2 ? collectionsStyles.activeTab : '' } onClick={this.switchTab.bind(this)}>Statistics</span></Tab>
           </TabList>
           <TabPanel>
             <div className={collectionsStyles.holder}>
               <CollectionList ref="left"  visible={true} propps = {this.props} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></CollectionList>
-              {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= {this.props.location.query.queryType} currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
+              {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "collection" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
             </div>
           </TabPanel>
           <TabPanel>
-            <NewDocument currentDb={this.props.location.query.db} currentItem={this.props.location.query.collection} connectionId={this.props.connectionId}></NewDocument>
+              <GridFSList ref="left"  visible={true} propps = {this.props} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></GridFSList>
+              {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "fs" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
           </TabPanel>
           <TabPanel>
-            <NewCollection queryType= {this.props.location.query.queryType} currentDb={this.props.location.query.db} currentItem={this.props.location.query.collection} connectionId={this.props.connectionId} addOrUpdate={this.state.selectedTab} />
           </TabPanel>
       </Tabs>
       </div>

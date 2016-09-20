@@ -1,0 +1,117 @@
+.errorMessage {
+    color: red;
+    margin: 5px 0;
+    text-align: center;
+    border: 1px solid red;
+    width: 100%;
+    font-size: 50%;
+}
+
+.errorMessage.hidden {
+    display: none;
+}
+
+.errorMessage.show {
+    color: #FF9696;
+    margin: 5px 0;
+    text-align: center;
+    border: 1px solid #FF9696;
+    width: 100%;
+    border-radius: 3px;
+    line-height: 3;
+}
+
+
+.successMessage {
+    color: green;
+    margin: 5px 0;
+    text-align: center;
+    border: 1px solid green;
+    width: 100%;
+    border-radius: 3px;
+    line-height: 3;
+    font-size: 50%
+}
+
+input[type=text] {
+  color: black;
+}
+
+.two h3{
+    font: 110%;
+    text-align: center;
+    margin-bottom: -10%;
+}
+
+.upload,
+.cancel,
+.addFile{
+  border: 1px solid #3679f8;
+  background-color: #26344e !important;
+  font-size: 13px;
+  color: white;
+  border-radius: 3px;
+  height: 30px;
+  width: 80px !important;
+  cursor: pointer !important;
+}
+
+.upload:hover,
+.upload:active,
+.cancel:hover,
+.cancel:active,
+.addFile:hover,
+.addFile:active
+.addLabel:hover,
+.addLabel:active{
+    background-color: #576d96 !important;
+    border: 1px solid #576d96;
+    cursor: pointer !important;
+}
+
+.upload{
+  margin-left: 40px;
+  margin-top: 10px
+}
+
+.cancel{
+  margin-left: 40px;
+}
+
+.label1 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.div1 {
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+
+.newBucket {
+  cursor: pointer;
+}
+
+.addLabel {
+    margin-top: 28px;
+    position: absolute;
+    color: white;
+    font: 13.3333px Arial;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+
+.addFile {
+  font-family: 'Arial';
+  text-align: center;
+  padding-top: 7px;
+  margin-top: 20px;
+}
+
+.errorFile {
+  color: #941336;
+  margin: 5px 0;
+  display: inline-block;
+  font-size: 11px;
+}

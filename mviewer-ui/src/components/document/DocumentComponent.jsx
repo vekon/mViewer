@@ -42,19 +42,20 @@ class DocumentComponent extends React.Component {
   closeModal(successMessage) {
     this.setState({modalIsOpen: false});
     if (successMessage == true){
-      this.props.refreshDocuments();
+      this.props.refresh();
     }
   }
 
   render () {
     return(
       <div className={documentStyles.results+' '+ documentStyles.clearfix}>
-        <NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} addOrEdit='Edit' connectionId={this.props.connectionId} documentValue = {this.state.value} uId = {this.props.uId} refreshDocuments = {this.props.refreshDocuments}></NewDocument>
+        { this.props.queryType == "collection" ?
+          <NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} addOrEdit='Edit' connectionId={this.props.connectionId} documentValue = {this.state.value} uId = {this.props.uId} refresh = {this.props.refresh}></NewDocument>
+          : null }
         <form>
           <span className={documentStyles.deleteButton} ><i className="fa fa-trash" aria-hidden="true" onClick={this.openModal.bind(this)}></i></span>
           <textarea  key={this.props.key1} value={this.state.value} onChange={this.changeHandler()} disabled={this.state.disabled}></textarea>
-          {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'document' dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} uId= {this.props.uId} ></DeleteComponent> : ''}
-
+          {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = {this.props.queryType == "collection" ? 'document' : 'file'} dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} uId= {this.props.uId} ></DeleteComponent> : ''}
         </form>
       </div>
     );

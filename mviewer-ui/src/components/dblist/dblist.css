@@ -10,7 +10,7 @@
     background:#0e1d5d;
     margin-top: 55px;
     transition: width ease 0.5s;
-    transition: visibility 0s, opacity 0.5s linear;
+    transition: visibility 0s;
 }
 
 .visible {
@@ -89,7 +89,7 @@
 }
 
 .collapsed {
-  width: 5% !important;
+  width: 2% !important;
   margin-left: 70px;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -103,26 +103,28 @@
 .openDiv {
 display: inline-block !important;
 visibility: visible !important;
-width: 5% !important;
+width: 2% !important;
 margin-left: 70px !important;
 opacity: 1 !important;
+cursor: pointer;
 }
 
 
 .collapsedData {
   -webkit-transform: rotate(90deg);
   display: inline-block;
-  margin-top: 350%;
-  width : 100%;
+  margin-top: 1000%;
+  width: 500%;
   font-size: 70%;
+  margin-left: -200%;
 }
 
 
 .arrow {
-  margin-left: 40%;
+  margin-left: 30%;
   margin-top: 50%;
   display: inline-block;
-  cursor: pointer;
+  font-size: 70%;
 }
 
 
