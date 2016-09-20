@@ -2,73 +2,121 @@ import React from 'react'
 import GridFSListStyles from '../shared/listpanel.css'
 import $ from 'jquery'
 import GridFSItem from './GridFSItemComponent.jsx'
+import Config from '../../../config.json'
+import NewBucket from '../newbucket/NewBucketComponent.jsx'
+import SearchInput, {createFilter} from 'react-search-input'
+
 class GridFSList extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      gridfs:['fs1', 'fs2', 'fs3'],
+      gridfs:[],
       connectionId: this.props.propps.connectionId,
       dbStats: {},
-      selectedDB: null,
+      selectedDB: this.props.selectedDB,
       visible: false,
       selectedItem: null,
       loading: 'Loading',
-      selectedfs:null
+      selectedCollection:null,
+      searchTerm: ''
     }
   }
 
   clickHandler (idx,fs) {
-    this.setState({selectedItem: idx});
+    this.setState({selectedCollection: idx});
     this.setState({ visible: false});
-    this.props.onClick();
-    this.setState({selectedfs : fs}, function(){
-      window.location.hash = '#/dashboard/gridfs?connectionId='+this.props.propps.connectionId+'&db='+this.state.selectedDB+'&fs='+this.state.selectedfs + '&queryType="fs"';
+    this.props.setStates(fs);
+    this.setState({selectedCollection : fs}, function(){
     });
   }
 
-  componentWillMount(){
+  refreshRespectiveData(newCollectionName) {
+    this.setState({selectedCollection: newCollectionName});
+    this.props.setStates(newCollectionName);
   }
 
-  show (db) {
-    this.setState({selectedDB:db});
+  searchUpdated (term) {
+    this.setState({searchTerm: term})
+  }
+
+  refreshCollectionList(db){
+    var that = this;
+      $.ajax({
+        type: "GET",
+        dataType: 'json',
+        credentials: 'same-origin',
+        crossDomain: false,
+        url : Config.host +Config.service_path+'/services/'+ db +'/gridfs?connectionId=' + this.state.connectionId,
+        success: function(data) {
+          if(typeof(data.response.result) !== 'undefined'){
+            that.setState({gridfs: data.response.result});
+          }
+          if(typeof(data.response.error) !== 'undefined'){
+            if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){
+                that.props.refreshDb();
+            }
+          }
+
+        }, error: function(jqXHR, exception) {
+        }
+      });
+  }
+
+  componentWillMount(){
     var that = this;
     $.ajax({
       type: "GET",
       dataType: 'json',
       credentials: 'same-origin',
       crossDomain: false,
-      url : 'http://172.16.55.42:8080/mViewer-0.9.2/services/'+ db +'/gridfs?connectionId=' + this.state.connectionId,
+      url : Config.host +Config.service_path+'/services/'+ this.props.selectedDB +'/gridfs?connectionId=' + this.state.connectionId,
       success: function(data) {
-        that.setState({gridfs: data.response.result});
+         that.setState({gridfs: data.response.result});
       }, error: function(jqXHR, exception) {
       }
     });
-    this.setState({ visible: true }, function(){
-      that.setState({selectedItem:null});
-    });
   }
 
-  hide(x) {
-    this.setState({ visible: false});
+  componentWillReceiveProps(nextProps) {
+    var that = this;
+      $.ajax({
+        type: "GET",
+        dataType: 'json',
+        credentials: 'same-origin',
+        crossDomain: false,
+        url : Config.host+Config.service_path+'/services/'+ nextProps.selectedDB +'/gridfs?connectionId=' + this.state.connectionId,
+        success: function(data) {
+          that.setState({gridfs: data.response.result});
+        }, error: function(jqXHR, exception) {
+        }
+      });
   }
 
   render () {
     var that=this;
     var items=null;
-    var items = that.state.gridfs.map(function (item, idx) {
-      var is_selected = that.state.selectedItem == idx;
-      return <GridFSItem
-              key={item}
-              name={item}
-              onClick={this.clickHandler.bind(this,idx,item)}
-              isSelected={that.state.selectedItem==idx}
-              />;
-      }.bind(this));
+    var filteredData = null;
+    if (this.state.gridfs != undefined){
+      filteredData = this.state.gridfs.filter(createFilter(this.state.searchTerm));
+      var items = filteredData.map(function (item, idx) {
+        var is_selected = that.state.selectedCollection == idx;
+        return <GridFSItem
+                key={item}
+                name={item}
+                dbName={this.state.selectedDB}
+                onClick={this.clickHandler.bind(this,idx,item)}
+                isSelected={that.state.selectedCollection==item}
+                connectionId={this.state.connectionId}
+                refreshCollectionList={this.refreshCollectionList.bind(this)}
+                />;
+        }.bind(this));
+    }
       return (
         <div className={GridFSListStyles.menu} key = {this.props.visible}>
           <div className={(this.props.visible ?(this.state.visible ? GridFSListStyles.visible   : this.props.alignment): this.props.alignment ) }>
-            <h5 className={GridFSListStyles.menuTitle}>GridFS</h5>
+            <SearchInput className={GridFSListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
+            <h5 className={GridFSListStyles.menuTitle}><NewBucket gridList= {this.state.gridfs} currentDb={this.props.selectedDB} currentItem="fs" connectionId={this.state.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}></NewBucket></h5>
             {items}
           </div>
         </div>

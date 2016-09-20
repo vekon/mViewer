@@ -30,7 +30,7 @@ class newDocumentComponent extends React.Component {
     this.setState({modalIsOpen: false});
     if(this.state.successMessage==true)
     {
-      this.props.refreshDocuments();
+      this.props.refresh();
     }
   }
 

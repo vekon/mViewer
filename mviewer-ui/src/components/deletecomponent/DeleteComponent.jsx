@@ -34,7 +34,12 @@ class DeleteComponent extends React.Component {
       deleteUrl = Config.host+Config.service_path+'/services/'+this.props.dbName+'/'+this.props.collectionName+'/document?connectionId='+this.props.connectionId;
         obj["_id"] = this.props.uId;
     }
-
+    if(type === 'GridFS Bucket'){
+      deleteUrl = Config.host+Config.service_path+'/services/'+this.props.dbName+'/gridfs/'+this.props.gridFSName+'/dropbucket?connectionId='+this.props.connectionId;
+    }
+    if(type === 'file'){
+      deleteUrl = Config.host+Config.service_path+'/services/'+this.props.dbName+'/gridfs/'+this.props.collectionName+'/dropfile?id=' + this.props.uId+ '&connectionId='+this.props.connectionId;
+    }
     $.ajax({
       type: "DELETE",
       cache: false,
@@ -57,6 +62,7 @@ class DeleteComponent extends React.Component {
             that.setState({message:'Error in deleteing the '+that.props.title});
           }
         }
+        setTimeout(function() { that.closeModal() }.bind(this), 3000);
       }, error: function(jqXHR, exception) {
 
     }

@@ -27,9 +27,7 @@ class CollectionStatsComponent extends React.Component {
       crossDomain: false,
       url : Config.host+Config.service_path+'/services/stats/db/' + that.props.selectedDB + '/collection/'+that.props.selectedCollection+'?connectionId=' + this.props.connectionId,
       success: function(data) {
-        console.log(data);
         that.setState({collectionStats: data.response.result});
-        console.log(that.state.collectionStats);
       }, error: function(jqXHR, exception) {
       }
     });

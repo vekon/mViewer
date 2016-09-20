@@ -19,7 +19,6 @@ class DbStatsComponent extends React.Component {
   onClickHandler (item, e) {
     var that = this;
     that.state.selectedDB = item;
-    console.log(that.state.selectedDB);
     $.ajax({
       type: "GET",
       dataType: 'json',
@@ -27,7 +26,6 @@ class DbStatsComponent extends React.Component {
       crossDomain: false,
       url : Config.host+Config.service_path+'/services/db/' + that.state.selectedDB + '?connectionId=' + this.state.connectionId + '&ts=1470390555265&query=db.runCommand(%7BdbStats%3A1%7D)&limit=10&skip=0&fields=&sortBy={_id:-1}',
       success: function(data) {
-        console.log(data);
         that.setState({dbStats: data.response.result.documents});
       }, error: function(jqXHR, exception) {
       }
@@ -36,8 +34,6 @@ class DbStatsComponent extends React.Component {
 
   componentDidMount(){
     var that = this;
-    console.log(this.props.connectionId);
-    console.log(this.state.connectionId + ' connectionId ')
     $.ajax({
       type: "GET",
       dataType: 'json',
@@ -45,7 +41,6 @@ class DbStatsComponent extends React.Component {
       crossDomain: false,
       url : Config.host+Config.service_path+'/services/login/details?connectionId='+ this.state.connectionId,
       success: function(data) {
-        console.log(data);
         that.setState({dbNames: data.response.result.dbNames});
         }, error: function(jqXHR, exception) {
         }
