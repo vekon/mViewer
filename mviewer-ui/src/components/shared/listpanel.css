@@ -13,6 +13,7 @@
     position: fixed;
     margin-top: 10.2%;
     margin-left:1%;
+    overflow: auto;
 }
 
 

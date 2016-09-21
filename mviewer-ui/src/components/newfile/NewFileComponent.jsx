@@ -165,7 +165,7 @@ class newFileComponent extends React.Component {
         top                   : '50%',
         left                  : '50%',
         right                 : 'auto',
-        width                 : '25%',
+        width                 : '30%',
         bottom                : 'auto',
         marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)'

@@ -22,6 +22,7 @@ class newCollectionComponent extends React.Component {
       submitted:false,
       message:'',
       successMessage: false,
+      _isMounted: false,
       newCollection: this.props.currentItem
     }
   }
@@ -33,7 +34,6 @@ class newCollectionComponent extends React.Component {
 
   closeModal() {
     this.setState({modalIsOpen: false});
-    this.setState({cap: false});
     if(this.state.successMessage==true)
     {
       this.props.refreshCollectionList(this.props.currentDb);
@@ -112,7 +112,6 @@ class newCollectionComponent extends React.Component {
             that.state.newCollection = obj['newCollName'];
           }
           that.setState({successMessage:true});
-          setTimeout(function() { that.closeModal() }.bind(that), 3000);
         }
         if (data.response.error) {
           if (data.response.error.code === 'COLLECTION_ALREADY_EXISTS'){
@@ -127,6 +126,7 @@ class newCollectionComponent extends React.Component {
   }
 
   componentDidMount(){
+    this.state._isMounted =  true;
     if(this.props.addOrUpdate == 2){
       this.setState({name :this.props.currentItem});
       this.getCappedData.call(this);
@@ -135,6 +135,10 @@ class newCollectionComponent extends React.Component {
     else {
       this.setState({title:'Add Collection'});
     }
+  }
+
+  componentWillUnmount(){
+    this.state._isMounted =  false;
   }
 
   componentWillReceiveProps(nextProps){
@@ -159,7 +163,10 @@ class newCollectionComponent extends React.Component {
       crossDomain: false,
       url : Config.host+Config.service_path+'/services/'+ this.props.currentDb +'/collection/'+this.state.name+'/isCapped?connectionId=' + this.props.connectionId,
       success: function(data) {
+        if(that.state._isMounted == true){
           that.setState({cap:data.response.result});
+        }
+
       }, error: function(jqXHR, exception) {
       }
     });
@@ -186,8 +193,8 @@ class newCollectionComponent extends React.Component {
          onRequestClose={this.closeModal.bind(this)}
          style = {customStyles}>
          <div className={newCollectionStyles.two}>
-           <h3>{this.state.title}</h3>
            <span className={newCollectionStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
+           <h3>{this.state.title}</h3>
            <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
              <div className={ newCollectionStyles.formContainer}>
                <div className={newCollectionStyles.inputBox}>
@@ -221,4 +228,3 @@ class newCollectionComponent extends React.Component {
 }
 
 export default newCollectionComponent;
-

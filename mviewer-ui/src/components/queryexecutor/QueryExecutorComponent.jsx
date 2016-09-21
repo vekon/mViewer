@@ -16,6 +16,7 @@ class QueryExecutorComponent extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
+            _isMounted: false,
             collectionObjects:[],
             startLabel: 0,
             endLabel: 0,
@@ -44,7 +45,9 @@ class QueryExecutorComponent extends React.Component {
   }
 
   closeModal(successMessage) {
-    this.setState({modalIsOpen: false});
+    if(this.state._isMounted == true){
+      this.setState({modalIsOpen: false});
+    }
     if (successMessage == true){
       this.props.refreshCollectionList(false);
     }
@@ -72,6 +75,7 @@ class QueryExecutorComponent extends React.Component {
   }
 
   componentDidMount (){
+    this.state._isMounted = true;
     var that = this;
     var currentDb = this.props.currentDb;
     var currentItem = this.props.currentItem;
@@ -119,6 +123,9 @@ class QueryExecutorComponent extends React.Component {
     });
   }
 
+  componentWillUnmount(){
+    this.state._isMounted = false;
+  }
 
   componentWillReceiveProps(nextProps){
     this.setState({selectedTab:0});

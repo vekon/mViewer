@@ -39,7 +39,9 @@ class CollectionsComponent extends React.Component {
     this.setState({showQueryExecutor: false});
   }
   refreshCollectionList(showQueryExecutor){
-    this.refs.left.refreshCollectionList(this.props.location.query.db);
+    if(typeof(this.refs.left) != 'undefined'){
+      this.refs.left.refreshCollectionList(this.props.location.query.db);
+    }
     if(showQueryExecutor==false){
       this.setState({showQueryExecutor:showQueryExecutor});
     }
@@ -51,13 +53,10 @@ class CollectionsComponent extends React.Component {
 
   render () {
     Tabs.setUseDefaultStyles(false);
+    // alert(this.props.location.query.db );
     return(
       <div className = {this.props.location.query.collapsed == 'false' ? collectionsStyles.mainContainer : collectionsStyles.mainContainer+' ' +collectionsStyles.collapsedContainer}>
-        {false ? <ul className={collectionsStyles.breadCrumb}>
-          <li><a href="#">{this.props.location.query.db}</a></li>
-          <li><a href="#">{this.state.selectedCollection}</a></li>
-        </ul>: null}
-        <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
+        {this.props.location.query.db !== 'undefined' ? <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
           <TabList className={collectionsStyles.tabs}>
             <Tab ><span className={this.state.selectedTab == 0 ? collectionsStyles.activeTab : '' } onClick={this.switchTab.bind(this)}>Collections</span></Tab>
             <Tab ><span className={this.state.selectedTab == 1 ? collectionsStyles.activeTab : '' } onClick={this.switchTab.bind(this)}>GridFs</span></Tab>
@@ -75,7 +74,7 @@ class CollectionsComponent extends React.Component {
           </TabPanel>
           <TabPanel>
           </TabPanel>
-      </Tabs>
+      </Tabs> : null}
       </div>
     );
   }
