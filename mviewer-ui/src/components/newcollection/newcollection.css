@@ -141,3 +141,10 @@ cursor: pointer;
 .updateButton span {
   display: inline;
 }
+
+.closeSpan {
+  float: right;
+  margin-top: -3%;
+  margin-right: -3%;
+  cursor: pointer;
+}

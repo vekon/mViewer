@@ -127,3 +127,10 @@ cursor: pointer;
 .editButton span {
   display: inline;
 }
+
+.closeSpan {
+  float: right;
+  margin-top: -3%;
+  margin-right: -3%;
+  cursor: pointer;
+}

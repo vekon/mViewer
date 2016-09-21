@@ -242,3 +242,17 @@
     border: 1px solid #576d96;
     cursor: pointer;
 }
+
+.closeSpan {
+  float: right;
+  margin-top: -3%;
+  margin-right: -3%;
+  cursor: pointer;
+}
+
+.closeSpan {
+  float: right;
+  margin-top: -5.5%;
+  margin-right: -2.5%;
+  cursor: pointer;
+}

@@ -73,3 +73,10 @@
     line-height: 3;
     font-size: 50%
 }
+
+.closeSpan {
+  float: right;
+  margin-top: -3%;
+  margin-right: -3%;
+  cursor: pointer;
+}

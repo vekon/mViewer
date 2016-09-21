@@ -128,3 +128,11 @@ input[type=text] {
   display: inline-block;
   font-size: 11px;
 }
+
+
+.closeSpan {
+  float: right;
+  margin-top: -3%;
+  margin-right: -3%;
+  cursor: pointer;
+}
