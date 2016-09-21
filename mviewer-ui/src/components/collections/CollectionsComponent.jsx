@@ -39,7 +39,9 @@ class CollectionsComponent extends React.Component {
     this.setState({showQueryExecutor: false});
   }
   refreshCollectionList(showQueryExecutor){
-    this.refs.left.refreshCollectionList(this.props.location.query.db);
+    if(typeof(this.refs.left) != 'undefined'){
+      this.refs.left.refreshCollectionList(this.props.location.query.db);
+    }
     if(showQueryExecutor==false){
       this.setState({showQueryExecutor:showQueryExecutor});
     }

@@ -135,8 +135,6 @@ class newCollectionComponent extends React.Component {
     else {
       this.setState({title:'Add Collection'});
     }
-
-
   }
 
   componentWillUnmount(){
@@ -195,7 +193,7 @@ class newCollectionComponent extends React.Component {
          onRequestClose={this.closeModal.bind(this)}
          style = {customStyles}>
          <div className={newCollectionStyles.two}>
-           <span className={newCollectionStyles.closeModal} onClick={this.closeModal.bind(this)}><i className='fa fa-remove'></i></span>
+           <span className={newCollectionStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
            <h3>{this.state.title}</h3>
            <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
              <div className={ newCollectionStyles.formContainer}>

@@ -142,10 +142,9 @@ cursor: pointer;
   display: inline;
 }
 
-
-.closeModal {
+.closeSpan {
   float: right;
-  margin-top: -3vh;
-  margin-right: -5%;
+  margin-top: -3%;
+  margin-right: -3%;
   cursor: pointer;
 }

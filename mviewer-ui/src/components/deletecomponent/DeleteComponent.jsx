@@ -94,7 +94,7 @@ class DeleteComponent extends React.Component {
         onRequestClose={this.closeModal.bind(this)}
         style = {customStyles}>
         <div className={deleteStyles.two}>
-          {this.state.message ? <span className={deleteStyles.closeModal} onClick={this.closeModal.bind(this)}><i className = "fa fa-remove"></i></span> : null}
+          {this.state.message ? <span className={deleteStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span> : null}
           <label>Are you sure to delete the {this.props.title} ?</label>
            <div className={!this.state.successMessage? (deleteStyles.errorMessage + ' ' + (this.state.message!='' ? deleteStyles.show : deleteStyles.hidden)) : (this.state.message != '' ? deleteStyles.successMessage : '')}>{this.state.message}</div>
              <div className ={!this.state.successMessage ? (deleteStyles.choiceContainer + ' ' +deleteStyles.showChoice) : (deleteStyles.choiceContainer + ' ' +deleteStyles.hideChoice)}>

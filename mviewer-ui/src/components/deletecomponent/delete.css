@@ -74,7 +74,8 @@
     font-size: 50%
 }
 
-.closeModal {
+
+.closeSpan {
   float: right;
   margin-top: -3vh;
   margin-right: -5%;

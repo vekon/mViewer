@@ -276,10 +276,9 @@ cursor: pointer;
 .searchInput {
   position: relative;
 }
-
-.closeModal {
+.closeSpan {
   float: right;
-  margin-top: -3vh;
-  margin-right: -5%;
+  margin-top: -5.5%;
+  margin-right: -2.5%;
   cursor: pointer;
 }
