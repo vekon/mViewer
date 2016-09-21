@@ -10,7 +10,8 @@ class CollectionItemComponent extends React.Component {
    super(props);
    this.state = {
      hover_flag: false,
-     modalIsOpen: false
+     modalIsOpen: false,
+     _isMounted: false
    }
  }
 
@@ -20,8 +21,18 @@ class CollectionItemComponent extends React.Component {
  }
 
  closeModal() {
-   this.setState({modalIsOpen: false});
+   if(this.state._isMounted == true){
+     this.setState({modalIsOpen: false});
+   }
    this.props.refreshCollectionList();
+ }
+
+ componentDidMount(){
+   this.state._isMounted = true;
+ }
+
+ componentWillUnmount(){
+   this.state._isMounted = false;
  }
 
   render () {

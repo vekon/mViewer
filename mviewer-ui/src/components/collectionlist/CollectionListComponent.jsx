@@ -18,7 +18,8 @@ class CollectionList extends React.Component {
       selectedItem: null,
       loading: 'Loading',
       searchTerm: '',
-      selectedCollection:null
+      selectedCollection:null,
+      _isMounted:false
     }
   }
 
@@ -58,7 +59,12 @@ class CollectionList extends React.Component {
       });
   }
 
+  componentWillMount(){
+    this.state._isMounted == true;
+  }
   componentDidMount() {
+    this.state._isMounted == true;
+    this.setState({_isMounted : true});
     var that = this;
       $.ajax({
         type: "GET",
@@ -67,10 +73,15 @@ class CollectionList extends React.Component {
         crossDomain: false,
         url : Config.host+Config.service_path+'/services/'+ this.props.selectedDB +'/collection?connectionId=' + this.state.connectionId,
         success: function(data) {
-          that.setState({collections: data.response.result});
+            that.setState({collections: data.response.result});
         }, error: function(jqXHR, exception) {
         }
       });
+  }
+
+  componentWillUnmount(){
+    this.state._isMounted = false;
+    // this.setState({_isMounted : false});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -82,7 +93,9 @@ class CollectionList extends React.Component {
         crossDomain: false,
         url : Config.host+Config.service_path+'/services/'+ nextProps.selectedDB +'/collection?connectionId=' + this.state.connectionId,
         success: function(data) {
-          that.setState({collections: data.response.result});
+          if (that.state._isMounted == true) {
+            that.setState({collections: data.response.result});
+          }
         }, error: function(jqXHR, exception) {
         }
       });

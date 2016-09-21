@@ -98,7 +98,7 @@ class DbListComponent extends React.Component {
     });
   }
 
-  refreshDbList(){
+  refreshDbList(dbName){
     var that = this;
     $.ajax({
       type: "GET",
@@ -119,6 +119,7 @@ class DbListComponent extends React.Component {
       }, error: function(jqXHR, exception) {
       }
     });
+    window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+dbName + '&queryType="collection"&collapsed=false';
   }
 
   changeHandler(){
@@ -156,7 +157,7 @@ class DbListComponent extends React.Component {
           if (data.response.result) {
             that.setState({message:'Database '+obj['name']+ ' was successfully created'});
             that.setState({successMessage:true});
-            that.refreshDbList();
+            that.refreshDbList(obj['name']);
           }
           if (data.response.error) {
             that.setState({successMessage:false});
@@ -231,6 +232,7 @@ class DbListComponent extends React.Component {
        onRequestClose={this.closeModal.bind(this)}
        style = {customStyles}>
        <div className={dbListStyles.two}>
+         <span className={dbListStyles.closeModal} onClick={this.closeModal.bind(this)}><i className='fa fa-remove'></i></span>
          <h3>Create Database</h3>
          <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
            <div className={ dbListStyles.formContainer}>

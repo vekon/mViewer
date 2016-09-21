@@ -165,7 +165,7 @@ class newFileComponent extends React.Component {
         top                   : '50%',
         left                  : '50%',
         right                 : 'auto',
-        width                 : '25%',
+        width                 : '30%',
         bottom                : 'auto',
         marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)'
@@ -180,6 +180,7 @@ class newFileComponent extends React.Component {
          onRequestClose={this.closeModal.bind(this)}
          style = {customStyles}>
          <div className={newFileStyles.two}>
+           <span className={newFileStyles.closeModal} onClick={this.closeModal.bind(this)}><i className='fa fa-remove'></i></span>
            <h3>{this.state.title}</h3>
            <Form method='POST'>
              <label className={newFileStyles.addLabel}>Add files..</label>

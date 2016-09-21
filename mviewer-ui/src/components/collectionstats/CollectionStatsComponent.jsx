@@ -32,7 +32,6 @@ class CollectionStatsComponent extends React.Component {
       }
     });
     this.setState({modalIsOpen: true});
-    this.setState({message: ''});
 
   }
 
@@ -51,7 +50,7 @@ class CollectionStatsComponent extends React.Component {
           onRequestClose={this.closeModal.bind(this)}
           className={collectionStatsStyles.modal}>
           <div className={collectionStatsStyles.collectionStats}>
-            {this.state.message}
+            <span className={collectionStatsStyles.closeModal} onClick={this.closeModal.bind(this)}><i className='fa fa-remove'></i></span>
             <h3 className={collectionStatsStyles.collectionStatsHeader}> Statistics: { that.state.selectedDB } </h3>
           <div>
           <table>

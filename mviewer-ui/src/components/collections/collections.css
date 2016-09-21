@@ -4,7 +4,7 @@
     position: absolute;
     width: 85%;
     overflow: hidden;
-    width: 92.2%;
+    width: calc( 100vw - ( 70px + 2% ));
     height: 100%;
     overflow: auto;
     margin-left: 15% !important;

@@ -173,6 +173,7 @@ class newFileComponent extends React.Component {
           onRequestClose={this.closeModal.bind(this)}
           style = {customStyles}>
           <div className={newBucketStyles.two}>
+            <span className={newBucketStyles.closeModal} onClick={this.closeModal.bind(this)}><i className='fa fa-remove'></i></span>
             <h3>{this.state.title}</h3>
             <Form method='POST'>
               <div className={newBucketStyles.div1}>

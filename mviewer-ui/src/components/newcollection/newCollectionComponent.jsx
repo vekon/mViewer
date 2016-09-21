@@ -22,6 +22,7 @@ class newCollectionComponent extends React.Component {
       submitted:false,
       message:'',
       successMessage: false,
+      _isMounted: false,
       newCollection: this.props.currentItem
     }
   }
@@ -125,6 +126,7 @@ class newCollectionComponent extends React.Component {
   }
 
   componentDidMount(){
+    this.state._isMounted =  true;
     if(this.props.addOrUpdate == 2){
       this.setState({name :this.props.currentItem});
       this.getCappedData.call(this);
@@ -133,6 +135,12 @@ class newCollectionComponent extends React.Component {
     else {
       this.setState({title:'Add Collection'});
     }
+
+
+  }
+
+  componentWillUnmount(){
+    this.state._isMounted =  false;
   }
 
   componentWillReceiveProps(nextProps){
@@ -157,7 +165,10 @@ class newCollectionComponent extends React.Component {
       crossDomain: false,
       url : Config.host+Config.service_path+'/services/'+ this.props.currentDb +'/collection/'+this.state.name+'/isCapped?connectionId=' + this.props.connectionId,
       success: function(data) {
+        if(that.state._isMounted == true){
           that.setState({cap:data.response.result});
+        }
+
       }, error: function(jqXHR, exception) {
       }
     });
@@ -184,6 +195,7 @@ class newCollectionComponent extends React.Component {
          onRequestClose={this.closeModal.bind(this)}
          style = {customStyles}>
          <div className={newCollectionStyles.two}>
+           <span className={newCollectionStyles.closeModal} onClick={this.closeModal.bind(this)}><i className='fa fa-remove'></i></span>
            <h3>{this.state.title}</h3>
            <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
              <div className={ newCollectionStyles.formContainer}>

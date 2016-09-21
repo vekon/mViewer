@@ -73,3 +73,10 @@
     line-height: 3;
     font-size: 50%
 }
+
+.closeModal {
+  float: right;
+  margin-top: -3vh;
+  margin-right: -5%;
+  cursor: pointer;
+}

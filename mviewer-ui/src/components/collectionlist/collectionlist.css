@@ -9,7 +9,8 @@
     color: #ccc;
     background:#0e1d5d;
     margin-top: 55px;
-    border-left: solid 1px #555
+    border-left: solid 1px #555;
+    overflow: auto;
 }
 
 .visible {

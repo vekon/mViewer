@@ -108,6 +108,7 @@ class newDocumentComponent extends React.Component {
          onRequestClose={this.closeModal.bind(this)}
          style = {customStyles}>
          <div className={newDocumentStyles.two}>
+           <span className={newDocumentStyles.closeModal} onClick={this.closeModal.bind(this)}><i className='fa fa-remove'></i></span>
            {this.props.addOrEdit !='Edit' ? <h3>Add Document</h3> : <h3>Edit Document</h3>}
             <form>
               {this.props.addOrEdit !='Edit' ? <label>Enter JSON data</label> : <label>Edit JSON data</label>}

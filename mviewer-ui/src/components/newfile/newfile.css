@@ -155,3 +155,10 @@ input[type=password] {
 .addButton span {
   display: inline;
 }
+
+.closeModal {
+  float: right;
+  margin-top: -3vh;
+  margin-right: -5%;
+  cursor: pointer;
+}
