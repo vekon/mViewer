@@ -103,7 +103,7 @@
 .openDiv {
 display: inline-block !important;
 visibility: visible !important;
-width: 2% !important;
+width: 3% !important;
 margin-left: 70px !important;
 opacity: 1 !important;
 cursor: pointer;
@@ -111,9 +111,9 @@ cursor: pointer;
 
 
 .collapsedData {
-  -webkit-transform: rotate(90deg);
+  -webkit-transform: rotate(-90deg);
   display: inline-block;
-  margin-top: 1000%;
+  margin-top: 500%;
   width: 500%;
   font-size: 70%;
   margin-left: -200%;
@@ -121,7 +121,7 @@ cursor: pointer;
 
 
 .arrow {
-  margin-left: 30%;
+  margin-left: 35%;
   margin-top: 50%;
   display: inline-block;
   font-size: 70%;
