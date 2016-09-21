@@ -208,7 +208,7 @@ class newCollectionComponent extends React.Component {
                  <TextInput type="text" name="capSize" id="capSize" placeholder="size (bytes)" value={this.state.size} onChange={this.handleChange.bind(this)} validations={'isRequired1:'+this.state.cap+',isNumeric1:'+this.state.cap} checkforOtherErrors ={this.state.submitted} validationErrors={{isNumeric1: 'Please enter the size in numeric', isRequired1: 'Please enter the size'}} shouldBeDisabled = {!this.state.cap}  />
                </div>
                <div className={newCollectionStyles.inputBox}>
-                 <TextInput type="text" name="maxDocs" id="maxDocs" placeholder="max Documents (optional)" value={this.state.max} onChange={this.handleChange.bind(this)} shouldBeDisabled = {!this.state.cap}  />
+                 <TextInput type="text" name="maxDocs" id="maxDocs" placeholder="max Documents (optional)" value={this.state.max} onChange={this.handleChange.bind(this)} shouldBeDisabled = {!this.state.cap}  validationErrors={{isNumeric1: 'Please enter the size in numeric'}} checkforOtherErrors ={this.state.submitted} validations={'isNumeric1:' + this.state.cap}/>
                </div>
                <div className={newCollectionStyles.inputBox}>
                  <label>Auto Indent:</label>
