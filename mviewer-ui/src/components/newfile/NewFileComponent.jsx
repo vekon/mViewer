@@ -41,7 +41,7 @@ class newFileComponent extends React.Component {
     this.setState({count: 0});
     if(this.state.successMessage==true)
     {
-      this.props.refresh();
+      this.props.refresh('new');
     }
   }
 

@@ -275,10 +275,14 @@ class QueryExecutorComponent extends React.Component {
      });
   }
 
-  refresh(){
-    // this.clickHandler();
+  refresh(buttonValue){
+    if( buttonValue == 'new'){
+      this.clickHandler();
+    }
+    else{
+      this.paginationHandler();
+    }
     this.getAttributes(this.props.currentDb, this.props.currentItem, this.props.connectionId);
-    this.paginationHandler();
   }
 
   attributeHandler(r) {
@@ -426,6 +430,10 @@ class QueryExecutorComponent extends React.Component {
                   that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
                   that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
                 }
+                else{
+                  that.setState({startLabel: 0});
+                  that.setState({endLabel: 0});
+                }
               }, error: function(jqXHR, exception) {
               }
             })
@@ -434,7 +442,11 @@ class QueryExecutorComponent extends React.Component {
                 var size = that.state.skipValue + that.state.limitValue;
                 that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
                 that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
-              };
+              }
+              else{
+                that.setState({startLabel: 0});
+                that.setState({endLabel: 0});
+              }
           if(data.response.error) {
             that.setState({collectionObjects:[]});
           }
@@ -464,11 +476,11 @@ class QueryExecutorComponent extends React.Component {
           <span className={queryExecutorStyles.deleteButton} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete Collection</span></span>
           {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'collection' dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : ''}
           <NewCollection queryType='collection' currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} addOrUpdate={2} refreshCollectionList={this.props.refreshCollectionList.bind(this)} refreshRespectiveData = {this.props.refreshRespectiveData.bind(this)}/>
-          <NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this)} addOrEdit='Add' ></NewDocument></span>
+          <NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this,'new')} addOrEdit='Add' ></NewDocument></span>
           : <span>
             <span className={queryExecutorStyles.deleteButton} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete GridFS Bucket</span></span>
             { this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'GridFS Bucket' dbName = {this.props.currentDb} gridFSName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : '' }
-             <NewFile currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this)}></NewFile>
+             <NewFile currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this, 'new')}></NewFile>
             </span>
         }
         <div className={queryExecutorStyles.buffer}>

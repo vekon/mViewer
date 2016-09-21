@@ -23,21 +23,21 @@ class TreeViewComponent extends React.Component {
   closeModal(successMessage) {
     this.setState({modalIsOpen: false});
     if (successMessage == true){
-      this.props.refresh();
+      this.props.refresh('delete');
     }
   }
 
+
  render () {
    var items = this.props.collectionObjects.map(function (collection, i) {
-     i++;
      const getItemString = (type, data, itemType, itemString) => (<span></span>);
      return(
-     <div className={treeViewStyles.innerContainer +' '+ treeViewStyles.clearfix}>
+     <div className={treeViewStyles.innerContainer +' '+ treeViewStyles.clearfix} key={collection._id}>
        <span className={treeViewStyles.deleteButton}>
            <i className="fa fa-trash" aria-hidden="true" onClick={this.openModal.bind(this,collection._id)}></i>
        </span>
        <form method='DELETE'></form>
-         <TreeView data={collection} shouldExpandNode={() => false } keyPath ={this.props.queryType == "collection" ? ['Document '+i] : ['File '+i]} key = {collection._id["counter"] || collection._id } getItemString={getItemString}/>
+         <TreeView data={collection} shouldExpandNode={() => false } keyPath ={this.props.queryType == "collection" ? ['Document '+i] : ['File '+i]} key = {collection._id} getItemString={getItemString}/>
      </div>)
    }.bind(this));
    return (

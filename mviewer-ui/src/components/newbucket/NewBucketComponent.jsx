@@ -52,7 +52,7 @@ class newFileComponent extends React.Component {
     }
   }
 
-   handleChanged(event){
+  handleChanged(event){
     var newArray = this.state.newFile.slice();
     newArray.push(event.target.files[0]);
     this.setState({newFile : newArray});
@@ -62,10 +62,6 @@ class newFileComponent extends React.Component {
   handleChange(e){
     this.setState({successMessage:false});
     this.setState({message:''});
-  }
-
-  closeHandler() {
-   this.closeModal();
   }
 
   fileUpload(data) {
@@ -113,7 +109,6 @@ class newFileComponent extends React.Component {
     var that = this;
     var data = $("form").serialize().split("&");
     var obj={};
-    var exists = false;
     for(var key in data)
     {
       obj[data[key].split("=")[0]] = data[key].split("=")[1];
@@ -122,22 +117,12 @@ class newFileComponent extends React.Component {
       this.setState({error : true});
       this.setState({errorFile: true});
     } else {
-      this.props.gridList.map(function(item){
-        if(item == obj['newBucket']) {
-          that.setState({successMessage:false});
-          that.setState({count : 0 })
-          that.setState({message: "GridFS bucket with name " + obj['newBucket'] + " already exists"});
-          exists = true;
-        }
+      this.state.newBucket = obj['newBucket'];
+      this.setState({uploadClick: true});
+      this.state.newFile.map(function(item){
+        item.percent = 0;
+        that.fileUpload(item);
       });
-      if(!exists) {
-        this.state.newBucket = obj['newBucket'];
-        this.setState({uploadClick: true});
-        this.state.newFile.map(function(item){
-          item.percent = 0;
-          that.fileUpload(item);
-        });
-      }
     }
   }
 
@@ -189,7 +174,7 @@ class newFileComponent extends React.Component {
           style = {customStyles}>
           <div className={newBucketStyles.two}>
             <h3>{this.state.title}</h3>
-            <Form>
+            <Form method='POST'>
               <div className={newBucketStyles.div1}>
                 <label className={newBucketStyles.label1}>Bucket Name:</label>
                 <TextInput className={newBucketStyles.input} type="text" name="newBucket" id="newBucket" placeholder="Bucket Name" value={this.state.newBucket} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error} onChange={this.handleChange.bind(that)} validationErrors={{isRequired2: 'Bucket name must not be empty', isAlpha1: 'Invalid Bucket name' }} />
@@ -210,7 +195,7 @@ class newFileComponent extends React.Component {
               </div>
                 <div className={!this.state.successMessage? (newBucketStyles.errorMessage + ' ' + (this.state.message!='' ? newBucketStyles.show : newBucketStyles.hidden)) : (this.state.message != '' ? newBucketStyles.successMessage : '')}>{this.state.message}</div>
               <button onClick={this.addHandle.bind(that)} className={newBucketStyles.upload}>Submit</button>
-              <button onClick={this.closeHandler.bind(that)} className={newBucketStyles.cancel}>Cancel</button>
+              <span onClick={this.closeModal.bind(that)} className={newBucketStyles.cancel}>Cancel</span>
             </Form>
 
           </div>
@@ -221,5 +206,3 @@ class newFileComponent extends React.Component {
 }
 
 export default newFileComponent;
-
-
