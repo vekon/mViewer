@@ -28,6 +28,7 @@ class newDocumentComponent extends React.Component {
 
   closeModal() {
     this.setState({modalIsOpen: false});
+    this.setState({newDocument: "{}"});
     if(this.state.successMessage==true)
     {
       this.props.refresh();
@@ -74,6 +75,7 @@ class newDocumentComponent extends React.Component {
           else {
             that.setState({message:'Document was successfully Updated'});
           }
+          setTimeout(function() { that.closeModal() }.bind(that), 3000);
         }
         if (data.response.error) {
           if (data.response.error){
@@ -109,6 +111,7 @@ class newDocumentComponent extends React.Component {
          style = {customStyles}>
          <div className={newDocumentStyles.two}>
            {this.props.addOrEdit !='Edit' ? <h3>Add Document</h3> : <h3>Edit Document</h3>}
+            <span className={newDocumentStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
             <form>
               {this.props.addOrEdit !='Edit' ? <label>Enter JSON data</label> : <label>Edit JSON data</label>}
               <textarea value ={this.state.newDocument} name={this.props.addOrEdit != 'Edit' ? 'document' : 'keys'} id='document' onChange={this.handleChange('newDocument')}></textarea>

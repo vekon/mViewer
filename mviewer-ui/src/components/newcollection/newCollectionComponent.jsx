@@ -33,6 +33,7 @@ class newCollectionComponent extends React.Component {
 
   closeModal() {
     this.setState({modalIsOpen: false});
+    this.setState({cap: false});
     if(this.state.successMessage==true)
     {
       this.props.refreshCollectionList(this.props.currentDb);
@@ -111,6 +112,7 @@ class newCollectionComponent extends React.Component {
             that.state.newCollection = obj['newCollName'];
           }
           that.setState({successMessage:true});
+          setTimeout(function() { that.closeModal() }.bind(that), 3000);
         }
         if (data.response.error) {
           if (data.response.error.code === 'COLLECTION_ALREADY_EXISTS'){
@@ -185,6 +187,7 @@ class newCollectionComponent extends React.Component {
          style = {customStyles}>
          <div className={newCollectionStyles.two}>
            <h3>{this.state.title}</h3>
+           <span className={newCollectionStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
            <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
              <div className={ newCollectionStyles.formContainer}>
                <div className={newCollectionStyles.inputBox}>
@@ -198,7 +201,7 @@ class newCollectionComponent extends React.Component {
                  <TextInput type="text" name="capSize" id="capSize" placeholder="size (bytes)" value={this.state.size} onChange={this.handleChange.bind(this)} validations={'isRequired1:'+this.state.cap+',isNumeric1:'+this.state.cap} checkforOtherErrors ={this.state.submitted} validationErrors={{isNumeric1: 'Please enter the size in numeric', isRequired1: 'Please enter the size'}} shouldBeDisabled = {!this.state.cap}  />
                </div>
                <div className={newCollectionStyles.inputBox}>
-                 <TextInput type="text" name="maxDocs" id="maxDocs" placeholder="max Documents (optional)" value={this.state.max} onChange={this.handleChange.bind(this)} shouldBeDisabled = {!this.state.cap}  />
+                 <TextInput type="text" name="maxDocs" id="maxDocs" placeholder="max Documents (optional)" value={this.state.max} onChange={this.handleChange.bind(this)} shouldBeDisabled = {!this.state.cap}  validationErrors={{isNumeric1: 'Please enter the size in numeric'}} checkforOtherErrors ={this.state.submitted} validations={'isNumeric1:' + this.state.cap}/>
                </div>
                <div className={newCollectionStyles.inputBox}>
                  <label>Auto Indent:</label>
@@ -218,3 +221,4 @@ class newCollectionComponent extends React.Component {
 }
 
 export default newCollectionComponent;
+

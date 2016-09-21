@@ -124,6 +124,7 @@ class CreateDbComponent extends React.Component {
           style = {customStyles}>
           <div className={createDbStyles.two}>
             <h3>Create Database</h3>
+            <span className={createDbStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
             <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
               <div className={ createDbStyles.formContainer}>
                 <div className={createDbStyles.inputBox}>

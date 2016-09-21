@@ -276,3 +276,10 @@ cursor: pointer;
 .searchInput {
   position: relative;
 }
+
+.closeSpan {
+  float: right;
+  margin-top: -5.5%;
+  margin-right: -2.5%;
+  cursor: pointer;
+}

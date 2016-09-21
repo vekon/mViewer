@@ -206,20 +206,27 @@
 }
 
 
-.deleteButton {
+.deleteButton,
+.deleteButtonGridfs {
 float: right;
 display: inline;
 margin-top: 1.5%;
-margin-right: 2%;
+
 font-size: 70%;
 cursor: pointer;
 }
 
-.deleteButton i {
+.deleteButton {
+  margin-right: 2%;
+}
+
+.deleteButton i,
+.deleteButtonGridfs i{
   padding-right: 5px;
 }
 
-.deleteButton span {
+.deleteButton span,
+.deleteButtonGridfs span{
   display: inline;
 }
 
@@ -256,4 +263,8 @@ cursor: pointer;
   display: block;
   margin-left: 2%;
   margin-top: 1%;
+}
+
+.deleteButtonGridfs {
+  margin-right: 5.3%;
 }

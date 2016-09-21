@@ -5,7 +5,6 @@ import $ from 'jquery'
 import CollectionList from '../collectionlist/CollectionListComponent.jsx'
 import GridFSList from '../gridfslist/GridFSListComponent.jsx'
 import DbItem from './DbItemComponent.jsx'
-import modalStyles from '../shared/modal.css'
 import ReactDOM  from 'react-dom'
 import { Form } from 'formsy-react'
 import TextInput from '../TextInput/TextInputComponent.jsx';
@@ -232,6 +231,7 @@ class DbListComponent extends React.Component {
        style = {customStyles}>
        <div className={dbListStyles.two}>
          <h3>Create Database</h3>
+         <span className={dbListStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
          <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
            <div className={ dbListStyles.formContainer}>
              <div className={dbListStyles.inputBox}>
