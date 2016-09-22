@@ -5,6 +5,7 @@ import Modal from 'react-modal'
 import { Form } from 'formsy-react'
 import TextInput from '../TextInput/TextInputComponent.jsx'
 import Config from '../../../config.json';
+import service from '../../gateway/service.js'
 
 class newCollectionComponent extends React.Component {
 
@@ -89,40 +90,45 @@ class newCollectionComponent extends React.Component {
       this.setState({ newCollection: obj['newCollName']});
     }
 
+    // alert(partialUrl);
+    var partialUrl = this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId;
+    var updateCollectionCall = service(methodType, partialUrl, obj);
+    updateCollectionCall.then(this.success.bind(this, 'clickHandler', obj), this.failure.bind(this, 'clickHandler', obj));
 
-    $.ajax({
-      type: methodType,
-      cache: false,
-      dataType: 'json',
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest'
-      },
-      crossDomain: false,
-      url: Config.host+Config.service_path+'/services/'+this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId,
-      data : obj,
-      success: function(data) {
-        if (data.response.result) {
-          if(that.props.addOrUpdate == 2){
-            var successResult = data.response.result.replace(/[\[\]']/g,'' );
-            that.setState({message:successResult});
-            that.state.newCollection = obj['newCollName'];
-          }
-          else {
-            that.setState({message:'Collection '+obj['newCollName']+ ' was successfully added to database ' + that.props.currentDb});
-            that.state.newCollection = obj['newCollName'];
-          }
-          that.setState({successMessage:true});
-        }
-        if (data.response.error) {
-          if (data.response.error.code === 'COLLECTION_ALREADY_EXISTS'){
-            that.setState({successMessage:false});
-            that.setState({message:'Collection '+obj['newCollName']+ ' already exists in database ' + that.props.currentDb});
-          }
-        }
-      }, error: function(jqXHR, exception) {
 
-    }
-   });
+  //   $.ajax({
+  //     type: methodType,
+  //     cache: false,
+  //     dataType: 'json',
+  //     headers: {
+  //       'X-Requested-With': 'XMLHttpRequest'
+  //     },
+  //     crossDomain: false,
+  //     url: Config.host+Config.service_path+'/services/'+this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId,
+  //     data : obj,
+  //     success: function(data) {
+  //       if (data.response.result) {
+  //         if(that.props.addOrUpdate == 2){
+  //           var successResult = data.response.result.replace(/[\[\]']/g,'' );
+  //           that.setState({message:successResult});
+  //           that.state.newCollection = obj['newCollName'];
+  //         }
+  //         else {
+  //           that.setState({message:'Collection '+obj['newCollName']+ ' was successfully added to database ' + that.props.currentDb});
+  //           that.state.newCollection = obj['newCollName'];
+  //         }
+  //         that.setState({successMessage:true});
+  //       }
+  //       if (data.response.error) {
+  //         if (data.response.error.code === 'COLLECTION_ALREADY_EXISTS'){
+  //           that.setState({successMessage:false});
+  //           that.setState({message:'Collection '+obj['newCollName']+ ' already exists in database ' + that.props.currentDb});
+  //         }
+  //       }
+  //     }, error: function(jqXHR, exception) {
+   //
+  //   }
+  //  });
   }
 
   componentDidMount(){
@@ -155,22 +161,46 @@ class newCollectionComponent extends React.Component {
 
 
   getCappedData(){
-    var that =this;
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      credentials: 'same-origin',
-      crossDomain: false,
-      url : Config.host+Config.service_path+'/services/'+ this.props.currentDb +'/collection/'+this.state.name+'/isCapped?connectionId=' + this.props.connectionId,
-      success: function(data) {
-        if(that.state._isMounted == true){
-          that.setState({cap:data.response.result});
-        }
-
-      }, error: function(jqXHR, exception) {
-      }
-    });
+    var partialUrl = this.props.currentDb +'/collection/'+this.state.name+'/isCapped?connectionId=' + this.props.connectionId;
+    var getCappedDataCall = service('GET', partialUrl, '');
+    getCappedDataCall.then(this.success.bind(this, 'getCappedData'), this.failure.bind(this, 'getCappedData'));
   }
+
+  success(calledFrom, obj,  data) {
+    if (calledFrom == 'clickHandler'){
+      if (data.response.result) {
+        if(this.props.addOrUpdate == 2){
+          var successResult = data.response.result.replace(/[\[\]']/g,'' );
+          this.setState({message:successResult});
+          this.state.newCollection = obj['newCollName'];
+        }
+        else {
+          this.setState({message:'Collection '+obj['newCollName']+ ' was successfully added to database ' + this.props.currentDb});
+          this.state.newCollection = obj['newCollName'];
+        }
+        this.setState({successMessage:true});
+      }
+      if (data.response.error) {
+        if (data.response.error.code === 'COLLECTION_ALREADY_EXISTS'){
+          this.setState({successMessage:false});
+          this.setState({message:'Collection '+obj['newCollName']+ ' already exists in database ' + this.props.currentDb});
+        }
+      }
+    }
+
+    if (calledFrom == 'getCappedData'){
+      if(this.state._isMounted == true){
+        if(typeof(data.respone) != 'undefined'){
+          this.setState({cap:data.response.result});
+        }
+      }
+    }
+  }
+
+  failure() {
+
+  }
+
 
   render () {
     const customStyles = {

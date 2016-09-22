@@ -4,7 +4,7 @@ import $ from 'jquery'
 import CollectionItem from './CollectionItemComponent.jsx'
 import NewCollection from '../newcollection/newCollectionComponent.jsx'
 import SearchInput, {createFilter} from 'react-search-input'
-import Config from '../../../config.json'
+import service from '../../gateway/service.js';
 class CollectionList extends React.Component {
 
   constructor(props) {
@@ -37,69 +37,58 @@ class CollectionList extends React.Component {
   }
 
   refreshCollectionList(db){
-    var that = this;
-      $.ajax({
-        type: "GET",
-        dataType: 'json',
-        credentials: 'same-origin',
-        crossDomain: false,
-        url : Config.host+Config.service_path+'/services/'+ db +'/collection?connectionId=' + this.state.connectionId,
-        success: function(data) {
-          if(typeof(data.response.result) !== 'undefined'){
-            that.setState({collections: data.response.result});
-          }
-          if(typeof(data.response.error) !== 'undefined'){
-            if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){
-                that.props.refreshDb();
-            }
-          }
+    var partialUrl = db +'/collection?connectionId=' + this.state.connectionId;
+    var collectionListCall = service('GET', partialUrl, '');
+    collectionListCall.then(this.success.bind(this , 'refreshCollectionList'), this.failure.bind(this , 'refreshCollectionList'));
+  }
 
-        }, error: function(jqXHR, exception) {
+  success(calledFrom, data) {
+    if(calledFrom == 'componentDidMount'){
+      this.setState({collections: data.response.result});
+    }
+
+    if(calledFrom == 'componentWillReceiveProps'){
+      if (this.state._isMounted == true) {
+        this.setState({collections: data.response.result});
+      }
+    }
+
+    if(calledFrom == 'refreshCollectionList'){
+      if(typeof(data.response.result) !== 'undefined'){
+        this.setState({collections: data.response.result});
+      }
+      if(typeof(data.response.error) !== 'undefined'){
+        if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){
+            this.props.refreshDb();
         }
-      });
+      }
+    }
+  }
+
+  failure() {
+
   }
 
   componentWillMount(){
     this.state._isMounted == true;
   }
+
   componentDidMount() {
     this.state._isMounted == true;
     this.setState({_isMounted : true});
-    var that = this;
-      $.ajax({
-        type: "GET",
-        dataType: 'json',
-        credentials: 'same-origin',
-        crossDomain: false,
-        url : Config.host+Config.service_path+'/services/'+ this.props.selectedDB +'/collection?connectionId=' + this.state.connectionId,
-        success: function(data) {
-            that.setState({collections: data.response.result});
-        }, error: function(jqXHR, exception) {
-        }
-      });
+    var partialUrl = this.props.selectedDB +'/collection?connectionId=' + this.state.connectionId;
+    var collectionListCall = service('GET', partialUrl, '');
+    collectionListCall.then(this.success.bind(this , 'componentDidMount'), this.failure.bind(this , 'componentDidMount'));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    var partialUrl = nextProps.selectedDB +'/collection?connectionId=' + this.state.connectionId;
+    var collectionListCall = service('GET', partialUrl, '');
+    collectionListCall.then(this.success.bind(this , 'componentWillReceiveProps'), this.failure.bind(this , 'componentWillReceiveProps'));
   }
 
   componentWillUnmount(){
     this.state._isMounted = false;
-    // this.setState({_isMounted : false});
-  }
-
-  componentWillReceiveProps(nextProps) {
-    var that = this;
-      $.ajax({
-        type: "GET",
-        dataType: 'json',
-        credentials: 'same-origin',
-        crossDomain: false,
-        url : Config.host+Config.service_path+'/services/'+ nextProps.selectedDB +'/collection?connectionId=' + this.state.connectionId,
-        success: function(data) {
-          if (that.state._isMounted == true) {
-            that.setState({collections: data.response.result});
-          }
-        }, error: function(jqXHR, exception) {
-        }
-      });
-
   }
 
   searchUpdated (term) {

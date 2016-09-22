@@ -22,8 +22,9 @@ class CollectionItemComponent extends React.Component {
 
  closeModal() {
    if(this.state._isMounted == true){
-     this.setState({modalIsOpen: false});
+
    }
+
    this.props.refreshCollectionList();
  }
 
@@ -37,11 +38,11 @@ class CollectionItemComponent extends React.Component {
 
   render () {
     return (
-      <div className={(this.props.isSelected ? collectionListStyles.menuItem +' ' +collectionListStyles.highlight :collectionListStyles.menuItem)} key={this.props.name} >
+      <div className={(this.props.isSelected ? collectionListStyles.menuItem +' ' +collectionListStyles.highlight :collectionListStyles.menuItem)} key={this.props.name} onClick={this.props.onClick} value={this.props.name} >
         <span>
           <i className="fa fa-folder-open-o" aria-hidden="true"></i>
         </span>
-        <button onClick={this.props.onClick} value={this.props.name}>{this.props.name}</button>
+        <button>{this.props.name}</button>
       </div>
     );
   }

@@ -2,7 +2,7 @@ import React from 'react'
 import collectionStatsStyles from './collectionstats.css'
 import $ from 'jquery'
 import Modal from 'react-modal'
-import Config from '../../../config.json';
+import service from '../../gateway/service.js';
 
 class CollectionStatsComponent extends React.Component {
 
@@ -20,19 +20,18 @@ class CollectionStatsComponent extends React.Component {
 
   openModal() {
     var that = this;
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      credentials: 'same-origin',
-      crossDomain: false,
-      url : Config.host+Config.service_path+'/services/stats/db/' + that.props.selectedDB + '/collection/'+that.props.selectedCollection+'?connectionId=' + this.props.connectionId,
-      success: function(data) {
-        that.setState({collectionStats: data.response.result});
-      }, error: function(jqXHR, exception) {
-      }
-    });
+    var partialUrl = 'stats/db/' + this.props.selectedDB + '/collection/'+this.props.selectedCollection+'?connectionId=' + this.props.connectionId;
+    var collectionStatsCall = service('GET', partialUrl, '');
+    collectionStatsCall.then(this.success.bind(this), this.failure.bind(this));
     this.setState({modalIsOpen: true});
+  }
 
+  success(data) {
+    this.setState({collectionStats: data.response.result});
+  }
+
+  failure() {
+    this.setState({ message: 'Unexpected Error Occurred' })
   }
 
   closeModal() {

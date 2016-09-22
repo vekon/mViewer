@@ -4,7 +4,7 @@ import $ from 'jquery'
 import Modal from 'react-modal'
 import { Form } from 'formsy-react';
 import TextInput from '../TextInput/TextInputComponent.jsx';
-import Config from '../../../config.json';
+import service from '../../gateway/service.js'
 
 class newDocumentComponent extends React.Component {
 
@@ -55,37 +55,33 @@ class newDocumentComponent extends React.Component {
       obj[data[key].split("=")[0]] = unescape(data[key].split("=")[1]);
     }
 
-    $.ajax({
-      type: (this.props.addOrEdit != 'Edit'? 'POST' : 'PUT'),
-      cache: false,
-      dataType: 'json',
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest'
-      },
-      crossDomain: false,
-      url: Config.host+Config.service_path+'/services/'+this.props.currentDb+'/'+this.props.currentItem+'/document?connectionId='+this.props.connectionId,
-      data : obj,
-      success: function(data) {
-        if (data.response.result) {
-          that.setState({successMessage:true});
-          if (that.props.addOrEdit != 'Edit')
-          {
-            that.setState({message:'Document was successfully added to collection ' + that.props.currentItem});
-          }
-          else {
-            that.setState({message:'Document was successfully Updated'});
-          }
-          setTimeout(function() { that.closeModal() }.bind(that), 3000);
-        }
-        if (data.response.error) {
-          if (data.response.error){
-            that.setState({successMessage:false});
-            that.setState({message:'Inavlid JSON object'});
-          }
-        }
-      }, error: function(jqXHR, exception) {
+    var partialUrl = this.props.currentDb+'/'+this.props.currentItem+'/document?connectionId='+this.props.connectionId;
+    var newDocumentCall = service((this.props.addOrEdit != 'Edit'? 'POST' : 'PUT'), partialUrl, obj);
+    newDocumentCall.then(this.success.bind(this), this.failure.bind(this));
+
+  }
+
+  success(data){
+    if (data.response.result) {
+      this.setState({successMessage:true});
+      if (this.props.addOrEdit != 'Edit')
+      {
+        this.setState({message:'Document was successfully added to collection ' + this.props.currentItem});
+      }
+      else {
+        this.setState({message:'Document was successfully Updated'});
+      }
+      setTimeout(function() { this.closeModal() }.bind(this), 3000);
     }
-  });
+    if (data.response.error) {
+      if (data.response.error){
+        this.setState({successMessage:false});
+        this.setState({message:'Inavlid JSON object'});
+      }
+    }
+  }
+
+  failure(data){
 
   }
 

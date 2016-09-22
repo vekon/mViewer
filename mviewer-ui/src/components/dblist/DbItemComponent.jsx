@@ -14,16 +14,19 @@ class DbItemComponent extends React.Component {
     }
   }
 
-  openModal() {
+  openModal(e) {
+    e.stopPropagation();
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
   }
 
-  closeModal() {
+  closeModal(successMessage) {
     if(this.state._isMounted == true){
       this.setState({modalIsOpen: false});
+      if(successMessage == true){
+        this.props.refreshDbList('undefined');
+      }
     }
-    this.props.refreshDbList('undefined');
   }
 
   componentDidMount(){
@@ -37,12 +40,14 @@ class DbItemComponent extends React.Component {
 
   render () {
     return (
-      <div className={(this.props.isSelected ? dbListStyles.menuItem +' ' +dbListStyles.highlight :dbListStyles.menuItem)} key={this.props.name} >
-        <span>
-          <i className="fa fa-database" aria-hidden="true"></i>
-        </span>
-        <button onClick={this.props.onClick} value={this.props.name}>{this.props.name}</button>
-        <i className={"fa fa-remove " +  dbListStyles.removeIcon} aria-hidden="true" onClick={this.openModal.bind(this)}></i>
+      <div onClick={this.props.onClick} value={this.props.name} className={(this.props.isSelected ? dbListStyles.menuItem +' ' +dbListStyles.highlight :dbListStyles.menuItem)} key={this.props.name} >
+        <div className={dbListStyles.innerItem}>
+          <span>
+            <i className="fa fa-database" aria-hidden="true"></i>
+          </span>
+          <button>{this.props.name}</button>
+        </div>
+      <i className={"fa fa-remove " +  dbListStyles.removeIcon} aria-hidden="true" onClick={this.openModal.bind(this)}></i>
           {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'database' dbName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent> : ''}
       </div>
     );

@@ -11,6 +11,7 @@ import NewDocument from '../newdocument/newDocumentComponent.jsx'
 import CollectionStats from '../collectionstats/CollectionStatsComponent.jsx'
 import Document from '../document/DocumentComponent.jsx'
 import NewFile from '../newfile/NewFileComponent.jsx'
+import service from '../../gateway/service.js'
 class QueryExecutorComponent extends React.Component {
 
   constructor(props) {
@@ -54,24 +55,85 @@ class QueryExecutorComponent extends React.Component {
 
   }
 
+  success(calledFrom, data){
+    if(calledFrom == 'getAttributes'){
+      var arr = data.response.result.keys;
+      var newArr = [];
+      for(var i=0; i < arr.length; i++) {
+        newArr.push({"value": arr[i], "selected" :true});
+      }
+      this.setState({fields:newArr});
+    }
+
+    if(calledFrom == 'innerCall1') {
+      this.setState({totalCount:data.response.result.count});
+      if (this.state.skipValue < this.state.totalCount) {
+        var size = this.state.skipValue + this.state.limitValue;
+        this.setState({startLabel:(this.state.totalCount != 0 ? this.state.skipValue + 1 : 0)})
+        this.setState({endLabel:(this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)})
+      }
+    }
+
+   if(calledFrom == 'innerCall2'){
+     this.setState({totalCount:data.response.result.count});
+     this.setState({totalCount:data.response.result.count});
+     if (data.response.result.count < 10)
+     {
+       this.setState({limitValue:data.response.result.count});
+       this.setState({skipValue:0});
+     }
+     else {
+       this.setState({limitValue:this.state.limit});
+       this.setState({skipValue:0});
+     }
+     if (this.state.skipValue < this.state.totalCount) {
+       var size = this.state.skipValue + this.state.limitValue;
+       this.setState({startLabel:(this.state.totalCount != 0 ? this.state.skipValue + 1 : 0)})
+       this.setState({endLabel:(this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)})
+     } else {
+     }
+     if(data.response.result.count==0){
+       this.setState({startLabel: 0});
+       this.setState({endLabel: 0});
+     }
+     if(data.response.error) {
+       that.setState({collectionObjects:[]});
+     }
+   }
+
+   if(calledFrom == 'innerCall3'){
+     this.setState({totalCount:data.response.result.count});
+     if (this.state.skipValue < this.state.totalCount) {
+       var size = this.state.skipValue + this.state.limitValue;
+       this.setState({startLabel:(this.state.totalCount != 0 ? this.state.skipValue + 1 : 0)})
+       this.setState({endLabel:(this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)})
+     }
+   }
+
+   if(calledFrom == 'innerCall4'){
+     this.setState({totalCount:data.response.result.count});
+     if (this.state.skipValue < this.state.totalCount) {
+       var size = this.state.skipValue + this.state.limitValue;
+       this.setState({startLabel:(this.state.totalCount != 0 ? this.state.skipValue + 1 : 0)})
+       this.setState({endLabel:(this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)})
+     }
+     else{
+       alert('fdfdf');
+       this.setState({startLabel: 0});
+       this.setState({endLabel: 0});
+     }
+   }
+ }
+
+  failure(){
+
+  }
+
   getAttributes (currentDb,currentItem, connectionId) {
     var that = this;
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      credentials: 'same-origin',
-      crossDomain: false,
-      url : Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document/keys?connectionId='+connectionId+'&allKeys=true',
-      success: function(data) {
-        var arr = data.response.result.keys;
-        var newArr = [];
-        for(var i=0; i < arr.length; i++) {
-          newArr.push({"value": arr[i], "selected" :true});
-        }
-        that.setState({fields:newArr});
-      }, error: function(jqXHR, exception) {
-      }
-    });
+    var partialUrl = currentDb+'/'+currentItem+'/document/keys?connectionId='+connectionId+'&allKeys=true';
+    var newDocumentCall = service('GET', partialUrl, '');
+    newDocumentCall.then(this.success.bind(this, 'getAttributes'), this.failure.bind(this, 'getAttributes'));
   }
 
   componentDidMount (){
@@ -80,47 +142,133 @@ class QueryExecutorComponent extends React.Component {
     var currentDb = this.props.currentDb;
     var currentItem = this.props.currentItem;
     var connectionId = this.props.connectionId;
-    var url = this.props.queryType == "collection" ? Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document?query='+this.state.query+'&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&allKeys=true' :
-              Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/getfiles?query='+this.state.query+'&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&connectionId='+connectionId;
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      credentials: 'same-origin',
-      crossDomain: false,
-      url : url,
-      success: function(data) {
-        var array = data.response.result.documents;
-        that.setState({collectionObjects:array});
-        that.props.queryType == "collection" ? that.getAttributes(currentDb,currentItem, connectionId) : null;
-        that.props.queryType == "fs" ?
-            $.ajax({
-              type: "GET",
-              dataType: 'json',
-              credentials: 'same-origin',
-              crossDomain: false,
-              url :  Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId,
-              success: function(data) {
-                that.setState({totalCount:data.response.result.count});
-                if (that.state.skipValue < that.state.totalCount) {
-                  var size = that.state.skipValue + that.state.limitValue;
-                  that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
-                  that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
-                }
-              }, error: function(jqXHR, exception) {
-              }
-            })
-            : that.setState({totalCount:data.response.result.count});
-              if (that.state.skipValue < that.state.totalCount) {
-                var size = that.state.skipValue + that.state.limitValue;
-                that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
-                that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
-              };
-            if(data.response.error) {
-              that.setState({collectionObjects:[]});
-            }
-        }, error: function(jqXHR, exception) {
+    var partialUrl = this.props.queryType == "collection" ? currentDb+'/'+currentItem+'/document?query='+this.state.query+'&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy={_id:-1}&allKeys=true' :
+              currentDb+'/gridfs/'+currentItem+'/getfiles?query='+this.state.query+'&fields=""&limit=10&skip=0&sortBy={_id:-1}&connectionId='+connectionId;
+    var queryExecutorCall1 = service('GET', partialUrl, '');
+    queryExecutorCall1.then(this.success1.bind(this), this.failure1.bind(this));
+  }
+
+  success1(data){
+    // console.log(data);
+    var array = data.response.result.documents;
+    var partialUrl = this.props.currentDb+'/gridfs/'+this.props.currentItem+'/count?connectionId='+this.props.connectionId;
+    var queryExecutorInnerCall1 = service('GET', partialUrl, '');
+    this.setState({collectionObjects:array});
+    this.props.queryType == "collection" ? this.getAttributes(this.props.currentDb,this.props.currentItem, this.props.connectionId) : null;
+    this.props.queryType == "fs" ?
+    (queryExecutorInnerCall1.then(this.success.bind(this, 'innerCall1'), this.failure1.bind(this , 'innerCall1')))
+    : this.setState({totalCount:data.response.result.count});
+      if (this.state.skipValue < this.state.totalCount) {
+        var size = this.state.skipValue + this.state.limitValue;
+        this.setState({startLabel:(this.state.totalCount != 0 ? this.state.skipValue + 1 : 0)})
+        this.setState({endLabel:(this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)})
+      };
+    if(data.response.error) {
+      this.setState({collectionObjects:[]});
+    }
+  }
+
+
+  failure1(){
+
+  }
+
+  success2(currentDb, currentItem, connectionId,  data){
+    var partialUrl = currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId;
+    var queryExecutorInnerCall2 = service('GET', partialUrl, '');
+    if(data.response.result!=undefined)
+    {
+      var array = data.response.result.documents;
+      this.setState({collectionObjects:array});
+      this.props.queryType == "collection" ? this.getAttributes(currentDb,currentItem, connectionId) : null;
+      this.props.queryType == "fs" ?
+      queryExecutorInnerCall2.then(this.success.bind(this , 'innerCall2'), this.failure.bind(this, 'innerCall2'))
+      : this.setState({totalCount:data.response.result.count});
+        if (data.response.result.count < 10)
+        {
+          this.setState({limitValue:data.response.result.count});
+          this.setState({skipValue:0});
+        }
+        else {
+          this.setState({limitValue:this.state.limit});
+          this.setState({skipValue:0});
+        }
+        if (this.state.skipValue < this.state.totalCount) {
+          var size = this.state.skipValue + this.state.limitValue;
+          this.setState({startLabel:(this.state.totalCount != 0 ? this.state.skipValue + 1 : 0)})
+          this.setState({endLabel:(this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)})
+        } else {
+        }
+        if(data.response.result.count==0){
+          this.setState({startLabel: 0});
+          this.setState({endLabel: 0});
+        }
       }
-    });
+      if(data.response.error) {
+        this.setState({collectionObjects:[]});
+      }
+  }
+
+  failure2(){
+
+  }
+
+  success3(currentDb, currentItem, connectionId, data){
+    var partialUrl = currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId;
+    var queryExecutorInnerCall3 = service('GET', partialUrl, '');
+    if(data.response.result!=undefined)
+    {
+      var array = data.response.result.documents;
+      this.setState({collectionObjects:array});
+      this.props.queryType == "collection" ? this.getAttributes(currentDb,currentItem, connectionId) : null;
+      this.props.queryType == "fs" ?
+      queryExecutorInnerCall3.then(this.success.bind(this , 'innerCall3'), this.failure.bind(this, 'innerCall3'))
+      : this.setState({totalCount:data.response.result.count});
+        if (this.state.skipValue < this.state.totalCount) {
+          var size = this.state.skipValue + this.state.limitValue;
+          this.setState({startLabel:(this.state.totalCount != 0 ? this.state.skipValue + 1 : 0)})
+          this.setState({endLabel:(this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)})
+        };
+        if(data.response.error) {
+          this.setState({collectionObjects:[]});
+        }
+    }
+  }
+
+  failure3(){
+
+  }
+
+
+  success4(currentDb, currentItem, connectionId, data){
+    alert('dd');
+    var partialUrl = currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId;
+    var queryExecutorInnerCall4 = service('GET', partialUrl, '');
+    if(data.response.result!=undefined)
+    {
+      var array = data.response.result.documents;
+      this.setState({collectionObjects:array});
+      this.props.queryType == "collection" ? this.getAttributes(currentDb,currentItem, connectionId) : null;
+      this.props.queryType == "fs" ?
+      queryExecutorInnerCall4.then(this.success.bind(this , 'innerCall4'), this.failure.bind(this, 'innerCall4'))
+      : this.setState({totalCount:data.response.result.count});
+        if (this.state.skipValue < this.state.totalCount) {
+          var size = this.state.skipValue + this.state.limitValue;
+          this.setState({startLabel:(this.state.totalCount != 0 ? this.state.skipValue + 1 : 0)})
+          this.setState({endLabel:(this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)})
+        }
+        else{
+          this.setState({startLabel: 0});
+          this.setState({endLabel: 0});
+        }
+        if(data.response.error) {
+          this.setState({collectionObjects:[]});
+        }
+    }
+  }
+
+  failure4(){
+
   }
 
   componentWillUnmount(){
@@ -138,86 +286,11 @@ class QueryExecutorComponent extends React.Component {
     var currentDb = nextProps.currentDb;
     var currentItem = nextProps.currentItem;
     var connectionId = this.props.connectionId;
-    var url = this.props.queryType == "collection" ? Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document?query=db.'+currentItem+'.find(%7B%7D)&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&allKeys=true' :
-              Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/getfiles?query=db.'+currentItem+'.files.find(%7B%7D)&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&connectionId='+connectionId;
-    this.setState({query:nextProps.queryType == "collection" ? 'db.'+currentItem+'.find({})' :
-                                   'db.'+currentItem+'.files.find({})'});
-
-    var that = this;
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      credentials: 'same-origin',
-      crossDomain: false,
-      url : url,
-      success: function(data) {
-        if(data.response.result!=undefined)
-        {
-          var array = data.response.result.documents;
-          that.setState({collectionObjects:array});
-          that.props.queryType == "collection" ? that.getAttributes(currentDb,currentItem, connectionId) : null;
-          that.props.queryType == "fs" ?
-              $.ajax({
-                type: "GET",
-                dataType: 'json',
-                credentials: 'same-origin',
-                crossDomain: false,
-                url :  Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId,
-                success: function(data) {
-                  that.setState({totalCount:data.response.result.count});
-                  that.setState({totalCount:data.response.result.count});
-                  if (data.response.result.count < 10)
-                  {
-                    that.setState({limitValue:data.response.result.count});
-                    that.setState({skipValue:0});
-                  }
-                  else {
-                    that.setState({limitValue:that.state.limit});
-                    that.setState({skipValue:0});
-                  }
-                  if (that.state.skipValue < that.state.totalCount) {
-                    var size = that.state.skipValue + that.state.limitValue;
-                    that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
-                    that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
-                  } else {
-                  }
-                  if(data.response.result.count==0){
-                    that.setState({startLabel: 0});
-                    that.setState({endLabel: 0});
-                  }
-                  if(data.response.error) {
-                    that.setState({collectionObjects:[]});
-                  }
-                }, error: function(jqXHR, exception) {
-                }
-              })
-            : that.setState({totalCount:data.response.result.count});
-              if (data.response.result.count < 10)
-              {
-                that.setState({limitValue:data.response.result.count});
-                that.setState({skipValue:0});
-              }
-              else {
-                that.setState({limitValue:that.state.limit});
-                that.setState({skipValue:0});
-              }
-              if (that.state.skipValue < that.state.totalCount) {
-                var size = that.state.skipValue + that.state.limitValue;
-                that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
-                that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
-              } else {
-              }
-              if(data.response.result.count==0){
-                that.setState({startLabel: 0});
-                that.setState({endLabel: 0});
-              }
-            }
-            if(data.response.error) {
-              that.setState({collectionObjects:[]});
-            }
-      }, error: function(jqXHR, exception) {
-      }
-    });
+    var partialUrl = this.props.queryType == "collection" ? currentDb+'/'+currentItem+'/document?query=db.'+currentItem+'.find(%7B%7D)&connectionId='+connectionId+'&fields=""&limit=10&skip=0&sortBy={_id:-1}&allKeys=true' :
+              currentDb+'/gridfs/'+currentItem+'/getfiles?query=db.'+currentItem+'.files.find(%7B%7D)&fields=""&limit=10&skip=0&sortBy=%7B_id%3A1%7D&connectionId='+connectionId;
+    this.setState({query:nextProps.queryType == "collection" ? 'db.'+currentItem+'.find({})' : 'db.'+currentItem+'.files.find({})'});
+    var queryExecutorCall2 = service('GET', partialUrl, '');
+    queryExecutorCall2.then(this.success2.bind(this , currentDb, currentItem, connectionId), this.failure2.bind(this));
   }
 
   clickHandler(){
@@ -236,50 +309,10 @@ class QueryExecutorComponent extends React.Component {
         allSelected = false;
       }
     });
-   var url = this.props.queryType == "collection" ? Config.host+Config.service_path+'/services/'+currentDb+'/'+currentItem+'/document?query=' + this.state.query + 'db.'+currentItem+'.find(%7B%7D)&connectionId='+connectionId+'&fields=' + attributes +'&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected :
-              Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/getfiles?query='+ this.state.query +'&fields=""&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&connectionId='+connectionId;
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      credentials: 'same-origin',
-      crossDomain: false,
-      url : url,
-      success: function(data) {
-        if(data.response.result!=undefined)
-        {
-          var array = data.response.result.documents;
-          that.setState({collectionObjects:array});
-          that.props.queryType == "collection" ? that.getAttributes(currentDb,currentItem, connectionId) : null;
-          that.props.queryType == "fs" ?
-              $.ajax({
-              type: "GET",
-              dataType: 'json',
-              credentials: 'same-origin',
-              crossDomain: false,
-              url :  Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId,
-              success: function(data) {
-                that.setState({totalCount:data.response.result.count});
-                if (that.state.skipValue < that.state.totalCount) {
-                  var size = that.state.skipValue + that.state.limitValue;
-                  that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
-                  that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
-                }
-              }, error: function(jqXHR, exception) {
-              }
-            })
-            : that.setState({totalCount:data.response.result.count});
-              if (that.state.skipValue < that.state.totalCount) {
-                var size = that.state.skipValue + that.state.limitValue;
-                that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
-                that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
-              };
-          if(data.response.error) {
-            that.setState({collectionObjects:[]});
-          }
-        }
-      }, error: function(jqXHR, exception) {
-      }
-     });
+   var partialUrl = this.props.queryType == "collection" ? currentDb+'/'+currentItem+'/document?query=' + this.state.query + 'db.'+currentItem+'.find(%7B%7D)&connectionId='+connectionId+'&fields=' + attributes +'&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected :
+              currentDb+'/gridfs/'+currentItem+'/getfiles?query='+ this.state.query +'&fields=""&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&connectionId='+connectionId;
+   var queryExecutorCall3 = service('GET', partialUrl, '');
+   queryExecutorCall3.then(this.success3.bind(this , currentDb, currentItem, connectionId), this.failure3.bind(this));
   }
 
   refresh(buttonValue){
@@ -407,60 +440,12 @@ class QueryExecutorComponent extends React.Component {
     var currentItem = this.props.currentItem;
     var connectionId = this.props.connectionId;
     this.setState({skipValue:skipValue});
-    var url = this.props.queryType == "collection" ? Config.host+Config.service_path+'/services/'+this.props.currentDb+'/'+this.props.currentItem+'/document?query='+this.state.query+'&connectionId='+this.props.connectionId+'&fields=' +attributes+ '&limit='+limitValue+'&skip='+skipValue+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected:
-              Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/getfiles?query='+this.state.query+'&fields=""&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&connectionId='+connectionId;
+    var partialUrl = this.props.queryType == "collection" ? this.props.currentDb+'/'+this.props.currentItem+'/document?query='+this.state.query+'&connectionId='+this.props.connectionId+'&fields=' +attributes+ '&limit='+limitValue+'&skip='+skipValue+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected:
+              currentDb+'/gridfs/'+currentItem+'/getfiles?query='+this.state.query+'&fields=""&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&connectionId='+connectionId;
 
     var that = this;
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      credentials: 'same-origin',
-      crossDomain: false,
-      url : url,
-      success: function(data) {
-        if(data.response.result!=undefined)
-        {
-          var array = data.response.result.documents;
-          that.setState({collectionObjects:array});
-        that.props.queryType == "collection" ? that.getAttributes(currentDb,currentItem, connectionId) : null;
-        that.props.queryType == "fs" ?
-            $.ajax({
-              type: "GET",
-              dataType: 'json',
-              credentials: 'same-origin',
-              crossDomain: false,
-              url :  Config.host+Config.service_path+'/services/'+currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId,
-              success: function(data) {
-                that.setState({totalCount:data.response.result.count});
-                if (that.state.skipValue < that.state.totalCount) {
-                  var size = that.state.skipValue + that.state.limitValue;
-                  that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
-                  that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
-                }
-                else{
-                  that.setState({startLabel: 0});
-                  that.setState({endLabel: 0});
-                }
-              }, error: function(jqXHR, exception) {
-              }
-            })
-            : that.setState({totalCount:data.response.result.count});
-              if (that.state.skipValue < that.state.totalCount) {
-                var size = that.state.skipValue + that.state.limitValue;
-                that.setState({startLabel:(that.state.totalCount != 0 ? that.state.skipValue + 1 : 0)})
-                that.setState({endLabel:(that.state.totalCount <= size ? that.state.totalCount : that.state.skipValue + that.state.limitValue)})
-              }
-              else{
-                that.setState({startLabel: 0});
-                that.setState({endLabel: 0});
-              }
-          if(data.response.error) {
-            that.setState({collectionObjects:[]});
-          }
-        }
-      }, error: function(jqXHR, exception) {
-      }
-    });
+    var queryExecutorCall4 = service('GET', partialUrl, '');
+    queryExecutorCall4.then(this.success4.bind(this , currentDb, currentItem, connectionId), this.failure4.bind(this));
   }
 
   handleSelect(index){

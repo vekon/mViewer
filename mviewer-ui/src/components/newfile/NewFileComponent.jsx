@@ -4,12 +4,12 @@ import $ from 'jquery'
 import Modal from 'react-modal'
 import { Form } from 'formsy-react';
 import TextInput from '../TextInput/TextInputComponent.jsx'
-import Config from '../../../config.json';
 import FileInput from 'react-file-input';
 import sharedStyles from '../shared/listpanel.css'
 import progress from '../shared/jquery.ajax-progress.jsx'
 import Line from 'rc-progress/lib/Line.js'
 import 'rc-progress/assets/index.less'
+import service from '../../gateway/service.js'
 
 class newFileComponent extends React.Component {
 
@@ -71,40 +71,30 @@ class newFileComponent extends React.Component {
     var that = this;
     var fd = new FormData();
     fd.append( 'files', data );
-    $.ajax({
-      method: 'POST',
-      url: Config.host+Config.service_path+'/services/'+this.props.currentDb+'/gridfs/'+this.props.currentItem+'/uploadfile?connectionId='+this.props.connectionId,
-      dataType: 'json',
-      headers: {
-        Accept: "application/json"
-      },
-      data: fd,
-      processData: false,
-      contentType: false,
-      success: function(data1) {
-        if (data1.response && data1.response.error) {
-          if (data1.response.error.code === 'ANY_OTHER_EXCEPTION'){
-            that.setState({successMessage:false});
-            that.setState({count : 0 })
-            that.setState({message: "File cannot be added some error."});
-          }
-        } else {
-          that.setState({count : that.state.count +1 })
-        }
-        if(that.state.count == that.state.newFile.length) {
-          that.setState({successMessage:true});
-          setTimeout(function() { that.setState({message: "File(s) successfully added to bucket " + that.props.currentItem})}.bind(this), 1000);
-          setTimeout(function() { that.closeModal() }.bind(this), 3000);
-        }
-      },
-      error: function() {
-      },
-      progress: function(e) {
-        if(e.lengthComputable) {
-          data.percent = (e.loaded / e.total) * 100;
-        }
+    var partialUrl = this.props.currentDb+'/gridfs/'+this.props.currentItem+'/uploadfile?connectionId='+this.props.connectionId;
+    var newFileCall = service('POST', partialUrl, fd, 'fileUpload' , data);
+    newFileCall.then(this.success.bind(this), this.failure.bind(this));
+  }
+
+  success(data) {
+    if (data.response && data.response.error) {
+      if (data.response.error.code === 'ANY_OTHER_EXCEPTION'){
+        this.setState({successMessage:false});
+        this.setState({count : 0 })
+        this.setState({message: "File cannot be added some error."});
       }
-    });
+    } else {
+      this.setState({count : this.state.count +1 })
+    }
+    if(this.state.count == this.state.newFile.length) {
+      this.setState({successMessage:true});
+      setTimeout(function() { this.setState({message: "File(s) successfully added to bucket " + this.props.currentItem})}.bind(this), 1000);
+      setTimeout(function() { this.closeModal() }.bind(this), 3000);
+    }
+  }
+
+  failure() {
+
   }
 
   uploadHandle(){
@@ -141,7 +131,6 @@ class newFileComponent extends React.Component {
     var that = this;
     var selectedFiles = null;
     var count = 0;
-    var url = Config.host+Config.service_path+'/services/'+this.props.currentDb+'/gridfs/'+this.props.currentItem+'/uploadfile?connectionId='+this.props.connectionId;
     var selectedFiles = Object.keys(that.state.newFile).map(function (item, idx) {
       ++count
       var sizeKB = Math.round((that.state.newFile[item].size / 1024) * 100 ) / 100 ;

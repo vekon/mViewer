@@ -2,7 +2,7 @@ import React from 'react'
 import deleteStyles from './delete.css'
 import $ from 'jquery'
 import Modal from 'react-modal'
-import Config from '../../../config.json';
+import service from '../../gateway/service.js';
 
 class DeleteComponent extends React.Component {
 
@@ -25,49 +25,41 @@ class DeleteComponent extends React.Component {
     var obj={};
     var deleteUrl ='';
     if(type === 'database'){
-      deleteUrl = Config.host+Config.service_path+'/services/db/'+this.props.dbName+'?connectionId='+this.props.connectionId;
+      deleteUrl = 'db/'+this.props.dbName+'?connectionId='+this.props.connectionId;
     }
     if(type === 'collection'){
-      deleteUrl = Config.host+Config.service_path+'/services/'+this.props.dbName+'/collection/'+this.props.collectionName+'?connectionId='+this.props.connectionId;
+      deleteUrl = this.props.dbName+'/collection/'+this.props.collectionName+'?connectionId='+this.props.connectionId;
     }
     if(type== 'document'){
-      deleteUrl = Config.host+Config.service_path+'/services/'+this.props.dbName+'/'+this.props.collectionName+'/document?connectionId='+this.props.connectionId;
+      deleteUrl = this.props.dbName+'/'+this.props.collectionName+'/document?connectionId='+this.props.connectionId;
         obj["_id"] = this.props.uId;
     }
     if(type === 'GridFS Bucket'){
-      deleteUrl = Config.host+Config.service_path+'/services/'+this.props.dbName+'/gridfs/'+this.props.gridFSName+'/dropbucket?connectionId='+this.props.connectionId;
+      deleteUrl = this.props.dbName+'/gridfs/'+this.props.gridFSName+'/dropbucket?connectionId='+this.props.connectionId;
     }
     if(type === 'file'){
-      deleteUrl = Config.host+Config.service_path+'/services/'+this.props.dbName+'/gridfs/'+this.props.collectionName+'/dropfile?id=' + this.props.uId+ '&connectionId='+this.props.connectionId;
+      deleteUrl = this.props.dbName+'/gridfs/'+this.props.collectionName+'/dropfile?id=' + this.props.uId+ '&connectionId='+this.props.connectionId;
     }
-    $.ajax({
-      type: "DELETE",
-      cache: false,
-      dataType: 'json',
-      contentType: 'application/x-www-form-urlencoded',
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest'
-      },
-      data:obj,
-      crossDomain: false,
-      url: deleteUrl,
-      success: function(data) {
-        if (data.response.result) {
-          that.setState({successMessage:true});
-          that.setState({message:that.props.title+' has been deleted.'});
-        }
-        if (data.response.error) {
-          if (data.response.error){
-            that.setState({successMessage:false});
-            that.setState({message:'Error in deleteing the '+that.props.title});
-          }
-        }
-        setTimeout(function() { that.closeModal() }.bind(this), 3000);
-      }, error: function(jqXHR, exception) {
+    var deleteCall = service('DELETE', deleteUrl, obj);
+    deleteCall.then(this.success.bind(this), this.failure.bind(this));
 
+  }
+
+  success(data) {
+    if (data.response.result) {
+      this.setState({successMessage:true});
+      this.setState({message:this.props.title+' has been deleted.'});
     }
-  });
+    if (data.response.error) {
+      if (data.response.error){
+        this.setState({successMessage:false});
+        this.setState({message:'Error in deleteing the '+this.props.title});
+      }
+    }
+    setTimeout(function() { this.closeModal() }.bind(this), 3000);
+  }
 
+  failure() {
   }
 
   clickHandlerNo(){

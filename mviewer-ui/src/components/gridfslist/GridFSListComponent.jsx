@@ -2,9 +2,9 @@ import React from 'react'
 import GridFSListStyles from '../shared/listpanel.css'
 import $ from 'jquery'
 import GridFSItem from './GridFSItemComponent.jsx'
-import Config from '../../../config.json'
 import NewBucket from '../newbucket/NewBucketComponent.jsx'
 import SearchInput, {createFilter} from 'react-search-input'
+import service from '../../gateway/service.js'
 
 class GridFSList extends React.Component {
 
@@ -22,6 +22,32 @@ class GridFSList extends React.Component {
       searchTerm: ''
     }
   }
+
+  success(calledFrom, data) {
+    if(calledFrom == 'refreshCollectionList'){
+      if(typeof(data.response.result) !== 'undefined'){
+        this.setState({gridfs: data.response.result});
+      }
+      if(typeof(data.response.error) !== 'undefined'){
+        if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){
+            this.props.refreshDb();
+        }
+      }
+    }
+
+    if(calledFrom == 'componentWillMount'){
+      this.setState({gridfs: data.response.result});
+    }
+
+    if(calledFrom == 'componentWillReceiveProps'){
+      this.setState({gridfs: data.response.result});
+    }
+  }
+
+  failure() {
+
+  }
+
 
   clickHandler (idx,fs) {
     this.setState({selectedCollection: idx});
@@ -41,56 +67,23 @@ class GridFSList extends React.Component {
   }
 
   refreshCollectionList(db){
-    var that = this;
-      $.ajax({
-        type: "GET",
-        dataType: 'json',
-        credentials: 'same-origin',
-        crossDomain: false,
-        url : Config.host +Config.service_path+'/services/'+ db +'/gridfs?connectionId=' + this.state.connectionId,
-        success: function(data) {
-          if(typeof(data.response.result) !== 'undefined'){
-            that.setState({gridfs: data.response.result});
-          }
-          if(typeof(data.response.error) !== 'undefined'){
-            if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){
-                that.props.refreshDb();
-            }
-          }
-
-        }, error: function(jqXHR, exception) {
-        }
-      });
+    var partialUrl = db +'/gridfs?connectionId=' + this.state.connectionId;
+    var gridFSListCall = service('GET', partialUrl, '');
+    gridFSListCall.then(this.success.bind(this, 'refreshCollectionList'), this.failure.bind(this, 'refreshCollectionList'));
   }
 
   componentWillMount(){
     var that = this;
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      credentials: 'same-origin',
-      crossDomain: false,
-      url : Config.host +Config.service_path+'/services/'+ this.props.selectedDB +'/gridfs?connectionId=' + this.state.connectionId,
-      success: function(data) {
-         that.setState({gridfs: data.response.result});
-      }, error: function(jqXHR, exception) {
-      }
-    });
+    var partialUrl = this.props.selectedDB +'/gridfs?connectionId=' + this.state.connectionId;
+    var gridFSListCall = service('GET', partialUrl, '');
+    gridFSListCall.then(this.success.bind(this, 'componentWillMount'), this.failure.bind(this, 'componentWillMount'));
   }
 
   componentWillReceiveProps(nextProps) {
     var that = this;
-      $.ajax({
-        type: "GET",
-        dataType: 'json',
-        credentials: 'same-origin',
-        crossDomain: false,
-        url : Config.host+Config.service_path+'/services/'+ nextProps.selectedDB +'/gridfs?connectionId=' + this.state.connectionId,
-        success: function(data) {
-          that.setState({gridfs: data.response.result});
-        }, error: function(jqXHR, exception) {
-        }
-      });
+    var partialUrl = nextProps.selectedDB +'/gridfs?connectionId=' + this.state.connectionId;
+    var gridFSListCall = service('GET', partialUrl, '');
+    gridFSListCall.then(this.success.bind(this, 'componentWillReceiveProps'), this.failure.bind(this, 'componentWillReceiveProps'));
   }
 
   render () {
