@@ -118,7 +118,6 @@ class QueryExecutorComponent extends React.Component {
        this.setState({endLabel:(this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)})
      }
      else{
-       alert('fdfdf');
        this.setState({startLabel: 0});
        this.setState({endLabel: 0});
      }
@@ -241,7 +240,6 @@ class QueryExecutorComponent extends React.Component {
 
 
   success4(currentDb, currentItem, connectionId, data){
-    alert('dd');
     var partialUrl = currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId;
     var queryExecutorInnerCall4 = service('GET', partialUrl, '');
     if(data.response.result!=undefined)
