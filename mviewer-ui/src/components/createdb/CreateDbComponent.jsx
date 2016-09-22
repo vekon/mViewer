@@ -4,7 +4,7 @@ import $ from 'jquery'
 import Modal from 'react-modal'
 import { Form } from 'formsy-react';
 import TextInput from '../TextInput/TextInputComponent.jsx';
-import Config from '../../../config.json'
+import service from '../../gateway/service.js';
 
 class CreateDbComponent extends React.Component {
   constructor(props) {
@@ -63,33 +63,29 @@ class CreateDbComponent extends React.Component {
       obj[data[key].split("=")[0]] = data[key].split("=")[1];
     }
     if (obj['name']!=''){
-      $.ajax({
-        type: 'POST',
-        cache: false,
-        dataType: 'json',
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        crossDomain: false,
-        url: Config.host+Config.service_path+'/services/db/'+obj['name']+'?connectionId='+this.props.fromHome.connectionId,
-        data : obj,
-        success: function(data) {
-          if (data.response.result) {
-            that.setState({message:'Database '+obj['name']+ ' was successfully created'});
-            that.setState({successMessage:true});
-            that.props.refreshDb();
-          }
-          if (data.response.error) {
-            that.setState({successMessage:false});
-            that.setState({message:'Database '+obj['name']+ ' already exists'});
-          }
-        }, error: function(jqXHR, exception) {
-      }
-     });
+      var partialUrl = 'db/'+obj['name']+'?connectionId='+this.props.fromHome.connectionId;
+      var createDbCall = service('POST', partialUrl, obj);
+      createDbCall.then(this.success.bind(this, obj), this.failure.bind(this, obj));
     }
     else{
       this.setState({error : true})
     }
+  }
+
+  success(obj, data) {
+    if (data.response.result) {
+      this.setState({message:'Database '+obj['name']+ ' was successfully created'});
+      this.setState({successMessage:true});
+      this.props.refreshDb();
+    }
+    if (data.response.error) {
+      this.setState({successMessage:false});
+      this.setState({message:'Database '+obj['name']+ ' already exists'});
+    }
+  }
+
+  failure (){
+    
   }
 
   render () {

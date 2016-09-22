@@ -2,7 +2,7 @@ import React from 'react'
 import dashStyles from './dashBoard.css'
 import $ from 'jquery'
 import SideNav from '../sidenav/SideNavComponent.jsx';
-import Config from '../../../config.json';
+import service from '../../gateway/service.js';
 
 class DashBoardComponent extends React.Component {
 
@@ -14,20 +14,20 @@ class DashBoardComponent extends React.Component {
   }
 
   disconnect(){
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      credentials: 'same-origin',
-      crossDomain: false,
-      url : Config.host+Config.service_path+'/services/disconnect?connectionId=' + this.state.connectionId,
-      success: function(data) {
-        if(data.response.result==='User Logged Out')
-          {
-              window.location.hash = '#';
-          }
-      }, error: function(jqXHR, exception) {
+    var partialUrl = 'disconnect?connectionId=' + this.state.connectionId;
+    var disconnectCall = service('GET', partialUrl, '');
+    disconnectCall.then(this.success.bind(this), this.failure.bind(this));
+  }
+
+  success(data) {
+    if(data.response.result==='User Logged Out')
+      {
+          window.location.hash = '#';
       }
-    });
+  }
+
+  failure() {
+
   }
 
   refreshDb(){

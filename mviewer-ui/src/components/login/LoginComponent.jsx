@@ -52,7 +52,7 @@ class LoginComponent extends React.Component {
   }
 
   failure() {
-    this.setState({ message: 'Unexpected Error Occurred' }) 
+    this.setState({ message: 'Unexpected Error Occurred' })
   }
 
   enableButton() {
@@ -81,15 +81,15 @@ class LoginComponent extends React.Component {
 
   componentDidMount() {
     if (typeof(this.props.location.query.code) != 'undefined' ) {
-      this.setState({message: 'You are not connected to Mongo DB'}); 
+      this.setState({message: 'You are not connected to Mongo DB'});
     }
   }
 
   render() {
     var rowClass = 'row inputLabel';
     return (
-      <section className={styles.loginForm}>
-        <div className={styles.parentDiv}>
+      <section className={styles.loginForm + ' ' + styles.clearfix}>
+        <div className={styles.parentDiv + ' ' + styles.clearfix}>
           <div className={styles.one}>
             <section className={styles.logoSection}>
               <span className={styles.mSpan}>m</span>

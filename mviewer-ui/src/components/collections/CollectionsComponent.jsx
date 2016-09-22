@@ -58,9 +58,9 @@ class CollectionsComponent extends React.Component {
       <div className = {this.props.location.query.collapsed == 'false' ? collectionsStyles.mainContainer : collectionsStyles.mainContainer+' ' +collectionsStyles.collapsedContainer}>
         {this.props.location.query.db !== 'undefined' ? <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
           <TabList className={collectionsStyles.tabs}>
-            <Tab ><span className={this.state.selectedTab == 0 ? collectionsStyles.activeTab : '' } onClick={this.switchTab.bind(this)}>Collections</span></Tab>
-            <Tab ><span className={this.state.selectedTab == 1 ? collectionsStyles.activeTab : '' } onClick={this.switchTab.bind(this)}>GridFs</span></Tab>
-            <Tab ><span className={this.state.selectedTab == 2 ? collectionsStyles.activeTab : '' } onClick={this.switchTab.bind(this)}>Statistics</span></Tab>
+            <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 0 ? collectionsStyles.activeTab : '' } >Collections</Tab>
+            <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 1 ? collectionsStyles.activeTab : '' }>GridFs</Tab>
+            <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 2 ? collectionsStyles.activeTab : '' }>Statistics</Tab>
           </TabList>
           <TabPanel>
             <div className={collectionsStyles.holder}>

@@ -52,7 +52,8 @@
     cursor: pointer;
     width: 60%;
     text-align: left;
-    font-size: 70%
+    font-size: 70%;
+    word-wrap: break-word;
 }
 
 .menuItem:hover,
@@ -222,10 +223,10 @@ cursor: pointer;
     color: green;
     margin: 5px 0;
     text-align: center;
+    line-height: 3;
     border: 1px solid green;
     width: 100%;
     border-radius: 3px;
-    line-height: 3;
     font-size: 50%
 }
 
@@ -281,4 +282,9 @@ cursor: pointer;
   margin-top: -5.5%;
   margin-right: -2.5%;
   cursor: pointer;
+}
+
+
+.innerItem {
+
 }

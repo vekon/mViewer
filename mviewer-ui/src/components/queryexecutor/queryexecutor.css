@@ -206,30 +206,40 @@
 }
 
 
-.deleteButton,
-.deleteButtonGridfs {
+.deleteButton {
 float: right;
 display: inline;
 margin-top: 1.5%;
-
+margin-right: 2%;
 font-size: 70%;
 cursor: pointer;
 }
 
-.deleteButton {
-  margin-right: 2%;
-}
-
-.deleteButton i,
-.deleteButtonGridfs i{
+.deleteButton i {
   padding-right: 5px;
 }
 
-.deleteButton span,
-.deleteButtonGridfs span{
+.deleteButton span {
   display: inline;
 }
 
+
+.deleteButtonGridfs {
+float: right;
+display: inline;
+margin-top: 1.5%;
+margin-right: 4%;
+font-size: 70%;
+cursor: pointer;
+}
+
+.deleteButtonGridfs i {
+  padding-right: 5px;
+}
+
+.deleteButtonGridfs span {
+  display: inline;
+}
 
 .treeTab {
   width: 93%;
@@ -263,8 +273,4 @@ cursor: pointer;
   display: block;
   margin-left: 2%;
   margin-top: 1%;
-}
-
-.deleteButtonGridfs {
-  margin-right: 5.3%;
 }

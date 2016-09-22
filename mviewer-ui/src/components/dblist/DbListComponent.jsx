@@ -7,9 +7,9 @@ import GridFSList from '../gridfslist/GridFSListComponent.jsx'
 import DbItem from './DbItemComponent.jsx'
 import ReactDOM  from 'react-dom'
 import { Form } from 'formsy-react'
-import TextInput from '../TextInput/TextInputComponent.jsx';
+import TextInput from '../TextInput/TextInputComponent.jsx'
 import Modal from 'react-modal'
-import Config from '../../../config.json'
+import service from '../../gateway/service.js'
 import SearchInput, {createFilter} from 'react-search-input'
 class DbListComponent extends React.Component {
 
@@ -59,13 +59,13 @@ class DbListComponent extends React.Component {
    this.setState({message:''});
   }
 
-  clickHandler (idx, e) {
+  clickHandler (idx, db) {
     var that = this;
     this.setState({ visible: !this.state.visible });
-    this.setState({selectedItem: idx});
-    this.props.selectedDB(e.target.value);
-    this.setState({selectedDb : e.target.value});
-    window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+e.target.value + '&queryType="collection"&collapsed='+this.state.visible;
+    this.setState({selectedItem: db});
+    this.props.selectedDB(db);
+    this.setState({selectedDb : db});
+    window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+db + '&queryType="collection"&collapsed='+this.state.visible;
   }
 
   componentDidMount(){
@@ -76,48 +76,15 @@ class DbListComponent extends React.Component {
     if (n!= -1) {
       this.setState({visible:false});
     }
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      credentials: 'same-origin',
-      crossDomain: false,
-      url : Config.host+Config.service_path+'/services/login/details?connectionId='+ this.state.connectionId,
-      success: function(data) {
-        if (typeof(data.response.result) != 'undefined')
-          {
-            that.setState({dbNames: data.response.result.dbNames});
-          }
-        else {
-          {
-            window.location.hash='#?code=INVALID_CONNECTION';
-          }
-        }
-      }, error: function(jqXHR, exception) {
-      }
-    });
+    var partialUrl = 'login/details?connectionId='+ this.state.connectionId;
+    var refreshDbCall = service('GET', partialUrl, '');
+    refreshDbCall.then(this.success.bind(this , 'componentDidMount' , ''), this.failure.bind(this , 'componentDidMount', ''));
   }
 
   refreshDbList(dbName){
-    var that = this;
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      credentials: 'same-origin',
-      crossDomain: false,
-      url : Config.host+Config.service_path+'/services/login/details?connectionId='+ this.state.connectionId,
-      success: function(data) {
-        if (typeof(data.response.result) != 'undefined')
-          {
-            that.setState({dbNames: data.response.result.dbNames});
-          }
-        else {
-          {
-            window.location.hash='#?code=INVALID_CONNECTION';
-          }
-        }
-      }, error: function(jqXHR, exception) {
-      }
-    });
+    var partialUrl = 'login/details?connectionId='+ this.state.connectionId;
+    var refreshDbCall = service('GET', partialUrl, '');
+    refreshDbCall.then(this.success.bind(this , 'refreshDbList' , ''), this.failure.bind(this , 'refreshDbList', ''));
     window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+dbName + '&queryType="collection"&collapsed=false';
   }
 
@@ -142,29 +109,9 @@ class DbListComponent extends React.Component {
       obj[data[key].split("=")[0]] = data[key].split("=")[1];
     }
     if (obj['name']!=''){
-      $.ajax({
-        type: 'POST',
-        cache: false,
-        dataType: 'json',
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        crossDomain: false,
-        url: Config.host+Config.service_path+'/services/db/'+obj['name']+'?connectionId='+this.props.propps.connectionId,
-        data : obj,
-        success: function(data) {
-          if (data.response.result) {
-            that.setState({message:'Database '+obj['name']+ ' was successfully created'});
-            that.setState({successMessage:true});
-            that.refreshDbList(obj['name']);
-          }
-          if (data.response.error) {
-            that.setState({successMessage:false});
-            that.setState({message:'Database '+obj['name']+ ' already exists'});
-          }
-        }, error: function(jqXHR, exception) {
-      }
-     });
+      var partialUrl = 'db/'+obj['name']+'?connectionId='+this.props.propps.connectionId;
+      var createDbCall = service('POST', partialUrl, obj);
+      createDbCall.then(this.success.bind(this , 'clickHandlerModal' , obj), this.failure.bind(this , 'clickHandlerModal', obj));
     }
     else{
       this.setState({error : true})
@@ -186,6 +133,47 @@ class DbListComponent extends React.Component {
       this.setState({visible:true});
     }
   }
+
+  success(calledFrom, obj, data) {
+    if(calledFrom == 'componentDidMount'){
+      if (typeof(data.response.result) != 'undefined')
+        {
+          this.setState({dbNames: data.response.result.dbNames});
+        }
+      else {
+        {
+          window.location.hash='#?code=INVALID_CONNECTION';
+        }
+      }
+    }
+
+    if(calledFrom == 'refreshDbList'){
+      if (typeof(data.response.result) != 'undefined')
+        {
+          this.setState({dbNames: data.response.result.dbNames});
+        }
+      else {
+        window.location.hash='#?code=INVALID_CONNECTION';
+      }
+    }
+
+    if(calledFrom == 'clickHandlerModal'){
+      if (data.response.result) {
+        this.setState({message:'Database '+obj['name']+ ' was successfully created'});
+        this.setState({successMessage:true});
+        this.refreshDbList(obj['name']);
+      }
+      if (data.response.error) {
+        this.setState({successMessage:false});
+        this.setState({message:'Database '+obj['name']+ ' already exists'});
+      }
+    }
+  }
+
+  failure() {
+
+  }
+
 
   render () {
     const customStyles = {
@@ -212,7 +200,7 @@ class DbListComponent extends React.Component {
                  <DbItem
                  key={item}
                  name={item}
-                 onClick={this.clickHandler.bind(this,idx)}
+                 onClick={this.clickHandler.bind(this,idx, item)}
                  isSelected={this.state.selectedDb==item}
                  connectionId = {this.state.connectionId}
                  refreshDbList={this.refreshDbList.bind(this)}
