@@ -11,18 +11,39 @@ function setupServicePath() {
 
 setupServicePath();
 
-function service(typex, serviceName, req) {
-	return $.ajax({
+function service(typex, serviceName, req , component, data) {
+  if (component != 'fileUpload'){
+  	return $.ajax({
+      type: typex,
+      cache: false,
+      dataType: 'json',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      crossDomain: true,
+      url: path + serviceName,
+      data : req
+    });
+  }
+  else{
+  return $.ajax({
     type: typex,
-    cache: false,
+    url: path + serviceName,
     dataType: 'json',
     headers: {
-      'X-Requested-With': 'XMLHttpRequest'
+      Accept: "application/json"
     },
-    crossDomain: true,
-    url: path + serviceName,
-    data : req
+    data: req,
+    processData: false,
+    contentType: false,
+    progress: function(e) {
+      if(e.lengthComputable) {
+        data.percent = (e.loaded / e.total) * 100;
+      }
+    }
   });
+}
+
 }
 
 export default service;
