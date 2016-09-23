@@ -48,13 +48,17 @@
   padding-left: 1%;
 }
 
+.parametersDiv label:first-child {
+  padding-bottom: 2% !important;
+}
+
 .parametersDiv {
   margin-left: 20.1%;
-  margin-top: 0.3%;
+  margin-top: 0.4%;
 }
 .parametersDiv1 {
   margin-left: 0%;
-  margin-top: 2.1%
+  margin-top: 0.3%
 }
 
 .queryAttributesDiv {
@@ -71,11 +75,20 @@
     overflow-y: auto;
 }
 
-.parametersDiv label,
- parametersDiv1 label {
+.parametersDiv label {
   display: inline-block;
   padding-top: 5px;
   padding-bottom: 3%;
+}
+
+.parametersDiv1 label {
+  display: inline-block;
+  padding-top: 5px;
+  padding-bottom: 2.6%;
+}
+
+.parametersDiv1 .selectOptions label{
+  width: 100%;
 }
 
 .parametersDiv input,
@@ -114,7 +127,7 @@
 .bttnNavigable {
     padding: 10px 30px;
     border: 1px solid #3679f8;
-    width: 100%;
+    width: 158px;
     background-color: #26344e;
     font-size: 12px;
     color: white;
@@ -122,7 +135,7 @@
     border-radius: 3px;
     cursor: pointer;
     transition: background-color .2s, border .2s;
-    margin-top: 2.5%;
+    margin-top: -7.5%;
 }
 .bttnNavigable:hover {
   background-color: #576d96;
@@ -133,7 +146,7 @@
 .parametersDiv select,
 .parametersDiv1 select {
   padding: 6px;
-  width: 100%;
+  width: 156px;
   border-radius: 2px;
   height: 30px;
   border: 1.5px solid #4968a7;

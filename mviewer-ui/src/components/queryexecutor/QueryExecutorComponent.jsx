@@ -12,11 +12,14 @@ import CollectionStats from '../collectionstats/CollectionStatsComponent.jsx'
 import Document from '../document/DocumentComponent.jsx'
 import NewFile from '../newfile/NewFileComponent.jsx'
 import service from '../../gateway/service.js'
+import TextInput from '../TextInput/TextInputComponent.jsx'
+import { Form } from 'formsy-react'
 class QueryExecutorComponent extends React.Component {
 
   constructor(props) {
       super(props);
       this.state = {
+            canSubmit: true,
             _isMounted: false,
             collectionObjects:[],
             startLabel: 0,
@@ -451,6 +454,22 @@ class QueryExecutorComponent extends React.Component {
     });
   }
 
+  enableButton() {
+    return function() {
+      this.setState({
+        canSubmit: true
+      });
+    }.bind(this);
+  }
+
+  disableButton() {
+    return function() {
+      this.setState({
+        canSubmit: false
+      });
+    }.bind(this);
+  }
+
   render () {
     var i =0;
     var that = this;
@@ -505,11 +524,13 @@ class QueryExecutorComponent extends React.Component {
             : null
           }
           <div className={this.props.queryType == "collection" ? queryExecutorStyles.parametersDiv : queryExecutorStyles.parametersDiv1}>
-            <label htmlFor="skip"> Skip(No. of records) </label><br /><input id="skip" type="text" onChange = {this.skipHandler()} name="skip" value={this.state.skip} data-search_name="skip" /><br />
-            <label htmlFor="limit"> Max page size: </label><br /><span><select id="limit" name="limit" onChange = {this.limitHandler()} value={this.state.limit} data-search_name="max limit" ><option value="10">10</option><option value="25">25</option><option value="50">50</option></select></span><br />
-            <label htmlFor="sort"> Sort by fields </label><br /><input id="sort" type="text" onChange = {this.sortHandler()}name="sort" value={this.state.sort} data-search_name="sort" /><br /><br />
-            <button id="execQueryButton" className={queryExecutorStyles.bttnNavigable} data-search_name="Execute Query" onClick = {this.clickHandler.bind(this)}>Execute Query</button>
-          </div>
+            <Form onValid={this.enableButton()} onInvalid={this.disableButton()}>
+            <label htmlFor="skip"> Skip(No. of records) </label><TextInput type="text" name="skip" id="skip" value={this.state.skip} validations='isRequired' onChange={this.skipHandler()}/>
+            <div className = {queryExecutorStyles.selectOptions}><label htmlFor="limit"> Max page size: </label><span><select id="limit" name="limit" onChange = {this.limitHandler()} value={this.state.limit} data-search_name="max limit" ><option value="10">10</option><option value="25">25</option><option value="50">50</option></select></span></div>
+            <label htmlFor="sort"> Sort by fields </label><TextInput id="sort" type="text" onChange = {this.sortHandler()} name="sort" value={this.state.sort} data-search_name="sort" validations='isRequired' /><br /><br />
+            <button id="execQueryButton" className={queryExecutorStyles.bttnNavigable} data-search_name="Execute Query" onClick = {this.clickHandler.bind(this)} disabled ={!this.state.canSubmit}>Execute Query</button>
+            </Form>
+        </div>
         </div>
         <div className={queryExecutorStyles.resultContainer} key={this.props.currentItem}>
           <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
