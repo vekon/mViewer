@@ -90,45 +90,9 @@ class newCollectionComponent extends React.Component {
       this.setState({ newCollection: obj['newCollName']});
     }
 
-    // alert(partialUrl);
     var partialUrl = this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId;
     var updateCollectionCall = service(methodType, partialUrl, obj);
     updateCollectionCall.then(this.success.bind(this, 'clickHandler', obj), this.failure.bind(this, 'clickHandler', obj));
-
-
-  //   $.ajax({
-  //     type: methodType,
-  //     cache: false,
-  //     dataType: 'json',
-  //     headers: {
-  //       'X-Requested-With': 'XMLHttpRequest'
-  //     },
-  //     crossDomain: false,
-  //     url: Config.host+Config.service_path+'/services/'+this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId,
-  //     data : obj,
-  //     success: function(data) {
-  //       if (data.response.result) {
-  //         if(that.props.addOrUpdate == 2){
-  //           var successResult = data.response.result.replace(/[\[\]']/g,'' );
-  //           that.setState({message:successResult});
-  //           that.state.newCollection = obj['newCollName'];
-  //         }
-  //         else {
-  //           that.setState({message:'Collection '+obj['newCollName']+ ' was successfully added to database ' + that.props.currentDb});
-  //           that.state.newCollection = obj['newCollName'];
-  //         }
-  //         that.setState({successMessage:true});
-  //       }
-  //       if (data.response.error) {
-  //         if (data.response.error.code === 'COLLECTION_ALREADY_EXISTS'){
-  //           that.setState({successMessage:false});
-  //           that.setState({message:'Collection '+obj['newCollName']+ ' already exists in database ' + that.props.currentDb});
-  //         }
-  //       }
-  //     }, error: function(jqXHR, exception) {
-   //
-  //   }
-  //  });
   }
 
   componentDidMount(){
