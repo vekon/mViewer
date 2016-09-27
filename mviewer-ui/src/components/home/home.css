@@ -1,9 +1,9 @@
 .mainContainer {
-    background-color: #CCD9DE;
+    background-color: #ecf4f7;
     display: inline-block;
     float: right;
     /*position: absolute;*/
-    width: 74%;
+    width: 80%;
     height: 100%;
     overflow: hidden;
 }

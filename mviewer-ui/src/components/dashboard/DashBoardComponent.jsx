@@ -53,12 +53,12 @@ class DashBoardComponent extends React.Component {
         <div className = {dashStyles.mainContainer}>
           <header>
             <nav>
-              <div className="row">
+              <div className={"row " + dashStyles.row}>
                 <a href= {"#/dashboard/home?collapsed=false&connectionId="+this.state.connectionId} className={dashStyles.logo} onClick={this.clearActiveClass.bind(this)}><span className={dashStyles.span1}>m</span><span className={dashStyles.span2}>Viewer</span><span className={dashStyles.span3}></span></a>
                 <ul className={dashStyles.mainNav + ' ' + dashStyles.clearfix} >
-                  <li><a href="#mongoGraphs"><i className={"fa fa-envira " + dashStyles.icon} aria-hidden="true"></i><span>Mongo Graph</span></a></li>
-                  <li><a href="#serverStatics"><i className={"fa fa-area-chart " + dashStyles.icon} aria-hidden="true"></i><span>Server Statistics</span></a></li>
-                  <li className={dashStyles.disconnect}><a href="javascript:void(0);" onClick={this.disconnect.bind(this)}><span>Disconnect</span></a></li>
+                  <li><a href="#mongoGraphs"><span>Mongo Graph</span></a></li>
+                  <li><a href="#serverStatics"><span>Server Statistics</span></a></li>
+                  <li className={dashStyles.disconnect}><a href="javascript:void(0);" onClick={this.disconnect.bind(this)}><span><i className="fa fa-sign-out" aria-hidden="true"></i></span></a></li>
                 </ul>
                </div>
              </nav>

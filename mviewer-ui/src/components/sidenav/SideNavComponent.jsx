@@ -38,10 +38,8 @@ class SideNavComponent extends React.Component {
         <div className ={n == -1 ?sideNavStyles.mainContainer : sideNavStyles.mainContainerCollapsed}>
           <div className={n == -1 ? sideNavStyles.sideContainer : sideNavStyles.sideContainerCollapsed }>
             <ul className={sideNavStyles.sideNav} >
-              <li className ={this.state.selectedItem == 1 ? sideNavStyles.active : ''}><button data-id = '1'><div><i className={"fa fa-database " + sideNavStyles.icon} aria-hidden="true"></i><span>DATABASE</span></div></button></li>
-              <li className ={this.state.selectedItem == 4 ? sideNavStyles.active : ''}><button data-id = '4'><div><i className={"fa fa-question-circle-o " +  sideNavStyles.icon} aria-hidden="true"></i><span>HELP</span></div></button></li>
-              <li className ={this.state.selectedItem == 5 ? sideNavStyles.active : ''}><button data-id = '5'><div><i className={"fa fa-code " +  sideNavStyles.icon} aria-hidden="true"></i><span>CONSOLE</span></div></button></li>
-              <li className ={this.state.selectedItem == 6 ? sideNavStyles.active : ''}><button data-id = '6'><div><i className={"fa fa-gear " +  sideNavStyles.icon} aria-hidden="true"></i><span>SETTINGS</span></div></button></li>
+              <li className ={this.state.selectedItem == 1 ? sideNavStyles.active : ''}><button data-id = '1'><div><i className={"fa fa-database " + sideNavStyles.icon} aria-hidden="true"></i></div></button></li>
+              <li className ={this.state.selectedItem == 2 ? sideNavStyles.active : ''}><button data-id = '2'><div><i className={"fa fa-question-circle-o " +  sideNavStyles.icon} aria-hidden="true"></i></div></button></li>
             </ul>
           </div>
           <DbList ref="left" selectedNav = {this.state.selectedItem} selectedDB = { this.setActiveItem.bind(this)} alignment={dbListStyles.left} propps = {this.props}></DbList>

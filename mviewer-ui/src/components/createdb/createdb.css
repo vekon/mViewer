@@ -1,11 +1,11 @@
 .mainContainer {
-  width: 60%;
+  width: 702px;
   margin: 4% auto;
-  height: 70%;
+  height: 426px;
 }
 
 .topContainer {
-  background-color: #070F30;
+  background-color: #fff;
   height: 70%;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -17,27 +17,31 @@
    background-color: #fff;
    border-bottom-left-radius: 10px;
    border-bottom-right-radius: 10px;
-   box-shadow: 0 10px 10px -2px #232323;
+   /*box-shadow: 0 10px 10px -2px #232323;
    -moz-box-shadow: 0 4px 4px -2px #232323;
-   -webkit-box-shadow: 0 5px 10px 2px #C4C4C4;
+   -webkit-box-shadow: 0 5px 10px 2px #C4C4C4;*/
 }
 
 
 .createButton {
-  width: 58%;
-  margin: 3% 22% 2% 22%;
-  border: 1px solid;
-  display: inline-block;
-  text-align: center;
-  background-color: #0e1d5d;
-  color: #fff;
-  padding: 10px 0;
-  font-weight: 600;
-  border-radius: 5px;
-  font-size: 160%;
-  letter-spacing: 1.25;
-  transition: background-color 0.2s, color 0.2s;
-  cursor: pointer;
+  width: 332px;
+margin: 2% 10% 2% 26%;
+/* margin: 3% auto; */
+padding: 10px 0;
+border: 1px solid;
+display: inline-block;
+text-align: center;
+background-color: #2294d2;
+color: #fff;
+padding: 20px 0;
+font-weight: 600;
+border-radius: 5px;
+font-size: 100%;
+letter-spacing: 0.5;
+transition: background-color 0.2s, color 0.2s;
+cursor: pointer;
+font-family: 'Lato';
+font-weight: 300;
 }
 
 .createButton:hover {
@@ -72,39 +76,29 @@
 
 
 .topSection {
-  color: #a08eb0;
-  font-weight: 500;
-  letter-spacing: 1.5;
-  font-size: 120%;
-  margin-top: 6%;
+  color: #737373;
+    font-weight: 300;
+    letter-spacing: 1.5;
+    font-size: 130%;
+    margin-top: 8%;
 }
 
 .midSection {
-  color: #a08eb0;
-  font-weight: 500;
-  letter-spacing: 0.5;
-  margin-top: 3%;
-  font-size: 100%;
+  color: #737373;
+font-weight: 300;
+letter-spacing: 0.5;
+margin-top: 3%;
+font-size: 130%;
 }
 
 .midSection hr {
-    border: 0;
-    height: 1px;
-    margin:10px 0;
-    position:relative;
-    background: -moz-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 10%, rgba(242, 237, 244, 1) 50%, rgba(0,0,0,0) 90%, rgba(0,0,0,0) 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(0,0,0,0)), color-stop(10%,rgba(0,0,0,0)), color-stop(50%,rgba(242, 237, 244, 1)), color-stop(90%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(left, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 10%,rgba(242, 237, 244, 1) 50%,rgba(0,0,0,0) 90%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(left, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 10%,rgba(242, 237, 244, 1) 50%,rgba(0,0,0,0) 90%,rgba(0,0,0,0) 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(left, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 10%,rgba(242, 237, 244, 1) 50%,rgba(0,0,0,0) 90%,rgba(0,0,0,0) 100%); /* IE10+ */
-    background: linear-gradient(left, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 10%,rgba(242, 237, 244, 1) 50%,rgba(0,0,0,0) 90%,rgba(0,0,0,0) 100%); /* W3C */
-}
+  }
 
 .bottomSection {
-  color: #fff;
-  font-weight: 600;
-  margin-top: 4%;
-  font-size: 290%;
+  color: #2294d2;
+  font-weight: 300;
+  margin-top: 7%;
+  font-size: 240%;
 
 }
 

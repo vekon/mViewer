@@ -10,13 +10,13 @@
   resize: none;
   font-family: 'Lato';
   font-weight: 300;
-  background: #ccc;
+  background: #eff4f8;
   min-height: 20%;
 }
 
 .results textarea {
   /*height: 101%;*/
-  background: #ccc;
+  background: #eff4f8;
   font-family: 'Lato';
   width: 100%;
   resize: none;

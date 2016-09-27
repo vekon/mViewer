@@ -8,13 +8,13 @@
     min-height: 100%;
     transition: transform ease 0.3s;
     color: #ccc;
-    background:#0e1d5d;
+    background:#fff;
     /*margin-top: 55px;*/
-    border-left: solid 1px #555;
+    border-right: solid 1px #bababa;
     /*position: fixed;*/
     /*margin-top: 10.2%;*/
     /*margin-top: 5.9%;*/
-    margin-left:1%;
+    /*margin-left:1%;*/
     overflow: auto;
     float: left;
 }
@@ -42,47 +42,56 @@
     width:100%;
     margin:0;
     padding:10px 15px;
-    border-bottom:solid 1px #555;
+    border-bottom:solid 1px #bababa;
     cursor:pointer;
-    color:#B0B0B0;
+    color:#737373;
     transition: background-color 0.2s;
-    font-size: 14px;
+    font-size: 12px;
     min-width: 162px
 }
 
-.menuItem:hover,
-.menuItem button:hover {
-     background-color:#070F30;
+.menuItem:hover {
+     background-color:#2294d2;
+     color : #fff;
 }
 
 .highlight {
-    background-color:#070F30;
+    background-color:#2294d2;
+    color: #fff;
 }
 
 
 .menuItem button {
   background-color: inherit;
-  color: #fff;
+  color: inherit;
   border: 0;
   font-family: 'Lato';
   padding: 10px;
   cursor: pointer;
   width: 70%;
   text-align: left;
-  font-size: 70%;
+  font-size: 12px;
+  font-weight: 400;
 }
 
 .menuItem i {
   /*padding: 10px;*/
+  color: inherit;
 }
 
 .menuTitle {
     text-align: center;
     padding: 5px;
     background-color: #fff;
-    color: #0CB9F2;
+    color: #737373;
     font-family: 'Lato';
-    font-size: 70%;
+    font-size: 12px;
+    border-bottom: 1px solid #bababa;
+    height: 50px;
+}
+
+.menuTitle div {
+  padding: 10px;
 }
 
 .removeIcon {
@@ -118,10 +127,6 @@
 
 .searchInput {
   position: relative;
-}
-
-.highlight {
-    background-color:#070F30;
 }
 
 .searchInput {

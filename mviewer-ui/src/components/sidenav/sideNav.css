@@ -1,7 +1,7 @@
 .mainContainer{
   display: inline-block;
   float: left;
-  width: 26%;
+  width: 20%;
 }
 
 .mainContainerCollapsed {
@@ -12,8 +12,8 @@
 
 .sideContainer {
   /*width: 70px;*/
-  width: 25%;
-  background-color: #124252;
+  width: 30%;
+  background-color: #212f30;
   font-family: 'Arial' !important;
   height: 100%;
   display: inline-block;
@@ -22,7 +22,7 @@
 
 .sideContainerCollapsed {
   width: 62%;
-  background-color: #124252;
+  background-color: #212f30;
   font-family: 'Arial' !important;
   height: 100%;
   display: inline-block;
@@ -35,7 +35,7 @@
 }
 
 .sideNav li {
-  background-color:#124252
+  background-color:#212f30
 }
 
 .icon {
@@ -63,7 +63,7 @@
   background-color: inherit;
   width: 100%;
   border: 0;
-  height: 55px;
+  height: 100px;
   padding: 0;
   cursor: pointer;
 }
@@ -79,10 +79,24 @@
 	border-top: none;
 }
 
+.sideNav li i {
+  color: #fff;
+  font-size: 34px;
+}
+
+.sideNav li i:hover {
+  color: #2294d2 !important
+}
+
 .sideNav li button:hover {
-  background-color: #0D313D;
+  background-color: #111919;
+  color: #2294d2 !important;
 }
 
 .active {
-  background-color: #0D313D !important;
+  background-color: #111919 !important;
+}
+
+.active i {
+  color: #2294d2 !important;
 }
