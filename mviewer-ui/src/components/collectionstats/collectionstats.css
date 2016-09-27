@@ -1,3 +1,7 @@
+.mainContainer {
+  display: inline-block;
+}
+
 .modal{
   margin-left: 5%;
   width: 90%;
@@ -60,11 +64,11 @@
 
 
 .statsButton {
-float: right;
-display: inline;
+/*float: right;*/
+/*display: inline;*/
 margin-top: 1.5%;
 margin-right: 6%;
-font-size: 70%;
+font-size: 14px;
 cursor: pointer;
 }
 

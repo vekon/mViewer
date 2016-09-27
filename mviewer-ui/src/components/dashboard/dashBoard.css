@@ -1,3 +1,9 @@
+.row{
+  display: flex;
+  align-items: center;
+}
+align-items: center;
+
 /*Main Container*/
 .mainContainer {
     width: 100%;
@@ -9,21 +15,26 @@
 /*Main Navigyation*/
 .mainNav {
     list-style: none;
-    background: #070F30;
-    height: 55px;
+    background: #2294d2;
+    height: 100px;
     padding: 0 5px;
+    /*float: right;*/
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    font-size: 27px;
 }
 
 .mainNav li {
     display: inline-block;
-    margin-left: 1%;
-    padding-top: 1%;
+    /*margin-left: 1%;
+    padding-top: 1%;*/
 }
 
 .mainNav li a:link,
 .mainNav li a:visited {
     padding: 0 0 0 5px;
-    color : #a08eb0;
+    color : #fff;
     text-decoration: none;
     text-transform: uppercase;
     font-size: 60%;
@@ -33,10 +44,11 @@
     width: 100%;
 }
 
-.mainNav li::before {
+.mainNav li:last-child::before {
   content: '|';
   border: 0;
   padding: 0;
+  font-size: 34px;
 }
 
 .mainNav li a:hover {
@@ -45,8 +57,15 @@
 
 
 .mainNav li span {
-  padding-left: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-weight: 300;
 }
+
+.mainNav li span i {
+  font-size: 34px;
+}
+
 
 /*Logo*/
 .logo{
@@ -56,21 +75,22 @@
     /*margin-top: 5%;*/
     text-decoration: none;
     padding-left: 2%;
-    margin-top: 5px;
+    /*margin-top: 5px;*/
 }
 
 
 .span1{
-  font-family: 'Arial' ;
+  font-family: 'Lato' ;
   color: #fff;
   font-size: 30px;
+  font-weight: 500;
 }
 
 .span2 {
-  font-family: 'Times';
-  color: #0CB9F2;
+  font-family: 'Lato';
+  color: #fff;
   font-size: 30px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .span3 {
@@ -99,7 +119,7 @@
 
 /*Header*/
 header {
-    background: #f2f2f2;
+    background: #2294d2;
 }
 
 .banner {
@@ -108,10 +128,10 @@ header {
 }
 
 .disconnect {
-  margin-right: 5%;
-  float: right;
+  /*margin-right: 5%;
+  float: right;*/
 }
 
 .disconnect::before {
-  content: '' !important;
+  /*content: '' !important;*/
 }

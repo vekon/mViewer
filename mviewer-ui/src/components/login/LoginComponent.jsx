@@ -90,13 +90,9 @@ class LoginComponent extends React.Component {
     return (
       <section className={styles.loginForm + ' ' + styles.clearfix}>
         <div className={styles.parentDiv + ' ' + styles.clearfix}>
-          <div className={styles.one}>
-            <section className={styles.logoSection}>
-              <span className={styles.mSpan}>m</span>
-              <span className={styles.vSpan}>Viewer</span>
-            </section>
-           </div>
+
            <div className={styles.two}>
+             <div className ={styles.one}>WELCOME TO MVIEWER</div>
             <Form method='POST' onValid={this.enableButton()} onSubmit={this.onSubmit} onInvalid={this.disableButton()} >
               <div className={ styles.formContainer}>
                 <div className={styles.inputBox}>

@@ -483,20 +483,29 @@ class QueryExecutorComponent extends React.Component {
 
     return(
       <div className = {queryExecutorStyles.mainContainer}>
-        { this.props.queryType == "collection" ?
-          <span><CollectionStats selectedDB={this.props.currentDb} selectedCollection={this.props.currentItem} connectionId={this.props.connectionId}></CollectionStats>
-          <span className={queryExecutorStyles.deleteButton} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete Collection</span></span>
-          {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'collection' dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : ''}
-          <NewCollection queryType='collection' currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} addOrUpdate={2} refreshCollectionList={this.props.refreshCollectionList.bind(this)} refreshRespectiveData = {this.props.refreshRespectiveData.bind(this)}/>
-          <NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this,'new')} addOrEdit='Add' ></NewDocument></span>
-          : <span>
-            <span className={queryExecutorStyles.deleteButtonGridfs} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete GridFS Bucket</span></span>
-            { this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'GridFS Bucket' dbName = {this.props.currentDb} gridFSName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : '' }
-             <NewFile currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this, 'new')}></NewFile>
-            </span>
-        }
+
         <div className={queryExecutorStyles.buffer}>
-          <div id="queryExecutor" className={queryExecutorStyles.tab}>Query Executor</div>
+          <div id="queryExecutor" className={queryExecutorStyles.tab}>
+            <label>Query Executor</label>
+
+          { this.props.queryType == "collection" ?
+            <div className = {queryExecutorStyles.actionsContainer}>
+              <div>
+              <CollectionStats selectedDB={this.props.currentDb} selectedCollection={this.props.currentItem} connectionId={this.props.connectionId}></CollectionStats>
+              <div className={queryExecutorStyles.deleteButton} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete Collection</span></div>
+              {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'collection' dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : ''}
+              <NewCollection queryType='collection' currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} addOrUpdate={2} refreshCollectionList={this.props.refreshCollectionList.bind(this)} refreshRespectiveData = {this.props.refreshRespectiveData.bind(this)}/>
+              <NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this,'new')} addOrEdit='Add' ></NewDocument>
+              </div>
+            </div>
+            : <div>
+              <div className={queryExecutorStyles.deleteButtonGridfs} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete GridFS Bucket</span></div>
+              { this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'GridFS Bucket' dbName = {this.props.currentDb} gridFSName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : '' }
+               <NewFile currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this, 'new')}></NewFile>
+              </div>
+          }
+          </div>
+          <div>
           <div className={queryExecutorStyles.queryBoxDiv}>
             <div className={queryExecutorStyles.queryBoxlabels}>
               <label>Define Query</label>
@@ -537,6 +546,7 @@ class QueryExecutorComponent extends React.Component {
             <button id="execQueryButton" className={queryExecutorStyles.bttnNavigable} data-search_name="Execute Query" onClick = {this.clickHandler.bind(this)} disabled ={!this.state.canSubmit}>Execute Query</button>
             </Form>
         </div>
+      </div>
         </div>
         <div className={queryExecutorStyles.resultContainer} key={this.props.currentItem}>
           <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
