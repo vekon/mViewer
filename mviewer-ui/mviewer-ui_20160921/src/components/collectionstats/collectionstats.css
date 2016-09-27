@@ -1,0 +1,84 @@
+.modal{
+  margin-left: 5%;
+  width: 90%;
+  margin-right: auto;
+  margin-top: 5%;
+}
+
+.modal div {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+.modal>div {
+  padding: 2% 3%;
+  height: 80%;
+}
+
+.modal div div {
+  overflow: auto;
+  height: 90%;
+}
+
+.modal table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid;
+  text-align: left;
+  line-height: 25px;
+  font-size: 50%;
+}
+
+.modal td, .modal th {
+  border: 1px solid black;
+}
+.modal tr:first-child th {
+  border-top: 0;
+}
+.modal tr:last-child td {
+  border-bottom: 0;
+}
+.modal tr td:first-child,
+.modal tr th:first-child {
+  border-left: 0;
+}
+.modal tr td:last-child,
+.modal tr th:last-child {
+  border-right: 0;
+}
+
+.modal tr td  {
+    padding: 5px 50px;
+    text-transform: capitalize;
+}
+
+.modal th {
+  padding: 5px 50px;
+}
+
+
+.statsButton {
+float: right;
+display: inline;
+margin-top: 1.5%;
+margin-right: 6%;
+font-size: 70%;
+cursor: pointer;
+}
+
+.statsButton i {
+  padding-right: 5px;
+}
+
+.statsButton span {
+  display: inline;
+}
+.closeSpan {
+
+  float: right;
+  margin-top: -4%;
+  margin-right: -2.5%;
+  cursor: pointer;
+}

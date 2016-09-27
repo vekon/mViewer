@@ -1,0 +1,165 @@
+.upload,
+.addFile,
+.cancel,
+.cancel1{
+  border: 1px solid #3679f8;
+  background-color: #26344e !important;
+  font-size: 13px;
+  color: white;
+  border-radius: 3px;
+  height: 30px;
+  width: 80px !important;
+  cursor: pointer !important;
+}
+
+.upload:hover,
+.upload:active,
+.cancel:hover,
+.cancel:active,
+.addFile:hover,
+.addFile:active {
+    background-color: #576d96;
+    border: 1px solid #576d96;
+    cursor: pointer;
+}
+
+.cancel {
+  margin-top: 40px;
+  margin-left: 200px;
+}
+
+.cancel1 {
+  margin-top: 120px;
+  margin-left: 200px;
+}
+
+.addFile {
+  font-family: 'Arial';
+  text-align: center;
+  padding-top: 7px;
+  margin-top: 50px;
+}
+.upload {
+    margin-left: 100px;
+    margin-top: -30px;
+    position: absolute;
+}
+.selectedFiles {
+    background-color: #f5f5f5;
+    border: 1px solid #dcdcdc;
+    font-weight: bold;
+    overflow-y: hidden;
+    padding: 4px 4px 4px 8px;
+    max-width: 448px;
+    position: relative;
+    top: 10px;
+    font-size: 12px;
+    max-height: 100px;
+    overflow: auto;
+}
+
+input[type=text],
+input[type=password] {
+  color: black;
+}
+
+.errorMessage {
+    color: red;
+    margin: 5px 0;
+    text-align: center;
+    border: 1px solid red;
+    width: 100%;
+    font-size: 50%;
+}
+
+.errorMessage.hidden {
+    display: none;
+}
+
+.errorMessage.show {
+    color: #FF9696;
+    margin: 5px 0;
+    text-align: center;
+    border: 1px solid #FF9696;
+    width: 100%;
+    border-radius: 3px;
+    line-height: 3;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+
+.successMessage {
+    color: green;
+    margin: 5px 0;
+    text-align: center;
+    border: 1px solid green;
+    width: 100%;
+    border-radius: 3px;
+    line-height: 3;
+    font-size: 50%;
+    margin-top: 20px;
+}
+
+
+.two h3{
+    font: 110%;
+    text-align: center;
+    margin-bottom: -10%;
+}
+
+.eachFile {
+   margin-bottom: 5px;
+}
+
+.name {
+   text-overflow: ellipsis;
+   max-width: 140px;
+   max-width: 140px;
+   display: block;
+   float: left;
+   overflow: hidden;
+   white-space: nowrap;
+}
+
+.lineProgress  {
+    width: 35%;
+    height: 10px;
+    position: relative;
+    top: 2px;
+    float: right;
+}
+
+.addLabel {
+    margin-top: 58px;
+    position: absolute;
+    color: white;
+    font: 13.3333px Arial;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.addButton {
+  float: right;
+  display: inline;
+  margin-top: 1.5%;
+  margin-right: 4%;
+  font-size: 70%;
+  cursor: pointer;
+}
+
+.addButton i {
+  padding-right: 5px;
+}
+
+.addButton span {
+  display: inline;
+}
+
+
+.closeSpan {
+  float: right;
+  margin-top: -3%;
+  margin-right: -3%;
+  cursor: pointer;
+}

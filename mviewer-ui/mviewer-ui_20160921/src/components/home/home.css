@@ -1,0 +1,10 @@
+.mainContainer {
+    background-color: #CCD9DE;
+    display: inline-block;
+    position: absolute;
+    w: 100%;
+    overflow: hidden;
+    width: calc(100% - 70px);
+    height: 100%;
+    overflow: hidden;
+}

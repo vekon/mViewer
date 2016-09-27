@@ -1,0 +1,69 @@
+.mainContainer {
+    background-color: #CCD9DE;
+    display: inline-block;
+    position: absolute;
+    width: 85%;
+    overflow: hidden;
+    width: calc( 100vw - ( 70px + 3% ));
+    height: 100%;
+    overflow: auto;
+    margin-left: 15% !important;
+}
+
+.collapsedContainer {
+  margin-left: 3% !important;
+}
+
+.breadCrumb {
+    padding: 8px 16px;
+    list-style: none;
+    background-color: #eee;
+    font-size: 70%;
+}
+.breadCrumb li {
+    display: inline;
+}
+
+.breadCrumb li+li:before {
+    padding: 8px;
+    color: black;
+    content: "/\00a0";
+}
+
+.breadCrumb li a {
+  color: green;
+  text-decoration: none;
+}
+
+.tabs {
+  font-size: 70% !important;
+  position: fixed;
+  width: 86%;
+  margin-bottom: 3%;
+  padding-top: 2% !important;
+  margin-left: 1%;
+  background: #CCD9DE;
+  z-index: 99999;
+  list-style-type: none;
+  border-bottom: solid 2px #7a8285;
+  /*padding-bottom: 2%;*/
+}
+
+.tabs li {
+  display: inline;
+}
+
+.tabs li span {
+  display: inline-block;
+  width: 10%;
+  font-size: 120%;
+  text-align: center;
+  font-family: 'Lato';
+  cursor: pointer;
+}
+
+.activeTab {
+   border-bottom: solid 6px #7a8285;
+   padding-bottom: 1.5%;
+   font-weight: 600;
+}

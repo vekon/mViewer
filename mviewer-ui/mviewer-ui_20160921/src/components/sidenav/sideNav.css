@@ -1,0 +1,70 @@
+.mainContainer{
+  display: inline-block;
+}
+
+.sideContainer {
+  width: 70px;
+  background-color: #124252;
+  font-family: 'Arial' !important;
+  height: 100%;
+  display: inline-block;
+}
+
+
+.sideNav {
+  border-bottom: 1px solid #5d7979;
+}
+
+.sideNav li {
+  background-color:#124252
+}
+
+.icon {
+  color: #85adad;
+  display: block;
+  text-align: center;
+  font-size: 150%;
+}
+
+.sideNav li div span{
+  font-size: 75%;
+  color: #85adad;
+  text-align: center;
+}
+
+.sideNav li div {
+  text-align: center;
+}
+
+.sideNav li a {
+  text-decoration: none;
+}
+
+.sideNav li button {
+  background-color: inherit;
+  width: 100%;
+  border: 0;
+  height: 55px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.sideNav li {
+  padding: 0;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid #072430;
+	border-top: 1px solid #5d7979;
+}
+
+.sideNav li:first-child {
+	border-top: none;
+}
+
+.sideNav li button:hover {
+  background-color: #0D313D;
+}
+
+.active {
+  background-color: #0D313D !important;
+}
+

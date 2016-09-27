@@ -1,0 +1,41 @@
+.formGroup.error input[type='text'],
+.formGroup.error input[type='email'],
+.formGroup.error input[type='number'],
+.formGroup.error input[type='password'],
+.formGroup.error select {
+    border-color: #8c4141;
+    color: #FF9696;
+    /*width: 166px;*/
+}
+
+.disabled {
+  border: #ccc solid 0.5px !important;
+  background: #ccc !important;
+}
+
+.disabled::-webkit-input-placeholder {
+  color: #7a7a7a !important;
+}
+
+
+.validationError {
+    color: #941336;
+    margin: 5px 0;
+    display: inline-block;
+    font-size: 11px;
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #423636;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color: #423636;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color: #423636;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: #423636;
+}

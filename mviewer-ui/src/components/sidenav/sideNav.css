@@ -1,13 +1,32 @@
 .mainContainer{
   display: inline-block;
+  float: left;
+  width: 26%;
+}
+
+.mainContainerCollapsed {
+  display: inline-block;
+  float: left;
+  width: 8%;
 }
 
 .sideContainer {
-  width: 70px;
+  /*width: 70px;*/
+  width: 25%;
   background-color: #124252;
   font-family: 'Arial' !important;
   height: 100%;
   display: inline-block;
+  float: left;
+}
+
+.sideContainerCollapsed {
+  width: 62%;
+  background-color: #124252;
+  font-family: 'Arial' !important;
+  height: 100%;
+  display: inline-block;
+  float: left;
 }
 
 
