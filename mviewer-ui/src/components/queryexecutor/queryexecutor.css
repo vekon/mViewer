@@ -1,6 +1,9 @@
 .mainContainer{
-  padding-top: 6%;
-  margin-left: 19%;
+  /*padding-top: 6%;*/
+  /*margin-left: 19%;*/
+  display: inline-block;
+  width: 84%;
+
 }
 
 .buffer {
@@ -15,15 +18,17 @@
 
 .textAreaContainer {
   display: inline-block;
-  width: 96%;
-  height: 100%;
+  width: 100%;
+  height: 30%;
 }
 
 .queryBoxDiv{
   display: inline-block;
-  width: 50%;
-  height: 220px;
+  width: 40%;
+  /*height: 220px;*/
+  height: auto;
   padding: 1%;
+  position: relative;
 }
 
 .queryBoxlabels {
@@ -44,7 +49,7 @@
 .parametersDiv,
 .parametersDiv1{
   display: inline-block;
-  position: absolute;
+  /*position: absolute;*/
   padding-left: 1%;
 }
 
@@ -53,7 +58,7 @@
 }
 
 .parametersDiv {
-  margin-left: 20.1%;
+  /*margin-left: 20.1%;*/
   margin-top: 0.4%;
 }
 .parametersDiv1 {
@@ -63,15 +68,15 @@
 
 .queryAttributesDiv {
   display: inline-block;
-    position: absolute;
+    /*position: absolute;*/
     /*margin-top: 2.7%;*/
     margin-top: 3%;
     padding-left: 1%;
-    width: 19%;
+    width: 100%;
     margin-left: 0;
     border: 1.5px solid #4968a7;
     /*height: 29.5%;*/
-    height: 199px;
+    height: 30%;
     overflow-y: auto;
 }
 
@@ -113,11 +118,11 @@
 }
 
 .attributesLabel {
-    position: absolute;
+    /*position: absolute;*/
     margin-left: 0;
     margin-top: 1%;
     display: inline-block !important;
-    width: 20%;
+    width: 100%;
 }
 
 .attributesSpan {
@@ -286,4 +291,16 @@ cursor: pointer;
   display: block;
   margin-left: 2%;
   margin-top: 1%;
+}
+
+
+.attrDiv {
+  position: relative;
+  display: inline-block;
+  height: auto;
+  width: 25%;
+}
+
+.attrDivCollapsed {
+  display: none;
 }

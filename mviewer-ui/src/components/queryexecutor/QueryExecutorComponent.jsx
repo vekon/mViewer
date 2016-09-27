@@ -3,7 +3,6 @@ import queryExecutorStyles from './queryexecutor.css'
 import TreeView from '../treeview/TreeViewComponent.jsx'
 import $ from 'jquery'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import Config from '../../../config.json'
 import update from 'react-addons-update'
 import DeleteComponent from '../deletecomponent/DeleteComponent.jsx'
 import NewCollection from '../newcollection/newCollectionComponent.jsx'
@@ -230,7 +229,11 @@ class QueryExecutorComponent extends React.Component {
           var size = this.state.skipValue + this.state.limitValue;
           this.setState({startLabel:(this.state.totalCount != 0 ? this.state.skipValue + 1 : 0)})
           this.setState({endLabel:(this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)})
-        };
+        }
+        if(data.response.result.count==0){
+          this.setState({startLabel: 0});
+          this.setState({endLabel: 0});
+        }
         if(data.response.error) {
           this.setState({collectionObjects:[]});
         }
@@ -310,7 +313,7 @@ class QueryExecutorComponent extends React.Component {
         allSelected = false;
       }
     });
-   var partialUrl = this.props.queryType == "collection" ? currentDb+'/'+currentItem+'/document?query=' + this.state.query + 'db.'+currentItem+'.find(%7B%7D)&connectionId='+connectionId+'&fields=' + attributes +'&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected :
+   var partialUrl = this.props.queryType == "collection" ? currentDb+'/'+currentItem+'/document?query=' + this.state.query + '&connectionId='+connectionId+'&fields=' + attributes +'&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected :
               currentDb+'/gridfs/'+currentItem+'/getfiles?query='+ this.state.query +'&fields=""&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&connectionId='+connectionId;
    var queryExecutorCall3 = service('GET', partialUrl, '');
    queryExecutorCall3.then(this.success3.bind(this , currentDb, currentItem, connectionId), this.failure3.bind(this));
@@ -503,6 +506,8 @@ class QueryExecutorComponent extends React.Component {
               </textarea>
             </div>
           </div>
+
+          <div className = {this.props.queryType == "collection"  ? queryExecutorStyles.attrDiv : queryExecutorStyles.attrDivCollapsed}>
           { this.props.queryType == "collection" ?
              <label className={queryExecutorStyles.attributesLabel}>Attributes
                <span className={queryExecutorStyles.attributesSpan}>
@@ -523,10 +528,11 @@ class QueryExecutorComponent extends React.Component {
             </div>
             : null
           }
+          </div>
           <div className={this.props.queryType == "collection" ? queryExecutorStyles.parametersDiv : queryExecutorStyles.parametersDiv1}>
             <Form onValid={this.enableButton()} onInvalid={this.disableButton()}>
             <label htmlFor="skip"> Skip(No. of records) </label><TextInput type="text" name="skip" id="skip" value={this.state.skip} validations='isRequired' onChange={this.skipHandler()}/>
-            <div className = {queryExecutorStyles.selectOptions}><label htmlFor="limit"> Max page size: </label><span><select id="limit" name="limit" onChange = {this.limitHandler()} value={this.state.limit} data-search_name="max limit" ><option value="10">10</option><option value="25">25</option><option value="50">50</option></select></span></div>
+            <label htmlFor="limit"> Max page size: </label><div className = {queryExecutorStyles.selectOptions}><span><select id="limit" name="limit" onChange = {this.limitHandler()} value={this.state.limit} data-search_name="max limit" ><option value="10">10</option><option value="25">25</option><option value="50">50</option></select></span></div>
             <label htmlFor="sort"> Sort by fields </label><TextInput id="sort" type="text" onChange = {this.sortHandler()} name="sort" value={this.state.sort} data-search_name="sort" validations='isRequired' /><br /><br />
             <button id="execQueryButton" className={queryExecutorStyles.bttnNavigable} data-search_name="Execute Query" onClick = {this.clickHandler.bind(this)} disabled ={!this.state.canSubmit}>Execute Query</button>
             </Form>

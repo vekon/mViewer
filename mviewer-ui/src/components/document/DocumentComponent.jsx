@@ -5,6 +5,7 @@ import Modal from 'react-modal'
 import Config from '../../../config.json'
 import DeleteComponent from '../deletecomponent/DeleteComponent.jsx'
 import NewDocument from '../newdocument/newDocumentComponent.jsx'
+import autosize from 'autosize'
 
 class DocumentComponent extends React.Component {
 
@@ -48,15 +49,17 @@ class DocumentComponent extends React.Component {
       }
     }
   }
-  
+
   componentDidMount(){
     this.state._isMounted = true;
   }
 
   componentWillUnmount(){
+    autosize($('.textArea'));
     this.state._isMounted = false;
   }
   render () {
+    autosize($('.textArea'));
     return(
       <div className={documentStyles.results+' '+ documentStyles.clearfix}>
         { this.props.queryType == "collection" ?
@@ -64,7 +67,7 @@ class DocumentComponent extends React.Component {
           : null }
         <form>
           <span className={documentStyles.deleteButton} ><i className="fa fa-trash" aria-hidden="true" onClick={this.openModal.bind(this)}></i></span>
-          <textarea  key={this.props.key1} value={this.state.value} onChange={this.changeHandler()} disabled={this.state.disabled}></textarea>
+          <textarea key={this.props.key1} className ='textArea' value={this.state.value} onChange={this.changeHandler()} disabled={this.state.disabled}></textarea>
           {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = {this.props.queryType == "collection" ? 'document' : 'file'} dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} uId= {this.props.uId} ></DeleteComponent> : ''}
         </form>
       </div>

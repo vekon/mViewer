@@ -190,12 +190,15 @@ class DbListComponent extends React.Component {
     var that = this;
     const filteredData = this.state.dbNames.filter(createFilter(this.state.searchTerm));
     return(
-     <div>
+     <div className = {this.state.visible ? dbListStyles.mainMenu : dbListStyles.mainMenuCollapsed}>
        <div className={dbListStyles.menu}>
          <div className={(this.state.visible ? dbListStyles.visible   : dbListStyles.collapsed)  }>
-           <SearchInput className={dbListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
-           <h5 className={dbListStyles.menuTitle}><span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Database</span></h5>
-             {filteredData.map((item,idx) => {
+          <div className = {dbListStyles.dbListHeader}>
+             <SearchInput className={dbListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
+             <h5 className={dbListStyles.menuTitle}><span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Database</span></h5>
+          </div>
+          <div className = {dbListStyles.dbListBody}>
+           {filteredData.map((item,idx) => {
                return(
                  <DbItem
                  key={item}
@@ -206,6 +209,7 @@ class DbListComponent extends React.Component {
                  refreshDbList={this.refreshDbList.bind(this)}
                  />)
              })}
+          </div>
         </div>
         <div className={this.state.visible ?dbListStyles.collapsedDiv: dbListStyles.openDiv} onClick={this.collapsedDivHandler.bind(this)} >
           <span className={dbListStyles.arrow}>

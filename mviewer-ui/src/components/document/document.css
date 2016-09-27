@@ -2,7 +2,7 @@
 {
   width: 93%;
   margin-left: 1%;
-  height: 30%;
+  height: auto;
   margin-top: 1%;
   display: block;
   overflow: hidden;
@@ -11,10 +11,11 @@
   font-family: 'Lato';
   font-weight: 300;
   background: #ccc;
+  min-height: 20%;
 }
 
 .results textarea {
-  height: 101%;
+  /*height: 101%;*/
   background: #ccc;
   font-family: 'Lato';
   width: 100%;
@@ -26,11 +27,11 @@
 
 
 .deleteButton {
-  position: absolute;
-  margin-left: 73%;
   display: inline-block;
   font-size: 80%;
   margin-top: 0.7%;
+  float: right;
+  padding-right: 10px;
 }
 
 .editButton {

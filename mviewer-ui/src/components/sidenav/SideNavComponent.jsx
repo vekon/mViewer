@@ -30,10 +30,13 @@ class SideNavComponent extends React.Component {
   }
 
   render () {
+    var url = window.location.href;
+    var params = url.split('?');
+    var n = params[1].search("&collapsed=true");
     return(
 
-        <div className ={sideNavStyles.mainContainer}>
-          <div className={sideNavStyles.sideContainer}>
+        <div className ={n == -1 ?sideNavStyles.mainContainer : sideNavStyles.mainContainerCollapsed}>
+          <div className={n == -1 ? sideNavStyles.sideContainer : sideNavStyles.sideContainerCollapsed }>
             <ul className={sideNavStyles.sideNav} >
               <li className ={this.state.selectedItem == 1 ? sideNavStyles.active : ''}><button data-id = '1'><div><i className={"fa fa-database " + sideNavStyles.icon} aria-hidden="true"></i><span>DATABASE</span></div></button></li>
               <li className ={this.state.selectedItem == 4 ? sideNavStyles.active : ''}><button data-id = '4'><div><i className={"fa fa-question-circle-o " +  sideNavStyles.icon} aria-hidden="true"></i><span>HELP</span></div></button></li>

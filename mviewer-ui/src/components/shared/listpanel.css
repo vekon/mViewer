@@ -1,21 +1,25 @@
 .menu>div {
-    display:block;
+    display:inline-block;
     z-index:2;
     top:0;
     width:15%;
-    position: absolute;
-    height:100%;
+    /*position: absolute;*/
+    height:auto;
+    min-height: 100%;
     transition: transform ease 0.3s;
     color: #ccc;
     background:#0e1d5d;
-    margin-top: 55px;
+    /*margin-top: 55px;*/
     border-left: solid 1px #555;
-    position: fixed;
-    margin-top: 10.2%;
+    /*position: fixed;*/
+    /*margin-top: 10.2%;*/
     /*margin-top: 5.9%;*/
     margin-left:1%;
     overflow: auto;
+    float: left;
 }
+
+
 
 
 .visible {
@@ -23,8 +27,8 @@
     overflow-y: auto;
 }
 
-.visible div:last-child {
-  margin-bottom: 25%;
+.menu>div>div:last-child {
+  margin-bottom: 100%;
 }
 
 .left {
@@ -42,7 +46,8 @@
     cursor:pointer;
     color:#B0B0B0;
     transition: background-color 0.2s;
-    font-size: 70%;
+    font-size: 14px;
+    min-width: 162px
 }
 
 .menuItem:hover,
