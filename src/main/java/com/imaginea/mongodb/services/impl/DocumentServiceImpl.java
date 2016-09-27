@@ -254,25 +254,26 @@ public class DocumentServiceImpl implements DocumentService {
 
 
       ObjectId docId = new ObjectId(_id);
+      
       if (!newId.equals(_id)) {
         throw new DocumentException(ErrorCodes.UPDATE_OBJECT_ID_EXCEPTION,
             "_id cannot be updated.");
-      } else {
-        // Id's equal but putting the id of old document still
-        // as newData as id of string type but we need ObjectId type
-        newData.put("_id", docId);
       }
-
+      
       MongoCollection<Document> collection =
           mongoInstance.getDatabase(dbName).getCollection(collectionName);
 
-      Document updateData = new Document("$set", newData);
-
+      
       Document document = collection.find(Filters.eq("_id", docId)).first();
-
+      
       if (document != null) {
-
-        collection.updateOne(Filters.eq("_id", docId), updateData);
+        
+        ObjectId objectId = document.getObjectId("_id");
+        
+        newData.put("_id", objectId);
+        
+        Document updateData = new Document("$set", newData);
+        collection.updateOne(Filters.eq("_id", objectId), updateData);
         
       } else {
         throw new DocumentException(ErrorCodes.DOCUMENT_DOES_NOT_EXIST,

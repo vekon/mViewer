@@ -230,14 +230,16 @@ public class QueryExecutor {
     if (iterator.hasNext()) {
       while (iterator.hasNext()) {
         Document document = iterator.next();
-        ObjectId objectId = (ObjectId)document.get("_id");
-        
-        document.put("_id", objectId.toHexString());
+
+        if (document.get("_id") instanceof ObjectId) {
+          ObjectId objectId = (ObjectId) document.get("_id");
+          document.put("_id", objectId.toHexString());
+        }
         dataList.add(document);
       }
     }
-    
-    
+
+
     return ApplicationUtils.constructResponse(true, mongoCollection.count(queryObj), dataList);
   }
 
