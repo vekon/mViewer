@@ -13,6 +13,8 @@ import NewFile from '../newfile/NewFileComponent.jsx'
 import service from '../../gateway/service.js'
 import TextInput from '../TextInput/TextInputComponent.jsx'
 import { Form } from 'formsy-react'
+import autosize from 'autosize'
+
 class QueryExecutorComponent extends React.Component {
 
   constructor(props) {
@@ -454,6 +456,7 @@ class QueryExecutorComponent extends React.Component {
 
   handleSelect(index){
     this.setState({selectedTab:index}, function(){
+      autosize($('.textArea'));
     });
   }
 
@@ -498,7 +501,7 @@ class QueryExecutorComponent extends React.Component {
               <NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this,'new')} addOrEdit='Add' ></NewDocument>
               </div>
             </div>
-            : <div>
+            : <div className = {queryExecutorStyles.actionsContainer}>
               <div className={queryExecutorStyles.deleteButtonGridfs} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete GridFS Bucket</span></div>
               { this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'GridFS Bucket' dbName = {this.props.currentDb} gridFSName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : '' }
                <NewFile currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this, 'new')}></NewFile>
@@ -549,31 +552,23 @@ class QueryExecutorComponent extends React.Component {
       </div>
         </div>
         <div className={queryExecutorStyles.resultContainer} key={this.props.currentItem}>
+          <div id='paginator' className={queryExecutorStyles.paginator}>
+          <a id='first' className = {(this.state.skipValue == 0 || this.state.skipValue >= this.state.totalCount)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='First'>&laquo; First</a>
+          <a id='prev'  className = {(this.state.skipValue >= this.state.totalCount || this.state.skipValue + this.state.limitValue <= this.state.limitValue)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)}  href='javascript:void(0)' data-search_name='Previous'>&lsaquo; Previous</a>
+          <label>Showing</label>&nbsp;<label id='startLabel'></label>{this.state.startLabel}<label> - </label>
+          <label id='endLabel'>{this.state.endLabel}</label>&nbsp;<label> of </label><label id='countLabel'>{this.state.totalCount}</label>
+          <a id='next' className = {(this.state.skipValue >= this.state.totalCount - this.state.limitValue)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='Next'>Next &rsaquo;</a>
+          <a id='last' className = {(this.state.skipValue + this.state.limitValue >= this.state.totalCount )? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='Last'>Last &raquo;</a>
+          </div>
           <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
             <TabList className={queryExecutorStyles.treeTab}>
               <Tab><span className={this.state.selectedTab==0 ? queryExecutorStyles.activeTab : ''}>JSON</span></Tab>
               <Tab><span className={this.state.selectedTab==1 ? queryExecutorStyles.activeTab : ''}>Tree Table</span></Tab>
             </TabList>
             <TabPanel>
-              <div id='paginator' className={queryExecutorStyles.paginator}>
-              <a id='first' className = {(this.state.skipValue == 0 || this.state.skipValue >= this.state.totalCount)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='First'>&laquo; First</a>
-              <a id='prev'  className = {(this.state.skipValue >= this.state.totalCount || this.state.skipValue + this.state.limitValue <= this.state.limitValue)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)}  href='javascript:void(0)' data-search_name='Previous'>&lsaquo; Previous</a>
-              <label>Showing</label>&nbsp;<label id='startLabel'></label>{this.state.startLabel}<label> - </label>
-              <label id='endLabel'>{this.state.endLabel}</label>&nbsp;<label> of </label><label id='countLabel'>{this.state.totalCount}</label>
-              <a id='next' className = {(this.state.skipValue >= this.state.totalCount - this.state.limitValue)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='Next'>Next &rsaquo;</a>
-              <a id='last' className = {(this.state.skipValue + this.state.limitValue >= this.state.totalCount )? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='Last'>Last &raquo;</a>
-              </div>
               {items.length>0 ? items: <span className={queryExecutorStyles.exceptionContainer}>No Documents to be displayed</span>}
             </TabPanel>
             <TabPanel>
-              <div id='paginator' className={queryExecutorStyles.paginator}>
-                <a id='first' className = {(this.state.skipValue == 0 || this.state.skipValue >= this.state.totalCount)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='First'>&laquo; First</a>
-                <a id='prev'  className = {(this.state.skipValue >= this.state.totalCount || this.state.skipValue + this.state.limitValue <= this.state.limitValue)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)}  href='javascript:void(0)' data-search_name='Previous'>&lsaquo; Previous</a>
-                <label>Showing</label>&nbsp;<label id='startLabel'></label>{this.state.startLabel}<label> - </label>
-                <label id='endLabel'>{this.state.endLabel}</label>&nbsp;<label> of </label><label id='countLabel'>{this.state.totalCount}</label>
-                <a id='next' className = {(this.state.skipValue >= this.state.totalCount - this.state.limitValue)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='Next'>Next &rsaquo;</a>
-                <a id='last' className = {(this.state.skipValue + this.state.limitValue >= this.state.totalCount )? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='Last'>Last &raquo;</a>
-              </div>
               <TreeView collectionObjects = {this.state.collectionObjects} currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this)} queryType={this.props.queryType}></TreeView>
             </TabPanel>
           </Tabs>

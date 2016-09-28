@@ -12,6 +12,10 @@
   /*width: 53%;*/
 }
 
+.actionsContainer>div{
+  padding-top: 10px;
+}
+
 .buffer {
    font-size: 70%;
 }
@@ -27,6 +31,7 @@
 
 .tab label {
   padding: 10px;
+  display: inline-block;
 }
 
 .textAreaContainer {
@@ -37,7 +42,7 @@
 
 .queryBoxDiv{
   display: inline-block;
-  width: 48%;
+  width: 50%;
   /*height: 220px;*/
   /*height: auto;*/
   padding: 10px;
@@ -66,6 +71,13 @@
   /*position: absolute;*/
   /*padding-left: 1%;
   margin-left: 2%;*/
+  width: 23%;
+  padding: 10px;
+  /*float: right;*/
+}
+
+.parametersDiv{
+  float: right;
 }
 
 .parametersDiv label:first-child {
@@ -107,6 +119,7 @@
     font-size: 11px;
     height: 30px;
     background: #eff4f8;
+    width: 100%;
 }
 
 .parametersDiv label {
@@ -171,6 +184,7 @@
     cursor: pointer;
     transition: background-color .2s, border .2s;
     margin-top: -7.5%;
+    width: 100%;
 }
 .bttnNavigable:hover {
   background-color: #576d96;
@@ -188,10 +202,11 @@
   background-color: inherit;
   color: inherit;
   font-size: 11px;
+  width: 100%;
 }
 
 .checkboxSpan {
-  margin-right: 2%;
+  margin-right: 2%;;
 }
 
 .attributesItems {
@@ -200,20 +215,23 @@
 }
 
 .resultContainer {
-  overflow-y: auto;
-  padding-bottom: 10%;
+  /*overflow-y: auto;*/
+  /*padding-bottom: 10%;*/
+  padding-left: 10px;
+  padding-top: 20px;
+  width: 100%;
 }
 
 
 .results
 {
   width: 93%;
-  margin-left: 1%;
+  /*margin-left: 1%;*/
   height: 30%;
-  margin-top: 1%;
+  /*margin-top: 1%;*/
   display: block;
   overflow: auto;
-  margin-bottom: 1%;
+  /*margin-bottom: 1%;*/
   resize: none;
   font-family: 'Lato';
   font-weight: 300;
@@ -221,9 +239,9 @@
 }
 
 .treeTab {
-  margin-top: 3% !important;
+  /*margin-top: 3% !important;*/
   /*padding-left: 1% !important;*/
-  font-size: 70% !important;
+  /*font-size: 70% !important;*/
 }
 
 .disabled {
@@ -234,10 +252,12 @@
 }
 
 .paginator {
-  font-size: 70%;
-  margin-right: 5%;
+  font-size: 14px;
+  /*margin-right: 5%;*/
   float: right;
-  margin-top: -4%;
+  height: 20px;
+  padding: 10px;
+  /*margin-top: -4%;*/
 }
 
 .paginator label {
@@ -257,10 +277,11 @@
 .deleteButton {
 /*float: right;*/
 display: inline-block;
-margin-top: 1.5%;
-margin-right: 2%;
+/*margin-top: 1.5%;*/
+/*margin-right: 2%;*/
 font-size: 14px;
 cursor: pointer;
+padding-right: 10px;
 }
 
 .deleteButton i {
@@ -290,10 +311,11 @@ cursor: pointer;
 }
 
 .treeTab {
-  width: 93%;
+  width: 99%;
   border-top: 1px solid #bababa;
   border-bottom: 1px solid #bababa;
-  margin-left: 1%;
+  height: 50px;
+  /*margin-left: 1%;*/
 }
 
 .treeTab li {
@@ -303,10 +325,11 @@ cursor: pointer;
 .treeTab li span {
   display: inline-block;
   width: 10%;
-  font-size: 90%;
+  font-size: 14px;
   text-align: center;
   font-family: 'Lato';
   cursor: pointer;
+  height: 100%;
 }
 
 .activeTab {
@@ -328,7 +351,7 @@ cursor: pointer;
   position: relative;
   display: inline-block;
   /*height: auto;*/
-  width: 25%;
+  width: 27%;
   /*margin-left: 2%;*/
   padding: 10px;
 }

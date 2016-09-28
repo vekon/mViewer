@@ -28,10 +28,12 @@ body {
 div.parentDiv {
   display: inline-block;
   width: 341px;
-  height: 508px;
+  min-height: 508px;
+  height: auto;
       /*margin-left: 20%;*/
 }
 .one{
+  text-align: center;
   display: inline-block;
   width:inherit;;
   height:114px;
@@ -47,7 +49,8 @@ div.parentDiv {
 .two{
   display: inline-block;
     width: 341px;
-    height: 508px;
+    height: auto;
+    min-height: 508px;
     background: #fff;
     float: left;
     border-radius: 3px;
@@ -118,9 +121,13 @@ div.parentDiv {
     outline: none;
 }
 /*sections*/
+.mainContainer{
+  padding: 5% 0;
+}
 
 section {
-    padding: 80px 0;
+    /*padding: 80px 0;*/
+    padding: 5% 0;
 }
 /*Headings*/
 
@@ -174,24 +181,28 @@ h2:after {
     font-size: 12px;
 }
 .errorMessage {
-    color: red;
-    margin: 5px 0;
-    text-align: center;
-    border: 1px solid red;
-    width: 66%;
+  margin: 5px 0;
+  text-align: center;
+  border: 1px solid red;
+  width: 260px;
+  /* border-radius: 3px; */
+  font-size: 70%;
+  height: 47px;
+  padding: 10px;
 }
 .errorMessage.hidden {
     display: none;
 }
 .errorMessage.show {
-    color: #red;
-    margin: 5px 0;
-    text-align: center;
-    border: 1px solid red;
-    width: 67%;
-    border-radius: 3px;
-    font-size: 70%;
-    padding: 1%;
+  margin: 5px 0;
+  text-align: center;
+  border: 1px solid red;
+  width: 260px;
+  /* border-radius: 3px; */
+  font-size: 70%;
+  height: 47px;
+  padding: 10px;
+  color: red;
 }
 
 /*-------Clear Floats-------*/

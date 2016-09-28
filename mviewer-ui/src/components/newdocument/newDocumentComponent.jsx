@@ -99,7 +99,7 @@ class newDocumentComponent extends React.Component {
     };
 
     return(
-      <div className = {newDocumentStyles.mainContainer}>
+      <div className = {this.props.addOrEdit != 'Edit' ? newDocumentStyles.mainContainer : newDocumentStyles.editMainContainer }>
        <span className={this.props.addOrEdit != 'Edit' ?newDocumentStyles.addButton : newDocumentStyles.editButton} onClick= {this.openModal.bind(this)} >{this.props.addOrEdit != 'Edit' ? (<i className="fa fa-plus-circle" aria-hidden="true"></i> ) : (<i className="fa fa-pencil" aria-hidden="true"></i> )}  {this.props.addOrEdit!='Edit' ? <span>Add Document</span> : null} </span>
        <Modal
          isOpen={this.state.modalIsOpen}

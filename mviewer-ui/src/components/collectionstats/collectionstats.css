@@ -66,14 +66,19 @@
 .statsButton {
 /*float: right;*/
 /*display: inline;*/
-margin-top: 1.5%;
-margin-right: 6%;
+/*margin-top: 1.5%;*/
+/*margin-right: 6%;*/
+display: inline-block;
+width: 100%;
 font-size: 14px;
 cursor: pointer;
+padding-right: 10px;
 }
 
 .statsButton i {
   padding-right: 5px;
+  display: inline;
+  width: 100%;
 }
 
 .statsButton span {

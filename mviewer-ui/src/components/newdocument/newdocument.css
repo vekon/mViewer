@@ -1,6 +1,10 @@
 .mainContainer{
   display: inline-block;
 }
+
+.editMainContainer {
+
+}
 .two h3{
     font: 110%;
     text-align: center;
@@ -98,10 +102,11 @@
 .addButton {
 /*float: right;*/
 /*display: inline;*/
-margin-top: 1.5%;
-margin-right: 2%;
+/*margin-top: 1.5%;
+margin-right: 2%;*/
 font-size: 14px;
 cursor: pointer;
+padding-right: 10px;
 }
 
 .addButton i {

@@ -1,8 +1,13 @@
-.modalContainer span {
+.modalContainer span,
+.updateModalContainer span {
   cursor: pointer;
 }
 
 .modalContainer {
+  display: inline-block;
+}
+
+.updateModalContainer {
   display: inline-block;
 }
 
@@ -131,11 +136,13 @@
 
 .updateButton {
 /*float: right;*/
-display: inline;
-margin-top: 1.5%;
-margin-right: 2%;
+display: inline-block;
+width: 100%;
+/*margin-top: 1.5%;*/
+/*margin-right: 2%;*/
 font-size: 14px;
 cursor: pointer;
+padding-right: 10px;
 }
 
 .updateButton i {

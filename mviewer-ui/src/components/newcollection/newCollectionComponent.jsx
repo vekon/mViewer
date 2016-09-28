@@ -179,7 +179,7 @@ class newCollectionComponent extends React.Component {
     };
 
     return(
-      <div className={newCollectionStyles.modalContainer}>
+      <div className={this.props.addOrUpdate=='1'? newCollectionStyles.modalContainer : newCollectionStyles.updateModalContainer}>
         {this.props.addOrUpdate=='1'? <span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Collection</span> : <span className={newCollectionStyles.updateButton} onClick={this.openModal.bind(this)}><i className="fa fa-pencil" aria-hidden="true"></i>Update Collection</span>}
        <Modal
          isOpen={this.state.modalIsOpen}

@@ -1,12 +1,13 @@
 .results
 {
-  width: 93%;
-  margin-left: 1%;
+  width: 99%;
+  /*margin-left: 1%;*/
   height: auto;
-  margin-top: 1%;
+  /*margin-top: 1%;*/
+  margin-top: 10px;
   display: block;
   overflow: hidden;
-  margin-bottom: 1%;
+  /*margin-bottom: 1%;*/
   resize: none;
   font-family: 'Lato';
   font-weight: 300;
@@ -22,7 +23,7 @@
   resize: none;
   overflow: auto;
   border: 0;
-  padding: 1% 0;
+  /*padding: 1% 0;*/
 }
 
 

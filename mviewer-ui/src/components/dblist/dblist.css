@@ -174,7 +174,7 @@
 .openDiv {
 display: inline-block !important;
 visibility: visible !important;
-width: 40px !important;
+width: 100% !important;
 /*margin-left: 70px !important;*/
 opacity: 1 !important;
 cursor: pointer;
