@@ -12,7 +12,11 @@
 
 package com.imaginea.mongodb.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.Document;
+import org.json.JSONObject;
 
 /**
  * Defines services for performing operations like create/drop on indexes and users which are part
@@ -28,6 +32,7 @@ import com.imaginea.mongodb.exceptions.DatabaseException;
 import com.imaginea.mongodb.exceptions.ErrorCodes;
 import com.imaginea.mongodb.services.AuthService;
 import com.imaginea.mongodb.services.SystemCollectionService;
+import com.imaginea.mongodb.utils.ApplicationUtils;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCursor;
@@ -85,9 +90,19 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
       throw new DatabaseException(ErrorCodes.PASSWORD_IS_EMPTY, "Password is empty");
     }
     try {
+      
+      String role = "readWrite";
+      
+      if(readOnly){
+        role = "read";
+      }
+      
+      List<Document> roles = new ArrayList<Document>();
+      roles.add(new Document("role", role).append("db", "test"));
+      
       mongoInstance.getDatabase(dbName)
-          .runCommand(new Document("user", username).append("pwd", password.toCharArray())
-              .append("roles", new Document("role", "readOnly").append("db", dbName)));
+          .runCommand(new Document("createUser", username).append("pwd", password)
+              .append("roles", roles));
 
     } catch (MongoException e) {
       throw new ApplicationException(ErrorCodes.USER_CREATION_EXCEPTION, e.getMessage());
@@ -126,6 +141,38 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
       throw new ApplicationException(ErrorCodes.USER_DELETION_EXCEPTION, e.getMessage());
     }
     return "User: " + username + " deleted from the DB: " + dbName;
+  }
+  
+  /**
+   * Get all the users from the given mongo db
+   *
+   * @param dbName Name of the database
+   * @return Returns the success message that shown to the user
+   * @throws DatabaseException throw super type of UndefinedDatabaseException
+   */
+  
+  @Override
+  public JSONObject getUsers(String dbName) throws ApplicationException {
+    // TODO Auto-generated method stub
+    
+    if (dbName == null) {
+      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
+    }
+    if (dbName.equals("")) {
+      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Empty");
+    }
+    
+    try {
+      
+      Document document = new Document("usersInfo" , 1);
+      Document command = mongoInstance.getDatabase(dbName).runCommand(document);
+
+      return ApplicationUtils.constructResponse(false , command);
+      
+    } catch (MongoException e) {
+      throw new ApplicationException(ErrorCodes.ANY_OTHER_EXCEPTION, e.getMessage());
+    }
+    
   }
 
   /**
@@ -273,4 +320,5 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
 
     return "Index: " + indexName + " dropped from the collection: " + dbName + ":" + collectionName;
   }
+
 }

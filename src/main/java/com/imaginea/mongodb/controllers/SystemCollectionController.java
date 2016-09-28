@@ -15,6 +15,7 @@ package com.imaginea.mongodb.controllers;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -43,8 +44,11 @@ import org.bson.Document;
 import com.imaginea.mongodb.services.SystemCollectionService;
 import com.imaginea.mongodb.services.impl.SystemCollectionServiceImpl;
 
+import io.swagger.annotations.Api;
+
 
 @Path("/{dbName}/usersIndexes")
+@Api(value="/{dbName}/usersIndexes" , description="To add or drop users and indexes to mongo database")
 public class SystemCollectionController extends BaseController {
   private final static Logger logger = Logger.getLogger(SystemCollectionController.class);
 
@@ -116,6 +120,23 @@ public class SystemCollectionController extends BaseController {
             SystemCollectionService systemCollectionService =
                 new SystemCollectionServiceImpl(connectionId);
             return systemCollectionService.removeUser(dbName, username);
+          }
+        });
+
+    return response;
+  }
+  
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("users")
+  public String getUsers(@PathParam("dbName") final String dbName,@QueryParam("connectionId") final String connectionId,
+                         @Context final HttpServletRequest request){
+    String response =
+        new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+          public Object execute() throws Exception {
+            SystemCollectionService systemCollectionService =
+                new SystemCollectionServiceImpl(connectionId);
+            return systemCollectionService.getUsers(dbName);
           }
         });
 

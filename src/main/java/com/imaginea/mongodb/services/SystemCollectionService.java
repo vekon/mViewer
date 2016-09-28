@@ -12,6 +12,7 @@
 package com.imaginea.mongodb.services;
 
 import org.bson.Document;
+import org.json.JSONObject;
 
 /**
  * Defines services for performing operations like create/drop on indexes and users which are part
@@ -53,12 +54,23 @@ public interface SystemCollectionService {
   public String removeUser(String dbName, String username) throws ApplicationException;
 
   /**
+   * Get all the users from the given mongo db
+   *
+   * @param dbName Name of the database
+   * @return Returns the success message that shown to the user
+   * @throws DatabaseException throw super type of UndefinedDatabaseException
+   */
+  
+  public JSONObject getUsers(String dbName) throws ApplicationException;
+  
+  /**
    * Drops all the users from the given mongo db
    *
    * @param dbName Name of the database
    * @return Returns the success message that shown to the user
    * @throws DatabaseException throw super type of UndefinedDatabaseException
    */
+  
 
   public String removeAllUsers(String dbName) throws ApplicationException;
 
