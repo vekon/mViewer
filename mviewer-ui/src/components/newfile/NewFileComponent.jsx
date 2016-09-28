@@ -154,7 +154,8 @@ class newFileComponent extends React.Component {
         top                   : '50%',
         left                  : '50%',
         right                 : 'auto',
-        width                 : '30%',
+        width                 : '25%',
+        padding               : '0px',
         bottom                : 'auto',
         marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)'
@@ -169,24 +170,37 @@ class newFileComponent extends React.Component {
          onRequestClose={this.closeModal.bind(this)}
          style = {customStyles}>
          <div className={newFileStyles.two}>
-           <h3>{this.state.title}</h3>
-            <span className={newFileStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
+           <div className={newFileStyles.header}>
+             <span className={newFileStyles.text}>{this.state.title}</span>
+             <span className={newFileStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
+           </div>
            <Form method='POST'>
-             <label className={newFileStyles.addLabel}>Add files..</label>
-             <FileInput name="files"
-                placeholder="Add files.."
-                className={newFileStyles.addFile}
-                onChange={this.handleChanged.bind(that)}
-                value={this.state.inputValue}/>
-             <button onClick={this.uploadHandle.bind(that)} className={newFileStyles.upload}>Upload</button>
-             { selectedFiles.length > 0 ?
-               <div className={newFileStyles.selectedFiles}>
-                { selectedFiles }
-               </div>
-             : null}
+             { selectedFiles.length <= 0 ?
+               <span>
+                 <label className={newFileStyles.addLabel}>Add files..</label>
+                 <FileInput name="files"
+                    placeholder="Add files.."
+                    className={newFileStyles.addFile}
+                    onChange={this.handleChanged.bind(that)}
+                    value={this.state.inputValue}/>
+               </span>
+              : <span>
+                 <div className={newFileStyles.selectedFiles}>
+                  { selectedFiles }
+                 </div>
+                 <FileInput name="files"
+                    placeholder="Add files.."
+                    className={newFileStyles.addFile}
+                    onChange={this.handleChanged.bind(that)}
+                    value={this.state.inputValue}/>
+               </span>
+              }
            </Form>
            <div className={!this.state.successMessage? (newFileStyles.errorMessage + ' ' + (this.state.message!='' ? newFileStyles.show : newFileStyles.hidden)) : (this.state.message != '' ? newFileStyles.successMessage : '')}>{this.state.message}</div>
-           <button onClick={this.closeModal.bind(that)} className={ newFileStyles.cancel }>Cancel</button>
+           <div className={newFileStyles.buttonContainer}>
+             <span onClick={this.closeModal.bind(that)} className={ newFileStyles.cancel }>CANCEL</span>
+             <button onClick={this.uploadHandle.bind(that)} className={newFileStyles.submit}>UPLOAD</button>
+           </div>
          </div>
        </Modal>
       </div>

@@ -76,7 +76,7 @@ class CreateDbComponent extends React.Component {
     if (data.response.result) {
       this.setState({message:'Database '+obj['name']+ ' was successfully created'});
       this.setState({successMessage:true});
-      this.props.refreshDb();
+      setTimeout(function() { this.props.refreshDb() }.bind(this), 3000);
     }
     if (data.response.error) {
       this.setState({successMessage:false});
@@ -85,7 +85,7 @@ class CreateDbComponent extends React.Component {
   }
 
   failure (){
-
+    
   }
 
   render () {
@@ -96,6 +96,7 @@ class CreateDbComponent extends React.Component {
         right                 : 'auto',
         width                 : '25%',
         bottom                : 'auto',
+        padding               : '0px',
         marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)'
       }
@@ -103,12 +104,12 @@ class CreateDbComponent extends React.Component {
     return(
       <div className={createDbStyles.mainContainer}>
         <div className = {createDbStyles.topContainer}>
-          <section className={createDbStyles.topSection}>WELCOME TO MVIEWER</section>
-          <section className={createDbStyles.midSection}>A MONOGO DB MANAGEMENT TOOL</section>
+          <section className={createDbStyles.topSection}>Welcome to <span className={createDbStyles.span1}>m</span><span className={createDbStyles.span2}>Viewer</span></section>
+          <section className={createDbStyles.midSection}><hr />A MONOGO DB MANAGEMENT TOOL<hr /></section>
           <section className={createDbStyles.bottomSection}>LET'S GET STARTED</section>
         </div>
         <div className = {createDbStyles.bottomContainer}>
-          <button className={createDbStyles.createButton} onClick={this.openModal.bind(this)}>CREATE NEW DATABASE</button>
+          <button className={createDbStyles.createButton} onClick={this.openModal.bind(this)}>Create New Database</button>
           <section className = {createDbStyles.logoSection}>
             <span>POWERED BY</span>
             <img src={'../../assets/Pramati_Logo.png'} className={createDbStyles.logo}></img>
@@ -119,15 +120,18 @@ class CreateDbComponent extends React.Component {
           onRequestClose={this.closeModal.bind(this)}
           style = {customStyles}>
           <div className={createDbStyles.two}>
-            <h3>Create Database</h3>
-            <span className={createDbStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
+            <div className={createDbStyles.header}>
+              <span className={createDbStyles.text}>Create Database</span>
+              <span className={createDbStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
+            </div>
             <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
               <div className={ createDbStyles.formContainer}>
                 <div className={createDbStyles.inputBox}>
                   <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name' }}  />
                 </div>
-                <div>
-                  <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={createDbStyles.submit} disabled={!this.state.canSubmit}>SUBMIT</button>
+                <div className={createDbStyles.buttons}>
+                  <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={createDbStyles.submit} disabled={!this.state.canSubmit}>CREATE</button>
+                  <span onClick={this.closeModal.bind(this)} value='CANCEL' className={createDbStyles.cancel} >CANCEL</span>
                 </div>
               </div>
             </Form>

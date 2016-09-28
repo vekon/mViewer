@@ -90,32 +90,41 @@ class newDocumentComponent extends React.Component {
       content : {
         top                   : '50%',
         left                  : '50%',
+        border                : 'none',
+        borderRadius          : '4px',
         right                 : 'auto',
         width                 : '25%',
+        overflow              : 'hidden',
         bottom                : 'auto',
         marginRight           : '-50%',
+        padding               : '0px',
         transform             : 'translate(-50%, -50%)'
+      },
+      overlay : {
+        backgroundColor       : 'rgba(0,0,0, 0.74902)'
       }
     };
 
     return(
-      <div className = {newDocumentStyles.mainContainer}>
+      <div>
        <span className={this.props.addOrEdit != 'Edit' ?newDocumentStyles.addButton : newDocumentStyles.editButton} onClick= {this.openModal.bind(this)} >{this.props.addOrEdit != 'Edit' ? (<i className="fa fa-plus-circle" aria-hidden="true"></i> ) : (<i className="fa fa-pencil" aria-hidden="true"></i> )}  {this.props.addOrEdit!='Edit' ? <span>Add Document</span> : null} </span>
        <Modal
          isOpen={this.state.modalIsOpen}
          onRequestClose={this.closeModal.bind(this)}
          style = {customStyles}>
          <div className={newDocumentStyles.two}>
-           {this.props.addOrEdit !='Edit' ? <h3>Add Document</h3> : <h3>Edit Document</h3>}
-            <span className={newDocumentStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
-            <form>
-              {this.props.addOrEdit !='Edit' ? <label>Enter JSON data</label> : <label>Edit JSON data</label>}
-              <textarea value ={this.state.newDocument} name={this.props.addOrEdit != 'Edit' ? 'document' : 'keys'} id='document' onChange={this.handleChange('newDocument')}></textarea>
-            </form>
-            <div className={newDocumentStyles.buttonContainer}>
-                <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={newDocumentStyles.submit}>SUBMIT</button>
-              </div>
-            <div className={!this.state.successMessage? (newDocumentStyles.errorMessage + ' ' + (this.state.message!='' ? newDocumentStyles.show : newDocumentStyles.hidden)) : (this.state.message != '' ? newDocumentStyles.successMessage : '')}>{this.state.message}</div>
+           <div className={newDocumentStyles.header}>
+             {this.props.addOrEdit !='Edit' ? <span className={newDocumentStyles.text}>Add Document</span> : <span className={newDocumentStyles.text}>Edit Document</span>}
+           </div>
+           <form>
+             {this.props.addOrEdit !='Edit' ? <label>Enter JSON data</label> : <label>Edit JSON data</label>}
+             <textarea value ={this.state.newDocument} name={this.props.addOrEdit != 'Edit' ? 'document' : 'keys'} id='document' onChange={this.handleChange('newDocument')}></textarea>
+           </form>
+           <div className={newDocumentStyles.buttonContainer}>
+             <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={newDocumentStyles.submit}>SUBMIT</button>
+             <button onClick={this.closeModal.bind(this)} value='CANCEL' className={newDocumentStyles.cancel}>CANCEL</button>
+           </div>
+           <div className={!this.state.successMessage? (newDocumentStyles.errorMessage + ' ' + (this.state.message!='' ? newDocumentStyles.show : newDocumentStyles.hidden)) : (this.state.message != '' ? newDocumentStyles.successMessage : '')}>{this.state.message}</div>
          </div>
        </Modal>
      </div>

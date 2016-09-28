@@ -95,16 +95,16 @@ class LoginComponent extends React.Component {
              <div className ={styles.one}>WELCOME TO MVIEWER</div>
             <Form method='POST' onValid={this.enableButton()} onSubmit={this.onSubmit} onInvalid={this.disableButton()} >
               <div className={ styles.formContainer}>
-                <div className={styles.inputBox}>
+                <div className={styles.inputBoxLogin}>
                   <TextInput type="text" name="host" id="host" placeholder="Host" value={this.state.host} validations='isRequired' onChange={this.handleChange( 'host')} validationError="Host must not be empty" />
                 </div>
-              <div className={styles.inputBox}>
+              <div className={styles.inputBoxLogin}>
                 <TextInput type="text" name="port" id="port" placeholder="Port" value={this.state.port} onChange={this.handleChange( 'port')} validations="isRequired" validationError="Port must not be empty" />
               </div>
-              <div className={styles.inputBox}>
+              <div className={styles.inputBoxLogin}>
                 <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} />
               </div>
-              <div className={styles.inputBox}>
+              <div className={styles.inputBoxLogin}>
                 <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleChange( 'password')} />
               </div>
               <div>

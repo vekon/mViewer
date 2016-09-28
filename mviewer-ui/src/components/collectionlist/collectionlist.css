@@ -47,7 +47,7 @@
     background-color: inherit;
     color: #fff;
     border: 0;
-    font-family: 'Lato';
+    font-family: '';
     padding: 10px;
     cursor: pointer;
     word-wrap: break-word;
@@ -62,5 +62,5 @@
     padding: 12px;
     background-color: #fff;
     color: #0CB9F2;
-    font-family: 'Lato';
+    font-family: 'Brandon';
 }
