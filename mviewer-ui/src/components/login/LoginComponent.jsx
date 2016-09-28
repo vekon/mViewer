@@ -20,24 +20,27 @@ class LoginComponent extends React.Component {
       message: '',
       connectionId:''
     }
-
     this.onSubmit = this.onSubmit.bind(this);
     this.success = this.success.bind(this);
     this.failure = this.failure.bind(this);
+    this.getRequest = this.getRequest.bind(this);
   }
 
-  onSubmit(data) {
-
+  getRequest() {
     var that = this;
     var data = $("form").serialize().split("&");
     var obj={};
-
     for(var key in data){
       obj[data[key].split("=")[0]] = data[key].split("=")[1];
     }
+    return obj;
+  }
 
-    var loginCall = service('POST', 'login', obj);
+  onSubmit() {
+    var obj = this.getRequest();
+    var loginCall = service('POST', 'login',  obj);
     loginCall.then(this.success, this.failure);
+    return loginCall;
   }
 
   success(data) {
