@@ -55,7 +55,7 @@
   resize: none;
   border: 1.5px solid #bababa;
   transition: all ease-in-out .2s;
-  font-family: 'Lato';
+  font-family: 'Brandon';
   font-weight: 300;
   background: #eff4f8
 }
@@ -215,7 +215,7 @@
   overflow: auto;
   margin-bottom: 1%;
   resize: none;
-  font-family: 'Lato';
+  font-family: 'Brandon';
   font-weight: 300;
   background: #ccc;
 }
@@ -305,7 +305,7 @@ cursor: pointer;
   width: 10%;
   font-size: 90%;
   text-align: center;
-  font-family: 'Lato';
+  font-family: 'Brandon';
   cursor: pointer;
 }
 
@@ -317,7 +317,7 @@ cursor: pointer;
 
 .exceptionContainer {
   font-size: 15px;
-  font-family: 'Lato';
+  font-family: 'Brandon';
   display: block;
   margin-left: 2%;
   margin-top: 1%;

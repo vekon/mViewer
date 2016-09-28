@@ -2,6 +2,18 @@
 /*BASIC SETUP*/
 /*----------------------------------------*/
 
+@font-face {
+font-family: Brandon;
+src: url("../../assets/fonts/Brandon_reg.otf") format("opentype");
+}
+
+@font-face {
+font-family: Brandon;
+font-weight: lighter;
+src: url("../../assets/fonts/Brandon_light.otf") format("opentype");
+}
+
+
 * {
     margin: 0;
     padding: 0;
@@ -11,7 +23,7 @@ html,
 body {
     background-color: #e7e8ea;
     color: #555;
-    font-family: 'Lato', 'Arial', sans-serif;
+    font-family: 'Brandon', 'Arial', sans-serif;
     font-weight: 300;
     font-size: 20px;
     text-rendering: optimizeLegibility;
@@ -74,8 +86,8 @@ div.parentDiv {
     width: 341px;
     margin: 0 auto;
 }
-.two input[type=text],
-.two input[type=password] {
+.two .inputBoxLogin input[type=text],
+ .two .inputBoxLogin input[type=password]{
     padding: 10px;
     border-radius: 0px;
     border: 1.5px solid #bababa;
@@ -97,7 +109,7 @@ div.parentDiv {
     width: 166px;
 }
 
-.inputBox {
+.inputBoxLogin {
  margin-bottom: 7px;
 }
 

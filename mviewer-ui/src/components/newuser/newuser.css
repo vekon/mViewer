@@ -8,7 +8,8 @@
     margin-bottom: -10%;
 }
 
-.inputBox div input[type=text] {
+.name input[type=text],
+.userPassword input[type=password]{
     padding: 10px;
     border-radius: 1px;
     border: 1px solid #cccccc;
@@ -21,18 +22,12 @@
 }
 
 .inputBox label {
-    font-size: 60%;
+    font-size: 15px;
     color: black;
 }
 
-.inputBox input[type=checkbox].checkBox {
+.inputBox div input[type=checkbox] {
     display: inline;
-    width: 22px;
-    height: 22px;
-    background-color: white !important;
-    color: inherit;
-    margin-top: 2%;
-    margin-right: 2%;
 }
 
 .TextInput error input[type=text] {
@@ -47,32 +42,10 @@
 
 .inputBox {
     margin-bottom: 7px;
-
-}
-
-.innerForm {
-    padding: 5%;
-    border: 1px solid #dedede;
-    border-radius: 5px;
-    background-color: #ffffff
-}
-
-.inputLabel {
-    margin-left: 25% !important;
-}
-
-.checkLabel{
-    font-size: 15px;
-    color: #808285;
-    margin-top: -7.1%;
-    margin-left: 9%;
-    font-weight: 500;
-    margin-bottom: 5%;
 }
 
 .formContainer {
     margin-left: 5%;
-    margin-right: auto;
     width: 90%;
 }
 
@@ -86,7 +59,7 @@
     margin: 5px 0;
     text-align: center;
     border: 1px solid red;
-    width: 90%;
+    width: 100%;
     font-size: 50%;
 }
 
@@ -102,6 +75,7 @@
     width: 100%;
     border-radius: 3px;
     line-height: 3;
+    width: 100%;
 }
 
 
@@ -132,15 +106,16 @@
 .cancel {
   color: #484848;
   margin-left: 175px;
+  font-family: 'Brandon';
 }
 
 .submit {
-  color: #2494d0;
-  float: right;
-  margin-bottom: 4%;
-  margin-right: -6px;
-  font-family: 'Brandon';
-  margin-top: -1.8%;
+    color: #2494d0;
+    float: right;
+    margin-bottom: 4%;
+    margin-right: -1.5%;
+    font-family: 'Brandon';
+    margin-top: -1.8%;
 }
 .submit:hover,
 .submit:active {
@@ -152,23 +127,6 @@
 .cancel:active {
     color: #191717;
     cursor: pointer;
-}
-
-.updateButton {
-float: right;
-display: inline;
-margin-top: 1.5%;
-margin-right: 2%;
-font-size: 70%;
-cursor: pointer;
-}
-
-.updateButton i {
-  padding-right: 5px;
-}
-
-.updateButton span {
-  display: inline;
 }
 
 .header{
@@ -186,18 +144,36 @@ cursor: pointer;
   font-size: 17px;
 }
 
-::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color:    #ababab;
-}
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color:     #ababab;
-   opacity:  1;
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color:     #ababab;
-   opacity:  1;
-}
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-   color:     #ababab;
+.buttonContainer{
+  margin-top: 7%;
+  margin-bottom: 6%;
 }
 
+.label1 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.checkLabel{
+    font-size: 14px;
+    color: #a5a5a5;
+    margin-top: -7.1%;
+    margin-left: 9%;
+    font-weight: 500;
+    margin-bottom: 5%;
+}
+
+.inputBox input[type=checkbox].checkboxClass {
+    display: inline;
+    width: 22px;
+    height: 22px;
+    background-color: white !important;
+    color: inherit;
+    margin-top: 2%;
+    margin-right: 2%;
+}
+
+.name,
+.userPassword{
+  margin-bottom: 5%;
+}
