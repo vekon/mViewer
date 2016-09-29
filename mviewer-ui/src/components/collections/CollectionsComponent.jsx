@@ -39,7 +39,7 @@ class CollectionsComponent extends React.Component {
   }
 
   setStates(collection, data, type){
-    if(type == "user") {
+    if(data != undefined && data != null) {
       this.setState({userDetails: data});
     }
     this.setState({selectedCollection: collection});

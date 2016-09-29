@@ -30,14 +30,20 @@ class UserDetailsComponent extends React.Component {
     }
   }
 
-  createUserDetails(){
+  createUserDetails(nextProps){
     var userDetail = [];
+    var sortItem = {};
     var that = this;
-    Object.keys(this.props.users).map(function(key) {
+     if(nextProps != null && nextProps != undefined){
+       sortItem = nextProps.users;
+     } else {
+       sortItem = this.props.users;
+     }
+    Object.keys(sortItem).map(function(key) {
       if(key == "roles") {
-        userDetail.push({'key': 'role', 'value': that.props.users[key][0].role});
+        userDetail.push({'key': 'role', 'value': sortItem[key][0].role});
       } else {
-        userDetail.push({'key': key, 'value': that.props.users[key]});
+         userDetail.push({'key': key, 'value': sortItem[key]});
       }
     });
     this.setState({userDetails: userDetail});
@@ -49,8 +55,8 @@ class UserDetailsComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({currentUser: this.props.users.user});
-    this.createUserDetails();
+    this.setState({currentUser: nextProps.users.user});
+    this.createUserDetails(nextProps);
   }
 
   failure() {

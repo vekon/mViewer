@@ -38,6 +38,7 @@ class UserList extends React.Component {
     if(calledFrom == 'refreshCollectionList'){
       if(typeof(data.response.result) !== 'undefined'){
         this.fillData(data.response.result);
+        this.clickHandler(0,this.state.selectedItem);
       }
       if(typeof(data.response.error) !== 'undefined'){
         if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){
@@ -61,7 +62,6 @@ class UserList extends React.Component {
 
 
   clickHandler (idx,selectedUser) {
-    this.setState({selectedCollection: idx});
     this.setState({ visible: false});
     var itemDetails = null;
     this.state.userDetails.map(function(item){
@@ -75,6 +75,7 @@ class UserList extends React.Component {
   }
 
   refreshRespectiveData(newCollectionName) {
+    this.setState({selectedItem:newCollectionName});
     this.setState({selectedCollection: newCollectionName});
     this.props.setStates(newCollectionName);
   }

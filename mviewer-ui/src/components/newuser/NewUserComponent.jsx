@@ -36,6 +36,7 @@ class NewUserComponent extends React.Component {
   closeModal() {
     this.setState({modalIsOpen: false});
     this.setState({error: false});
+    this.setState({addUser_readonly: false});
     if(this.state.successMessage==true)
     {
       this.props.refreshCollectionList(this.props.currentDb);
