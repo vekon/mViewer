@@ -158,18 +158,24 @@
     padding: 10px 30px;
     border: 0;
     width: 150px;
-    background-color: #2494d0;
     font-size: 13px;
-    color: white;
     margin-left: 0px;
-    cursor: pointer;
     transition: background-color .2s, border .2s;
-    /*margin-top: -7.5%;*/
     width: 100%;
 }
-.bttnNavigable:hover {
-  background-color: #576d96;
+
+.bttnNavigable:enabled{
+  background-color: #2494d0;
+  color: white;
   cursor: pointer;
+}
+
+.bttnNavigable:disabled {
+  background-color: #9fc7dc;
+}
+
+.bttnNavigable:hover:enabled {
+  background-color: #576d96;
 }
 
 .parametersDiv select,
@@ -321,4 +327,11 @@ cursor: pointer;
 
 .attrDivCollapsed {
   display: none;
+}
+
+
+.errorContainer {
+  color: red;
+  padding: 0 10px 10px 0;
+  font-size: 15px;
 }

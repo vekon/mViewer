@@ -16,7 +16,7 @@ class DbListComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dbNames:['test1', 'test2', 'test3'],
+      dbNames:[],
       connectionId: this.props.propps.connectionId,
       dbStats: {},
       visible: true,

@@ -56,8 +56,7 @@
 }
 
 
-.menuItem button {
-  background-color: inherit;
+.menuItem .button {
   color: inherit;
   border: 0;
   font-family: 'Brandon';
@@ -67,6 +66,7 @@
   text-align: left;
   font-size: 17px;
   font-weight: 400;
+  display: inline-block;
 }
 
 .menuItem i {

@@ -10,7 +10,7 @@ class CollectionList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      collections:['collection1', 'collection2', 'collection3'],
+      collections:[],
       connectionId: this.props.propps.connectionId,
       dbStats: {},
       selectedDB: this.props.selectedDB,

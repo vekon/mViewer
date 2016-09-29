@@ -16,7 +16,7 @@ class GridFSItemComponent extends React.Component {
         <span>
           <i className="fa fa-folder-open-o" aria-hidden="true"></i>
         </span>
-        <button>{this.props.name}</button>
+        <div className = {GridFSListStyles.button}>{this.props.name}</div>
       </div>
     );
   }
