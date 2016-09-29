@@ -26,26 +26,20 @@
 .cancel
  {
     border: none !important;
-    width: 20%;
     background-color: inherit;
     font-size: 13px;
     font-weight: 600;
-    height: 30px;
 }
 
 .cancel {
   color: #484848;
-  margin-left: 175px;
   font-family: 'Brandon';
 }
 
 .submit {
   color: #2494d0;
-  float: right;
-  margin-bottom: 4%;
-  margin-right: 8px;
   font-family: 'Brandon';
-  margin-top: -1.5%;
+  margin-left: 10px;
 }
 .submit:hover:enabled,
 .submit:active:enabled {
@@ -70,7 +64,7 @@
     font-size: 13px;
     max-height: 100px;
     overflow: auto;
-    margin: 0 10px;
+    margin: 5px 10px;
 }
 .errorMessage {
   color: red;
@@ -202,7 +196,7 @@
     color: 484848;
     margin-top: 5%;
     position: absolute;
-    margin-left: 64%;
+    margin-left: 63%;
 }
 
 button:disabled{
