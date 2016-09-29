@@ -101,28 +101,23 @@ class LoginComponent extends React.Component {
                 <div className={styles.inputBoxLogin}>
                   <TextInput type="text" name="host" id="host" placeholder="Host" value={this.state.host} validations='isRequired' onChange={this.handleChange( 'host')} validationError="Host must not be empty" />
                 </div>
-              <div className={styles.inputBoxLogin}>
-                <TextInput type="text" name="port" id="port" placeholder="Port" value={this.state.port} onChange={this.handleChange( 'port')} validations="isRequired" validationError="Port must not be empty" />
-              </div>
-              <div className={styles.inputBoxLogin}>
-                <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} />
-              </div>
-              <div className={styles.inputBoxLogin}>
-                <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleChange( 'password')} />
-              </div>
-              <div>
-                <input type="submit" value="CONNECT" disabled={!this.state.canSubmit} className={ styles.gobutton} />
-              </div>
-              <div className={styles.footerLink}>
+                <div className={styles.inputBoxLogin}>
+                  <TextInput type="text" name="port" id="port" placeholder="Port" value={this.state.port} onChange={this.handleChange( 'port')} validations="isRequired" validationError="Port must not be empty" />
+                </div>
+                <div className={styles.inputBoxLogin}>
+                  <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} />
+                </div>
+                <div className={styles.inputBoxLogin}>
+                  <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleChange( 'password')} />
+                </div>
                 <div>
-                  <a>Forgot your password?</a>
+                  <input type="submit" value="CONNECT" disabled={!this.state.canSubmit} className={ styles.gobutton} />
                 </div>
-                <div className={styles.help}>
-                 <a>Need Help?</a>
+                <div className={styles.footerLink}>
+                   <a href='http://imaginea.github.io/mViewer'>Need Help?</a>
                 </div>
-               </div>
-               <div className={styles.errorMessage + ' ' + (this.state.message!='' && this.state.message !='Login Success' ? styles.show : styles.hidden)}>{this.state.message}</div>
-               </div>
+                <div className={styles.errorMessage + ' ' + (this.state.message!='' && this.state.message !='Login Success' ? styles.show : styles.hidden)}>{this.state.message}</div>
+              </div>
             </Form>
           </div>
         </div>
