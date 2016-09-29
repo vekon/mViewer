@@ -1,37 +1,33 @@
 .results
 {
-  width: 93%;
-  margin-left: 1%;
+  width: 99%;
   height: auto;
-  margin-top: 1%;
+  margin-top: 10px;
   display: block;
   overflow: hidden;
-  margin-bottom: 1%;
   resize: none;
   font-family: 'Brandon';
   font-weight: 300;
-  background: #eff4f8;
+  background: #edf1f4;
   min-height: 20%;
 }
 
 .results textarea {
-  /*height: 101%;*/
-  background: #eff4f8;
+  background: #edf1f4;
   font-family: 'Brandon';
   width: 100%;
   resize: none;
   overflow: auto;
   border: 0;
-  padding: 1% 0;
+  padding: 10px;
 }
 
 
 .deleteButton {
   display: inline-block;
-  font-size: 80%;
-  margin-top: 0.7%;
+  font-size: 14px;
   float: right;
-  padding-right: 10px;
+  padding: 10px;
 }
 
 .editButton {
@@ -43,14 +39,3 @@
 .deleteButton i, .editButton i {
   cursor: pointer;
 }
-
-
-/*-------Clear Floats-------*/
-/*.clearfix { zoom : 1}
-.clearfix:after {
-    content: '.';
-    clear: both;
-    display: block;
-    height: 0;
-    visibility: hidden;
-}*/

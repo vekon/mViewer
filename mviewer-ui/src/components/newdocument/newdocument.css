@@ -1,4 +1,10 @@
+.mainContainer{
+  display: inline-block;
+}
 
+.editMainContainer {
+
+}
 .two h3{
     font: 110%;
     text-align: center;
@@ -34,12 +40,15 @@
 
 
 .errorMessage {
-    color: red;
-    margin: 5px 0;
-    text-align: center;
-    border: 1px solid red;
-    width: 100%;
-    font-size: 50%;
+  color: red;
+  text-align: center;
+  border: 1px solid red;
+  width: 90%;
+  height: auto;
+  min-height: 40px;
+  padding: 10px;
+  margin: 5px auto;
+  font-size: 13px;
 }
 
 .errorMessage.hidden {
@@ -47,25 +56,28 @@
 }
 
 .errorMessage.show {
-    color: #FF9696;
-    margin: 5px 0;
-    text-align: center;
-    border: 1px solid #FF9696;
-    width: 100%;
-    border-radius: 3px;
-    line-height: 3;
+  color: red;
+  text-align: center;
+  border: 1px solid red;
+  width: 90%;
+  height: auto;
+  min-height: 40px;
+  padding: 10px;
+  margin: 5px auto;
+  font-size: 13px;
 }
 
 
 .successMessage {
-    color: green;
-    margin: 5px 0;
-    text-align: center;
-    border: 1px solid green;
-    width: 100%;
-    border-radius: 3px;
-    line-height: 3;
-    font-size: 50%
+  color: green;
+  text-align: center;
+  border: 1px solid green;
+  width: 90%;
+  height: auto;
+  min-height: 40px;
+  padding: 10px;
+  margin: 5px auto;
+  font-size: 13px;
 }
 
 
@@ -113,40 +125,6 @@
     cursor: pointer;
 }
 
-.addButton {
-float: right;
-display: inline;
-margin-top: 1.5%;
-margin-right: 2%;
-font-size: 70%;
-cursor: pointer;
-}
-
-.addButton i {
-  padding-right: 5px;
-}
-
-.addButton span {
-  display: inline;
-}
-
-
-.editButton {
-float: right;
-display: inline;
-margin-top: 1%;
-margin-right: 4%;
-font-size: 70%;
-cursor: pointer;
-}
-
-.editButton i {
-  padding-right: 5px;
-}
-
-.editButton span {
-  display: inline;
-}
 
 .header{
   background-color: #2294d2;
@@ -161,4 +139,36 @@ cursor: pointer;
   position: relative;
   left: 5%;
   font-size: 17px;
+}
+
+
+.addButton {
+font-size: 15px;
+cursor: pointer;
+padding-right: 10px;
+}
+
+.addButton i {
+  padding-right: 5px;
+}
+
+.addButton span {
+  display: inline;
+}
+
+
+.editButton {
+float: right;
+display: inline-block;
+font-size: 14px;
+cursor: pointer;
+padding: 10px;
+}
+
+.editButton i {
+  padding-right: 5px;
+}
+
+.editButton span {
+  display: inline;
 }

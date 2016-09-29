@@ -1,51 +1,55 @@
 .mainContainer{
-  /*padding-top: 6%;*/
-  /*margin-left: 2%;*/
   display: inline-block;
   width: 85%;
 
 }
 
 .actionsContainer {
-  /*display: inline-block;*/
   float: right;
-  /*width: 53%;*/
+}
+
+.actionsContainer>div{
+  padding-top: 10px;
 }
 
 .buffer {
-   font-size: 70%;
+   font-size: 15px;
 }
 
 .tab{
-   font-size: 18px;
-   /*padding: 1%;*/
+   font-size: 15px;
    font-weight: 600;
-   /*float: left;*/
-   /*width: 20%;*/
-   height: 58px;
 }
 
 .tab label {
   padding: 10px;
+  display: inline-block;
 }
 
 .textAreaContainer {
   display: inline-block;
   width: 100%;
-  height: 200px;
+  height: 222px;
 }
 
-.queryBoxDiv{
+.queryBoxDiv,
+.queryBoxDiv1 {
   display: inline-block;
-  width: 48%;
-  /*height: 220px;*/
-  /*height: auto;*/
+  width: 50%;
   padding: 10px;
   position: relative;
 }
 
+.queryBoxDiv1 {
+  float: left;
+}
+
+.queryBoxDiv1 .textAreaContainer {
+  height: 213px !important;
+}
+
 .queryBoxlabels {
-  padding-bottom: 1%;
+  padding-bottom: 5px;
 }
 
 .queryBox {
@@ -57,56 +61,49 @@
   transition: all ease-in-out .2s;
   font-family: 'Brandon';
   font-weight: 300;
-  background: #eff4f8
+  background: #edf1f4
 }
 
 .parametersDiv,
 .parametersDiv1{
   display: inline-block;
-  /*position: absolute;*/
-  /*padding-left: 1%;
-  margin-left: 2%;*/
+  width: 23%;
+}
+
+.parametersDiv{
+  float: right;
+  padding: 10px;
+}
+
+.parametersDiv1{
+  padding-top: 2px;
 }
 
 .parametersDiv label:first-child {
   padding-bottom: 2% !important;
 }
 
-.parametersDiv {
-  /*margin-left: 20.1%;*/
-  /*margin-top: 0.4%;*/
-}
-.parametersDiv1 {
-  /*margin-left: 0%;
-  margin-top: 0.3%*/
-}
 
 .queryAttributesDiv {
   display: inline-block;
-    /*position: absolute;*/
-    /*margin-top: 2.7%;*/
-    margin-top: 3%;
     padding-left: 1%;
     width: 100%;
     margin-left: 0;
     border: 1.5px solid #bababa;
-    /*height: 29.5%;*/
-    height: 200px;
+    height: 222px;
     overflow-y: auto;
-    /*float: right;*/
 }
 
 .parametersDiv input[type=text],
 .parametersDiv1 input[type=text]{
     padding: 10px;
-    /*border-radius: 3px;*/
-
     border: 1.5px solid #bababa;
     background-color: inherit;
     color: white;
     font-size: 11px;
     height: 30px;
-    background: #eff4f8;
+    background: #edf1f4;
+    width: 100%;
 }
 
 .parametersDiv label {
@@ -147,9 +144,8 @@
 }
 
 .attributesLabel {
-    /*position: absolute;*/
     margin-left: 0;
-    margin-top: 1%;
+    padding-bottom: 5px;
     display: inline-block !important;
     width: 100%;
 }
@@ -160,21 +156,19 @@
 
 .bttnNavigable {
     padding: 10px 30px;
-    /*border: 1px solid #3679f8;*/
     border: 0;
     width: 150px;
-    background-color: #2294d2;
-    font-size: 12px;
+    background-color: #2494d0;
+    font-size: 13px;
     color: white;
     margin-left: 0px;
-    /*border-radius: 3px;*/
     cursor: pointer;
     transition: background-color .2s, border .2s;
-    margin-top: -7.5%;
+    /*margin-top: -7.5%;*/
+    width: 100%;
 }
 .bttnNavigable:hover {
   background-color: #576d96;
-  /*border: 1px solid #576d96;*/
   cursor: pointer;
 }
 
@@ -188,10 +182,11 @@
   background-color: inherit;
   color: inherit;
   font-size: 11px;
+  width: 100%;
 }
 
 .checkboxSpan {
-  margin-right: 2%;
+  margin-right: 2%;;
 }
 
 .attributesItems {
@@ -200,20 +195,18 @@
 }
 
 .resultContainer {
-  overflow-y: auto;
-  padding-bottom: 10%;
+  padding-left: 10px;
+  padding-top: 10px;
+  width: 100%;
 }
 
 
 .results
 {
   width: 93%;
-  margin-left: 1%;
   height: 30%;
-  margin-top: 1%;
   display: block;
   overflow: auto;
-  margin-bottom: 1%;
   resize: none;
   font-family: 'Brandon';
   font-weight: 300;
@@ -221,9 +214,6 @@
 }
 
 .treeTab {
-  margin-top: 3% !important;
-  /*padding-left: 1% !important;*/
-  font-size: 70% !important;
 }
 
 .disabled {
@@ -234,10 +224,10 @@
 }
 
 .paginator {
-  font-size: 70%;
-  margin-right: 5%;
+  font-size: 14px;
   float: right;
-  margin-top: -4%;
+  height: 20px;
+  padding: 10px;
 }
 
 .paginator label {
@@ -255,12 +245,10 @@
 
 
 .deleteButton {
-/*float: right;*/
 display: inline-block;
-margin-top: 1.5%;
-margin-right: 2%;
-font-size: 14px;
+font-size: 15px;
 cursor: pointer;
+padding-right: 10px;
 }
 
 .deleteButton i {
@@ -274,10 +262,8 @@ cursor: pointer;
 
 .deleteButtonGridfs {
 float: right;
-display: inline;
-margin-top: 1.5%;
-margin-right: 4%;
-font-size: 70%;
+display: inline-block;
+font-size: 14px;
 cursor: pointer;
 }
 
@@ -286,14 +272,15 @@ cursor: pointer;
 }
 
 .deleteButtonGridfs span {
-  display: inline;
+  display: inline-block;
+  padding-right: 10px;
 }
 
 .treeTab {
-  width: 93%;
+  width: 99%;
   border-top: 1px solid #bababa;
   border-bottom: 1px solid #bababa;
-  margin-left: 1%;
+  height: 50px;
 }
 
 .treeTab li {
@@ -303,14 +290,15 @@ cursor: pointer;
 .treeTab li span {
   display: inline-block;
   width: 10%;
-  font-size: 90%;
+  font-size: 14px;
   text-align: center;
   font-family: 'Brandon';
   cursor: pointer;
+  height: 100%;
 }
 
 .activeTab {
-   background: #2294d2;
+   background: #2494d0;
    color: #fff;
    padding: 1%;
 }
@@ -327,9 +315,7 @@ cursor: pointer;
 .attrDiv {
   position: relative;
   display: inline-block;
-  /*height: auto;*/
-  width: 25%;
-  /*margin-left: 2%;*/
+  width: 27%;
   padding: 10px;
 }
 

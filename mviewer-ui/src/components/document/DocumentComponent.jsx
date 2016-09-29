@@ -55,7 +55,6 @@ class DocumentComponent extends React.Component {
   }
 
   componentWillUnmount(){
-    autosize($('.textArea'));
     this.state._isMounted = false;
   }
   render () {

@@ -1,4 +1,3 @@
-
 import $ from 'jquery';
 
 var path = '../services/';

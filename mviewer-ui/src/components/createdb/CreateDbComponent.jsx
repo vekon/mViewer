@@ -85,7 +85,7 @@ class CreateDbComponent extends React.Component {
   }
 
   failure (){
-    
+
   }
 
   render () {
@@ -96,20 +96,24 @@ class CreateDbComponent extends React.Component {
         right                 : 'auto',
         width                 : '25%',
         bottom                : 'auto',
-        padding               : '0px',
         marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)'
+        padding               : '0px',
+        transform             : 'translate(-50%, -50%)',
+        border                : 'none'
+      },
+      overlay : {
+        backgroundColor       : 'rgba(0,0,0, 0.74902)'
       }
     };
     return(
       <div className={createDbStyles.mainContainer}>
         <div className = {createDbStyles.topContainer}>
-          <section className={createDbStyles.topSection}>Welcome to <span className={createDbStyles.span1}>m</span><span className={createDbStyles.span2}>Viewer</span></section>
-          <section className={createDbStyles.midSection}><hr />A MONOGO DB MANAGEMENT TOOL<hr /></section>
+          <section className={createDbStyles.topSection}>WELCOME TO MVIEWER</section>
+          <section className={createDbStyles.midSection}>A MONOGO DB MANAGEMENT TOOL</section>
           <section className={createDbStyles.bottomSection}>LET'S GET STARTED</section>
         </div>
         <div className = {createDbStyles.bottomContainer}>
-          <button className={createDbStyles.createButton} onClick={this.openModal.bind(this)}>Create New Database</button>
+          <button className={createDbStyles.createButton} onClick={this.openModal.bind(this)}>CREATE NEW DATABASE</button>
           <section className = {createDbStyles.logoSection}>
             <span>POWERED BY</span>
             <img src={'../../assets/Pramati_Logo.png'} className={createDbStyles.logo}></img>
@@ -122,7 +126,6 @@ class CreateDbComponent extends React.Component {
           <div className={createDbStyles.two}>
             <div className={createDbStyles.header}>
               <span className={createDbStyles.text}>Create Database</span>
-              <span className={createDbStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
             </div>
             <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
               <div className={ createDbStyles.formContainer}>

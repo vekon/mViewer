@@ -13,7 +13,7 @@
 
 
 .validationError {
-    color: #red;
+    color: red;
     margin: 5px 0;
     display: inline-block;
     font-size: 13px;

@@ -183,10 +183,15 @@ class DbListComponent extends React.Component {
         left                  : '53%',
         right                 : 'auto',
         width                 : '25%',
-        padding               : '0px',
         bottom                : 'auto',
+        padding               : '0px',
         marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)'
+        transform             : 'translate(-50%, -50%)',
+        border                : 'none',
+        borderRadius          : '3px'
+      },
+      overlay : {
+        backgroundColor       : 'rgba(0,0,0, 0.74902)'
       }
     };
     var that = this;
@@ -226,9 +231,8 @@ class DbListComponent extends React.Component {
        style = {customStyles}>
        <div className={dbListStyles.two}>
          <div className={dbListStyles.header}>
-           <span className={dbListStyles.text}>Create Database</span>
-           <span className={dbListStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
-         </div>
+          <span className={dbListStyles.text}>Create Database</span>
+        </div>
          <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
            <div className={ dbListStyles.formContainer}>
              <div className={dbListStyles.inputBox}>

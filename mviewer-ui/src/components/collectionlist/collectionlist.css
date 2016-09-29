@@ -47,7 +47,7 @@
     background-color: inherit;
     color: #fff;
     border: 0;
-    font-family: '';
+    font-family: 'Brandon';
     padding: 10px;
     cursor: pointer;
     word-wrap: break-word;
@@ -59,7 +59,7 @@
 
 .menuTitle {
     text-align: center;
-    padding: 12px;
+    padding: 13px;
     background-color: #fff;
     color: #0CB9F2;
     font-family: 'Brandon';

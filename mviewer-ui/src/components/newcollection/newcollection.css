@@ -1,11 +1,14 @@
-.modalContainer span {
+.modalContainer span,
+.updateModalContainer span {
   cursor: pointer;
 }
 
-.two h3{
-    font: 110%;
-    text-align: center;
-    margin-bottom: -10%;
+.modalContainer {
+  display: inline-block;
+}
+
+.updateModalContainer {
+  display: inline-block;
 }
 
 .inputBox div input[type=text] {
@@ -82,12 +85,16 @@
 }
 
 .errorMessage {
-    color: red;
-    margin: 5px 0;
-    text-align: center;
-    border: 1px solid red;
-    width: 90%;
-    font-size: 50%;
+  color: red;
+  text-align: center;
+  border: 1px solid red;
+  width: 90%;
+  border-radius: 0px;
+  font-size: 12px;
+  margin: 5px auto;
+  height: auto;
+  min-height: 40px;
+  padding: 10px;
 }
 
 .errorMessage.hidden {
@@ -95,25 +102,30 @@
 }
 
 .errorMessage.show {
-    color: red;
-    margin: 5px 0;
-    text-align: center;
-    border: 1px solid #FF9696;
-    width: 100%;
-    border-radius: 3px;
-    line-height: 3;
+  color: red;
+  text-align: center;
+  border: 1px solid red;
+  width: 90%;
+  border-radius: 0px;
+  font-size: 12px;
+  margin: 5px auto;
+  height: auto;
+  min-height: 40px;
+  padding: 10px;
 }
 
 
 .successMessage {
-    color: green;
-    margin: 5px 0;
-    text-align: center;
-    border: 1px solid green;
-    width: 100%;
-    border-radius: 3px;
-    line-height: 3;
-    font-size: 50%
+  color: green;
+  text-align: center;
+  border: 1px solid green;
+  width: 90%;
+  border-radius: 0px;
+  font-size: 12px;
+  margin: 5px auto;
+  height: auto;
+  min-height: 40px;
+  padding: 10px;
 }
 
 
@@ -154,23 +166,6 @@
     cursor: pointer;
 }
 
-.updateButton {
-float: right;
-display: inline;
-margin-top: 1.5%;
-margin-right: 2%;
-font-size: 70%;
-cursor: pointer;
-}
-
-.updateButton i {
-  padding-right: 5px;
-}
-
-.updateButton span {
-  display: inline;
-}
-
 .header{
   background-color: #2294d2;
   font-size: 14px;
@@ -201,3 +196,26 @@ cursor: pointer;
    color:     #ababab;
 }
 
+
+.updateButton {
+display: inline-block;
+width: 100%;
+font-size: 15px;
+cursor: pointer;
+padding-right: 10px;
+}
+
+.updateButton i {
+  padding-right: 5px;
+}
+
+.updateButton span {
+  display: inline;
+}
+
+.closeSpan {
+  float: right;
+  margin-top: -3%;
+  margin-right: -3%;
+  cursor: pointer;
+}

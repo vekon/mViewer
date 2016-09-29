@@ -49,9 +49,10 @@ class CollectionStatsComponent extends React.Component {
           onRequestClose={this.closeModal.bind(this)}
           className={collectionStatsStyles.modal}>
           <div className={collectionStatsStyles.collectionStats}>
-            <h3 className={collectionStatsStyles.collectionStatsHeader}> Statistics: { that.state.selectedDB } </h3>
-            <span className={collectionStatsStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
-          <div>
+            <div className={collectionStatsStyles.header}>
+              <span className={collectionStatsStyles.text}>Statistics</span>
+            </div>
+          <div className = {collectionStatsStyles.tableBody}>
           <table>
             <tbody>
               <tr>
