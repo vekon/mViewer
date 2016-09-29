@@ -301,26 +301,20 @@ border-right: 1px solid #bababa;
 .cancel
  {
     border: none !important;
-    width: 20%;
     background-color: inherit;
     font-size: 13px;
     font-weight: 600;
-    height: 30px;
 }
 
 .cancel {
   color: #484848;
-  margin-left: 175px;
   font-family: 'Brandon';
 }
 
 .submit {
-  float: right;
-  margin-bottom: 4%;
-  margin-right: 8px;
+  
+  margin-left: 8px;
   font-family: 'Brandon';
-  margin-top: .01%;
-  padding-bottom: 4%;
 }
 
 .submit:enabled {
@@ -392,12 +386,17 @@ border-right: 1px solid #bababa;
 }
 
 .buttons {
-    text-align: center;
-    margin-bottom: 3%;
-    margin-top: 5%;
-
+    
 }
 
+.right {
+  float: right;
+  margin: 15px 0;
+}
+
+.clear {
+  clear: both;
+}
 
 .innerItem {
 

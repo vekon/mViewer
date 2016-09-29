@@ -65,13 +65,12 @@
     font-weight: bold;
     overflow-y: hidden;
     padding: 4px 4px 4px 8px;
-    max-width: 310px;
     position: relative;
     top: 10px;
     font-size: 13px;
     max-height: 100px;
     overflow: auto;
-    margin-left: 4.6%;
+    margin: 0 10px;
 }
 .errorMessage {
   color: red;
