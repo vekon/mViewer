@@ -146,16 +146,25 @@
   margin-left: 175px;
 }
 
-.submit {
+.submit:enabled{
   color: #2494d0;
+}
+.submit:disabled {
+  color: #9fc7dc;
+}
+
+.submit {
+
   float: right;
   margin-bottom: 4%;
   margin-right: -6px;
   font-family: 'Brandon';
   margin-top: -1.8%;
 }
-.submit:hover,
-.submit:active {
+
+
+.submit:hover:enabled,
+.submit:active:enabled {
     color: #3c5563;
     cursor: pointer;
 }

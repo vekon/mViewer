@@ -18,6 +18,7 @@ class newCollectionComponent extends React.Component {
       size: '',
       max:'',
       canSubmit:false,
+      canSubmit1:true,
       title:'',
       submitted:false,
       message:'',
