@@ -14,7 +14,8 @@ class newDocumentComponent extends React.Component {
       modalIsOpen: false,
       message:'',
       successMessage: false,
-      newDocument: '{}'
+      newDocument: '{}',
+      errorMessage: false
     }
   }
 
@@ -40,7 +41,15 @@ class newDocumentComponent extends React.Component {
       var state = {};
       state[key] = e.target.value;
       this.setState(state);
+      if (e.target.value == '') {
+        this.setState({errorMessage : true});
+      }
+      else {
+        this.setState({errorMessage : false});
+      }
     }.bind(this);
+
+
   }
 
   clickHandler(){
@@ -118,10 +127,10 @@ class newDocumentComponent extends React.Component {
            </div>
             <form>
               {this.props.addOrEdit !='Edit' ? <label>Enter JSON data</label> : <label>Edit JSON data</label>}
-              <textarea value ={this.state.newDocument} name={this.props.addOrEdit != 'Edit' ? 'document' : 'keys'} id='document' onChange={this.handleChange('newDocument')}></textarea>
+              <textarea className={this.state.errorMessage ? newDocumentStyles.error : ''} value ={this.state.newDocument} name={this.props.addOrEdit != 'Edit' ? 'document' : 'keys'} id='document' onChange={this.handleChange('newDocument')}></textarea>
             </form>
             <div className={newDocumentStyles.buttonContainer}>
-                <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={newDocumentStyles.submit}>SUBMIT</button>
+                <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={newDocumentStyles.submit} disabled = {this.state.errorMessage}>SUBMIT</button>
                 <button onClick={this.closeModal.bind(this)} value='CANCEL' className={newDocumentStyles.cancel}>CANCEL</button>
             </div>
             <div className={!this.state.successMessage? (newDocumentStyles.errorMessage + ' ' + (this.state.message!='' ? newDocumentStyles.show : newDocumentStyles.hidden)) : (this.state.message != '' ? newDocumentStyles.successMessage : '')}>{this.state.message}</div>

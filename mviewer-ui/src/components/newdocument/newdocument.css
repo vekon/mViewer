@@ -38,6 +38,10 @@
   border: 1px solid #9e9e9e;
 }
 
+.error {
+  box-shadow: 0 0 2px red !important;
+  border: 1px solid red !important;
+}
 
 .errorMessage {
   color: red;
@@ -106,15 +110,23 @@
 }
 
 .submit {
-  color: #2494d0;
   float: right;
   margin-bottom: 4%;
   margin-right: 8px;
   font-family: 'Brandon';
   margin-top: .01%;
 }
-.submit:hover,
-.submit:active {
+
+.submit:enabled {
+  color: #2494d0;
+}
+
+.submit:disabled {
+  color:#9fc7dc;
+}
+
+.submit:hover:enabled,
+.submit:active:enabled {
     color: #3c5563;
     cursor: pointer;
 }
