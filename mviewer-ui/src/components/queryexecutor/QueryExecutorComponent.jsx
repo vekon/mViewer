@@ -153,8 +153,9 @@ class QueryExecutorComponent extends React.Component {
   }
 
   success1(data){
-    var array = data.response.result.documents;
+
     if(typeof(data.respone) != 'undefined'){
+      var array = data.response.result.documents;
       var partialUrl = this.props.currentDb+'/gridfs/'+this.props.currentItem+'/count?connectionId='+this.props.connectionId;
       var queryExecutorInnerCall1 = service('GET', partialUrl, '');
       if(this.state._isMounted == true){
