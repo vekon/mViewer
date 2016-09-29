@@ -239,12 +239,15 @@ class DbListComponent extends React.Component {
                <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name' }}  />
              </div>
              <div className={dbListStyles.buttons}>
-               <button onClick={this.clickHandlerModal.bind(this)} value='SUBMIT' className={dbListStyles.submit} disabled={!this.state.canSubmit}>CREATE</button>
+              <div className={dbListStyles.right}>
                <span onClick={this.closeModal.bind(this)} value='CANCEL' className={dbListStyles.cancel} >CANCEL</span>
+               <button onClick={this.clickHandlerModal.bind(this)} value='SUBMIT' className={dbListStyles.submit} disabled={!this.state.canSubmit}>CREATE</button>
+              </div>
              </div>
+             <div className={dbListStyles.clear}></div>
+             <div className={!this.state.successMessage? (dbListStyles.errorMessage + ' ' + (this.state.message!='' ? dbListStyles.show : dbListStyles.hidden)) : (this.state.message != '' ? dbListStyles.successMessage : '')}>{this.state.message}</div>
            </div>
          </Form>
-          <div className={!this.state.successMessage? (dbListStyles.errorMessage + ' ' + (this.state.message!='' ? dbListStyles.show : dbListStyles.hidden)) : (this.state.message != '' ? dbListStyles.successMessage : '')}>{this.state.message}</div>
        </div>
      </Modal>
     </div>
