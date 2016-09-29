@@ -50,7 +50,7 @@ class CollectionItemComponent extends React.Component {
         <span>
           <i className="fa fa-folder-open-o" aria-hidden="true"></i>
         </span>
-        <button>{this.props.name}</button>
+        <div className = {collectionListStyles.button}>{this.props.name}</div>
         <i className={"fa fa-trash "+ collectionListStyles.trash} aria-hidden="true" onClick = {this.openModal.bind(this)}></i>
         {this.state.modalIsOpen ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'collection' dbName = {this.props.dbName} collectionName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent> : null}
       </div>

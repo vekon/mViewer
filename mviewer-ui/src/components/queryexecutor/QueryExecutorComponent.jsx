@@ -38,6 +38,7 @@ class QueryExecutorComponent extends React.Component {
             limitValue:10,
             fields: [],
             modalIsOpen: false,
+            errorMessage: '',
             singleDocument: '',
             query: this.props.queryType == "collection" ? 'db.'+this.props.currentItem+'.find({})' :
                    'db.'+this.props.currentItem+'.files.find({})'
@@ -153,8 +154,7 @@ class QueryExecutorComponent extends React.Component {
   }
 
   success1(data){
-
-    if(typeof(data.respone) != 'undefined'){
+    if(typeof(data.response.result) != 'undefined'){
       var array = data.response.result.documents;
       var partialUrl = this.props.currentDb+'/gridfs/'+this.props.currentItem+'/count?connectionId='+this.props.connectionId;
       var queryExecutorInnerCall1 = service('GET', partialUrl, '');
@@ -170,9 +170,9 @@ class QueryExecutorComponent extends React.Component {
           this.setState({endLabel:(this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)})
         };
     }
-    if(data.response.error) {
-      this.setState({collectionObjects:[]});
-    }
+  }
+  if(data.response.error) {
+    this.setState({collectionObjects:[]});
   }
 }
 
@@ -242,9 +242,15 @@ class QueryExecutorComponent extends React.Component {
           this.setState({startLabel: 0});
           this.setState({endLabel: 0});
         }
-        if(data.response.error) {
-          this.setState({collectionObjects:[]});
-        }
+    }
+
+    if(data.response.error) {
+      this.setState({collectionObjects:[]});
+      this.setState({errorMessage : 'There is an error with the Query, Please check the parameters'});
+      setTimeout(function(){
+           this.setState({errorMessage: ''});
+      }.bind(this), 3000);
+
     }
   }
 
@@ -556,6 +562,7 @@ class QueryExecutorComponent extends React.Component {
       </div>
         </div>
         <div className={queryExecutorStyles.resultContainer} key={this.props.currentItem}>
+          <div className={queryExecutorStyles.errorContainer}>{this.state.errorMessage}</div>
           <div id='paginator' className={queryExecutorStyles.paginator}>
           <a id='first' className = {(this.state.skipValue == 0 || this.state.skipValue >= this.state.totalCount)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='First'>&laquo; First</a>
           <a id='prev'  className = {(this.state.skipValue >= this.state.totalCount || this.state.skipValue + this.state.limitValue <= this.state.limitValue)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)}  href='javascript:void(0)' data-search_name='Previous'>&lsaquo; Previous</a>

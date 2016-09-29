@@ -322,3 +322,10 @@ cursor: pointer;
 .attrDivCollapsed {
   display: none;
 }
+
+
+.errorContainer {
+  color: red;
+  padding: 0 10px 10px 0;
+  font-size: 15px;
+}
