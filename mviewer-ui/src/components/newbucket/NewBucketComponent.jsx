@@ -91,7 +91,7 @@ class newFileComponent extends React.Component {
     if(this.state.count == this.state.newFile.length) {
       this.setState({successMessage:true});
       setTimeout(function() { this.setState({message: "New Bucket " +this.state.newBucket+" is successfully created"})}.bind(this), 1000);
-      setTimeout(function() { this.closeModal() }.bind(this), 2000);
+      // setTimeout(function() { this.closeModal() }.bind(this), 2000);
     }
   }
 
@@ -177,6 +177,7 @@ class newFileComponent extends React.Component {
                       <span onClick= {this.removeFile(idx)}><i className="fa fa-remove" aria-hidden="true"></i></span>
                     </span>
                 }
+
                 <span>{item.success}</span>
                 { item.added ?
                   <span><i className={"fa fa-remove " +  sharedStyles.removeIcon} aria-hidden="true"></i></span>
@@ -253,6 +254,7 @@ class newFileComponent extends React.Component {
                 <span onClick={this.closeModal.bind(that)} className={newBucketStyles.cancel}>CANCEL</span>
               </div>
             </Form>
+            <div className = {newBucketStyles.clear}></div>
             <div className={!this.state.successMessage? (newBucketStyles.errorMessage + ' ' + (this.state.message!='' ? newBucketStyles.show : newBucketStyles.hidden)) : (this.state.message != '' ? newBucketStyles.successMessage : '')}>{this.state.message}</div>
           </div>
         </Modal>
