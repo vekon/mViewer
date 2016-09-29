@@ -108,9 +108,10 @@ class NewUserComponent extends React.Component {
         this.setState({message:'User '+obj['addUser_user_name']+ ' was successfully added to database ' + this.props.currentDb});
         this.state.newUser = obj['addUser_user_name'];
         this.setState({successMessage:true});
+        setTimeout(function() { this.closeModal() }.bind(this), 2000);
       }
       if (data.response.error) {
-        if (data.response.error.code === 'USER_ALREADY_EXISTS'){
+        if (data.response.error.code === 'USER_CREATION_EXCEPTION'){
           this.setState({successMessage:false});
           this.setState({message:'User '+obj['addUser_user_name']+ ' already exists in database ' + this.props.currentDb});
         }

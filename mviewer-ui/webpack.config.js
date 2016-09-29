@@ -62,7 +62,7 @@ var config = {
             { from: APP_DIR + '/vendors/css/grid.css', to: BUILD_DIR  + '/grid.css'}
         ]),
         new CopyWebpackPlugin([
-            { from: APP_DIR + '/assets/Pramati_Logo.png', to: BUILD_DIR  + '/assets/Pramati_Logo.png'}
+            { from: APP_DIR + '/assets', to: BUILD_DIR  + '/assets'}
         ])
     ]
 };

@@ -162,7 +162,7 @@ class DbListComponent extends React.Component {
         this.setState({message:'Database '+obj['name']+ ' was successfully created'});
         this.setState({successMessage:true});
         this.refreshDbList(obj['name']);
-        setTimeout(function() { this.closeModal() }.bind(this), 3000);
+        setTimeout(function() { this.closeModal() }.bind(this), 2000);
       }
       if (data.response.error) {
         this.setState({successMessage:false});

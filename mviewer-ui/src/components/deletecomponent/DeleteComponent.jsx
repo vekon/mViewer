@@ -40,7 +40,17 @@ class DeleteComponent extends React.Component {
     if(type === 'file'){
       deleteUrl = this.props.dbName+'/gridfs/'+this.props.collectionName+'/dropfile?id=' + this.props.uId+ '&connectionId='+this.props.connectionId;
     }
-    var deleteCall = service('DELETE', deleteUrl, obj);
+
+    if(type === 'User'){
+      deleteUrl = this.props.dbName+'/usersIndexes/removeUser?connectionId='+this.props.connectionId;
+      obj["username"] = this.props.userName;
+    }
+
+    if(type === 'User'){
+      var deleteCall = service('POST', deleteUrl, obj);
+    } else {
+      var deleteCall = service('DELETE', deleteUrl, obj);
+    }
     deleteCall.then(this.success.bind(this), this.failure.bind(this));
 
   }
@@ -53,10 +63,10 @@ class DeleteComponent extends React.Component {
     if (data.response.error) {
       if (data.response.error){
         this.setState({successMessage:false});
-        this.setState({message:'Error in deleteing the '+this.props.title});
+        this.setState({message:'Error in deleting the '+this.props.title});
       }
     }
-    setTimeout(function() { this.closeModal() }.bind(this), 3000);
+    setTimeout(function() { this.closeModal() }.bind(this), 2000);
   }
 
   failure() {

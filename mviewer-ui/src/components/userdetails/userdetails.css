@@ -1,0 +1,67 @@
+.mainContainer {
+  position: absolute;
+  margin-top: 6%;
+  margin-left: 18%;
+  overflow: hidden;
+  width: 70%;
+}
+
+.detailsBody table {
+  border-collapse: collapse;
+  border: 1.5px solid #bababa;
+  text-align: center;
+  line-height: 25px;
+  width: 450px;
+  background-color: #eff4f8;
+}
+.detailsBody table td, .detailsBody table th {
+  border: 1.5px solid #bababa;
+}
+.detailsBody table tr:first-child th {
+  border-top: 0;
+  width: 225px;
+}
+.detailsBody table tr:last-child td {
+  border-bottom: 0;
+}
+.detailsBody table tr td:first-child,
+.detailsBody table tr th:first-child {
+  border-left: 0;
+}
+.detailsBody table tr td:last-child,
+.detailsBody table tr th:last-child {
+  border-right: 0;
+}
+
+.detailsBody table tr td {
+    padding: 5px 50px;
+    text-transform: capitalize;
+}
+
+.detailsBody {
+  margin-top : 3%;
+}
+.detailsLabel{
+  color: #484848;
+  font-size: 15px;
+  margin-bottom: 2%;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.deleteButtonGridfs {
+    float: right;
+    display: inline;
+    margin-top: -0.5%;
+    margin-right: 4%;
+    font-size: 70%;
+    cursor: pointer;
+}
+
+.deleteButtonGridfs i {
+  padding-right: 5px;
+}
+
+.deleteButtonGridfs span {
+  display: inline;
+}

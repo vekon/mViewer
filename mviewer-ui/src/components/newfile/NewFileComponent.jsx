@@ -1,5 +1,6 @@
 import React from 'react'
 import newFileStyles from './newfile.css'
+import newBucketStyles from '../newbucket/newBucket.css'
 import $ from 'jquery'
 import Modal from 'react-modal'
 import { Form } from 'formsy-react';
@@ -25,13 +26,15 @@ class newFileComponent extends React.Component {
       successMessage: false,
       newFile: [],
       uploadClick: false,
-      count: 0
+      count: 0,
+      disableSubmit: true
     }
   }
 
   openModal() {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
+    this.setState({disableSubmit: true});
   }
 
   closeModal() {
@@ -65,6 +68,7 @@ class newFileComponent extends React.Component {
     var newArray = this.state.newFile.slice();
     newArray.push(event.target.files[0]);
     this.setState({newFile : newArray});
+    this.setState({disableSubmit: false});
   }
 
   fileUpload(data) {
@@ -74,6 +78,22 @@ class newFileComponent extends React.Component {
     var partialUrl = this.props.currentDb+'/gridfs/'+this.props.currentItem+'/uploadfile?connectionId='+this.props.connectionId;
     var newFileCall = service('POST', partialUrl, fd, 'fileUpload' , data);
     newFileCall.then(this.success.bind(this), this.failure.bind(this));
+  }
+
+  removeFile(index) {
+    return function() {
+      var files = [];
+      this.state.newFile.map(function(item, idx){
+        if(idx != index)
+          files.push(item);
+      });
+      this.setState({newFile: files});
+      if(this.state.newFile.length > 0){
+        this.setState({disableSubmit: false});
+      } else {
+        this.setState({disableSubmit: true});
+      }
+    }.bind(this);
   }
 
   success(data) {
@@ -89,7 +109,7 @@ class newFileComponent extends React.Component {
     if(this.state.count == this.state.newFile.length) {
       this.setState({successMessage:true});
       setTimeout(function() { this.setState({message: "File(s) successfully added to bucket " + this.props.currentItem})}.bind(this), 1000);
-      setTimeout(function() { this.closeModal() }.bind(this), 3000);
+      setTimeout(function() { this.closeModal() }.bind(this), 2000);
     }
   }
 
@@ -134,18 +154,22 @@ class newFileComponent extends React.Component {
     var selectedFiles = Object.keys(that.state.newFile).map(function (item, idx) {
       ++count
       var sizeKB = Math.round((that.state.newFile[item].size / 1024) * 100 ) / 100 ;
-      return <div key={item} className={newFileStyles.eachFile}>
-              <span className={newFileStyles.name}>{this.state.newFile[item].name}</span>
-              <span>({sizeKB}Kb) </span>
-              <span id={this.state.newFile[item].name}></span>
-              { this.state.uploadClick ?
-                <Line percent={this.state.newFile[item].percent} strokeWidth="4" strokeColor={this.state.color} className={newFileStyles.lineProgress}/>
-                : null
-              }
-              <span>{item.success}</span>
-              { item.added ?
-                <span><i className={"fa fa-remove " +  sharedStyles.removeIcon} aria-hidden="true"></i></span>
+      return <div key={item} className={newFileStyles.selectedFiles}>
+              <div key={item} className={newFileStyles.eachFile}>
+                <span className={newFileStyles.name}>{this.state.newFile[item].name}</span>
+                <span>({sizeKB}Kb) </span>
+                <span id={this.state.newFile[item].name}></span>
+                { this.state.uploadClick ?
+                  <Line percent={this.state.newFile[item].percent} strokeWidth="4" strokeColor={this.state.color} className={newFileStyles.lineProgress}/>
+                  : <span className={newBucketStyles.removeFileDiv}>
+                      <span onClick= {this.removeFile(idx)}><i className="fa fa-remove" aria-hidden="true"></i></span>
+                    </span>
+                }
+                <span>{item.success}</span>
+                { item.added ?
+                  <span><i className={"fa fa-remove " +  sharedStyles.removeIcon} aria-hidden="true"></i></span>
                 : null}
+              </div>
              </div>
       }.bind(this));
 
@@ -153,41 +177,72 @@ class newFileComponent extends React.Component {
       content : {
         top                   : '50%',
         left                  : '50%',
+        overflow              : 'hidden',
+        border                : 'none',
+        borderRadius          : '4px',
         right                 : 'auto',
-        width                 : '30%',
+        width                 : '25%',
+        padding               : '0px',
         bottom                : 'auto',
         marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)'
+      },
+      overlay : {
+        backgroundColor       : 'rgba(0,0,0, 0.74902)'
       }
     };
 
     return(
-      <div className = {newFileStyles.mainContainer}>
+      <div>
        <span className={newFileStyles.addButton} onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add File(s)</span>
        <Modal
          isOpen={this.state.modalIsOpen}
          onRequestClose={this.closeModal.bind(this)}
          style = {customStyles}>
-         <div className={newFileStyles.two}>
-           <h3>{this.state.title}</h3>
-            <span className={newFileStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
-           <Form method='POST'>
-             <label className={newFileStyles.addLabel}>Add files..</label>
-             <FileInput name="files"
-                placeholder="Add files.."
-                className={newFileStyles.addFile}
-                onChange={this.handleChanged.bind(that)}
-                value={this.state.inputValue}/>
-             <button onClick={this.uploadHandle.bind(that)} className={newFileStyles.upload}>Upload</button>
-             { selectedFiles.length > 0 ?
-               <div className={newFileStyles.selectedFiles}>
-                { selectedFiles }
-               </div>
-             : null}
-           </Form>
-           <div className={!this.state.successMessage? (newFileStyles.errorMessage + ' ' + (this.state.message!='' ? newFileStyles.show : newFileStyles.hidden)) : (this.state.message != '' ? newFileStyles.successMessage : '')}>{this.state.message}</div>
-           <button onClick={this.closeModal.bind(that)} className={ newFileStyles.cancel }>Cancel</button>
-         </div>
+          <div className={newFileStyles.two}>
+            <div className={newFileStyles.header}>
+              <span className={newFileStyles.text}>{this.state.title}</span>
+            </div>
+            <Form method='POST'>
+              <div>
+                <div>
+                { selectedFiles.length <= 0 ?
+                  <span>
+                    <img src={'../../assets/images/Add.png'} className={newBucketStyles.logo}></img>
+                    <span className={newBucketStyles.addLabel}>Click here to upload files</span>
+                    <div className={newBucketStyles.addFileDiv}>
+                      <FileInput name="files"
+                         placeholder="Add files.."
+                         className={selectedFiles.length > 0 ? newBucketStyles.addFileHidden : newBucketStyles.addFile}
+                         onChange={this.handleChanged.bind(that)}
+                         value={this.state.inputValue}/>
+                      </div>
+                  </span>
+                 : <span>
+                      { selectedFiles }
+                   </span> }
+                 { selectedFiles.length > 0 ?
+                    <div className={newBucketStyles.addMoreFileDiv}>
+                      <span className={newFileStyles.addMore}>ADD MORE FILES</span>
+                      <FileInput name="files"
+                         placeholder="Add files.."
+                         className={newBucketStyles.addMoreFile}
+                         onChange={this.handleChanged.bind(that)}
+                         value={this.state.inputValue}/>
+                    </div> : null }
+                 { this.state.errorFile ?
+                  <div className={newBucketStyles.errorFile}>Please select alteast one file.</div>
+                  : null}
+                  </div>
+              </div>
+
+              <div className={newBucketStyles.buttons}>
+               <span onClick={this.closeModal.bind(that)} className={ newFileStyles.cancel }>CANCEL</span>
+               <button onClick={this.uploadHandle.bind(that)} disabled= {this.state.disableSubmit} className={newFileStyles.submit}>UPLOAD</button>
+              </div>
+            </Form>
+            <div className={!this.state.successMessage? (newBucketStyles.errorMessage + ' ' + (this.state.message!='' ? newBucketStyles.show : newBucketStyles.hidden)) : (this.state.message != '' ? newBucketStyles.successMessage : '')}>{this.state.message}</div>
+          </div>
        </Modal>
       </div>
     );
