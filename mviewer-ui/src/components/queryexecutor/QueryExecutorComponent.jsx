@@ -249,7 +249,7 @@ class QueryExecutorComponent extends React.Component {
       this.setState({errorMessage : 'There is an error with the Query, Please check the parameters'});
       setTimeout(function(){
            this.setState({errorMessage: ''});
-      }.bind(this), 3000);
+      }.bind(this), 2000);
 
     }
   }

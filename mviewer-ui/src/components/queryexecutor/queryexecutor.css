@@ -6,6 +6,7 @@
 
 .actionsContainer {
   float: right;
+  display: inline-block;
 }
 
 .actionsContainer>div{

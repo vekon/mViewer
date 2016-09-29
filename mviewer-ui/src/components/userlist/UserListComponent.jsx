@@ -12,8 +12,8 @@ class UserList extends React.Component {
     super(props);
     this.state = {
       user:[],
+      userDetails: [],
       connectionId: this.props.propps.connectionId,
-      dbStats: {},
       selectedDB: this.props.selectedDB,
       visible: false,
       selectedItem: null,
@@ -23,10 +23,21 @@ class UserList extends React.Component {
     }
   }
 
+  fillData(data){
+    var users = [];
+    if(data.documents[0].users.length > 0) {
+      data.documents[0].users.map(function(item){
+        users.push(item.user);
+      });
+    }
+    this.setState({user: users});
+    this.setState({userDetails: data.documents[0].users});
+  }
+
   success(calledFrom, data) {
     if(calledFrom == 'refreshCollectionList'){
       if(typeof(data.response.result) !== 'undefined'){
-        this.setState({user: data.response.result});
+        this.fillData(data.response.result);
       }
       if(typeof(data.response.error) !== 'undefined'){
         if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){
@@ -36,11 +47,11 @@ class UserList extends React.Component {
     }
 
     if(calledFrom == 'componentWillMount'){
-      this.setState({user: data.response.result});
+      this.fillData(data.response.result);
     }
 
     if(calledFrom == 'componentWillReceiveProps'){
-      this.setState({user: data.response.result});
+      this.fillData(data.response.result);
     }
   }
 
@@ -49,11 +60,17 @@ class UserList extends React.Component {
   }
 
 
-  clickHandler (idx,fs) {
+  clickHandler (idx,selectedUser) {
     this.setState({selectedCollection: idx});
     this.setState({ visible: false});
-    this.props.setStates(fs);
-    this.setState({selectedCollection : fs}, function(){
+    var itemDetails = null;
+    this.state.userDetails.map(function(item){
+      if(item.user == selectedUser) {
+        itemDetails = item;
+      }
+    });
+    this.props.setStates(itemDetails.user,itemDetails, "user");
+    this.setState({selectedCollection : itemDetails.user}, function(){
     });
   }
 
@@ -67,22 +84,22 @@ class UserList extends React.Component {
   }
 
   refreshCollectionList(db){
-    var partialUrl = db +'/userIndexes/users?connectionId=' + this.state.connectionId;
-    var userListCall = service('GET', partialUrl, '', 'getUser');
+    var partialUrl = db +'/usersIndexes/users?connectionId=' + this.state.connectionId;
+    var userListCall = service('GET', partialUrl, '');
     userListCall.then(this.success.bind(this, 'refreshCollectionList'), this.failure.bind(this, 'refreshCollectionList'));
   }
 
   componentWillMount(){
     var that = this;
-    var partialUrl = this.props.selectedDB +'/userIndexes/users?connectionId=' + this.state.connectionId;
-    var userListCall = service('GET', partialUrl, '', 'getUser');
+    var partialUrl = this.props.selectedDB +'/usersIndexes/users?connectionId=' + this.state.connectionId;
+    var userListCall = service('GET', partialUrl, '');
     userListCall.then(this.success.bind(this, 'componentWillMount'), this.failure.bind(this, 'componentWillMount'));
   }
 
   componentWillReceiveProps(nextProps) {
     var that = this;
-    var partialUrl = nextProps.selectedDB +'/userIndexes/users?connectionId=' + this.state.connectionId;
-    var userListCall = service('GET', partialUrl, '', 'getUser');
+    var partialUrl = nextProps.selectedDB +'/usersIndexes/users?connectionId=' + this.state.connectionId;
+    var userListCall = service('GET', partialUrl, '');
     userListCall.then(this.success.bind(this, 'componentWillReceiveProps'), this.failure.bind(this, 'componentWillReceiveProps'));
   }
 

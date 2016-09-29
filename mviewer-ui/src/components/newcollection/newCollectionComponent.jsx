@@ -148,7 +148,7 @@ class newCollectionComponent extends React.Component {
           this.state.newCollection = obj['newCollName'];
         }
         this.setState({successMessage:true});
-        // setTimeout(function() { this.closeModal() }.bind(this), 3000);
+        setTimeout(function() { this.closeModal() }.bind(this), 2000);
       }
       if (data.response.error) {
         if (data.response.error.code === 'COLLECTION_ALREADY_EXISTS'){

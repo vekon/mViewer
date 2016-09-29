@@ -9,6 +9,7 @@ import DbStats from '../dbstats/DbStatsComponent.jsx'
 import UserList from '../userlist/UserListComponent.jsx'
 import $ from 'jquery'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import UserDetails from '../userdetails/UserDetailsComponent.jsx'
 
 class CollectionsComponent extends React.Component {
 
@@ -17,7 +18,8 @@ class CollectionsComponent extends React.Component {
       this.state = {
         selectedTab : 0,
         showQueryExecutor: false,
-        selectedCollection: ''
+        selectedCollection: '',
+        userDetails: []
       }
   }
 
@@ -26,26 +28,29 @@ class CollectionsComponent extends React.Component {
     });
   }
 
+  showQueryExecutor(){
+    this.setState({showQueryExecutor: true});
+  }
+
   componentWillReceiveProps(){
     this.setState({selectedTab:0});
     this.setState({showQueryExecutor: false});
     this.setState({selectedCollection: ''});
   }
 
-  setStates(collection){
-    this.setState({showQueryExecutor: true});
+  setStates(collection, data, type){
+    if(type == "user") {
+      this.setState({userDetails: data});
+    }
     this.setState({selectedCollection: collection});
-  }
-
-  switchTab() {
-    this.setState({showQueryExecutor: false});
-  }
-
-  showQueryExecutor(){
     this.setState({showQueryExecutor: true});
   }
 
   hideQueryExecutor(){
+    this.setState({showQueryExecutor: false});
+  }
+
+  switchTab() {
     this.setState({showQueryExecutor: false});
   }
 
@@ -82,12 +87,12 @@ class CollectionsComponent extends React.Component {
             </div>
           </TabPanel>
           <TabPanel>
-              <GridFSList ref="left"  visible={true} propps = {this.props} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></GridFSList>
-              {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "fs" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
+            <GridFSList ref="left"  visible={true} propps = {this.props} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></GridFSList>
+            {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "fs" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
           </TabPanel>
           <TabPanel>
-              <UserList ref="left"  visible={true} propps = {this.props} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></UserList>
-              {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "fs" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
+            <UserList ref="left"  visible={true} propps = {this.props} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></UserList>
+            {this.state.showQueryExecutor ? <UserDetails ref='right' refreshData={this.refreshRespectiveData.bind(this)} users={this.state.userDetails} currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)}></UserDetails> : null}
           </TabPanel>
           <TabPanel>
             <DbStats ref="left"  visible={true} connectionId = {this.props.connectionId} selectedDB={this.props.location.query.db}></DbStats>
