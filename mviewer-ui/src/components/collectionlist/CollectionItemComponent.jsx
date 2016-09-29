@@ -20,12 +20,20 @@ class CollectionItemComponent extends React.Component {
    this.setState({message: ''});
  }
 
- closeModal() {
+ closeModal(successMessage, fromDeleteButton) {
    if(this.state._isMounted == true){
+     if(successMessage == true){
+       if(fromDeleteButton == 'delete'){
 
+          this.props.refreshCollectionListForDelete(this.props.dbName);
+       }
+       else {
+          this.props.refreshCollectionList(this.props.dbName , false);
+       }
+
+     }
+     this.setState({modalIsOpen: false});
    }
-
-   this.props.refreshCollectionList();
  }
 
  componentDidMount(){
@@ -43,6 +51,8 @@ class CollectionItemComponent extends React.Component {
           <i className="fa fa-folder-open-o" aria-hidden="true"></i>
         </span>
         <button>{this.props.name}</button>
+        <i className={"fa fa-trash "+ collectionListStyles.trash} aria-hidden="true" onClick = {this.openModal.bind(this)}></i>
+        {this.state.modalIsOpen ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'collection' dbName = {this.props.dbName} collectionName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent> : null}
       </div>
     );
   }

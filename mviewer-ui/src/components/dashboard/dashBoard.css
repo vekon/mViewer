@@ -15,10 +15,9 @@ align-items: center;
 /*Main Navigyation*/
 .mainNav {
     list-style: none;
-    background: #2294d2;
-    height: 100px;
+    background: #2494d0;
+    height: 60px;
     padding: 0 5px;
-    /*float: right;*/
     display: flex;
     align-items: center;
     margin-left: auto;
@@ -27,8 +26,6 @@ align-items: center;
 
 .mainNav li {
     display: inline-block;
-    /*margin-left: 1%;
-    padding-top: 1%;*/
 }
 
 .mainNav li a:link,
@@ -72,25 +69,22 @@ align-items: center;
     height: auto;
     width: auto;
     float: left;
-    /*margin-top: 5%;*/
     text-decoration: none;
     padding-left: 2%;
-    /*margin-top: 5px;*/
 }
 
-
 .span1{
-  font-family: 'Lato' ;
+  font-family: 'Brandon' ;
   color: #fff;
   font-size: 30px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .span2 {
-  font-family: 'Lato';
+  font-family: 'Brandon';
   color: #fff;
   font-size: 30px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .span3 {
@@ -119,7 +113,7 @@ align-items: center;
 
 /*Header*/
 header {
-    background: #2294d2;
+    background: #2494d0;
 }
 
 .banner {
@@ -128,10 +122,7 @@ header {
 }
 
 .disconnect {
-  /*margin-right: 5%;
-  float: right;*/
 }
 
 .disconnect::before {
-  /*content: '' !important;*/
 }

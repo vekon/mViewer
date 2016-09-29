@@ -31,7 +31,7 @@ padding: 10px 0;
 border: 1px solid;
 display: inline-block;
 text-align: center;
-background-color: #2294d2;
+background-color: #2494d0;
 color: #fff;
 padding: 20px 0;
 font-weight: 600;
@@ -40,7 +40,7 @@ font-size: 100%;
 letter-spacing: 0.5;
 transition: background-color 0.2s, color 0.2s;
 cursor: pointer;
-font-family: 'Lato';
+font-family: 'Brandon';
 font-weight: 300;
 }
 
@@ -69,14 +69,14 @@ font-weight: 300;
 .topSection, .midSection, .bottomSection {
   padding: 0;
   text-align: center;
-  font-family: 'Lato';
+  font-family: 'Brandon';
   display: inline-block;
   width: 100%;
 }
 
 
 .topSection {
-  color: #737373;
+  color: #484848;
     font-weight: 300;
     letter-spacing: 1.5;
     font-size: 130%;
@@ -84,7 +84,7 @@ font-weight: 300;
 }
 
 .midSection {
-  color: #737373;
+  color: #484848;
 font-weight: 300;
 letter-spacing: 0.5;
 margin-top: 3%;
@@ -95,7 +95,7 @@ font-size: 130%;
   }
 
 .bottomSection {
-  color: #2294d2;
+  color: #2494d0;
   font-weight: 300;
   margin-top: 7%;
   font-size: 240%;
@@ -124,11 +124,11 @@ font-size: 130%;
 
 .inputBox div input[type=text] {
     padding: 10px;
-    border-radius: 3px;
-    border: 1px solid #4968a7;
+    border-radius: 1px;
+    border: 1px solid #cccccc;
     background-color: inherit;
     font-size: 11px;
-    color: black !important;
+    color: #ababab !important;
     height: 30px;
     width: 100%;
 }
@@ -168,10 +168,9 @@ font-size: 130%;
 }
 
 .formContainer {
-    margin-left: 19%;
-    margin-top: 15%;
-    margin-right: auto;
-    width: 62%;
+  margin-left: 5%;
+  margin-right: auto;
+  width: 90%;
 }
 
 .help {
@@ -180,12 +179,16 @@ font-size: 130%;
 }
 
 .errorMessage {
-    color: red;
-    margin: 5px 0;
-    text-align: center;
-    border: 1px solid red;
-    width: 100%;
-    font-size: 50%;
+  color: red;
+  text-align: center;
+  border: 1px solid red;
+  width: 90%;
+  border-radius: 0px;
+  font-size: 12px;
+  margin: 5px auto;
+  height: auto;
+  min-height: 40px;
+  padding: 10px;
 }
 
 .errorMessage.hidden {
@@ -193,60 +196,97 @@ font-size: 130%;
 }
 
 .errorMessage.show {
-    color: #FF9696;
-    margin: 5px 0;
-    text-align: center;
-    border: 1px solid #FF9696;
-    width: 100%;
-    border-radius: 3px;
-    line-height: 3;
+  color: red;
+  text-align: center;
+  border: 1px solid red;
+  width: 90%;
+  border-radius: 0px;
+  font-size: 12px;
+  margin: 5px auto;
+  height: auto;
+  min-height: 40px;
+  padding: 10px;
 }
 
 
 .successMessage {
-    color: green;
-    margin: 5px 0;
-    text-align: center;
-    border: 1px solid green;
-    width: 100%;
-    border-radius: 3px;
-    line-height: 3;
-    font-size: 50%
+  color: green;
+  text-align: center;
+  border: 1px solid green;
+  width: 90%;
+  border-radius: 0px;
+  font-size: 12px;
+  margin: 5px auto;
+  height: auto;
+  min-height: 40px;
+  padding: 10px;
 }
 
-
 /*Buttons*/
-.submit
+.submit,
+.cancel
  {
-    /*padding: 10px 30px;*/
-    border: 1px solid #3679f8;
-    width: 157px;
-    background-color: #26344e;
-    font-size: 12px;
-    color: white;
-    margin-left: 0px;
-    border-radius: 3px;
+    border: none !important;
+    width: 20%;
+    background-color: inherit;
+    font-size: 13px;
+    font-weight: 600;
     height: 30px;
-    width: 100%;
-    /*margin-top:15px;*/
+}
+
+.cancel {
+  color: #484848;
+  margin-left: 175px;
+  font-family: 'Brandon';
+}
+
+.submit {
+  color: #2494d0;
+  float: right;
+  margin-bottom: 4%;
+  margin-right: 8px;
+  font-family: 'Brandon';
+  margin-top: .01%;
+  padding-bottom: 4%;
 }
 .submit:hover,
 .submit:active {
-    background-color: #576d96;
-    border: 1px solid #576d96;
+    color: #3c5563;
+    cursor: pointer;
+}
+
+.cancel:hover,
+.cancel:active {
+    color: #191717;
     cursor: pointer;
 }
 
 .closeSpan {
   float: right;
-  margin-top: -3%;
-  margin-right: -3%;
+  margin-top: 5%;
+  margin-right: 3%;
   cursor: pointer;
 }
 
-.closeSpan {
-  float: right;
-  margin-top: -5.5%;
-  margin-right: -2.5%;
-  cursor: pointer;
+.header{
+  background-color: #2294d2;
+  font-size: 14px;
+  height: 50px;
+  color: white;
+  margin-bottom: 5%;
+}
+
+.text{
+  top: 30%;
+  position: relative;
+  left: 5%;
+  font-family: 'Brandon';
+  font-size: 17px;
+}
+
+.buttons {
+    text-align: center;
+    margin-bottom: 3%;
+    margin-top: 5%;
+
 }

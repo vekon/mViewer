@@ -10,7 +10,7 @@
 
 
 .two label {
-  font-size: 80%;
+  font-size: 16px;
   margin-bottom: 3%;
   display: inline-block;
 }
@@ -20,32 +20,50 @@
 .submit
  {
     display: inline-block;
-    border: 1px solid #3679f8;
-    background-color: #26344e;
-    font-size: 12px;
-    color: white;
-    /*margin-left: 0;*/
+    background-color: #fff;
+    font-size: 15px;
+    color: #2294d2;
     margin-right: 2%;
     float: right;
-    border-radius: 3px;
     height: 30px;
-    width: 20%;;
+    width: 20%;
+    border: none;
+    cursor: pointer;
+}
+
+.cancel {
+  display: inline-block;
+  background-color: #fff;
+  font-size: 15px;
+  color: #484848;
+  float: right;
+  height: 30px;
+  width: 20%;;
+  border: none;
+  cursor: pointer;
 }
 .submit:hover,
 .submit:active {
-    background-color: #576d96;
-    border: 1px solid #576d96;
-    cursor: pointer;
+    color: #3c5563;
+}
+
+.cancel:hover,
+.cancel:active {
+  color: #191717;
 }
 
 
 .errorMessage {
-    color: red;
-    margin: 5px 0;
-    text-align: center;
-    border: 1px solid red;
-    width: 100%;
-    font-size: 50%;
+  color: red;
+  text-align: center;
+  border: 1px solid red;
+  width: 90%;
+  border-radius: 0px;
+  font-size: 12px;
+  margin: 5px auto;
+  height: auto;
+  min-height: 40px;
+  padding: 10px;
 }
 
 .errorMessage.hidden {
@@ -53,25 +71,30 @@
 }
 
 .errorMessage.show {
-    color: #FF9696;
-    margin: 5px 0;
-    text-align: center;
-    border: 1px solid #FF9696;
-    width: 100%;
-    border-radius: 3px;
-    line-height: 3;
+  color: red;
+  text-align: center;
+  border: 1px solid red;
+  width: 90%;
+  border-radius: 0px;
+  font-size: 12px;
+  margin: 5px auto;
+  height: auto;
+  min-height: 40px;
+  padding: 10px;
 }
 
 
 .successMessage {
-    color: green;
-    margin: 5px 0;
-    text-align: center;
-    border: 1px solid green;
-    width: 100%;
-    border-radius: 3px;
-    line-height: 3;
-    font-size: 50%
+  color: green;
+  text-align: center;
+  border: 1px solid green;
+  width: 90%;
+  border-radius: 0px;
+  font-size: 12px;
+  margin: 5px auto;
+  height: auto;
+  min-height: 40px;
+  padding: 10px;
 }
 
 

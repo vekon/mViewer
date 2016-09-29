@@ -162,7 +162,7 @@ class newFileComponent extends React.Component {
     };
 
     return(
-      <div>
+      <div className = {newFileStyles.mainContainer}>
        <span className={newFileStyles.addButton} onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add File(s)</span>
        <Modal
          isOpen={this.state.modalIsOpen}

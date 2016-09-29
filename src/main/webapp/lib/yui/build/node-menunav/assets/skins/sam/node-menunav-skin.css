@@ -10,7 +10,7 @@ build: 3167
 .yui3-skin-sam .yui3-menu-content, 
 .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menu-content {
 
-    font-size: 93%;  /* 12px */
+    font-size: 93%;  /* 13px */
     line-height: 1.5;  /* 18px */
     *line-height: 1.45; /* For IE */
     border: solid 1px #808080;

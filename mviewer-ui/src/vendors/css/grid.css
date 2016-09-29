@@ -1,5 +1,6 @@
 .ReactModal__Overlay {
   z-index: 999999999999999;
+  background: rgba(0,0,0, 0.74902) !important;
 }
 
 .mainBody {
@@ -8,7 +9,7 @@
 	padding: 0;
 	width: 100%;
 	height: 100%;
-	background-color: #e7e8ea;
+	background-color: #e6e7e8;
 }
 
 

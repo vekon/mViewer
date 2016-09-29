@@ -11,7 +11,6 @@
 }
 
 .sideContainer {
-  /*width: 70px;*/
   width: 30%;
   background-color: #212f30;
   font-family: 'Arial' !important;
@@ -46,7 +45,7 @@
 }
 
 .sideNav li div span{
-  font-size: 75%;
+  font-size: 14px;
   color: #85adad;
   text-align: center;
 }
@@ -61,6 +60,7 @@
 
 .sideNav li button {
   background-color: inherit;
+  color: inherit;
   width: 100%;
   border: 0;
   height: 100px;
@@ -73,6 +73,7 @@
   transition: background-color 0.2s;
   border-bottom: 1px solid #072430;
 	border-top: 1px solid #5d7979;
+  color: #fff;
 }
 
 .sideNav li:first-child {
@@ -80,17 +81,21 @@
 }
 
 .sideNav li i {
-  color: #fff;
+  color: inherit;
   font-size: 34px;
 }
 
+.sideNav li:hover{
+  color: #2494d0 !important;
+}
+
 .sideNav li i:hover {
-  color: #2294d2 !important
+  color: #2494d0 !important;
 }
 
 .sideNav li button:hover {
   background-color: #111919;
-  color: #2294d2 !important;
+  color: #2494d0 !important;
 }
 
 .active {
@@ -98,5 +103,5 @@
 }
 
 .active i {
-  color: #2294d2 !important;
+  color: #2494d0 !important;
 }

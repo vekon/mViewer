@@ -3,24 +3,15 @@
     z-index:2;
     top:0;
     width:15%;
-    /*position: absolute;*/
     height:auto;
     min-height: 100%;
     transition: transform ease 0.3s;
     color: #ccc;
     background:#fff;
-    /*margin-top: 55px;*/
     border-right: solid 1px #bababa;
-    /*position: fixed;*/
-    /*margin-top: 10.2%;*/
-    /*margin-top: 5.9%;*/
-    /*margin-left:1%;*/
     overflow: auto;
     float: left;
 }
-
-
-
 
 .visible {
     transform:translate3d(320px, 0, 0);
@@ -28,7 +19,6 @@
 }
 
 .menu>div>div:last-child {
-  /*margin-bottom: 100%;*/
 }
 
 .left {
@@ -41,23 +31,28 @@
 .menuItem {
     width:100%;
     margin:0;
-    padding:10px 15px;
+    padding:5px 15px;
     border-bottom:solid 1px #bababa;
     cursor:pointer;
-    color:#737373;
+    color:#484848;
     transition: background-color 0.2s;
-    font-size: 12px;
+    font-size: 17px;
     min-width: 162px
 }
 
 .menuItem:hover {
-     background-color:#2294d2;
+     background-color:#2494d0;
      color : #fff;
 }
 
 .highlight {
-    background-color:#2294d2;
+    background-color:#2494d0;
     color: #fff;
+}
+
+.trash {
+  font-size: 13px;
+  padding: 5px;
 }
 
 
@@ -65,29 +60,28 @@
   background-color: inherit;
   color: inherit;
   border: 0;
-  font-family: 'Lato';
+  font-family: 'Brandon';
   padding: 10px;
   cursor: pointer;
   width: 70%;
   text-align: left;
-  font-size: 12px;
+  font-size: 17px;
   font-weight: 400;
 }
 
 .menuItem i {
-  /*padding: 10px;*/
   color: inherit;
 }
 
 .menuTitle {
     text-align: center;
-    padding: 5px;
+    padding: 1%;
     background-color: #fff;
-    color: #737373;
-    font-family: 'Lato';
-    font-size: 12px;
+    color: #484848;
+    font-family: 'Brandon';
+    font-size: 17px;
     border-bottom: 1px solid #bababa;
-    height: 50px;
+    height: auto;
 }
 
 .menuTitle div {
@@ -96,7 +90,6 @@
 
 .removeIcon {
   color: #85adad;
-  /*display: block;*/
   text-align: center;
   font-size: 70%;
   margin-top: -20%;
@@ -105,8 +98,8 @@
 
 .searchInput input {
     outline: none;
-    padding: 5px 5px 5px 20px;
-    border: 6px solid #ccc;
+    padding: 10px 5px 10px 25px;
+    border: 3px solid #ccc;
     width: 100%;
 }
 
@@ -122,6 +115,7 @@
   top: 12%;
   left: 3%;
   line-height: 32px;
+  color: #484848;
 
 }
 

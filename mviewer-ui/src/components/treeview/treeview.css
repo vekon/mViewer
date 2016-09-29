@@ -1,7 +1,7 @@
 .headContainer {
   display: inline-block;
   width: 100%;
-  background: #2294d2;
+  background: #2494d0;
 }
 
 .innerContainer {
@@ -26,7 +26,7 @@
 
 .container {
    background-color: inherit;
-   font-size: 70%;
+   font-size: 14px;
    width: 93%;
    position: relative !important;
    border: 1px solid #bababa;
@@ -73,7 +73,7 @@
 }
 .exceptionContainer {
   display: block;
-  font-family: 'Lato';
+  font-family: 'Brandon';
   font-size: 15px;
   padding: 10px;
 }

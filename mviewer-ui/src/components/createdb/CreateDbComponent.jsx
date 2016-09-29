@@ -76,7 +76,7 @@ class CreateDbComponent extends React.Component {
     if (data.response.result) {
       this.setState({message:'Database '+obj['name']+ ' was successfully created'});
       this.setState({successMessage:true});
-      this.props.refreshDb();
+      setTimeout(function() { this.props.refreshDb() }.bind(this), 3000);
     }
     if (data.response.error) {
       this.setState({successMessage:false});
@@ -97,7 +97,12 @@ class CreateDbComponent extends React.Component {
         width                 : '25%',
         bottom                : 'auto',
         marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)'
+        padding               : '0px',
+        transform             : 'translate(-50%, -50%)',
+        border                : 'none'
+      },
+      overlay : {
+        backgroundColor       : 'rgba(0,0,0, 0.74902)'
       }
     };
     return(
@@ -119,15 +124,17 @@ class CreateDbComponent extends React.Component {
           onRequestClose={this.closeModal.bind(this)}
           style = {customStyles}>
           <div className={createDbStyles.two}>
-            <h3>Create Database</h3>
-            <span className={createDbStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
+            <div className={createDbStyles.header}>
+              <span className={createDbStyles.text}>Create Database</span>
+            </div>
             <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
               <div className={ createDbStyles.formContainer}>
                 <div className={createDbStyles.inputBox}>
                   <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name' }}  />
                 </div>
-                <div>
-                  <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={createDbStyles.submit} disabled={!this.state.canSubmit}>SUBMIT</button>
+                <div className={createDbStyles.buttons}>
+                  <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={createDbStyles.submit} disabled={!this.state.canSubmit}>CREATE</button>
+                  <span onClick={this.closeModal.bind(this)} value='CANCEL' className={createDbStyles.cancel} >CANCEL</span>
                 </div>
               </div>
             </Form>

@@ -1,4 +1,3 @@
-
 import $ from 'jquery';
 
 var path = '../services/';
@@ -12,7 +11,38 @@ function setupServicePath() {
 setupServicePath();
 
 function service(typex, serviceName, req , component, data) {
-  if (component != 'fileUpload'){
+  if (component == 'fileUpload'){
+    return $.ajax({
+      type: typex,
+      url: path + serviceName,
+      dataType: 'json',
+      headers: {
+        Accept: "application/json"
+      },
+      data: req,
+      processData: false,
+      contentType: false,
+      progress: function(e) {
+        if(e.lengthComputable) {
+          data.percent = (e.loaded / e.total) * 100;
+        }
+      }
+    });
+  }
+  else if(component == 'getUser') {
+  	return $.ajax({
+      type: typex,
+      dataType: 'json',
+      processData: false,
+      contentType: false,
+      headers: {
+        Accept: "application/json"
+      },
+      url: path + serviceName,
+      data : req
+    });
+  }
+  else{
   	return $.ajax({
       type: typex,
       cache: false,
@@ -25,25 +55,7 @@ function service(typex, serviceName, req , component, data) {
       data : req
     });
   }
-  else{
-  return $.ajax({
-    type: typex,
-    url: path + serviceName,
-    dataType: 'json',
-    headers: {
-      Accept: "application/json"
-    },
-    data: req,
-    processData: false,
-    contentType: false,
-    progress: function(e) {
-      if(e.lengthComputable) {
-        data.percent = (e.loaded / e.total) * 100;
-      }
-    }
-  });
 }
 
-}
 
 export default service;

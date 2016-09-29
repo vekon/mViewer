@@ -1,12 +1,11 @@
 .mainContainer {
-    background-color: #CCD9DE;
+    background-color: #fff;
     display: inline-block;
-    position: absolute;
-    w: 100%;
+    width: 100%;
     overflow: hidden;
-    width: calc(100% - 70px);
     height: 100%;
     overflow: hidden;
+    font-family: 'Brandon';
 }
 
 .listContainer {
@@ -20,13 +19,21 @@
 }
 
 .dbStatsBody table {
-  border-collapse: collapse;
-  border: 1px solid;
-  text-align: center;
-  line-height: 25px;
+    border-collapse: collapse;
+    border: 1px solid #bababa;
+    text-align: center;
+    line-height: 25px;
+    margin-top: 5%;
+    margin-left: 5%;
+    width: 50%;
 }
+
+.dbStatsBody table tbody {
+  background: #ecf4f7;
+}
+
 .dbStatsBody table td, .dbStatsBody table th {
-  border: 1px solid black;
+  border: 1px solid #bababa;
 }
 .dbStatsBody table tr:first-child th {
   border-top: 0;
@@ -48,6 +55,11 @@
     text-transform: capitalize;
 }
 
+.dbStatsBody {
+  /*margin-top: 10%;
+  margin-left: 10%;*/
+}
+
 .dbStats {
     float: left;
     margin-left: 20%;
@@ -67,7 +79,7 @@
 }
 
 .dbList li {
-  font-family: 'Lato';
+  font-family: 'Brandon';
   font-size: 90%;
   padding-bottom: 5px;
 }

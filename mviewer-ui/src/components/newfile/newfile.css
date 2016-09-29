@@ -1,3 +1,7 @@
+.mainContainer {
+  display: inline-block;
+}
+
 .upload,
 .addFile,
 .cancel,
@@ -53,7 +57,7 @@
     max-width: 448px;
     position: relative;
     top: 10px;
-    font-size: 12px;
+    font-size: 13px;
     max-height: 100px;
     overflow: auto;
 }
@@ -140,11 +144,12 @@ input[type=password] {
 }
 
 .addButton {
-  float: right;
-  display: inline;
-  margin-top: 1.5%;
-  margin-right: 4%;
-  font-size: 70%;
+  /*float: right;*/
+  display: inline-block;
+  /*margin-top: 1.5%;*/
+  /*margin-right: 4%;*/
+  font-size: 14px;
+  padding-right: 10px;
   cursor: pointer;
 }
 

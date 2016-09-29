@@ -16,7 +16,7 @@ class DeleteComponent extends React.Component {
   }
 
   closeModal() {
-    this.props.closeModal(this.state.successMessage);
+    this.props.closeModal(this.state.successMessage,'delete');
   }
 
   clickHandlerYes(){
@@ -76,7 +76,8 @@ class DeleteComponent extends React.Component {
         bottom                : 'auto',
         marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)',
-        zIndex                :  '4'
+        zIndex                :  '4',
+        borderRadius          :  '2px'
       }
     };
 
@@ -86,12 +87,11 @@ class DeleteComponent extends React.Component {
         onRequestClose={this.closeModal.bind(this)}
         style = {customStyles}>
         <div className={deleteStyles.two}>
-          {this.state.message ? <span className={deleteStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span> : null}
           <label>Are you sure to delete the {this.props.title} ?</label>
            <div className={!this.state.successMessage? (deleteStyles.errorMessage + ' ' + (this.state.message!='' ? deleteStyles.show : deleteStyles.hidden)) : (this.state.message != '' ? deleteStyles.successMessage : '')}>{this.state.message}</div>
              <div className ={!this.state.successMessage ? (deleteStyles.choiceContainer + ' ' +deleteStyles.showChoice) : (deleteStyles.choiceContainer + ' ' +deleteStyles.hideChoice)}>
-               <button onClick={this.clickHandlerNo.bind(this)} value='No' className={deleteStyles.submit} >No</button>
-               <button onClick={this.clickHandlerYes.bind(this)} value='Yes' className={deleteStyles.submit} >Yes</button>
+               <button onClick={this.clickHandlerNo.bind(this)} value='NO' className={deleteStyles.cancel} >NO</button>
+               <button onClick={this.clickHandlerYes.bind(this)} value='YES' className={deleteStyles.submit} >YES</button>
              </div>
         </div>
       </Modal>

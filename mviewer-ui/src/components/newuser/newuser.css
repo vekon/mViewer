@@ -1,0 +1,179 @@
+.modalContainer span {
+  cursor: pointer;
+}
+
+.two h3{
+    font: 110%;
+    text-align: center;
+    margin-bottom: -10%;
+}
+
+.name input[type=text],
+.userPassword input[type=password]{
+    padding: 10px;
+    border-radius: 1px;
+    border: 1px solid #cccccc;
+    background-color: inherit;
+    font-size: 15px;
+    color: #808285 !important;
+    height: 35px;
+    width: 100%;
+    font-family: 'Brandon';
+}
+
+.inputBox label {
+    font-size: 15px;
+    color: black;
+}
+
+.inputBox div input[type=checkbox] {
+    display: inline;
+}
+
+.TextInput error input[type=text] {
+    border-color: #8c4141;
+    width: 166px;
+}
+
+.validationError {
+    border-color: #8c4141;
+    width: 166px;
+}
+
+.inputBox {
+    margin-bottom: 7px;
+}
+
+.formContainer {
+    margin-left: 5%;
+    width: 90%;
+}
+
+.help {
+    margin-top: 8px;
+    width: 100%;
+}
+
+.errorMessage {
+    color: red;
+    margin: 5px 0;
+    text-align: center;
+    border: 1px solid red;
+    width: 100%;
+    font-size: 50%;
+}
+
+.errorMessage.hidden {
+    display: none;
+}
+
+.errorMessage.show {
+    color: red;
+    margin: 5px 0;
+    text-align: center;
+    border: 1px solid #FF9696;
+    width: 100%;
+    border-radius: 3px;
+    line-height: 3;
+    width: 100%;
+}
+
+
+.successMessage {
+    color: green;
+    margin: 5px 0;
+    text-align: center;
+    border: 1px solid green;
+    width: 100%;
+    border-radius: 3px;
+    line-height: 3;
+    font-size: 50%
+}
+
+
+/*Buttons*/
+.submit,
+.cancel
+ {
+    border: none !important;
+    width: 20%;
+    background-color: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    height: 30px;
+}
+
+.cancel {
+  color: #484848;
+  margin-left: 175px;
+  font-family: 'Brandon';
+}
+
+.submit {
+    color: #2494d0;
+    float: right;
+    margin-bottom: 4%;
+    margin-right: -1.5%;
+    font-family: 'Brandon';
+    margin-top: -1.8%;
+}
+.submit:hover,
+.submit:active {
+    color: #3c5563;
+    cursor: pointer;
+}
+
+.cancel:hover,
+.cancel:active {
+    color: #191717;
+    cursor: pointer;
+}
+
+.header{
+  background-color: #2294d2;
+  font-size: 14px;
+  height: 50px;
+  color: white;
+  margin-bottom: 5%;
+}
+
+.text{
+  top: 30%;
+  position: relative;
+  left: 5%;
+  font-size: 17px;
+}
+
+.buttonContainer{
+  margin-top: 7%;
+  margin-bottom: 6%;
+}
+
+.label1 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.checkLabel{
+    font-size: 14px;
+    color: #a5a5a5;
+    margin-top: -7.1%;
+    margin-left: 9%;
+    font-weight: 500;
+    margin-bottom: 5%;
+}
+
+.inputBox input[type=checkbox].checkboxClass {
+    display: inline;
+    width: 22px;
+    height: 22px;
+    background-color: white !important;
+    color: inherit;
+    margin-top: 2%;
+    margin-right: 2%;
+}
+
+.name,
+.userPassword{
+  margin-bottom: 5%;
+}

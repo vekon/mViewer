@@ -1,6 +1,18 @@
 /*----------------------------------------*/
 /*BASIC SETUP*/
 /*----------------------------------------*/
+@font-face {
+font-family: Brandon;
+src: url("../../assets/fonts/Brandon_reg.otf") format("opentype");
+}
+
+@font-face {
+font-family: Brandon;
+font-weight: lighter;
+src: url("../../assets/fonts/Brandon_light.otf") format("opentype");
+}
+
+
 
 * {
     margin: 0;
@@ -9,16 +21,14 @@
 }
 html,
 body {
-    background-color: #e7e8ea;
+    background-color: #e6e7e8;
     color: #555;
-    font-family: 'Lato', 'Arial', sans-serif;
+    font-family: 'Brandon', 'Arial', sans-serif;
     font-weight: 300;
     font-size: 20px;
     text-rendering: optimizeLegibility;
     height: 100%;
     overflow-x: auto;
-    /*overflow-y: hidden;*/
-
 }
 
 body {
@@ -30,20 +40,18 @@ div.parentDiv {
   width: 341px;
   min-height: 508px;
   height: auto;
-      /*margin-left: 20%;*/
 }
 .one{
   text-align: center;
   display: inline-block;
   width:inherit;;
   height:114px;
-  background:#2294d2;
+  background:#2494d0;
   padding: 57px 20px 20px 38px;;
   color: #fff;
-  font-weight: 400;
+  font-weight: bold;
   font-size: 18px;
   border-radius: 3px;
-  /*float: left;*/
 }
 
 .two{
@@ -83,8 +91,8 @@ div.parentDiv {
     border-radius: 0px;
     border: 1.5px solid #bababa;
     background-color: inherit;
-    color: #737373;
-    font-size: 11px;
+    color: #808285;
+    font-size: 15px;
     height: 47px;
     width: 260px;
     margin-top: 4px;
@@ -126,7 +134,6 @@ div.parentDiv {
 }
 
 section {
-    /*padding: 80px 0;*/
     padding: 5% 0;
 }
 /*Headings*/
@@ -152,14 +159,14 @@ h2:after {
     margin-top: 30px;
     font-weight: 700;
 }
+
 /*Buttons*/
 .two input[type=submit] {
     padding: 10px 30px;
-    /*border: 1px solid #3679f8;*/
     width: 260px;
     height: 47px;
-    background-color: #2294d2;
-    font-size: 12px;
+    background-color: #2494d0;
+    font-size: 13px;
     color: white;
     margin-left: 0px;
     border-radius: 1px;
@@ -169,7 +176,6 @@ h2:after {
 .two input[type=submit]:hover,
 .two input[type=submit]:active {
     background-color: #576d96;
-    /*border: 1px solid #576d96;*/
     cursor: pointer;
 }
 .help {
@@ -178,14 +184,13 @@ h2:after {
 }
 .footerLink {
     margin-top: 15px;
-    font-size: 12px;
+    font-size: 13px;
 }
 .errorMessage {
   margin: 5px 0;
   text-align: center;
   border: 1px solid red;
   width: 260px;
-  /* border-radius: 3px; */
   font-size: 70%;
   height: 47px;
   padding: 10px;
@@ -198,8 +203,7 @@ h2:after {
   text-align: center;
   border: 1px solid red;
   width: 260px;
-  /* border-radius: 3px; */
-  font-size: 70%;
+  font-size: 15px;
   height: 47px;
   padding: 10px;
   color: red;

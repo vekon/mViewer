@@ -23,6 +23,7 @@ class newCollectionComponent extends React.Component {
       message:'',
       successMessage: false,
       _isMounted: false,
+      error:false,
       newCollection: this.props.currentItem
     }
   }
@@ -70,10 +71,12 @@ class newCollectionComponent extends React.Component {
   }
 
   clickHandler(){
+    this.setState({error:true});
     var methodType = 'POST';
     var that =this;
     var data = $("form").serialize().split("&");
     var obj={};
+    this.setState({error : true});
     for(var key in data)
     {
       obj[data[key].split("=")[0]] = data[key].split("=")[1];
@@ -88,12 +91,13 @@ class newCollectionComponent extends React.Component {
     else {
       this.setState({ newCollection: obj['newCollName']});
     }
-
-    var partialUrl = this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId;
-    var updateCollectionCall = service(methodType, partialUrl, obj);
-    updateCollectionCall.then(this.success.bind(this, 'clickHandler', obj), this.failure.bind(this, 'clickHandler', obj));
-  }
-
+    if(obj['newCollName'] !=  '') {
+      // alert(obj['newCollName']);
+      var partialUrl = this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId;
+      var updateCollectionCall = service(methodType, partialUrl, obj);
+      updateCollectionCall.then(this.success.bind(this, 'clickHandler', obj), this.failure.bind(this, 'clickHandler', obj));
+    }
+}
   componentDidMount(){
     this.state._isMounted =  true;
     if(this.props.addOrUpdate == 2){
@@ -111,6 +115,7 @@ class newCollectionComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
+    this.setState({error:false});
     if(nextProps.addOrUpdate == 2 ){
       this.setState({name :nextProps.currentItem});
       this.getCappedData.call(this);
@@ -142,6 +147,7 @@ class newCollectionComponent extends React.Component {
           this.state.newCollection = obj['newCollName'];
         }
         this.setState({successMessage:true});
+        // setTimeout(function() { this.closeModal() }.bind(this), 3000);
       }
       if (data.response.error) {
         if (data.response.error.code === 'COLLECTION_ALREADY_EXISTS'){
@@ -170,51 +176,60 @@ class newCollectionComponent extends React.Component {
       content : {
         top                   : '50%',
         left                  : '50%',
+        border                : 'none',
+        borderRadius          : '4px',
         right                 : 'auto',
         width                 : '25%',
         bottom                : 'auto',
         marginRight           : '-50%',
+        padding               : '0px',
         transform             : 'translate(-50%, -50%)'
+      },
+      overlay : {
+        backgroundColor       : 'rgba(0,0,0, 0.74902)'
       }
     };
 
     return(
       <div className={this.props.addOrUpdate=='1'? newCollectionStyles.modalContainer : newCollectionStyles.updateModalContainer}>
         {this.props.addOrUpdate=='1'? <span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Collection</span> : <span className={newCollectionStyles.updateButton} onClick={this.openModal.bind(this)}><i className="fa fa-pencil" aria-hidden="true"></i>Update Collection</span>}
-       <Modal
-         isOpen={this.state.modalIsOpen}
-         onRequestClose={this.closeModal.bind(this)}
-         style = {customStyles}>
-         <div className={newCollectionStyles.two}>
-           <span className={newCollectionStyles.closeSpan} onClick= {this.closeModal.bind(this)}><i className="fa fa-times" aria-hidden="true"></i></span>
-           <h3>{this.state.title}</h3>
-           <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
-             <div className={ newCollectionStyles.formContainer}>
-               <div className={newCollectionStyles.inputBox}>
-                 <TextInput type="text" name="newCollName" id="newCollName" placeholder="collection name" value={this.state.name} validations='isRequired' onChange={this.handleChange.bind(this)} validationError="Collection name must not be empty" />
-               </div>
-               <div className={newCollectionStyles.inputBox}>
-                 <label>Capped:</label>
-                 <input type="checkbox" name="isCapped" id="isCapped"  onChange={this.handleCheck.bind(this)} checked={this.state.cap}  />
-               </div>
-               <div className={newCollectionStyles.inputBox}>
-                 <TextInput type="text" name="capSize" id="capSize" placeholder="size (bytes)" value={this.state.size} onChange={this.handleChange.bind(this)} validations={'isRequired1:'+this.state.cap+',isNumeric1:'+this.state.cap} checkforOtherErrors ={this.state.submitted} validationErrors={{isNumeric1: 'Please enter the size in numeric', isRequired1: 'Please enter the size'}} shouldBeDisabled = {!this.state.cap}  />
-               </div>
-               <div className={newCollectionStyles.inputBox}>
-                 <TextInput type="text" name="maxDocs" id="maxDocs" placeholder="max Documents (optional)" value={this.state.max} onChange={this.handleChange.bind(this)} shouldBeDisabled = {!this.state.cap}  validationErrors={{isNumeric1: 'Please enter the size in numeric'}} checkforOtherErrors ={this.state.submitted} validations={'isNumeric1:' + this.state.cap}/>
-               </div>
-               <div className={newCollectionStyles.inputBox}>
-                 <label>Auto Indent:</label>
-                 <input type="checkbox" name="autoIndexId" id="autoIndexId"  checked={this.state.autoIndex} onChange={this.handleIndex.bind(this)} checked={this.state.autoIndex} disabled={!this.state.cap} />
-               </div>
-               <div>
-                 <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={newCollectionStyles.submit} disabled={!this.state.canSubmit}>SUBMIT</button>
-               </div>
-             </div>
-           </Form>
-            <div className={!this.state.successMessage? (newCollectionStyles.errorMessage + ' ' + (this.state.message!='' ? newCollectionStyles.show : newCollectionStyles.hidden)) : (this.state.message != '' ? newCollectionStyles.successMessage : '')}>{this.state.message}</div>
-         </div>
-       </Modal>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal.bind(this)}
+          style = {customStyles}>
+          <div className={newCollectionStyles.two}>
+            <div className={newCollectionStyles.header}>
+              <span className={newCollectionStyles.text}>{this.state.title}</span>
+            </div>
+            <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
+              <div className={ newCollectionStyles.formContainer}>
+                <div className={newCollectionStyles.inputBox}>
+
+                  <TextInput type="text" name="newCollName" id="newCollName" placeholder="Collection name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Collection name must not be empty', isAlpha1: 'Invalid Collection name' }}  />
+                </div>
+                <div className={newCollectionStyles.inputBox}>
+                  <input type="checkbox" name="isCapped" id="isCapped" className={newCollectionStyles.checkBox} onChange={this.handleCheck.bind(this)} checked={this.state.cap}  />
+                  <div className={newCollectionStyles.checkLabel}><span>Capped</span></div>
+                </div>
+                <div className={newCollectionStyles.inputBox}>
+                  <TextInput type="text" name="capSize" id="capSize" placeholder="size (bytes)" value={this.state.size} onChange={this.handleChange.bind(this)} validations={'isRequired1:'+this.state.cap+',isNumeric1:'+this.state.cap} checkforOtherErrors ={this.state.submitted} validationErrors={{isNumeric1: 'Please enter the size in numeric', isRequired1: 'Please enter the size'}} shouldBeDisabled = {!this.state.cap}  />
+                </div>
+                <div className={newCollectionStyles.inputBox}>
+                  <TextInput type="text" name="maxDocs" id="maxDocs" placeholder="max Documents (optional)" value={this.state.max} onChange={this.handleChange.bind(this)} shouldBeDisabled = {!this.state.cap}  validationErrors={{isNumeric1: 'Please enter the size in numeric'}} checkforOtherErrors ={this.state.submitted} validations={'isNumeric1:' + this.state.cap}/>
+                </div>
+                <div className={newCollectionStyles.inputBox}>
+                  <input type="checkbox" name="autoIndexId" id="autoIndexId"  className={newCollectionStyles.checkBox} checked={this.state.autoIndex} onChange={this.handleIndex.bind(this)} checked={this.state.autoIndex} disabled={!this.state.cap} />
+                  <div className={newCollectionStyles.checkLabel}><span>Auto Indent</span></div>
+                </div>
+                <div >
+                  <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={newCollectionStyles.submit} disabled={!this.state.canSubmit}>SUBMIT</button>
+                  <span onClick={this.closeModal.bind(this)} value='CANCEL' className={newCollectionStyles.cancel}>CANCEL</span>
+                </div>
+              </div>
+            </Form>
+             <div className={!this.state.successMessage? (newCollectionStyles.errorMessage + ' ' + (this.state.message!='' ? newCollectionStyles.show : newCollectionStyles.hidden)) : (this.state.message != '' ? newCollectionStyles.successMessage : '')}>{this.state.message}</div>
+          </div>
+        </Modal>
      </div>
     );
   }

@@ -42,6 +42,12 @@ class CollectionList extends React.Component {
     collectionListCall.then(this.success.bind(this , 'refreshCollectionList'), this.failure.bind(this , 'refreshCollectionList'));
   }
 
+  refreshCollectionListForDelete(db){
+    var partialUrl = db +'/collection?connectionId=' + this.state.connectionId;
+    var collectionListCall = service('GET', partialUrl, '');
+    collectionListCall.then(this.success.bind(this , 'refreshCollectionListForDelete'), this.failure.bind(this , 'refreshCollectionList'));
+  }
+
   success(calledFrom, data) {
     if(calledFrom == 'componentDidMount'){
       this.setState({collections: data.response.result});
@@ -63,6 +69,19 @@ class CollectionList extends React.Component {
         }
       }
     }
+
+    if(calledFrom == 'refreshCollectionListForDelete'){
+      if(typeof(data.response.result) !== 'undefined'){
+        this.setState({collections: data.response.result});
+        this.props.hideQueryExecutor();
+      }
+      if(typeof(data.response.error) !== 'undefined'){
+        if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){
+            this.props.refreshDb();
+        }
+      }
+
+    }
   }
 
   failure() {
@@ -76,12 +95,14 @@ class CollectionList extends React.Component {
   componentDidMount() {
     this.state._isMounted == true;
     this.setState({_isMounted : true});
+    this.setState({selectedDB: this.props.selectedDB});
     var partialUrl = this.props.selectedDB +'/collection?connectionId=' + this.state.connectionId;
     var collectionListCall = service('GET', partialUrl, '');
     collectionListCall.then(this.success.bind(this , 'componentDidMount'), this.failure.bind(this , 'componentDidMount'));
   }
 
   componentWillReceiveProps(nextProps) {
+    this.setState({selectedDB: nextProps.selectedDB});
     var partialUrl = nextProps.selectedDB +'/collection?connectionId=' + this.state.connectionId;
     var collectionListCall = service('GET', partialUrl, '');
     collectionListCall.then(this.success.bind(this , 'componentWillReceiveProps'), this.failure.bind(this , 'componentWillReceiveProps'));
@@ -117,6 +138,7 @@ class CollectionList extends React.Component {
                       isSelected={this.state.selectedCollection==item}
                       connectionId={this.state.connectionId}
                       refreshCollectionList={this.refreshCollectionList.bind(this)}
+                      refreshCollectionListForDelete={this.refreshCollectionListForDelete.bind(this)}
                      />)
                 })): null}
 

@@ -45,7 +45,7 @@ class DbItemComponent extends React.Component {
             <i className="fa fa-database" aria-hidden="true"></i>
           </span>
           <span className={dbListStyles.content}>{this.props.name}</span>
-          <i className={"fa fa-remove " +  dbListStyles.removeIcon} aria-hidden="true" onClick={this.openModal.bind(this)}></i>
+          <i className={"fa fa-trash " +  dbListStyles.removeIcon} aria-hidden="true" onClick={this.openModal.bind(this)}></i>
         {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'database' dbName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent> : ''}
       </div>
     );
