@@ -66,7 +66,7 @@ class UserDetailsComponent extends React.Component {
     var that = this;
     return(
       <div className={userDetailsStyles.mainContainer}>
-          <div>
+          <div className= {userDetailsStyles.actionsContainer}>
             <span className={userDetailsStyles.detailsLabel}> {this.state.currentUser} Details:</span>
               <div className={userDetailsStyles.deleteButtonGridfs} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete User</span></div>
               { this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'User' dbName = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} ></DeleteComponent> : '' }

@@ -54,7 +54,7 @@
 }
 
 .selectedFiles {
-    background-color: #f5f5f5;
+    background-color: white;
     border: 1px solid #dcdcdc;
     font-weight: bold;
     overflow-y: hidden;
@@ -65,6 +65,7 @@
     max-height: 100px;
     overflow: auto;
     margin: 5px 10px;
+    width: 90%;
 }
 .errorMessage {
   color: red;
@@ -196,9 +197,19 @@
     color: 484848;
     margin-top: 5%;
     position: absolute;
-    margin-left: 63%;
+    margin-left: 62%;
 }
 
 button:disabled{
   color: #9fc7dc;
+}
+
+.clear {
+  clear: both;
+}
+
+.buttons {
+  /*margin-top: 8%;*/
+  float: right;
+  padding: 10px 20px;
 }

@@ -1,9 +1,12 @@
 .mainContainer {
-  position: absolute;
-  margin-top: 6%;
-  margin-left: 18%;
   overflow: hidden;
-  width: 70%;
+  width: 85%;
+  padding: 20px;
+  display: inline-block;
+}
+
+.actionsContainer {
+  padding-bottom: 20px;
 }
 
 .detailsBody table {
@@ -39,7 +42,7 @@
 }
 
 .detailsBody {
-  margin-top : 3%;
+  padding-top: 20px;
 }
 .detailsLabel{
   color: #484848;

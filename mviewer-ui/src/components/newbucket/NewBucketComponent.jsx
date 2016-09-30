@@ -91,7 +91,7 @@ class newFileComponent extends React.Component {
     if(this.state.count == this.state.newFile.length) {
       this.setState({successMessage:true});
       setTimeout(function() { this.setState({message: "New Bucket " +this.state.newBucket+" is successfully created"})}.bind(this), 1000);
-      // setTimeout(function() { this.closeModal() }.bind(this), 2000);
+      setTimeout(function() { this.closeModal() }.bind(this), 2000);
     }
   }
 
