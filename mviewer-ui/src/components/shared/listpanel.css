@@ -59,7 +59,7 @@
 .menuItem .button {
   color: inherit;
   border: 0;
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
   padding: 10px;
   cursor: pointer;
   width: 70%;
@@ -78,7 +78,7 @@
     padding: 1%;
     background-color: #fff;
     color: #484848;
-    font-family: 'Brandon';
+    font-family: 'Brandon-Light';
     font-size: 17px;
     border-bottom: 1px solid #bababa;
     height: auto;

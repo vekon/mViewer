@@ -69,9 +69,11 @@ class UserList extends React.Component {
         itemDetails = item;
       }
     });
-    this.props.setStates(itemDetails.user,itemDetails, "user");
-    this.setState({selectedCollection : itemDetails.user}, function(){
-    });
+    if(itemDetails != null){
+      this.props.setStates(itemDetails.user,itemDetails, "user");
+      this.setState({selectedCollection : itemDetails.user}, function(){
+      });
+    }
   }
 
   refreshRespectiveData(newCollectionName) {

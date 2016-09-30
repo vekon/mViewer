@@ -7,8 +7,7 @@ src: url("../../assets/fonts/Brandon_reg.otf") format("opentype");
 }
 
 @font-face {
-font-family: Brandon;
-font-weight: lighter;
+font-family: Brandon-Light;
 src: url("../../assets/fonts/Brandon_light.otf") format("opentype");
 }
 
@@ -23,9 +22,8 @@ html,
 body {
     background-color: #e6e7e8;
     color: #555;
-    font-family: 'Brandon', 'Arial', sans-serif;
-    font-weight: 300;
-    font-size: 20px;
+    font-family: 'Brandon-Light', 'Arial', sans-serif;
+    font-size: 13px;
     text-rendering: optimizeLegibility;
     height: 100%;
     overflow-x: auto;

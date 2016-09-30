@@ -102,6 +102,9 @@ class CollectionList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if(nextProps.selectedDB != this.props.selectedDB){
+      this.setState({selectedCollection : null});
+    }
     this.setState({selectedDB: nextProps.selectedDB});
     var partialUrl = nextProps.selectedDB +'/collection?connectionId=' + this.state.connectionId;
     var collectionListCall = service('GET', partialUrl, '');

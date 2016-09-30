@@ -90,7 +90,7 @@ class newFileComponent extends React.Component {
     }
     if(this.state.count == this.state.newFile.length) {
       this.setState({successMessage:true});
-      setTimeout(function() { this.setState({message: "New Bucket " +this.state.newBucket+" is successfully created"})}.bind(this), 1000);
+      this.setState({message: "New Bucket " +this.state.newBucket+" is successfully created"});
       setTimeout(function() { this.closeModal() }.bind(this), 2000);
     }
   }
@@ -218,7 +218,9 @@ class newFileComponent extends React.Component {
             </div>
             <Form method='POST'>
               <div className={newBucketStyles.div1}>
-                <TextInput className={newBucketStyles.input} type="text" name="newBucket" id="newBucket" placeholder="Bucket Name" value={this.state.newBucket} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error} onChange={this.handleChange.bind(that)} validationErrors={{isRequired2: 'Bucket name must not be empty', isAlpha1: 'Invalid Bucket name' }} />
+                <div className = {newBucketStyles.textDiv}>
+                  <TextInput className={newBucketStyles.input} type="text" name="newBucket" id="newBucket" placeholder="Bucket Name" value={this.state.newBucket} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error} onChange={this.handleChange.bind(that)} validationErrors={{isRequired2: 'Bucket name must not be empty', isAlpha1: 'Invalid Bucket name' }} />
+                </div>
                 <div>
                 { selectedFiles.length <= 0 ?
                   <span>
@@ -253,9 +255,10 @@ class newFileComponent extends React.Component {
                 <button onClick={this.addHandle.bind(that)} disabled= {this.state.disableSubmit} className={newBucketStyles.submit}>SUBMIT</button>
                 <span onClick={this.closeModal.bind(that)} className={newBucketStyles.cancel}>CANCEL</span>
               </div>
+              <div className = {newBucketStyles.clear}></div>
+              <div className={!this.state.successMessage? (newBucketStyles.errorMessage + ' ' + (this.state.message!='' ? newBucketStyles.show : newBucketStyles.hidden)) : (this.state.message != '' ? newBucketStyles.successMessage : '')}>{this.state.message}</div>
             </Form>
-            <div className = {newBucketStyles.clear}></div>
-            <div className={!this.state.successMessage? (newBucketStyles.errorMessage + ' ' + (this.state.message!='' ? newBucketStyles.show : newBucketStyles.hidden)) : (this.state.message != '' ? newBucketStyles.successMessage : '')}>{this.state.message}</div>
+
           </div>
         </Modal>
       </div>

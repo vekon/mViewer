@@ -14,7 +14,8 @@ class UserDetailsComponent extends React.Component {
       selectedDB: null,
       modalIsOpen: false,
       sidebarOpen: false,
-      currentUser: null
+      currentUser: null,
+      _isMounted: false
     }
   }
 
@@ -24,9 +25,11 @@ class UserDetailsComponent extends React.Component {
   }
 
   closeModal(successMessage) {
-    this.setState({modalIsOpen: false});
-    if (successMessage == true){
-      this.props.refreshCollectionList(false);
+    if(this.state._isMounted == true){
+      this.setState({modalIsOpen: false});
+      if (successMessage == true){
+        this.props.refreshCollectionList(false);
+      }
     }
   }
 
@@ -50,8 +53,14 @@ class UserDetailsComponent extends React.Component {
   }
 
   componentDidMount(){
+    this.setState({_isMounted: true});
     this.setState({currentUser: this.props.users.user});
     this.createUserDetails();
+  }
+
+  componentWillUnmount(){
+    // this.setState({_isMounted: false});
+    this.state._isMounted = false;
   }
 
   componentWillReceiveProps(nextProps) {
