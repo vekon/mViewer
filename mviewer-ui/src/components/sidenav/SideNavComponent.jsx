@@ -30,7 +30,7 @@ class SideNavComponent extends React.Component {
   }
 
   help() {
-    window.open('http://imaginea.github.io/mViewer','_blank');
+    window.open('https://venkoux.github.io/mViewer/','_blank');
   }
 
   render () {

@@ -114,7 +114,7 @@ class LoginComponent extends React.Component {
                   <input type="submit" value="CONNECT" disabled={!this.state.canSubmit} className={ styles.gobutton} />
                 </div>
                 <div className={styles.footerLink}>
-                   <a href='http://imaginea.github.io/mViewer'>Need Help?</a>
+                   <a href='http://venkoux.github.io/mViewer'>Need Help?</a>
                 </div>
                 <div className={styles.errorMessage + ' ' + (this.state.message!='' && this.state.message !='Login Success' ? styles.show : styles.hidden)}>{this.state.message}</div>
               </div>
