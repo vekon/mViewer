@@ -236,11 +236,12 @@ class newFileComponent extends React.Component {
                   </div>
               </div>
 
-              <div className={newBucketStyles.buttons}>
+              <div className={newFileStyles.buttons}>
                <span onClick={this.closeModal.bind(that)} className={ newFileStyles.cancel }>CANCEL</span>
                <button onClick={this.uploadHandle.bind(that)} disabled= {this.state.disableSubmit} className={newFileStyles.submit}>UPLOAD</button>
               </div>
             </Form>
+            <div className={newFileStyles.clear}></div>
             <div className={!this.state.successMessage? (newBucketStyles.errorMessage + ' ' + (this.state.message!='' ? newBucketStyles.show : newBucketStyles.hidden)) : (this.state.message != '' ? newBucketStyles.successMessage : '')}>{this.state.message}</div>
           </div>
        </Modal>

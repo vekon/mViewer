@@ -1,9 +1,8 @@
 .mainContainer {
-  position: absolute;
-  margin-top: 6%;
-  margin-left: 18%;
   overflow: hidden;
-  width: 70%;
+  width: 85%;
+  padding: 20px;
+  display: inline-block;
 }
 
 .detailsBody table {

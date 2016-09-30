@@ -133,11 +133,14 @@ class CreateDbComponent extends React.Component {
                   <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name' }}  />
                 </div>
                 <div className={createDbStyles.buttons}>
-                  <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={createDbStyles.submit} disabled={!this.state.canSubmit}>CREATE</button>
-                  <span onClick={this.closeModal.bind(this)} value='CANCEL' className={createDbStyles.cancel} >CANCEL</span>
-                </div>
+                  <div className={createDbStyles.right}>
+                    <span onClick={this.closeModal.bind(this)} value='CANCEL' className={createDbStyles.cancel} >CANCEL</span>
+                    <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={createDbStyles.submit} disabled={!this.state.canSubmit}>CREATE</button>
+                  </div>
+              </div>
               </div>
             </Form>
+             <div className={createDbStyles.clear}></div>
              <div className={!this.state.successMessage? (createDbStyles.errorMessage + ' ' + (this.state.message!='' ? createDbStyles.show : createDbStyles.hidden)) : (this.state.message != '' ? createDbStyles.successMessage : '')}>{this.state.message}</div>
           </div>
         </Modal>
