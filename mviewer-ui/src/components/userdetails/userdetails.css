@@ -5,6 +5,10 @@
   display: inline-block;
 }
 
+.actionsContainer {
+  padding-bottom: 20px;
+}
+
 .detailsBody table {
   border-collapse: collapse;
   border: 1.5px solid #bababa;
@@ -38,7 +42,7 @@
 }
 
 .detailsBody {
-  margin-top : 3%;
+  padding-top: 20px;
 }
 .detailsLabel{
   color: #484848;
