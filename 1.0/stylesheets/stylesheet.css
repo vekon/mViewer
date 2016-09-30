@@ -8,6 +8,15 @@ by Jason Costello, @jsncostello
 /*******************************************************************************
 MeyerWeb Reset
 *******************************************************************************/
+@font-face {
+  font-family: Brandon;
+  src: url("../fonts/Brandon_reg.otf") format("opentype");
+}
+
+@font-face {
+  font-family: Brandon-Light;
+  src: url("./fonts/Brandon_light.otf") format("opentype");
+}
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -60,7 +69,7 @@ body {
   color:#373737;
   background: #212121;
   font-size: 16px;
-  font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
+  font-family: Brandon, 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -69,7 +78,7 @@ h1, h2, h3, h4, h5, h6 {
   margin: 10px 0;
   font-weight: 700;
   color:#222222;
-  font-family: 'Lucida Grande', 'Calibri', Helvetica, Arial, sans-serif;
+  font-family: Brandon, 'Lucida Grande', 'Calibri', Helvetica, Arial, sans-serif;
   letter-spacing: -1px;
 }
 
@@ -163,7 +172,7 @@ pre, code {
   color: #222;
   background-color: #fff;
 
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-family: Brandon, Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   font-size: 14px;
 
   border-radius: 2px;
@@ -241,7 +250,7 @@ table {
  }
 
 th {
-  font-family: 'Lucida Grande', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: Brandon, 'Lucida Grande', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   padding: 10px;
   background: #373737;
   color: #fff;
@@ -285,7 +294,7 @@ Full-Width Styles
   z-index: 10;
   padding: 10px 50px 10px 10px;
   color: #fff;
-  background: url('../images/blacktocat.png') #0090ff no-repeat 95% 50%;
+  background: url('../images/blacktocat.png') #000 no-repeat 95% 50%;
   font-weight: 700;
   box-shadow: 0 0 10px rgba(0,0,0,.5);
   border-bottom-left-radius: 2px;
@@ -293,12 +302,12 @@ Full-Width Styles
 }
 
 #header_wrap {
-  background: #212121;
-  background: -moz-linear-gradient(top, #373737, #212121);
-  background: -webkit-linear-gradient(top, #373737, #212121);
-  background: -ms-linear-gradient(top, #373737, #212121);
-  background: -o-linear-gradient(top, #373737, #212121);
-  background: linear-gradient(top, #373737, #212121);
+  background: #2494d0;
+  background: -moz-linear-gradient(top, #2494d0, #2494d0);
+  background: -webkit-linear-gradient(top, #2494d0, #2494d0);
+  background: -ms-linear-gradient(top, #2494d0, #2494d0);
+  background: -o-linear-gradient(top, #2494d0, #2494d0);
+  background: linear-gradient(top, #2494d0, #2494d0);
 }
 
 #header_wrap .inner {
@@ -361,9 +370,7 @@ Full-Width Styles
 }
 
 #main_content_wrap {
-  background: #f2f2f2;
-  border-top: 1px solid #111;
-  border-bottom: 1px solid #111;
+  background: #fff;
 }
 
 #main_content {
@@ -371,7 +378,7 @@ Full-Width Styles
 }
 
 #footer_wrap {
-  background: #212121;
+  background: #2494d0;
 }
 
 

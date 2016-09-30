@@ -1,3 +1,14 @@
+
+@font-face {
+  font-family: Brandon;
+  src: url("../fonts/Brandon_reg.otf") format("opentype");
+}
+
+@font-face {
+  font-family: Brandon-Light;
+  src: url("./fonts/Brandon_light.otf") format("opentype");
+}
+
 html,body,hr,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,legend,textarea,p,blockquote,th,td
 	{
 	margin: 0;
@@ -8,8 +19,8 @@ body {
 	float: left;
 	height: auto;
 	width: 100%;
-	background: #fbfbfb none repeat scroll 0 0;
-	font-family: Arial, Helvetica, sans-serif;
+	background: #fff none repeat scroll 0 0;
+	font-family: Brandon, Arial, Helvetica, sans-serif;
 	color: #0e2137;
 	font-size: 12px;
 }
@@ -22,7 +33,7 @@ div#logo {
     visibility:hidden;
     text-align: center;
     font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Brandon, Arial, Helvetica, sans-serif;
     color: #0e2137;
     font-size: 12px;
     line-height: 25px;
@@ -730,7 +741,7 @@ fieldset.login legend {
 }
 .helpDescription {
 	padding: 10px 5px 10px 30px;
-	font-family: sans-serif;
+	font-family: Brandon, sans-serif;
 	font-size: 14px;
 }
 
