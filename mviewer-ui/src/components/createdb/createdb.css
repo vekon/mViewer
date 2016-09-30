@@ -17,16 +17,12 @@
    background-color: #fff;
    border-bottom-left-radius: 10px;
    border-bottom-right-radius: 10px;
-   /*box-shadow: 0 10px 10px -2px #232323;
-   -moz-box-shadow: 0 4px 4px -2px #232323;
-   -webkit-box-shadow: 0 5px 10px 2px #C4C4C4;*/
 }
 
 
 .createButton {
   width: 332px;
 margin: 2% 10% 2% 26%;
-/* margin: 3% auto; */
 padding: 10px 0;
 border: 1px solid;
 display: inline-block;
@@ -36,11 +32,11 @@ color: #fff;
 padding: 20px 0;
 font-weight: 600;
 border-radius: 5px;
-font-size: 100%;
+font-size: 20px;
 letter-spacing: 0.5;
 transition: background-color 0.2s, color 0.2s;
 cursor: pointer;
-font-family: 'Brandon';
+font-family: 'Brandon-Light';
 font-weight: 300;
 }
 
@@ -69,7 +65,7 @@ font-weight: 300;
 .topSection, .midSection, .bottomSection {
   padding: 0;
   text-align: center;
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
   display: inline-block;
   width: 100%;
 }
@@ -79,7 +75,7 @@ font-weight: 300;
   color: #484848;
     font-weight: 300;
     letter-spacing: 1.5;
-    font-size: 130%;
+    font-size: 25px;
     margin-top: 8%;
 }
 
@@ -88,7 +84,7 @@ font-weight: 300;
 font-weight: 300;
 letter-spacing: 0.5;
 margin-top: 3%;
-font-size: 130%;
+font-size: 26px;
 }
 
 .midSection hr {
@@ -98,7 +94,7 @@ font-size: 130%;
   color: #2494d0;
   font-weight: 300;
   margin-top: 7%;
-  font-size: 240%;
+  font-size: 46px;
 
 }
 
@@ -222,55 +218,6 @@ font-size: 130%;
   padding: 10px;
 }
 
-/*Buttons*/
-/*.submit,
-.cancel
- {
-    border: none !important;
-    width: 20%;
-    background-color: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    height: 30px;
-}
-
-.cancel {
-  color: #484848;
-  margin-left: 175px;
-  font-family: 'Brandon';
-}
-
-.submit {
-
-  float: right;
-  margin-bottom: 4%;
-  margin-right: 8px;
-  font-family: 'Brandon';
-  margin-top: .01%;
-  padding-bottom: 4%;
-}
-
-.submit:enabled {
-  color: #2494d0;
-}
-
-.submit:disabled {
-  color: #9fc7dc;
-}
-
-.submit:hover:enabled,
-.submit:active:enabled {
-    color: #3c5563;
-    cursor: pointer;
-}
-
-.cancel:hover,
-.cancel:active {
-    color: #191717;
-    cursor: pointer;
-}*/
-
-/*??????????????????*/
 .submit,
 .cancel
  {
@@ -282,13 +229,13 @@ font-size: 130%;
 
 .cancel {
   color: #484848;
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
 }
 
 .submit {
 
   margin-left: 8px;
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
 }
 
 .submit:enabled {
@@ -309,7 +256,6 @@ font-size: 130%;
     color: #191717;
     cursor: pointer;
 }
-/*??????????????????*/
 
 
 
@@ -332,14 +278,11 @@ font-size: 130%;
   top: 30%;
   position: relative;
   left: 5%;
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
   font-size: 17px;
 }
 
 .buttons {
-    /*text-align: center;
-    margin-bottom: 3%;
-    margin-top: 5%;*/
 
 }
 

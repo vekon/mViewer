@@ -82,10 +82,13 @@ class DbListComponent extends React.Component {
   }
 
   refreshDbList(dbName){
-    var partialUrl = 'login/details?connectionId='+ this.state.connectionId;
-    var refreshDbCall = service('GET', partialUrl, '');
-    refreshDbCall.then(this.success.bind(this , 'refreshDbList' , ''), this.failure.bind(this , 'refreshDbList', ''));
-    window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+dbName + '&queryType="collection"&collapsed=false';
+
+      var partialUrl = 'login/details?connectionId='+ this.state.connectionId;
+      var refreshDbCall = service('GET', partialUrl, '');
+      refreshDbCall.then(this.success.bind(this , 'refreshDbList' , ''), this.failure.bind(this , 'refreshDbList', ''));
+    if(dbName != null){
+      window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+dbName + '&queryType="collection"&collapsed=false';
+    }
   }
 
   changeHandler(){
@@ -126,11 +129,15 @@ class DbListComponent extends React.Component {
     var url = window.location.href;
     var params = url.split('?');
     var shouldCollapse = params[1].search("&collapsed=true");
+    var queryType = params[1].search('&queryType');
     if (shouldCollapse!= -1) {
       this.setState({visible:false});
     }
     else{
       this.setState({visible:true});
+    }
+    if(queryType == -1){
+     this.setState({selectedDb: null});
     }
   }
 
@@ -161,7 +168,7 @@ class DbListComponent extends React.Component {
       if (data.response.result) {
         this.setState({message:'Database '+obj['name']+ ' was successfully created'});
         this.setState({successMessage:true});
-        this.refreshDbList(obj['name']);
+        this.refreshDbList(this.state.selectedDb);
         setTimeout(function() { this.closeModal() }.bind(this), 2000);
       }
       if (data.response.error) {

@@ -33,12 +33,12 @@
 
 .cancel {
   color: #484848;
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
 }
 
 .submit {
   color: #2494d0;
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
   margin-left: 10px;
 }
 .submit:hover:enabled,

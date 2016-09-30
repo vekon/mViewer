@@ -6,7 +6,7 @@
   display: block;
   overflow: hidden;
   resize: none;
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
   font-weight: 300;
   background: #edf1f4;
   min-height: 20%;
@@ -14,7 +14,7 @@
 
 .results textarea {
   background: #edf1f4;
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
   width: 100%;
   resize: none;
   overflow: auto;

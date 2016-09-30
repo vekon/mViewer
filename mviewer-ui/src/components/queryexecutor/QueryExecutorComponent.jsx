@@ -241,6 +241,7 @@ class QueryExecutorComponent extends React.Component {
         if(data.response.result.count==0){
           this.setState({startLabel: 0});
           this.setState({endLabel: 0});
+          this.setState({totalCount: 0});
         }
     }
 
@@ -250,7 +251,9 @@ class QueryExecutorComponent extends React.Component {
       setTimeout(function(){
            this.setState({errorMessage: ''});
       }.bind(this), 2000);
-
+      this.setState({startLabel: 0});
+      this.setState({endLabel: 0});
+      this.setState({totalCount: 0});
     }
   }
 
@@ -553,7 +556,7 @@ class QueryExecutorComponent extends React.Component {
           </div>
           <div className={this.props.queryType == "collection" ? queryExecutorStyles.parametersDiv : queryExecutorStyles.parametersDiv1}>
             <Form onValid={this.enableButton()} onInvalid={this.disableButton()}>
-            <label htmlFor="skip"> Skip(No. of records) </label><TextInput type="text" name="skip" id="skip" value={this.state.skip} validations='isRequired' onChange={this.skipHandler()}/>
+            <label htmlFor="skip"> Skip(No. of records) </label><TextInput type="text" name="skip" id="skip" value={this.state.skip} validations={{isRequired:true,isNumeric:true}} onChange={this.skipHandler()}/>
             <label htmlFor="limit"> Max page size: </label><div className = {queryExecutorStyles.selectOptions}><span><select id="limit" name="limit" onChange = {this.limitHandler()} value={this.state.limit} data-search_name="max limit" ><option value="10">10</option><option value="25">25</option><option value="50">50</option></select></span></div>
             <label htmlFor="sort"> Sort by fields </label><TextInput id="sort" type="text" onChange = {this.sortHandler()} name="sort" value={this.state.sort} data-search_name="sort" validations='isRequired' /><br />
             <button id="execQueryButton" className={queryExecutorStyles.bttnNavigable} data-search_name="Execute Query" onClick = {this.clickHandler.bind(this)} disabled ={!this.state.canSubmit}>Execute Query</button>

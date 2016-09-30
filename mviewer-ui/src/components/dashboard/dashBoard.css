@@ -9,7 +9,6 @@ align-items: center;
     width: 100%;
     margin: 0 auto;
     background: #fff;
-    font-family: Arial !important;
 }
 
 /*Main Navigyation*/
@@ -26,6 +25,7 @@ align-items: center;
 
 .mainNav li {
     display: inline-block;
+    font-size: 15px;
 }
 
 .mainNav li a:link,
@@ -34,7 +34,6 @@ align-items: center;
     color : #fff;
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 60%;
     border-bottom: 2px solid transparent;
     transition: border-bottom 0.2s, color 0.2s;
     font-weight: 500;
@@ -74,14 +73,14 @@ align-items: center;
 }
 
 .span1{
-  font-family: 'Brandon' ;
+  font-family: 'Brandon-Light' ;
   color: #fff;
   font-size: 30px;
   font-weight: 600;
 }
 
 .span2 {
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
   color: #fff;
   font-size: 30px;
   font-weight: 600;
@@ -89,7 +88,6 @@ align-items: center;
 
 .span3 {
   font-family: 'Helvetica';
-  font-size: 60%;
   color: #D7DEE0;
   font-weight: 600;
 }0 0 0 15px
@@ -114,6 +112,7 @@ align-items: center;
 /*Header*/
 header {
     background: #2494d0;
+    font-family: 'Brandon';
 }
 
 .banner {

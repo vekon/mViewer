@@ -33,7 +33,6 @@
 }
 
 .tabs {
-  font-size: 17px !important;
   width: 100%;
   background: #CCD9DE;
   z-index: 99999;
@@ -53,6 +52,7 @@
   cursor: pointer;
   padding-bottom: 13px;
   padding-top: 15px;
+  font-size: 17px;
 }
 
 .tabs li span {
@@ -61,7 +61,7 @@
   font-size: 120%;
   height: 100%;
   text-align: center;
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
   cursor: pointer;
 }
 

@@ -86,7 +86,7 @@
     background-color: inherit;
     color: inherit;
     border: 0;
-    font-family: 'Brandon';
+    font-family: 'Brandon-Light';
     cursor: pointer;
     width: 60%;
     text-align: left;
@@ -124,7 +124,7 @@
     padding: 8px;
     background-color: #fff;
     color: #484848;
-    font-family: 'Brandon';
+    font-family: 'Brandon-Light';
     font-size: 17px;
     cursor: pointer;
     width: auto;
@@ -169,11 +169,11 @@ border-right: 1px solid #bababa;
 
 
 .collapsedData {
-  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
   display: inline-block;
   margin-top: 500%;
   width: 500%;
-  font-size: 70%;
+  font-size: 17px;
   margin-left: -200%;
 }
 
@@ -182,7 +182,7 @@ border-right: 1px solid #bababa;
   margin-left: 35%;
   margin-top: 50%;
   display: inline-block;
-  font-size: 70%;
+  font-size: 17px;
 }
 
 
@@ -308,13 +308,13 @@ border-right: 1px solid #bababa;
 
 .cancel {
   color: #484848;
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
 }
 
 .submit {
-  
+
   margin-left: 8px;
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
 }
 
 .submit:enabled {
@@ -381,12 +381,12 @@ border-right: 1px solid #bababa;
   top: 30%;
   position: relative;
   left: 5%;
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
   font-size: 17px;
 }
 
 .buttons {
-    
+
 }
 
 .right {
