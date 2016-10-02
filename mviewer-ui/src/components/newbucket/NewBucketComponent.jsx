@@ -224,7 +224,7 @@ class newFileComponent extends React.Component {
                 <div>
                 { selectedFiles.length <= 0 ?
                   <span>
-                    <img src={'../../assets/images/Add.png'} className={newBucketStyles.logo}></img>
+                    <img src={'./images/Add.png'} className={newBucketStyles.logo}></img>
                     <span className={newBucketStyles.addLabel}>Click here to upload files</span>
                     <div className={newBucketStyles.addFileDiv}>
                       <FileInput name="files"
