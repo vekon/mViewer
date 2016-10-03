@@ -3,7 +3,7 @@ mViewer allows managing databases, collections, gridfs, users & indexes as an al
 in a simpler and user-friendly way.
 
 ### Whats new in mViewer-v1.0 Beta ?
-   1. Redesigned complete user interface with enhnanced ease
+   1. Redesigned complete user interface with enhananced ease
    2. Supports latest MongoDB v3.x
    3. Integrated all API's with swagger
   
