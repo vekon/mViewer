@@ -42,6 +42,7 @@
     "react-sidebar": "^2.2.1",
     "react-tabs": "^0.7.0",
     "react-treeview": "^0.4.5",
+    "recharts": "^0.15.1",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
     "webpack": "^1.13.1",

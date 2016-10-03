@@ -1,0 +1,15 @@
+.tabTitle {
+  padding: 10px;
+  font-family: 'Brandon';
+  font-size: 25;
+}
+
+.treeTab {
+  margin-top: 10px !important;
+
+}
+
+.treeTab li>span {
+  font-family: 'Brandon';
+  font-size: 15;
+}
