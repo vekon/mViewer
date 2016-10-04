@@ -1,7 +1,6 @@
 import React from 'react'
 import dbStatsStyles from './dbstats.css'
 import $ from 'jquery'
-import Config from '../../../config.json';
 import service from '../../gateway/service.js';
 
 class DbStatsComponent extends React.Component {
