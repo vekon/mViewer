@@ -22,6 +22,10 @@
   width: 100%;
 }
 
+.container>ul{
+  padding-right: 10px !important;
+}
+
 .container>ul>li>label {
   font-weight: 600;
   width: 210 !important;
@@ -43,8 +47,16 @@
   padding: 5px;
 }
 
-.container li>span::after {
-  clear: both !important;
+.container>ul li:after{
+  content: '.';
+  clear: both;
+  display: block;
+  height: 0;
+  visibility: hidden;
+}
+
+.container>ul li {
+  zoom: 1;
 }
 
 

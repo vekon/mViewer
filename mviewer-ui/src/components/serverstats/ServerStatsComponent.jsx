@@ -21,7 +21,6 @@ class ServerStatsComponent extends React.Component {
   }
 
   success(data) {
-    console.log(data);
     this.setState({serverStats : data.response.result});
   }
 
@@ -38,7 +37,7 @@ class ServerStatsComponent extends React.Component {
           <span className={serverStatsStyles.headContainer}>
             <span className={serverStatsStyles.key}>Key</span> <span className={serverStatsStyles.value}>Value</span>
           </span>
-          <TreeView data={this.state.serverStats} shouldExpandNode={() => true } key = {this.state.serverStats['host']} getItemString={getItemString}/>
+          <TreeView data={this.state.serverStats} shouldExpandNode={() => true } keyPath = {['Statistics']} key = {this.state.serverStats['host']} getItemString={getItemString}/>
         </div>
       </div>
     );
