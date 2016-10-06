@@ -1,7 +1,6 @@
 import React from 'react'
 import userDetailsStyles from './userdetails.css'
 import $ from 'jquery'
-import Config from '../../../config.json';
 import service from '../../gateway/service.js';
 import DeleteComponent from '../deletecomponent/DeleteComponent.jsx'
 
@@ -59,7 +58,6 @@ class UserDetailsComponent extends React.Component {
   }
 
   componentWillUnmount(){
-    // this.setState({_isMounted: false});
     this.state._isMounted = false;
   }
 
