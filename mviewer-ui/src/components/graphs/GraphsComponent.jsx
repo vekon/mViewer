@@ -16,7 +16,13 @@ class GraphsComponent extends React.Component {
   }
 
   componentDidMount(){
-    var partialUrl = 'graphs/query?connectionId='+this.props.location.query.connectionId;
+    var requestTime = new Date().getTime().toString();
+    var partialUrl1 = 'graphs/initiate?connectionId='+this.props.location.query.connectionId+'&ts='+requestTime+'&pollingTime=5000';
+    var graphsInitialCall = service('GET', partialUrl1, '');
+    graphsInitialCall.then(this.success1.bind(this), this.failure1.bind(this));
+
+    requestTime = new Date().getTime().toString();
+    var partialUrl = 'graphs/query?connectionId='+this.props.location.query.connectionId+'&ts='+requestTime;
     setInterval (function () {
       var graphsCall = service('GET', partialUrl, '');
       graphsCall.then(this.success.bind(this), this.failure.bind(this))
@@ -26,11 +32,19 @@ class GraphsComponent extends React.Component {
   success(data){
      this.setState({data: data.response.result});
      if(data.response.error){
-       window.location = '/';
+
      }
   }
 
+  success1(data){
+
+  }
+
   failure(data){
+
+  }
+
+  failure1(data){
 
   }
 
@@ -41,7 +55,6 @@ class GraphsComponent extends React.Component {
 
 
   render () {
-
     const renderSpecialDot = (props) => {
       const { cx, cy, stroke, key } = props;
       if (cx === +cx && cy === +cy) {
@@ -57,6 +70,7 @@ class GraphsComponent extends React.Component {
       }
       return null;
     };
+
     return (
       <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
         <TabList className={graphStyles.treeTab}>
@@ -130,10 +144,8 @@ class GraphsComponent extends React.Component {
           </LineChart>
         </TabPanel>
       </Tabs>
-
     );
   }
 }
-
 
 export default GraphsComponent;

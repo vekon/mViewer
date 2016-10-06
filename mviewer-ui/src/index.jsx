@@ -10,6 +10,7 @@ import HomeComponent from './components/home/HomeComponent.jsx';
 import DbStatsComponent from './components/dbstats/DbStatsComponent.jsx';
 import CollectionsComponent from  './components/collections/CollectionsComponent.jsx';
 import GraphsComponent from  './components/graphs/GraphsComponent.jsx';
+import ServerStatsComponent from  './components/serverstats/ServerStatsComponent.jsx';
 
 render((
   <Router history={hashHistory}>
@@ -18,6 +19,7 @@ render((
         <Route path="/dashboard/home" component={HomeComponent} />
         <Route path="/dashboard/databases" component={DbStatsComponent} />
         <Route path="/dashboard/collections" component={CollectionsComponent} />
+        <Route path="/dashboard/serverStats" component={ServerStatsComponent} />
       </Route>
       <Route path='/mongoGraphs' component = {GraphsComponent} />
       <Route path="*" component = {PageNotFoundComponent}/>

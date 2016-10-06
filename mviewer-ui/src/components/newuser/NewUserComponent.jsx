@@ -4,7 +4,6 @@ import $ from 'jquery'
 import Modal from 'react-modal'
 import { Form } from 'formsy-react'
 import TextInput from '../TextInput/TextInputComponent.jsx'
-import Config from '../../../config.json';
 import service from '../../gateway/service.js'
 
 class NewUserComponent extends React.Component {
