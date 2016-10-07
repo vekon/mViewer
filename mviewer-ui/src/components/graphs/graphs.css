@@ -9,6 +9,11 @@
 
 }
 
+.tabPanel {
+  width: 100vw;
+  height: 80vh;
+}
+
 .treeTab li>span {
   font-family: 'Brandon';
   font-size: 15;

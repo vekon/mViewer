@@ -80,68 +80,78 @@ class GraphsComponent extends React.Component {
             <Tab><span className={this.state.selectedTab==1 ? graphStyles.activeTab : ''}>Inserts</span></Tab>
             <Tab><span className={this.state.selectedTab==1 ? graphStyles.activeTab : ''}>Deletes</span></Tab>
         </TabList>
-        <TabPanel>
+        <TabPanel className={graphStyles.tabPanel}>
           <p className={graphStyles.tabTitle}>Combined View</p>
-          <LineChart width={1000} height={500} data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }} syncId="test">
-            <CartesianGrid stroke='#f5f5f5'/>
-            <Legend/>
-            <XAxis dataKey='TimeStamp' />
-            <YAxis allowDataOverflow={true} />
-            <Tooltip />
-            <Line type='monotone' dataKey='QueryValue' stroke='#ff7300' dot={renderSpecialDot} label={renderLabel}/>
-            <Line type='monotone' dataKey='UpdateValue' stroke='#387908' dot={renderSpecialDot} label={renderLabel}/>
-            <Line type='monotone' dataKey='InsertValue' stroke='#38abc8' dot={renderSpecialDot} label={renderLabel}/>
-            <Line type='monotone' dataKey='DeleteValue' stroke='#383908' dot={renderSpecialDot} label={renderLabel}/>
-            <Brush dataKey="TimeStamp" height={30} />
-          </LineChart>
+          <ResponsiveContainer width = '100%' height = '100%'>
+            <LineChart  data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }} syncId="test" width={this.props.width} height = {this.props.height}>
+              <CartesianGrid stroke='#f5f5f5'/>
+              <Legend/>
+              <XAxis dataKey='TimeStamp' />
+              <YAxis allowDataOverflow={true} />
+              <Tooltip />
+              <Line type='monotone' dataKey='QueryValue' stroke='#ff7300' dot={renderSpecialDot} label={renderLabel}/>
+              <Line type='monotone' dataKey='UpdateValue' stroke='#387908' dot={renderSpecialDot} label={renderLabel}/>
+              <Line type='monotone' dataKey='InsertValue' stroke='#38abc8' dot={renderSpecialDot} label={renderLabel}/>
+              <Line type='monotone' dataKey='DeleteValue' stroke='#383908' dot={renderSpecialDot} label={renderLabel}/>
+              <Brush dataKey="TimeStamp" height={30} />
+            </LineChart>
+         </ResponsiveContainer>
         </TabPanel>
-        <TabPanel>
+        <TabPanel className={graphStyles.tabPanel}>
           <p className={graphStyles.tabTitle}>Queries/Second</p>
-          <LineChart width={1000} height={500} data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }} syncId="test">
-            <CartesianGrid stroke='#f5f5f5'/>
-            <Legend/>
-            <XAxis dataKey='TimeStamp' />
-            <YAxis allowDataOverflow={true} />
-            <Tooltip />
-            <Line type='monotone' dataKey='QueryValue' stroke='#ff7300' dot={renderSpecialDot} label={renderLabel}/>
-            <Brush dataKey="name" height={30} />
-          </LineChart>
+          <ResponsiveContainer width = '100%' height = '100%'>
+            <LineChart  data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }} width={this.props.width} height = {this.props.height} syncId="test">
+              <CartesianGrid stroke='#f5f5f5'/>
+              <Legend/>
+              <XAxis dataKey='TimeStamp' />
+              <YAxis allowDataOverflow={true} />
+              <Tooltip />
+              <Line type='monotone' dataKey='QueryValue' stroke='#ff7300' dot={renderSpecialDot} label={renderLabel}/>
+              <Brush dataKey="name" height={30} />
+            </LineChart>
+          </ResponsiveContainer>
         </TabPanel>
-        <TabPanel>
+        <TabPanel className={graphStyles.tabPanel}>
           <p className={graphStyles.tabTitle}>Updates/Second</p>
-          <LineChart width={1000} height={500} data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }} syncId="test">
-            <CartesianGrid stroke='#f5f5f5'/>
-            <Legend/>
-            <XAxis dataKey='TimeStamp' />
-            <YAxis allowDataOverflow={true} />
-            <Tooltip />
-            <Line type='monotone' dataKey='UpdateValue' stroke='#387908' dot={renderSpecialDot} label={renderLabel}/>
-            <Brush dataKey="name" height={30} />
-          </LineChart>
+          <ResponsiveContainer width = '100%' height = '100%'>
+            <LineChart  data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }} width={this.props.width} height = {this.props.height} syncId="test">
+              <CartesianGrid stroke='#f5f5f5'/>
+              <Legend/>
+              <XAxis dataKey='TimeStamp' />
+              <YAxis allowDataOverflow={true} />
+              <Tooltip />
+              <Line type='monotone' dataKey='UpdateValue' stroke='#387908' dot={renderSpecialDot} label={renderLabel}/>
+              <Brush dataKey="name" height={30} />
+            </LineChart>
+          </ResponsiveContainer>
         </TabPanel>
-        <TabPanel>
+        <TabPanel className={graphStyles.tabPanel}>
           <p className={graphStyles.tabTitle}>Inserts/Second</p>
-          <LineChart width={1000} height={500} data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }} syncId="test">
-            <CartesianGrid stroke='#f5f5f5'/>
-            <Legend/>
-            <XAxis dataKey='TimeStamp' />
-            <YAxis allowDataOverflow={true} />
-            <Tooltip />
-            <Line type='monotone' dataKey='InsertValue' stroke='#38abc8' dot={renderSpecialDot} label={renderLabel}/>
-            <Brush dataKey="name" height={30} />
-          </LineChart>
+          <ResponsiveContainer width = '100%' height = '100%'>
+            <LineChart  data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }} width={this.props.width} height = {this.props.height} syncId="test">
+              <CartesianGrid stroke='#f5f5f5'/>
+              <Legend/>
+              <XAxis dataKey='TimeStamp' />
+              <YAxis allowDataOverflow={true} />
+              <Tooltip />
+              <Line type='monotone' dataKey='InsertValue' stroke='#38abc8' dot={renderSpecialDot} label={renderLabel}/>
+              <Brush dataKey="name" height={30} />
+            </LineChart>
+          </ResponsiveContainer>
         </TabPanel>
-        <TabPanel>
+        <TabPanel className={graphStyles.tabPanel}>
           <p className={graphStyles.tabTitle}>Deletes/Second</p>
-          <LineChart width={1000} height={500} data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }} syncId="test">
-            <CartesianGrid stroke='#f5f5f5'/>
-            <Legend/>
-            <XAxis dataKey='TimeStamp' />
-            <YAxis allowDataOverflow={true} />
-            <Tooltip />
-            <Line type='monotone' dataKey='DeleteValue' stroke='#383908' dot={renderSpecialDot} label={renderLabel}/>
-            <Brush dataKey="TimeStamp" height={30} />
-          </LineChart>
+          <ResponsiveContainer width = '100%' height = '100%'>
+            <LineChart data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }}  width={this.props.width} height = {this.props.height} syncId="test">
+              <CartesianGrid stroke='#f5f5f5'/>
+              <Legend/>
+              <XAxis dataKey='TimeStamp' />
+              <YAxis allowDataOverflow={true} />
+              <Tooltip />
+              <Line type='monotone' dataKey='DeleteValue' stroke='#383908' dot={renderSpecialDot} label={renderLabel}/>
+              <Brush dataKey="TimeStamp" height={30} />
+            </LineChart>
+          </ResponsiveContainer>
         </TabPanel>
       </Tabs>
     );
