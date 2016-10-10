@@ -30,6 +30,9 @@ class newCollectionComponent extends React.Component {
   }
 
   openModal() {
+    if (this.props.addOrUpdate == '2'){
+      this.getCappedData.call(this);
+    }
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
   }
@@ -93,7 +96,6 @@ class newCollectionComponent extends React.Component {
       this.setState({ newCollection: obj['newCollName']});
     }
     if(obj['newCollName'] !=  '') {
-      // alert(obj['newCollName']);
       var partialUrl = this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId;
       var updateCollectionCall = service(methodType, partialUrl, obj);
       updateCollectionCall.then(this.success.bind(this, 'clickHandler', obj), this.failure.bind(this, 'clickHandler', obj));
@@ -103,11 +105,11 @@ class newCollectionComponent extends React.Component {
     this.state._isMounted =  true;
     if(this.props.addOrUpdate == 2){
       this.setState({name :this.props.currentItem});
-      this.getCappedData.call(this);
       this.setState({title:'Update Collection'});
     }
     else {
       this.setState({title:'Add Collection'});
+      this.setState({cap: false});
     }
   }
 
@@ -119,12 +121,13 @@ class newCollectionComponent extends React.Component {
     this.setState({error:false});
     if(nextProps.addOrUpdate == 2 ){
       this.setState({name :nextProps.currentItem});
-      this.getCappedData.call(this);
+      // this.getCappedData.call(this);
       this.setState({title:'Update Collection'});
       this.setState({successMessage:false});
     }
     else {
       this.setState({title:'Add Collection'});
+      this.setState({cap: false});
     }
   }
 
@@ -132,7 +135,7 @@ class newCollectionComponent extends React.Component {
   getCappedData(){
     var partialUrl = this.props.currentDb +'/collection/'+this.state.name+'/isCapped?connectionId=' + this.props.connectionId;
     var getCappedDataCall = service('GET', partialUrl, '');
-    getCappedDataCall.then(this.success.bind(this, 'getCappedData'), this.failure.bind(this, 'getCappedData'));
+    getCappedDataCall.then(this.success.bind(this, 'getCappedData', ''), this.failure.bind(this, 'getCappedData', ''));
   }
 
   success(calledFrom, obj,  data) {
@@ -160,7 +163,7 @@ class newCollectionComponent extends React.Component {
 
     if (calledFrom == 'getCappedData'){
       if(this.state._isMounted == true){
-        if(typeof(data.respone) != 'undefined'){
+        if(typeof(data.response) != 'undefined'){
           this.setState({cap:data.response.result});
         }
       }
