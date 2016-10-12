@@ -88,6 +88,20 @@ public interface SystemCollectionService {
       throws ApplicationException;
 
   /**
+     * Updates an index for a given collection in a mongo db
+     *
+     * @param dbName Name of the database the index should be updated
+     * @param collectionName Name of the collection to which the index is to be updated
+     * @param keys The keys with the which the index is updated
+     * @return Returns the success message that shown to the user
+     * @throws DatabaseException throw super type of UndefinedDatabaseException
+     */
+
+    public String updateIndex(String dbName, String collectionName, Document keys)
+        throws ApplicationException;
+
+
+  /**
     * Gets all indexes for a given colleciton in a mongo db
     *
     * @param dbName Name of the database the indexes should be listed

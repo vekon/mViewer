@@ -251,6 +251,54 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
   }
 
   /**
+    * Updates an index for a given collection in a mongo db
+    *
+    * @param dbName         Name of the database the index should be updated
+    * @param collectionName Name of the collection to which the index is to be updated
+    * @param keys           The keys with the which the index is updated
+    * @return Returns the success message that shown to the user
+    * @throws DatabaseException throw super type of UndefinedDatabaseException
+    */
+
+   @Override
+   public String updateIndex(String dbName, String collectionName, Document keys)
+       throws ApplicationException {
+     if (dbName == null) {
+       throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
+     }
+     if (dbName.equals("")) {
+       throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Empty");
+     }
+
+     if (collectionName == null) {
+       throw new DatabaseException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection name is null");
+     }
+     if (collectionName.equals("")) {
+       throw new DatabaseException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection name is Empty");
+     }
+     if (keys == null) {
+       throw new DatabaseException(ErrorCodes.KEYS_EMPTY, "Index Keys are null");
+     }
+     if (keys.equals("")) {
+       throw new DatabaseException(ErrorCodes.KEYS_EMPTY, "Index keys are Empty");
+     }
+     try {
+       for (String keyCurrent : keys.keySet()) {
+         if ((int)keys.get(keyCurrent) != 1 || (int)keys.get(keyCurrent) != -1) {
+           keys.replace(keyCurrent, -1);
+         }
+       }
+
+       mongoInstance.getDatabase(dbName).getCollection(collectionName).dropIndexes();
+       mongoInstance.getDatabase(dbName).getCollection(collectionName).createIndex(keys);
+     } catch (MongoException e) {
+       throw new ApplicationException(ErrorCodes.INDEX_UPDATION_EXCEPTION, e.getMessage());
+     }
+     return "Index successfully updated in the collection: " + dbName + ":" + collectionName;
+   }
+
+
+  /**
    * Gets indexes for a given collection in a mongo db
    *
    * @param dbName         Name of the database the indexes should be listed
