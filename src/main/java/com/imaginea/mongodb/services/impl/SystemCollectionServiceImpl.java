@@ -22,7 +22,7 @@ import org.json.JSONObject;
  * Defines services for performing operations like create/drop on indexes and users which are part
  * of system name space system.users & system.indexes collections inside a database present in mongo
  * to which we are connected to.
- * 
+ *
  * @author Sanjay Chaluvadi
  */
 
@@ -35,6 +35,7 @@ import com.imaginea.mongodb.services.SystemCollectionService;
 import com.imaginea.mongodb.utils.ApplicationUtils;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
+import com.mongodb.client.ListIndexesIterable;
 import com.mongodb.client.MongoCursor;
 
 public class SystemCollectionServiceImpl implements SystemCollectionService {
@@ -60,7 +61,7 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
   /**
    * Adds a user to the given database
    *
-   * @param dbName Name of the database
+   * @param dbName   Name of the database
    * @param username Username of the user to be added
    * @param password Password of the usre to be added
    * @param readOnly optional attribute for creating the user
@@ -90,19 +91,19 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
       throw new DatabaseException(ErrorCodes.PASSWORD_IS_EMPTY, "Password is empty");
     }
     try {
-      
+
       String role = "readWrite";
-      
-      if(readOnly){
+
+      if (readOnly) {
         role = "read";
       }
-      
+
       List<Document> roles = new ArrayList<Document>();
       roles.add(new Document("role", role).append("db", "test"));
-      
+
       mongoInstance.getDatabase(dbName)
           .runCommand(new Document("createUser", username).append("pwd", password)
-              .append("roles", roles));
+                          .append("roles", roles));
 
     } catch (MongoException e) {
       throw new ApplicationException(ErrorCodes.USER_CREATION_EXCEPTION, e.getMessage());
@@ -113,7 +114,7 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
   /**
    * Drops the user from the given mongo db based on the username
    *
-   * @param dbName Name of the database
+   * @param dbName   Name of the database
    * @param username Username of the user to be deleted/dropped
    * @return Returns the success message that shown to the user
    * @throws DatabaseException throwsuper type of UndefinedDatabaseException
@@ -142,7 +143,7 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
     }
     return "User: " + username + " deleted from the DB: " + dbName;
   }
-  
+
   /**
    * Get all the users from the given mongo db
    *
@@ -150,29 +151,29 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
    * @return Returns the success message that shown to the user
    * @throws DatabaseException throw super type of UndefinedDatabaseException
    */
-  
+
   @Override
   public JSONObject getUsers(String dbName) throws ApplicationException {
     // TODO Auto-generated method stub
-    
+
     if (dbName == null) {
       throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
     }
     if (dbName.equals("")) {
       throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Empty");
     }
-    
+
     try {
-      
-      Document document = new Document("usersInfo" , 1);
+
+      Document document = new Document("usersInfo", 1);
       Document command = mongoInstance.getDatabase(dbName).runCommand(document);
 
-      return ApplicationUtils.constructResponse(false , command);
-      
+      return ApplicationUtils.constructResponse(false, command);
+
     } catch (MongoException e) {
       throw new ApplicationException(ErrorCodes.ANY_OTHER_EXCEPTION, e.getMessage());
     }
-    
+
   }
 
   /**
@@ -211,9 +212,9 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
   /**
    * Adds an index for a given colleciton in a mongo db
    *
-   * @param dbName Name of the database the index should be added
+   * @param dbName         Name of the database the index should be added
    * @param collectionName Name of the collection to which the index is to be added
-   * @param keys The keys with the which the index is created
+   * @param keys           The keys with the which the index is created
    * @return Returns the success message that shown to the user
    * @throws DatabaseException throw super type of UndefinedDatabaseException
    */
@@ -250,6 +251,53 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
   }
 
   /**
+   * Gets indexes for a given collection in a mongo db
+   *
+   * @param dbName         Name of the database the indexes should be listed
+   * @param collectionName Name of the collection to which the index is to be listed
+   * @return Returns the success message that shown to the user
+   * @throws DatabaseException throw super type of UndefinedDatabaseException
+   */
+  @Override
+  public JSONObject getIndex(String dbName, String collectionName)
+      throws ApplicationException {
+    if (dbName == null) {
+      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
+    }
+    if (dbName.equals("")) {
+      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Empty");
+    }
+
+    if (collectionName == null) {
+      throw new DatabaseException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection name is null");
+    }
+    if (collectionName.equals("")) {
+      throw new DatabaseException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection name is Empty");
+    }
+    try {
+
+      ListIndexesIterable<Document> result = mongoInstance.getDatabase(
+          dbName).getCollection(collectionName).listIndexes();
+      MongoCursor<Document> iterator = result.iterator();
+
+      List<Document> listOfIndexes = null;
+      if (iterator.hasNext()) {
+        listOfIndexes = new ArrayList<Document>();
+        while (iterator.hasNext()) {
+          Document doc = iterator.next();
+          Document resultDoc = (Document) doc.get("key");
+          listOfIndexes.add(resultDoc);
+        }
+      }
+      return ApplicationUtils
+          .constructResponse(false, listOfIndexes.size(), listOfIndexes);
+    } catch (MongoException e) {
+      throw new ApplicationException(ErrorCodes.INDEX_ADDITION_EXCEPTION, e.getMessage());
+    }
+  }
+
+
+  /**
    * Removes all the indexes from all the collections in a given mongo db
    *
    * @param dbName Name of the database
@@ -284,9 +332,9 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
   /**
    * Removes an index from the collection based on the index name
    *
-   * @param dbName Name of the database from which the index should be dropped/removed
+   * @param dbName         Name of the database from which the index should be dropped/removed
    * @param collectionName Name of the collection from which the index should be dropped
-   * @param indexName Name of the index that should be deleted
+   * @param indexName      Name of the index that should be deleted
    * @return Returns the success message that shown to the user
    * @throws DatabaseException throw super type of UndefinedDatabaseException
    */
