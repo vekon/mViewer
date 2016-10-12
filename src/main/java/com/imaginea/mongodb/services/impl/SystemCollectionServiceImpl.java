@@ -284,7 +284,7 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
      }
      try {
        for (String keyCurrent : keys.keySet()) {
-         if ((int)keys.get(keyCurrent) != 1 || (int)keys.get(keyCurrent) != -1) {
+         if (!((int)keys.get(keyCurrent) == 1 || (int)keys.get(keyCurrent) == -1)) {
            keys.replace(keyCurrent, -1);
          }
        }
