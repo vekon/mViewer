@@ -208,6 +208,43 @@ public class SystemCollectionController extends BaseController {
     return response;
   }
 
+  /**
+   * Maps to the POST request for updating an index to a collection in a database present in mongo db
+   *
+   * @param dbName Name of the database
+   * @param index_keys keys of the index to be updated
+   * @param collectionName Name of the collection for which the index is updated
+   * @param connectionId Mongo Db Configuration provided by user to connect to.
+   * @param request Get the HTTP request context to extract session parameters
+   * @return A String of JSON format with list of All Documents in a collection.
+   */
+
+  @POST
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("updateIndex")
+  public String updateIndex(@PathParam("dbName") final String dbName,
+      @FormParam("index_keys") final String index_keys,
+      @FormParam("index_colname") final String collectionName,
+      @DefaultValue("POST") @QueryParam("connectionId") final String connectionId,
+      @Context final HttpServletRequest request) {
+
+
+    String response =
+        new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+          public Object execute() throws Exception {
+            // Convert the json keys into a DB object
+            Document keys = Document.parse(index_keys);
+            SystemCollectionService systemCollectionService =
+                new SystemCollectionServiceImpl(connectionId);
+            return systemCollectionService.updateIndex(dbName, collectionName, keys);
+          }
+
+        });
+
+    return response;
+  }
+
+
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("getIndex")
