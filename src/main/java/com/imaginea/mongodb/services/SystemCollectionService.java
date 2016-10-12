@@ -88,6 +88,17 @@ public interface SystemCollectionService {
       throws ApplicationException;
 
   /**
+    * Gets all indexes for a given colleciton in a mongo db
+    *
+    * @param dbName Name of the database the indexes should be listed
+    * @param collectionName Name of the collection to which the indexes is to be listed
+    * @return Returns the success message that shown to the user
+    * @throws DatabaseException throw super type of UndefinedDatabaseException
+    */
+
+   public JSONObject getIndex(String dbName, String collectionName)
+       throws ApplicationException;
+  /**
    * Removes all the indexes from all the collections in a given mongo db
    *
    * @param dbName Name of the database

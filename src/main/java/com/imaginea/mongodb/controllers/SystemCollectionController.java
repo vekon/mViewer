@@ -208,6 +208,29 @@ public class SystemCollectionController extends BaseController {
     return response;
   }
 
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("getIndex")
+  public String getIndex(@PathParam("dbName") final String dbName,
+      @QueryParam("index_colname") final String collectionName,
+      @QueryParam("connectionId") final String connectionId,
+      @Context final HttpServletRequest request) {
+
+
+    String response =
+        new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+          public Object execute() throws Exception {
+            // Convert the keys into json object
+            SystemCollectionService systemCollectionService =
+                new SystemCollectionServiceImpl(connectionId);
+            return systemCollectionService.getIndex(dbName, collectionName);
+          }
+
+        });
+
+    return response;
+  }
+
   /**
    * Maps to the POST request for dropping all the indexes in all collection from a give database.
    *
