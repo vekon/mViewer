@@ -222,3 +222,22 @@ h2:after {
     height: 0;
     visibility: hidden;
 }
+
+.inputBoxLogin input[type=checkbox].checkboxClass {
+    display: inline;
+    width: 22px;
+    height: 22px;
+    background-color: white !important;
+    color: inherit;
+    margin-top: 4%;
+    margin-right: 2%;
+}
+
+.checkLabel{
+    font-size: 15px;
+    color: #a5a5a5;
+    margin-top: -7.1%;
+    margin-left: 9%;
+    font-weight: 500;
+    margin-bottom: 5%;
+}

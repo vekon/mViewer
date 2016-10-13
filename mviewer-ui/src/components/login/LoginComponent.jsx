@@ -14,11 +14,16 @@ class LoginComponent extends React.Component {
     this.state = {
       host: '127.0.0.1',
       port: '27017',
-      username: '',
-      password: '',
+      username: null,
+      password: null,
+      userNameError: false,
+      passwordError: false,
+      dbError: false,
+      databases: null,
       canSubmit: false,
       message: '',
-      connectionId:''
+      connectionId:'',
+      authEnabled: false
     }
     this.onSubmit = this.onSubmit.bind(this);
     this.success = this.success.bind(this);
@@ -26,8 +31,39 @@ class LoginComponent extends React.Component {
     this.getRequest = this.getRequest.bind(this);
   }
 
+  handleCheck(){
+    this.setState({authEnabled:!this.state.authEnabled});
+    this.setState({username: null});
+    this.setState({password: null});
+    this.setState({databases: null});
+    this.setState({userNameError: false});
+    this.setState({passwordError: false});
+    this.setState({dbError: false});
+
+  }
+
   getRequest() {
     var that = this;
+    if(this.state.authEnabled) {
+      if(this.state.username == null || this.state.username == ''){
+        this.state.userNameError = true;
+      } else {
+        this.state.userNameError = false;
+      }
+      if(this.state.password == null || this.state.password == ''){
+        this.state.passwordError = true;
+      } else {
+        this.state.passwordError = false;
+      }
+      if(this.state.databases == null || this.state.databases == ''){
+        this.state.dbError = true;
+      } else {
+        this.state.dbError = false;
+      }
+    }
+    if(this.state.userNameError || this.state.passwordError || this.state.dbError)
+      return false;
+
     var data = $("form").serialize().split("&");
     var obj={};
     for(var key in data){
@@ -105,10 +141,17 @@ class LoginComponent extends React.Component {
                   <TextInput type="text" name="port" id="port" placeholder="Port" value={this.state.port} onChange={this.handleChange( 'port')} validations={{isRequired:true, isNumeric:true}} validationErrors={{isRequired : "Port must not be empty", isNumeric : "Inavlid Port number" }} />
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} />
+                  <input type="checkbox" className={styles.checkboxClass} name="auth" id="auth"  onChange={this.handleCheck.bind(this)} checked={this.state.authEnabled}  />
+                  <div className={styles.checkLabel}><span>Perform Authentication</span></div>
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleChange( 'password')} />
+                  <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} shouldBeDisabled={!this.state.authEnabled} validations={'isRequired2:'+this.state.userNameError} validationErrors={{isRequired2: 'User name must not be empty' }}/>
+                </div>
+                <div className={styles.inputBoxLogin}>
+                  <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleChange( 'password')} shouldBeDisabled={!this.state.authEnabled} validations={'isRequired2:'+this.state.passwordError}  validationErrors={{isRequired2: 'Password must not be empty' }}/>
+                </div>
+                <div className={styles.inputBoxLogin}>
+                  <TextInput type="text" name="databases" id="databases" placeholder="Database" value={this.state.databases} onChange={this.handleChange( 'databases')} shouldBeDisabled={!this.state.authEnabled} validations={'isRequired2:'+this.state.dbError} validationErrors={{isRequired2: 'DB name must not be empty'}}/>
                 </div>
                 <div>
                   <input type="submit" value="CONNECT" disabled={!this.state.canSubmit} className={ styles.gobutton} />
@@ -116,7 +159,7 @@ class LoginComponent extends React.Component {
                 <div className={styles.footerLink}>
                    <a href='http://venkoux.github.io/mViewer'>Need Help?</a>
                 </div>
-                <div className={styles.errorMessage + ' ' + (this.state.message!='' && this.state.message !='Login Success' ? styles.show : styles.hidden)}>{this.state.message}</div>
+                <div className={styles.errorMessage + ' ' + (this.state.message != undefined && this.state.message!='' && this.state.message !='Login Success' ? styles.show : styles.hidden)}>{this.state.message}</div>
               </div>
             </Form>
           </div>
