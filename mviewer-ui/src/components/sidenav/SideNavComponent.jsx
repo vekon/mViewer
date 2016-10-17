@@ -10,7 +10,7 @@ class SideNavComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedItem:"1",
+      selectedItem:this.props.propss.location.query.tab,
       selectedDB: null,
       connectionId: this.props.connectionId,
       visible: false
@@ -26,11 +26,22 @@ class SideNavComponent extends React.Component {
   }
 
   clearActiveClass(){
-    this.setState({selectedItem: 0});
+    this.setState({selectedItem: 1});
   }
 
-  help() {
-    window.open('https://venkoux.github.io/mViewer/','_blank');
+  dbList(){
+    this.setState({selectedItem:1});
+    hashHistory.push({ pathname: '/dashboard/home', query: {connectionId: this.props.connectionId, tab: 1, collapsed: 'false'} });
+  }
+
+  mongoGraphs(){
+    this.setState({selectedItem:2});
+    hashHistory.push({ pathname: 'dashboard/mongoGraphs', query: {connectionId: this.props.connectionId, tab: 2} });
+  }
+
+  serverStats(){
+    this.setState({selectedItem:3});
+    hashHistory.push({ pathname: 'dashboard/serverStats', query: {connectionId: this.props.connectionId, tab: 3} });
   }
 
   render () {
@@ -39,14 +50,15 @@ class SideNavComponent extends React.Component {
     var n = params[1].search("&collapsed=true");
     return(
 
-        <div className ={n == -1 ?sideNavStyles.mainContainer : sideNavStyles.mainContainerCollapsed}>
-          <div className={n == -1 ? sideNavStyles.sideContainer : sideNavStyles.sideContainerCollapsed }>
+        <div className ={this.props.propss.location.query.tab ==1 ? (n == -1 ? sideNavStyles.mainContainer : sideNavStyles.mainContainerCollapsed) : sideNavStyles.otherContainer}>
+          <div className={this.props.propss.location.query.tab ==1 ?(n == -1 ? sideNavStyles.sideContainer : sideNavStyles.sideContainerCollapsed) : sideNavStyles.otherSideContainer}>
             <ul className={sideNavStyles.sideNav} >
-              <li className ={this.state.selectedItem == 1 ? sideNavStyles.active : ''}><button data-id = '1'><div><i className={"fa fa-database " + sideNavStyles.icon} aria-hidden="true"></i></div></button></li>
-              <li onClick={this.help.bind(this)} className ={this.state.selectedItem == 2 ? sideNavStyles.active : ''}><button data-id = '2'><div><i className={"fa fa-question-circle-o " +  sideNavStyles.icon} aria-hidden="true"></i></div></button></li>
+              <li onClick={this.dbList.bind(this)} className ={this.state.selectedItem == 1 ? sideNavStyles.active : ''}><button data-id = '1'><div><i className={"fa fa-database " + sideNavStyles.icon} aria-hidden="true"></i></div></button></li>
+              <li onClick={this.mongoGraphs.bind(this)} className ={this.state.selectedItem == 2 ? sideNavStyles.active : ''}><button data-id = '2'><div><i className={"fa fa-area-chart " + sideNavStyles.icon} aria-hidden="true"></i></div></button></li>
+              <li onClick={this.serverStats.bind(this)} className ={this.state.selectedItem == 3 ? sideNavStyles.active : ''}><button data-id = '3'><div><i className={"fa fa-bar-chart " + sideNavStyles.icon} aria-hidden="true"></i></div></button></li>
             </ul>
           </div>
-          <DbList ref="left" selectedNav = {this.state.selectedItem} selectedDB = { this.setActiveItem.bind(this)} alignment={dbListStyles.left} propps = {this.props}></DbList>
+          { (this.state.selectedItem == 1 || this.state.selectedItem == 0) ? <DbList ref="left" selectedNav = {this.state.selectedItem} selectedDB = { this.setActiveItem.bind(this)} alignment={dbListStyles.left} propps = {this.props}></DbList> : null }
         </div>
 
     );

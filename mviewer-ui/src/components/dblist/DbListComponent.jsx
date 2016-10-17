@@ -65,7 +65,7 @@ class DbListComponent extends React.Component {
     this.setState({selectedItem: db});
     this.props.selectedDB(db);
     this.setState({selectedDb : db});
-    window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+db + '&queryType="collection"&collapsed='+this.state.visible;
+    window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+db + '&queryType="collection"&collapsed='+this.state.visible+'&tab=1';
   }
 
   componentDidMount(){
@@ -87,7 +87,7 @@ class DbListComponent extends React.Component {
       var refreshDbCall = service('GET', partialUrl, '');
       refreshDbCall.then(this.success.bind(this , 'refreshDbList' , ''), this.failure.bind(this , 'refreshDbList', ''));
     if(dbName != null){
-      window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+dbName + '&queryType="collection"&collapsed=false';
+      window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+dbName + '&queryType="collection"&collapsed=false&tab=1';
     }
   }
 
@@ -98,7 +98,7 @@ class DbListComponent extends React.Component {
   collapsedDivHandler(){
     var that =this;
     this.setState({visible: !this.state.visible}, function(){
-      window.location.hash = '#/dashboard/collections?connectionId='+that.props.propps.connectionId+'&db='+that.state.selectedDb + '&queryType="collection"&collapsed='+false;
+      window.location.hash = '#/dashboard/collections?connectionId='+that.props.propps.connectionId+'&db='+that.state.selectedDb + '&queryType="collection"&collapsed='+false+'&tab=1';
     });
 
   }

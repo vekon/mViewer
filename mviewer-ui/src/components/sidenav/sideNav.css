@@ -105,3 +105,19 @@
 .active i {
   color: #2494d0 !important;
 }
+
+
+.otherContainer {
+  width: 6%;
+  display: inline-block;
+  float: left;
+}
+
+.otherSideContainer {
+  width: 100%;
+  background-color: #212f30;
+  font-family: 'Arial' !important;
+  height: 100%;
+  display: inline-block;
+  float: left;
+}

@@ -33,6 +33,7 @@ class CollectionsComponent extends React.Component {
   }
 
   componentWillReceiveProps(){
+    Tabs.setUseDefaultStyles(false);
     this.setState({selectedTab:0});
     this.setState({showQueryExecutor: false});
     this.setState({selectedCollection: ''});
@@ -59,7 +60,6 @@ class CollectionsComponent extends React.Component {
       this.refs.left.refreshCollectionList(this.props.location.query.db);
     }
     if(showQueryExecutor==false){
-      // alert('fdsf');
       this.setState({showQueryExecutor:showQueryExecutor});
     }
   }
@@ -70,7 +70,6 @@ class CollectionsComponent extends React.Component {
 
   render () {
     Tabs.setUseDefaultStyles(false);
-    // alert(this.props.location.query.db );
     return(
       <div className = {this.props.location.query.collapsed == 'false' ? collectionsStyles.mainContainer : collectionsStyles.mainContainer+' ' +collectionsStyles.collapsedContainer}>
         {this.props.location.query.db !== 'undefined' ? <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
