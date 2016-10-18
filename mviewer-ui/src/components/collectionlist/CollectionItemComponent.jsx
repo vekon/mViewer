@@ -47,10 +47,10 @@ class CollectionItemComponent extends React.Component {
   render () {
     return (
       <div className={(this.props.isSelected ? collectionListStyles.menuItem +' ' +collectionListStyles.highlight :collectionListStyles.menuItem)} key={this.props.name} onClick={this.props.onClick} value={this.props.name} >
-        <span>
+        <span className = {collectionListStyles.collectionIcon}>
           <i className="fa fa-folder-open-o" aria-hidden="true"></i>
         </span>
-        <div className = {collectionListStyles.button}>{this.props.name}</div>
+        <span className = {collectionListStyles.button}>{this.props.name}</span>
         <i className={"fa fa-trash "+ collectionListStyles.trash} aria-hidden="true" onClick = {this.openModal.bind(this)}></i>
         {this.state.modalIsOpen ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'collection' dbName = {this.props.dbName} collectionName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent> : null}
       </div>

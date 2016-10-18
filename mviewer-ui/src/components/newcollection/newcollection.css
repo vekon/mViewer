@@ -95,6 +95,7 @@
   height: auto;
   min-height: 40px;
   padding: 10px;
+  word-wrap: break-word;
 }
 
 .errorMessage.hidden {
@@ -112,6 +113,7 @@
   height: auto;
   min-height: 40px;
   padding: 10px;
+  word-wrap: break-word;
 }
 
 
@@ -126,6 +128,7 @@
   height: auto;
   min-height: 40px;
   padding: 10px;
+  word-wrap: break-word;
 }
 
 

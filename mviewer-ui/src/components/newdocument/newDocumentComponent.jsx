@@ -2,8 +2,8 @@ import React from 'react'
 import newDocumentStyles from './newdocument.css'
 import $ from 'jquery'
 import Modal from 'react-modal'
-import { Form } from 'formsy-react';
-import TextInput from '../TextInput/TextInputComponent.jsx';
+import { Form } from 'formsy-react'
+import TextInput from '../TextInput/TextInputComponent.jsx'
 import service from '../../gateway/service.js'
 
 class newDocumentComponent extends React.Component {
@@ -25,6 +25,7 @@ class newDocumentComponent extends React.Component {
     if(this.props.addOrEdit == 'Edit'){
       this.setState({newDocument: this.props.documentValue});
     }
+    this.setState({errorMessage : false});
   }
 
   closeModal() {
@@ -78,14 +79,19 @@ class newDocumentComponent extends React.Component {
         this.setState({message:'Document was successfully added to collection ' + this.props.currentItem});
       }
       else {
-        this.setState({message:'Document was successfully Updated'});
+        this.setState({message:'Document was successfully Updated'}, function(){
+        });
       }
       setTimeout(function() { this.closeModal() }.bind(this), 2000);
     }
     if (data.response.error) {
       if (data.response.error){
         this.setState({successMessage:false});
-        this.setState({message:'Inavlid JSON object'});
+        this.setState({message: data.response.error.message});
+      }
+
+      if (data.response.error.code == 'ANY_OTHER_EXCEPTION') {
+        this.setState({message : 'Invalid JSON Object'});
       }
     }
   }

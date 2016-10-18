@@ -52,9 +52,15 @@
 
 .trash {
   font-size: 13px;
-  padding: 5px;
+  padding-top: 15px;
+  display: inline-block;
+  float: right;
 }
 
+.collectionIcon {
+  float: left;
+  padding-top: 15px;
+}
 
 .menuItem .button {
   color: inherit;
@@ -67,6 +73,11 @@
   font-size: 17px;
   font-weight: 400;
   display: inline-block;
+
+  /*width: 250px;*/
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .menuItem i {

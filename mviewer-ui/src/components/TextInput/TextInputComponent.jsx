@@ -21,7 +21,7 @@ Formsy.addValidationRule('isNumeric1', (values, value, otherField) => {
 
 Formsy.addValidationRule('isAlpha1', (values, value, otherField) => {
   if (value !== null){
-    return (value.match(/^[\w&.\-]+$/));
+    return (value.match(/^[\w\-]+$/));
   }
   else {
     return true;
@@ -36,7 +36,7 @@ const TextInput = React.createClass({
   changeValue(event) {
     this.setValue(event.currentTarget['value']);
     // this.refs.great.great();
-    this.props.onChange(event);
+    this.props.onChange(event.currentTarget['value']);
   },
 
   render() {
