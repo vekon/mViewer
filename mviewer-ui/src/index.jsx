@@ -20,8 +20,8 @@ render((
         <Route path="/dashboard/databases" component={DbStatsComponent} />
         <Route path="/dashboard/collections" component={CollectionsComponent} />
         <Route path="/dashboard/serverStats" component={ServerStatsComponent} />
+        <Route path='/dashboard/mongoGraphs' component = {GraphsComponent} />
       </Route>
-      <Route path='/mongoGraphs' component = {GraphsComponent} />
       <Route path="*" component = {PageNotFoundComponent}/>
     </Router>
 ), document.getElementById('app'));

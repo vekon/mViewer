@@ -54,10 +54,9 @@ class DashBoardComponent extends React.Component {
           <header>
             <nav>
               <div className={"row " + dashStyles.row}>
-                <a href= {"#/dashboard/home?collapsed=false&connectionId="+this.state.connectionId} className={dashStyles.logo} onClick={this.clearActiveClass.bind(this)}><span className={dashStyles.span1}>m</span><span className={dashStyles.span2}>Viewer</span><span className={dashStyles.span3}></span></a>
+                <a href= {"#/dashboard/home?collapsed=false&connectionId="+this.state.connectionId+'&tab=1'} className={dashStyles.logo} onClick={this.clearActiveClass.bind(this)}><span className={dashStyles.span1}>m</span><span className={dashStyles.span2}>Viewer</span><span className={dashStyles.span3}></span></a>
                 <ul className={dashStyles.mainNav + ' ' + dashStyles.clearfix} >
-                  <li><a target = "_blank" href={"#mongoGraphs?connectionId="+this.state.connectionId}><span>Mongo Graph</span></a></li>
-                  <li><a href={'#/dashboard/serverStats?connectionId='+this.state.connectionId}><span>Server Statistics</span></a></li>
+                  <li><a target = "_blank" href="https://venkoux.github.io/mViewer/"><span><i className="fa fa-question-circle-o"></i></span></a></li>
                   <li className={dashStyles.disconnect}><a href="javascript:void(0);" onClick={this.disconnect.bind(this)}><span><i className="fa fa-sign-out" aria-hidden="true"></i></span></a></li>
                 </ul>
                </div>

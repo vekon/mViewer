@@ -11,7 +11,9 @@ class GraphsComponent extends React.Component {
     super(props);
     this.state = {
       data: [],
-      selectedTab: 0
+      selectedTab: 0,
+      interval: 0,
+      error: false
     }
   }
 
@@ -23,16 +25,23 @@ class GraphsComponent extends React.Component {
 
     requestTime = new Date().getTime().toString();
     var partialUrl = 'graphs/query?connectionId='+this.props.location.query.connectionId+'&ts='+requestTime;
-    setInterval (function () {
+    var interval = setInterval (function () {
       var graphsCall = service('GET', partialUrl, '');
       graphsCall.then(this.success.bind(this), this.failure.bind(this))
     }.bind(this), 5000);
+
+    this.setState({interval:interval});
+  }
+
+  componentWillUnmount()
+  {
+     clearInterval(this.state.interval);
   }
 
   success(data){
      this.setState({data: data.response.result});
      if(data.response.error){
-
+        this.setState({error:true});
      }
   }
 
@@ -55,6 +64,7 @@ class GraphsComponent extends React.Component {
 
 
   render () {
+    Tabs.setUseDefaultStyles(false);
     const renderSpecialDot = (props) => {
       const { cx, cy, stroke, key } = props;
       if (cx === +cx && cy === +cy) {
@@ -72,13 +82,14 @@ class GraphsComponent extends React.Component {
     };
 
     return (
-      <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
+      <div className = {graphStyles.mainContainer}>
+      {!this.state.error ? <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
         <TabList className={graphStyles.treeTab}>
-          <Tab><span className={this.state.selectedTab==0 ? graphStyles.activeTab : ''}>Combined View</span></Tab>
-          <Tab><span className={this.state.selectedTab==1 ? graphStyles.activeTab : ''}>Queries</span></Tab>
-            <Tab><span className={this.state.selectedTab==0 ? graphStyles.activeTab : ''}>Updates</span></Tab>
-            <Tab><span className={this.state.selectedTab==1 ? graphStyles.activeTab : ''}>Inserts</span></Tab>
-            <Tab><span className={this.state.selectedTab==1 ? graphStyles.activeTab : ''}>Deletes</span></Tab>
+          <Tab className={this.state.selectedTab==0 ? graphStyles.activeTab : ''}><span>Combined View</span></Tab>
+          <Tab className={this.state.selectedTab==1 ? graphStyles.activeTab : ''}><span>Queries</span></Tab>
+          <Tab className={this.state.selectedTab==2 ? graphStyles.activeTab : ''}><span>Updates</span></Tab>
+          <Tab className={this.state.selectedTab==3 ? graphStyles.activeTab : ''}><span>Inserts</span></Tab>
+          <Tab className={this.state.selectedTab==4 ? graphStyles.activeTab : ''}><span>Deletes</span></Tab>
         </TabList>
         <TabPanel className={graphStyles.tabPanel}>
           <p className={graphStyles.tabTitle}>Combined View</p>
@@ -153,7 +164,8 @@ class GraphsComponent extends React.Component {
             </LineChart>
           </ResponsiveContainer>
         </TabPanel>
-      </Tabs>
+      </Tabs> : <p className = {graphStyles.errorMessage}>Not Connected To Mongodb</p>}
+      </div>
     );
   }
 }

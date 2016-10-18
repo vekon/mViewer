@@ -1,3 +1,9 @@
+.mainContainer {
+  display: inline-block;
+  width: 94%;
+  padding-left: 10px;
+}
+
 .tabTitle {
   padding: 10px;
   font-family: 'Brandon';
@@ -10,11 +16,46 @@
 }
 
 .tabPanel {
-  width: 100vw;
-  height: 80vh;
+  width: 95%;
+  height: 70%;
 }
 
 .treeTab li>span {
   font-family: 'Brandon';
   font-size: 15;
+}
+
+
+
+.treeTab{
+  border-bottom: 1px solid #aaa;
+    margin: 0 0 10px;
+    padding: 0;
+}
+
+.treeTab li {
+  display: inline-block;
+    border: 1px solid transparent;
+    border-bottom: none;
+    bottom: -1px;
+    position: relative;
+    list-style: none;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.activeTab {
+  background: #fff;
+border-color: #aaa;
+color: black;
+border-radius: 5px 5px 0 0;
+-moz-border-radius: 5px 5px 0 0;
+-webkit-border-radius: 5px 5px 0 0;
+}
+
+
+.errorMessage {
+  padding: 10px;
+  color: red;
+  
 }

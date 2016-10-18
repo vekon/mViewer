@@ -1,5 +1,5 @@
 .mainContainer {
-  width: 80%;
+  width: 94%;
   height: 100%;
   display: inline-block;
   overflow: auto;
@@ -80,5 +80,5 @@
 }
 
 .value{
-  margin-left: 68%;
+  margin-left: 72%;
 }
