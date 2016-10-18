@@ -13,8 +13,16 @@ import com.imaginea.mongodb.exceptions.ApplicationException;
 import com.imaginea.mongodb.exceptions.ErrorCodes;
 import com.imaginea.mongodb.services.AuthService;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
+
+import org.bson.Document;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author Uday Shankar
@@ -33,6 +41,17 @@ public class AuthServiceImpl implements AuthService {
   public String authenticate(ConnectionDetails connectionDetails) throws ApplicationException {
     sanitizeConnectionDetails(connectionDetails);
     String connectionDetailsHashCode = String.valueOf(connectionDetails.hashCode());
+    boolean authMode = checkAuthMode(connectionDetails);
+    connectionDetails.setAuthMode(authMode);
+    if (authMode) {
+      String username = connectionDetails.getUsername();
+      String pwd = connectionDetails.getPassword();
+      String db = connectionDetails.getDbNames();
+      if (username == null || pwd == null || db == null) {
+        throw new ApplicationException(ErrorCodes.NEED_AUTHORISATION,
+                                       "Mongo DB Running in Auth Mode. Please perform Authentication.");
+      }
+    }
     Collection<MongoConnectionDetails> mongoConnectionDetailsList =
         allConnectionDetails.get(connectionDetailsHashCode);
     if (mongoConnectionDetailsList != null) {
@@ -44,8 +63,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
     MongoClient mongo = getMongoAndAuthenticate(connectionDetails);
-    boolean authMode = checkAuthMode(connectionDetails);
-    connectionDetails.setAuthMode(authMode);
 
     String connectionId =
         SUCCESSFUL_CONNECTIONS_COUNT.incrementAndGet() + "_" + connectionDetailsHashCode;
@@ -63,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
     MongoClient mongo = null;
     try {
       mongo = new MongoClient(connectionDetails.getHostIp(), connectionDetails.getHostPort());
-      mongo.listDatabaseNames();
+      mongo.listDatabaseNames().iterator().next();
       return false;
     } catch (Exception e) {
       return true;
@@ -77,26 +94,48 @@ public class AuthServiceImpl implements AuthService {
 
   private MongoClient getMongoAndAuthenticate(ConnectionDetails connectionDetails)
       throws ApplicationException {
-    MongoClient mongo;
-    mongo = new MongoClient(connectionDetails.getHostIp(), connectionDetails.getHostPort());
+    MongoClient mongo=null;
+    if(! connectionDetails.isAuthMode()) {
+      mongo = new MongoClient(connectionDetails.getHostIp(), connectionDetails.getHostPort());
+    }
     String dbNames = connectionDetails.getDbNames();
     String[] dbNamesList = dbNames.split(",");
     String username = connectionDetails.getUsername();
     String password = connectionDetails.getPassword();
     for (String dbName : dbNamesList) {
       dbName = dbName.trim();
-      MongoDatabase db = mongo.getDatabase(dbName);
       boolean loginStatus = false;
       try {
+        if (connectionDetails.isAuthMode()) {
+          MongoCredential
+              credential =
+              MongoCredential.createCredential(username, dbName,
+                                                      password.toCharArray());
+          mongo =
+              new MongoClient(
+                  new ServerAddress(connectionDetails.getHostIp(),
+                                    connectionDetails.getHostPort()),
+                  java.util.Arrays.asList(credential),
+                  MongoClientOptions.builder().serverSelectionTimeout(1000).build());
+                  mongo.getDatabase(dbName).listCollections().iterator();
+        }
+        MongoDatabase db = mongo.getDatabase(dbName);
+        db.listCollectionNames();
         // Hack. Checking server connectivity status by fetching collection names on selected db
-        db.listCollectionNames();// this line will throw exception in two cases.1)On Invalid mongo
-                                 // host Address,2)Invalid authorization to fetch collection names
+        // this line will throw exception in two cases.1)On Invalid mongo
+        // host Address,2)Invalid authorization to fetch collection names
         loginStatus = true;
-      } catch (MongoException me) {
+      }
+      catch (MongoException me) {
 
         // loginStatus = db.authenticate(username, password.toCharArray());//login using given
         // username and password.This line will throw exception if invalid mongo host address
       }
+      catch(Exception e)
+      {
+
+      }
+
       if (loginStatus) {
         connectionDetails.addToAuthenticatedDbNames(dbName);
       }
