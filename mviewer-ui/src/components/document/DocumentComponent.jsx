@@ -58,6 +58,7 @@ class DocumentComponent extends React.Component {
   }
   render () {
     autosize($('.textArea'));
+    autosize.update($('.textArea'));
     return(
       <div className={documentStyles.results+' '+ documentStyles.clearfix}>
         { this.props.queryType == "collection" ?

@@ -13,10 +13,10 @@ class GridFSItemComponent extends React.Component {
   render () {
     return (
       <div className={(this.props.isSelected ? GridFSListStyles.menuItem +' ' +GridFSListStyles.highlight :GridFSListStyles.menuItem)} key={this.props.name} onClick={this.props.onClick} value={this.props.name} >
-        <span>
+        <span className={GridFSListStyles.collectionIcon}>
           <i className="fa fa-folder-open-o" aria-hidden="true"></i>
         </span>
-        <div className = {GridFSListStyles.button}>{this.props.name}</div>
+        <span className = {GridFSListStyles.button}>{this.props.name}</span>
       </div>
     );
   }

@@ -209,7 +209,7 @@ class newCollectionComponent extends React.Component {
               <div className={ newCollectionStyles.formContainer}>
                 <div className={newCollectionStyles.inputBox}>
 
-                  <TextInput type="text" name="newCollName" id="newCollName" placeholder="Collection name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Collection name must not be empty', isAlpha1: 'Invalid Collection name' }}  />
+                  <TextInput type="text" name="newCollName" id="newCollName" placeholder="Collection name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error+',maxLength:120'} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Collection name must not be empty', isAlpha1: 'Invalid Collection name', maxLength: 'Collection name cannot be more than 120 characters' }}  />
                 </div>
                 <div className={newCollectionStyles.inputBox}>
                   <input type="checkbox" name="isCapped" id="isCapped" className={newCollectionStyles.checkBox} onChange={this.handleCheck.bind(this)} checked={this.state.cap}  />

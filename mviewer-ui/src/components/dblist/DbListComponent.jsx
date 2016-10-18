@@ -177,7 +177,15 @@ class DbListComponent extends React.Component {
       }
       if (data.response.error) {
         this.setState({successMessage:false});
-        this.setState({message:'Database '+obj['name']+ ' already exists'});
+        if(data.response.error.code == 'DB_ALREADY_EXISTS'){
+          this.setState({message:'Database '+obj['name']+ ' already exists'});
+        }
+        if(data.response.error.code == 'DB_CREATION_EXCEPTION'){
+          this.setState({message : 'could not create database with given db name'});
+        }
+        if(data.response.error.code == 'ANY_OTHER_EXCEPTION'){
+          this.setState({message : 'Error occured while creating the database'});
+        }
       }
     }
   }
@@ -247,7 +255,7 @@ class DbListComponent extends React.Component {
          <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
            <div className={ dbListStyles.formContainer}>
              <div className={dbListStyles.inputBox}>
-               <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name' }}  />
+               <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error+',maxLength:64'} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name', maxLength: 'Db name cannot be more than 64 characters' }}  />
              </div>
              <div className={dbListStyles.buttons}>
               <div className={dbListStyles.right}>
