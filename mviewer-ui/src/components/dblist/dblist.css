@@ -176,6 +176,8 @@ border-right: 1px solid #bababa;
   font-size: 19px;
   font-family: 'Brandon';
   margin-left: -200%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 

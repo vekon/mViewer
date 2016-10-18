@@ -13,10 +13,10 @@ class UserItemComponent extends React.Component {
   render () {
     return (
       <div onClick={this.props.onClick} value={this.props.name} className={(this.props.isSelected ? UserListStyles.menuItem +' ' +UserListStyles.highlight :UserListStyles.menuItem)} key={this.props.name} >
-        <span>
+        <span className = {UserListStyles.collectionIcon}>
           <i className="fa fa-folder-open-o" aria-hidden="true"></i>
         </span>
-        <div className = {UserListStyles.button}>{this.props.name}</div>
+        <span className = {UserListStyles.button}>{this.props.name}</span>
       </div>
     );
   }
