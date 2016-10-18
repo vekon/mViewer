@@ -21,7 +21,7 @@ class DbListComponent extends React.Component {
       dbStats: {},
       visible: true,
       selectedItem: null,
-      selectedDb: null,
+      selectedDb: this.props.propps.propss.location.query.db,
       modalIsOpen: false,
       name: null,
       error:false,
@@ -88,6 +88,10 @@ class DbListComponent extends React.Component {
       refreshDbCall.then(this.success.bind(this , 'refreshDbList' , ''), this.failure.bind(this , 'refreshDbList', ''));
     if(dbName != null){
       window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+dbName + '&queryType="collection"&collapsed=false&tab=1';
+    }
+
+    if (dbName == 'undefined') {
+      window.location.hash = '#/dashboard/home?collapsed=false&connectionId='+this.props.propps.connectionId+'&tab=1';
     }
   }
 
