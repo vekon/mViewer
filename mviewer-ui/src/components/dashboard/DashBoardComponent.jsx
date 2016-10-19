@@ -54,7 +54,7 @@ class DashBoardComponent extends React.Component {
           <header>
             <nav>
               <div className={"row " + dashStyles.row}>
-                <a href= {"#/dashboard/home?collapsed=false&connectionId="+this.state.connectionId+'&tab=1'} className={dashStyles.logo} onClick={this.clearActiveClass.bind(this)}><img src={'./images/Mviewer logo (white).svg'}></img></a>
+                <a href= {"#/dashboard/home?collapsed=false&connectionId="+this.state.connectionId+'&tab=1'} className={dashStyles.logo} onClick={this.clearActiveClass.bind(this)}><img src={'./images/mviewer_logo_white.svg'}></img></a>
                 <ul className={dashStyles.mainNav + ' ' + dashStyles.clearfix} >
                   <li><a target = "_blank" href="https://venkoux.github.io/mViewer/"><span><i className="fa fa-question-circle-o"></i></span></a></li>
                   <li className={dashStyles.disconnect}><a href="javascript:void(0);" onClick={this.disconnect.bind(this)}><span><i className="fa fa-sign-out" aria-hidden="true"></i></span></a></li>
