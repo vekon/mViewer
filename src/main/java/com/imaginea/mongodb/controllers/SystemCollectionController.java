@@ -62,7 +62,7 @@ public class SystemCollectionController extends BaseController {
    * @param connectionId Mongo Db Configuration provided by user to connect to.
    * @param username username of the user being added to the database
    * @param password password of the user being added to the database
-   * @param readOnlypar The optional parameter for creating the user
+   * @param roles The optional parameter for creating the user
    * @param request Get the HTTP request context to extract session parameters
    * @return A String of JSON format with list of All Documents in a collection.
    */
@@ -74,7 +74,7 @@ public class SystemCollectionController extends BaseController {
       @DefaultValue("POST") @QueryParam("connectionId") final String connectionId,
       @FormParam("addUser_user_name") final String username,
       @FormParam("addUser_password") final String password,
-      @FormParam("addUser_readonly") final String readOnlypar,
+      @FormParam("addUser_roles") final String roles,
       @Context final HttpServletRequest request) {
 
     String response =
@@ -84,13 +84,8 @@ public class SystemCollectionController extends BaseController {
 
             SystemCollectionService systemCollectionService =
                 new SystemCollectionServiceImpl(connectionId);
-            if (readOnlypar == null) {
-              readOnly = false;
-            } else if (readOnlypar.equalsIgnoreCase("on")) {
-              readOnly = true;
-            }
 
-            return systemCollectionService.addUser(dbName, username, password, readOnly);
+            return systemCollectionService.addUser(dbName, username, password, roles);
           }
         });
     return response;
