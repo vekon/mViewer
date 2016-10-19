@@ -196,7 +196,7 @@ h2:after {
   border: 1px solid red;
   width: 100%;
   font-size: 70%;
-  height: 47px;
+  height: auto;
   padding: 10px;
 }
 .errorMessage.hidden {
@@ -208,7 +208,7 @@ h2:after {
   border: 1px solid red;
   width: 100%;
   font-size: 15px;
-  height: 47px;
+  height: auto;
   padding: 10px;
   color: red;
 }
