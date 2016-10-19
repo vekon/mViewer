@@ -72,6 +72,11 @@ align-items: center;
     padding-left: 2%;
 }
 
+.logo img {
+  width: 55%;
+  height: auto;
+}
+
 .span1{
   font-family: 'Brandon-Light' ;
   color: #fff;

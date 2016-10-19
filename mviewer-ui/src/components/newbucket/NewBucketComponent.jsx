@@ -219,7 +219,7 @@ class newFileComponent extends React.Component {
             <Form method='POST'>
               <div className={newBucketStyles.div1}>
                 <div className = {newBucketStyles.textDiv}>
-                  <TextInput className={newBucketStyles.input} type="text" name="newBucket" id="newBucket" placeholder="Bucket Name" value={this.state.newBucket} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error} onChange={this.handleChange.bind(that)} validationErrors={{isRequired2: 'Bucket name must not be empty', isAlpha1: 'Invalid Bucket name' }} />
+                  <TextInput className={newBucketStyles.input} type="text" name="newBucket" id="newBucket" placeholder="Bucket Name" value={this.state.newBucket} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error+',maxLength:'+(95-this.props.currentDb.length)} onChange={this.handleChange.bind(that)} validationErrors={{isRequired2: 'Bucket name must not be empty', isAlpha1: 'Invalid Bucket name', maxLength: 'Bucket size cannot be more than '+(95-this.props.currentDb.length)+' characters for this Db' }} />
                 </div>
                 <div>
                 { selectedFiles.length <= 0 ?

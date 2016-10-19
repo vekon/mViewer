@@ -14,12 +14,12 @@ class LoginComponent extends React.Component {
     this.state = {
       host: '127.0.0.1',
       port: '27017',
-      username: null,
-      password: null,
+      username: '',
+      password: '',
       userNameError: false,
       passwordError: false,
       dbError: false,
-      databases: null,
+      databases: '',
       canSubmit: false,
       message: '',
       connectionId:'',
@@ -33,9 +33,9 @@ class LoginComponent extends React.Component {
 
   handleCheck(){
     this.setState({authEnabled:!this.state.authEnabled});
-    this.setState({username: null});
-    this.setState({password: null});
-    this.setState({databases: null});
+    this.setState({username: ''});
+    this.setState({password: ''});
+    this.setState({databases: ''});
     this.setState({userNameError: false});
     this.setState({passwordError: false});
     this.setState({dbError: false});
@@ -113,7 +113,7 @@ class LoginComponent extends React.Component {
   handleChange(key) {
     return function(e) {
       var state = {};
-      state[key] = e.target.value;
+      state[key] = e;
       this.setState(state);
     }.bind(this);
   }
@@ -145,13 +145,13 @@ class LoginComponent extends React.Component {
                   <div className={styles.checkLabel}><span>Perform Authentication</span></div>
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} shouldBeDisabled={!this.state.authEnabled} validations={'isRequired2:'+this.state.userNameError} validationErrors={{isRequired2: 'User name must not be empty' }}/>
+                  <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} shouldBeDisabled={!this.state.authEnabled} validations={'isRequired1:'+this.state.userNameError} validationErrors={{isRequired1: 'User name must not be empty' }}/>
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleChange( 'password')} shouldBeDisabled={!this.state.authEnabled} validations={'isRequired2:'+this.state.passwordError}  validationErrors={{isRequired2: 'Password must not be empty' }}/>
+                  <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleChange( 'password')} shouldBeDisabled={!this.state.authEnabled} validations={'isRequired1:'+this.state.passwordError}  validationErrors={{isRequired1: 'Password must not be empty' }}/>
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="text" name="databases" id="databases" placeholder="Database" value={this.state.databases} onChange={this.handleChange( 'databases')} shouldBeDisabled={!this.state.authEnabled} validations={'isRequired2:'+this.state.dbError} validationErrors={{isRequired2: 'DB name must not be empty'}}/>
+                  <TextInput type="text" name="databases" id="databases" placeholder="Database" value={this.state.databases} onChange={this.handleChange( 'databases')} shouldBeDisabled={!this.state.authEnabled} validations={'isRequired1:'+this.state.dbError} validationErrors={{isRequired1: 'DB name must not be empty'}}/>
                 </div>
                 <div>
                   <input type="submit" value="CONNECT" disabled={!this.state.canSubmit} className={ styles.gobutton} />

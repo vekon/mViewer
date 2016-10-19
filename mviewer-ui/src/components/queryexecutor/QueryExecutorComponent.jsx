@@ -411,7 +411,7 @@ class QueryExecutorComponent extends React.Component {
 
   skipHandler(){
     return function(e) {
-      this.setState({skip:e.target.value});
+      this.setState({skip:e});
     }.bind(this);
   }
 
@@ -423,7 +423,7 @@ class QueryExecutorComponent extends React.Component {
 
   sortHandler(){
     return function(e) {
-      this.setState({sort:e.target.value});
+      this.setState({sort:e});
     }.bind(this);
   }
 

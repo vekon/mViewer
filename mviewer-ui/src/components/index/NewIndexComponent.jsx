@@ -242,7 +242,7 @@ class NewIndexComponent extends React.Component {
                 </div>
               </div>
             </form>
-            <div className={indexStyles.buttonContainer}>
+            <div className={indexStyles.buttonContainer+' '+ indexStyles.clearfix}>
                 <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={indexStyles.submit} disabled = {this.state.errorMessage}>SUBMIT</button>
                 <button onClick={this.closeModal.bind(this)} value='CANCEL' className={indexStyles.cancel}>CANCEL</button>
             </div>
