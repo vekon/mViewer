@@ -80,7 +80,6 @@ public class SystemCollectionController extends BaseController {
     String response =
         new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
           public Object execute() throws Exception {
-            boolean readOnly = false;
 
             SystemCollectionService systemCollectionService =
                 new SystemCollectionServiceImpl(connectionId);
@@ -90,6 +89,45 @@ public class SystemCollectionController extends BaseController {
         });
     return response;
   }
+
+  /**
+     * Maps POST request for modifying the user for a particular database present in the mongo db.
+     * <p/>
+     * Also forms the JSON response for this request and sent it to client. In case of any exception
+     * from the service files an error object if formed.
+     *
+     * @param dbName Name of the database
+     * @param connectionId Mongo Db Configuration provided by user to connect to.
+     * @param username username of the user being modifies to the database
+     * @param password password of the user being modified to the database
+     * @param roles The parameter for modifying the user roles
+     * @param request Get the HTTP request context to extract session parameters
+     * @return A String of JSON format with list of All Documents in a collection.
+     */
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("modifyUser")
+    public String modifyUserRequest(@PathParam("dbName") final String dbName,
+        @DefaultValue("POST") @QueryParam("connectionId") final String connectionId,
+        @FormParam("addUser_user_name") final String username,
+        @FormParam("addUser_password") final String password,
+        @FormParam("addUser_roles") final String roles,
+        @Context final HttpServletRequest request) {
+
+      String response =
+          new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+            public Object execute() throws Exception {
+
+              SystemCollectionService systemCollectionService =
+                  new SystemCollectionServiceImpl(connectionId);
+
+              return systemCollectionService.modifyUser(dbName, username, password, roles);
+            }
+          });
+      return response;
+    }
+
 
   /**
    * Maps POST request for removing the user from a particular database present in the mongo db.

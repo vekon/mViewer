@@ -108,6 +108,55 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
   }
 
   /**
+   * Modifies a user to the given database
+   *
+   * @param dbName   Name of the database
+   * @param username username of the user being modifies to the database
+   * @param password password of the user being modified to the database
+   * @param role    The parameter for modifying the user roles
+   * @return Returns the success message that should be shown to the user
+   * @throws DatabaseException throw super type of UndefinedDatabaseException
+   */
+
+    @Override
+    public String modifyUser(String dbName, String username, String password, String role)
+        throws ApplicationException {
+      if (dbName == null) {
+        throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
+      }
+      if (dbName.equals("")) {
+        throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Empty");
+      }
+      if (username == null) {
+        throw new DatabaseException(ErrorCodes.USERNAME_IS_EMPTY, "Username is null");
+      }
+      if (username.equals("")) {
+        throw new DatabaseException(ErrorCodes.USERNAME_IS_EMPTY, "Username is empty");
+      }
+      if (password == null) {
+        throw new DatabaseException(ErrorCodes.PASSWORD_IS_EMPTY, "Password is null");
+      }
+      if (password.equals("")) {
+        throw new DatabaseException(ErrorCodes.PASSWORD_IS_EMPTY, "Password is empty");
+      }
+      try {
+
+        List<Document> roles = new ArrayList<Document>();
+        String[] roleSep=role.split(",");
+        for(String eachRole:roleSep) {
+          roles.add(new Document("role", eachRole).append("db", dbName));
+        }
+        mongoInstance.getDatabase(dbName)
+            .runCommand(new Document("updateUser", username).append("pwd", password)
+                            .append("roles", roles));
+
+      } catch (MongoException e) {
+        throw new ApplicationException(ErrorCodes.USER_CREATION_EXCEPTION, e.getMessage());
+      }
+      return "User: " + username + " has been modifies for the DB: " + dbName;
+    }
+
+  /**
    * Drops the user from the given mongo db based on the username
    *
    * @param dbName   Name of the database
@@ -163,7 +212,6 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
 
       Document document = new Document("usersInfo", 1);
       Document command = mongoInstance.getDatabase(dbName).runCommand(document);
-
       return ApplicationUtils.constructResponse(false, command);
 
     } catch (MongoException e) {

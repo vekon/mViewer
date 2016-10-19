@@ -29,18 +29,32 @@ import com.imaginea.mongodb.exceptions.DatabaseException;
 public interface SystemCollectionService {
 
   /**
-   * Adds a user to the given database
+         * Adds a user to the given database
+         *
+         * @param dbName Name of the database
+         * @param username Username of the user to be added
+         * @param password Password of the usre to be added
+         * @param roles optional attribute for creating the user
+         * @return Returns the success message that should be shown to the user
+         * @throws DatabaseException throw super type of UndefinedDatabaseException
+         */
+
+        public String addUser(String dbName, String username, String password, String roles)
+            throws ApplicationException;
+
+  /**
+   * Modify a user to the given database
    *
-   * @param dbName Name of the database
-   * @param username Username of the user to be added
-   * @param password Password of the usre to be added
-   * @param roles optional attribute for creating the user
+   * @param dbName   Name of the database
+   * @param username username of the user being modifies to the database
+   * @param password password of the user being modified to the database
+   * @param roles    The parameter for modifying the user roles
    * @return Returns the success message that should be shown to the user
    * @throws DatabaseException throw super type of UndefinedDatabaseException
    */
 
-  public String addUser(String dbName, String username, String password, String roles)
-      throws ApplicationException;
+    public String modifyUser(String dbName, String username, String password, String roles)
+        throws ApplicationException;
 
   /**
    * Drops the user from the given mongo db based on the username
