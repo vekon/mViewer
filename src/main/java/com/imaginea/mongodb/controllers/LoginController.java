@@ -164,6 +164,8 @@ public class LoginController extends BaseController {
         } catch (MongoException m) {
           throw new MongoConnectionException(ErrorCodes.MONGO_CONNECTION_EXCEPTION,
               "Connection Failed. Check if MongoDB is running at the given host and port.");
+        } catch (ApplicationException m) {
+          throw new ApplicationException(ErrorCodes.NEED_AUTHORISATION,m.getMessage());
         }
 
         JSONObject response = new JSONObject();
