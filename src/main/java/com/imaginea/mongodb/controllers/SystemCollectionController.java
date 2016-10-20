@@ -110,9 +110,9 @@ public class SystemCollectionController extends BaseController {
     @Path("modifyUser")
     public String modifyUserRequest(@PathParam("dbName") final String dbName,
         @DefaultValue("POST") @QueryParam("connectionId") final String connectionId,
-        @FormParam("addUser_user_name") final String username,
-        @FormParam("addUser_password") final String password,
-        @FormParam("addUser_roles") final String roles,
+        @FormParam("modifyUser_user_name") final String username,
+        @FormParam("modifyUser_password") final String password,
+        @FormParam("modifyUser_roles") final String roles,
         @Context final HttpServletRequest request) {
 
       String response =
