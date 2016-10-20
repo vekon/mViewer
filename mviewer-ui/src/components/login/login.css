@@ -190,29 +190,43 @@ h2:after {
 .footerLink a {
     float: right;
 }
-.errorMessage {
+.errorMessage,
+.longErrorMessage{
   margin: 5px 0;
   text-align: center;
   border: 1px solid red;
   width: 100%;
   font-size: 70%;
-  height: auto;
   padding: 10px;
 }
-.errorMessage.hidden {
+.errorMessage {
+  height: 47px;
+}
+.longErrorMessage {
+  height: 57px;
+}
+.errorMessage.hidden,
+.longErrorMessage.hidden{
     display: none;
 }
-.errorMessage.show {
+.errorMessage.show,
+.longErrorMessage.show{
   margin: 5px 0;
   text-align: center;
   border: 1px solid red;
   width: 100%;
   font-size: 15px;
-  height: auto;
   padding: 10px;
   color: red;
 }
 
+.longErrorMessage.show {
+  height: 57px;
+}
+
+.errorMessage.show {
+  height: 47px;
+}
 /*-------Clear Floats-------*/
 .clearfix { zoom : 1}
 .clearfix:after {
