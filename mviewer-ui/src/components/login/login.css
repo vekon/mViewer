@@ -197,6 +197,7 @@ h2:after {
   width: 100%;
   font-size: 70%;
   height: auto;
+  word-wrap: break-word;
   padding: 10px;
 }
 .errorMessage.hidden {
@@ -205,6 +206,7 @@ h2:after {
 .errorMessage.show {
   margin: 5px 0;
   text-align: center;
+  word-wrap: break-word;	
   border: 1px solid red;
   width: 100%;
   font-size: 15px;

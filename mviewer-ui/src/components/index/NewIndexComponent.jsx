@@ -159,6 +159,7 @@ class NewIndexComponent extends React.Component {
     return function(e) {
       if(r.result.attrSelected == true){
         r.result.attrSelected = false;
+        r.result.asc = false;
         checkUncheck(false);
       }
       else {
@@ -181,13 +182,15 @@ class NewIndexComponent extends React.Component {
     }
 
     return function(e) {
-      if(r.result.asc == true){
-        r.result.asc = false;
-        checkUncheck(false);
-      }
-      else {
-        r.result.asc = true;
-        checkUncheck(true);
+      if(r.result.attrSelected){
+        if(r.result.asc == true){
+          r.result.asc = false;
+          checkUncheck(false);
+        }
+        else {
+          r.result.asc = true;
+          checkUncheck(true);
+        }
       }
     }.bind(this);
   }

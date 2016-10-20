@@ -95,7 +95,9 @@ public class AuthServiceImpl implements AuthService {
   private MongoClient getMongoAndAuthenticate(ConnectionDetails connectionDetails)
       throws ApplicationException {
     MongoClient mongo=null;
-    if(! connectionDetails.isAuthMode()) {
+    boolean authModeUi;
+    authModeUi=(connectionDetails.getUsername()==null || connectionDetails.getUsername().isEmpty())?false:true;
+    if(!authModeUi) {
       mongo = new MongoClient(connectionDetails.getHostIp(), connectionDetails.getHostPort());
     }
     String dbNames = connectionDetails.getDbNames();
@@ -106,25 +108,34 @@ public class AuthServiceImpl implements AuthService {
       dbName = dbName.trim();
       boolean loginStatus = false;
       try {
-        if (connectionDetails.isAuthMode()) {
+        if (authModeUi) {
           MongoCredential
               credential =
               MongoCredential.createCredential(username, dbName,
-                                                      password.toCharArray());
+                                               password.toCharArray());
           mongo =
               new MongoClient(
                   new ServerAddress(connectionDetails.getHostIp(),
                                     connectionDetails.getHostPort()),
                   java.util.Arrays.asList(credential),
                   MongoClientOptions.builder().serverSelectionTimeout(1000).build());
-                  mongo.getDatabase(dbName).listCollections().iterator();
+          Iterator iterator = mongo.listDatabaseNames().iterator();
+          while (iterator.hasNext()) {
+            if (iterator.next().toString().equals(dbName)) {
+              mongo.getDatabase(dbName).listCollections().iterator();
+              loginStatus = true;
+              break;
+            }
+          }
+        } else {
+          MongoDatabase db = mongo.getDatabase(dbName);
+          db.listCollectionNames();
+          loginStatus = true;
         }
-        MongoDatabase db = mongo.getDatabase(dbName);
-        db.listCollectionNames();
         // Hack. Checking server connectivity status by fetching collection names on selected db
         // this line will throw exception in two cases.1)On Invalid mongo
         // host Address,2)Invalid authorization to fetch collection names
-        loginStatus = true;
+
       }
       catch (MongoException me) {
 

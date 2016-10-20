@@ -3,6 +3,7 @@ import userDetailsStyles from './userdetails.css'
 import $ from 'jquery'
 import service from '../../gateway/service.js';
 import DeleteComponent from '../deletecomponent/DeleteComponent.jsx'
+import ModifyUser from '../newuser/NewUserComponent.jsx'
 
 class UserDetailsComponent extends React.Component {
 
@@ -14,7 +15,8 @@ class UserDetailsComponent extends React.Component {
       modalIsOpen: false,
       sidebarOpen: false,
       currentUser: null,
-      _isMounted: false
+      _isMounted: false,
+      roles: ""
     }
   }
 
@@ -32,6 +34,14 @@ class UserDetailsComponent extends React.Component {
     }
   }
 
+  refreshRespectiveData(userName){
+    this.props.refreshData(userName);
+  }
+
+  refreshCollectionList(showQueryExecutor){
+    this.props.refreshCollectionList(showQueryExecutor);
+  }
+
   createUserDetails(nextProps){
     var userDetail = [];
     var sortItem = {};
@@ -41,12 +51,14 @@ class UserDetailsComponent extends React.Component {
      } else {
        sortItem = this.props.users;
      }
+    var roles = "";
+    sortItem.roles.map(function(item) {
+      roles = roles.length > 0 ? roles + ", " +  item.role : item.role;
+    });
+    userDetail.push({'key': 'role', 'value': roles});
     Object.keys(sortItem).map(function(key) {
-      if(key == "roles") {
-        userDetail.push({'key': 'role', 'value': sortItem[key][0].role});
-      } else {
-         userDetail.push({'key': key, 'value': sortItem[key]});
-      }
+      if(key != "roles")
+        userDetail.push({'key': key, 'value': sortItem[key]});
     });
     this.setState({userDetails: userDetail});
   }
@@ -71,12 +83,19 @@ class UserDetailsComponent extends React.Component {
 
   render () {
     var that = this;
+    var roles = "";
+    this.state.userDetail ? this.state.userDetail.map(function(item){
+      if(item.key == "role")
+        roles = item.value;
+    }) : null;
+    var roles = this.state.userDetail ? this.state.userDetail[0].key : null;
     return(
       <div className={userDetailsStyles.mainContainer}>
           <div className= {userDetailsStyles.actionsContainer}>
             <span className={userDetailsStyles.detailsLabel}> {this.state.currentUser} Details:</span>
               <div className={userDetailsStyles.deleteButtonGridfs} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete User</span></div>
               { this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'User' dbName = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} ></DeleteComponent> : '' }
+              <ModifyUser className={userDetailsStyles.modifyUser} users={this.props.users} modifyUser="true" currentDb = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}></ModifyUser>
           </div>
         <div className={userDetailsStyles.detailsBody}>
           <table>
