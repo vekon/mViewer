@@ -159,6 +159,7 @@ class NewIndexComponent extends React.Component {
     return function(e) {
       if(r.result.attrSelected == true){
         r.result.attrSelected = false;
+        r.result.asc = false;
         checkUncheck(false);
       }
       else {
@@ -181,13 +182,15 @@ class NewIndexComponent extends React.Component {
     }
 
     return function(e) {
-      if(r.result.asc == true){
-        r.result.asc = false;
-        checkUncheck(false);
-      }
-      else {
-        r.result.asc = true;
-        checkUncheck(true);
+      if(r.result.attrSelected){
+        if(r.result.asc == true){
+          r.result.asc = false;
+          checkUncheck(false);
+        }
+        else {
+          r.result.asc = true;
+          checkUncheck(true);
+        }
       }
     }.bind(this);
   }
@@ -242,11 +245,10 @@ class NewIndexComponent extends React.Component {
                 </div>
               </div>
             </form>
-            <div className={indexStyles.buttonContainer+' '+ indexStyles.clearfix}>
+            <div className={indexStyles.buttonContainer}>
                 <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={indexStyles.submit} disabled = {this.state.errorMessage}>SUBMIT</button>
                 <button onClick={this.closeModal.bind(this)} value='CANCEL' className={indexStyles.cancel}>CANCEL</button>
             </div>
-            <div className = {indexStyles.clear}></div>
             <div className={!this.state.successMessage? (indexStyles.errorMessage + ' ' + (this.state.message!='' ? indexStyles.show : indexStyles.hidden)) : (this.state.message != '' ? indexStyles.successMessage : '')}>{this.state.message}</div>
          </div>
        </Modal>
