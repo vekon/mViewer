@@ -211,7 +211,7 @@ class NewUserComponent extends React.Component {
         border                : 'none',
         borderRadius          : '4px',
         right                 : 'auto',
-        width                 : '30%',
+        width                 : '35%',
         bottom                : 'auto',
         marginRight           : '-50%',
         padding               : '0px',
@@ -242,7 +242,7 @@ class NewUserComponent extends React.Component {
                <div className={newUserStyles.userPassword}>
                  <TextInput type="password" name="addUser_password" id="addUser_password" placeholder="Password" value={this.state.name} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Password must not be empty'}} validations={'isRequired2:'+this.state.error}/>
                </div>
-               <div className={newUserStyles.rolesDiv}>
+               <div className={newUserStyles.rolesDiv +' '+newUserStyles.clearfix}>
                  {this.state.roles.map(function(item){
                     return (
                      <div className={newUserStyles.roleInputBox} key={item.key}>

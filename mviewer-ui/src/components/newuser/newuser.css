@@ -21,6 +21,14 @@
     font-family: 'Brandon-Light';
 }
 
+.rolesDiv {
+
+}
+
+.roleInputBox {
+
+}
+
 .inputBox label {
     font-size: 15px;
     color: black;
@@ -157,8 +165,7 @@
 }
 
 .buttonContainer{
-  margin-top: 28%;
-  margin-bottom: 6%;
+  padding-top: 15px;
 }
 
 .label1 {
@@ -211,4 +218,15 @@
 
 .modifyUser span {
   display: inline;
+}
+
+
+/*-------Clear Floats-------*/
+.clearfix { zoom : 1}
+.clearfix:after {
+    content: '.';
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
 }
