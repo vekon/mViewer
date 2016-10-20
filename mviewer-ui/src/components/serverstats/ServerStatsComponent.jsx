@@ -32,7 +32,7 @@ class ServerStatsComponent extends React.Component {
     const getItemString = (type, data, itemType, itemString) => (<span></span>);
     return(
       <div className={serverStatsStyles.mainContainer}>
-        <h3>Server Statistics</h3>
+        <p>Server Statistics</p>
         <div className={serverStatsStyles.container}>
           <span className={serverStatsStyles.headContainer}>
             <span className={serverStatsStyles.key}>Key</span> <span className={serverStatsStyles.value}>Value</span>

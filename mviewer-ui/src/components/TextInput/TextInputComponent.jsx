@@ -28,6 +28,16 @@ Formsy.addValidationRule('isAlpha1', (values, value, otherField) => {
   }
 });
 
+Formsy.addValidationRule('isAlpha2', (values, value, otherField) => {
+  if (value !== null){
+    return (value.match(/^[a-zA-Z][a-zA-Z0-9\-\.]*$/));
+
+  }
+  else {
+    return true;
+  }
+});
+
 const TextInput = React.createClass({
   // Add the Formsy Mixin
   mixins: [Formsy.Mixin],
