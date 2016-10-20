@@ -35,6 +35,7 @@ class newFileComponent extends React.Component {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
     this.setState({disableSubmit: true});
+    this.setState({successMessage: false});
   }
 
   closeModal() {

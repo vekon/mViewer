@@ -1,61 +1,56 @@
 .mainContainer {
   display: inline-block;
   width: 94%;
-  padding-left: 10px;
+  height: 100%;
+  background: #fff;
 }
 
 .tabTitle {
-  padding: 10px;
-  font-family: 'Brandon';
-  font-size: 25;
+  display: inline-block;
+  padding: 25px 10px 10px 75px;
+  font-family: 'Brandon-Light';
+  font-size: 15px;
+  font-weight: 600;
 }
 
-.treeTab {
-  margin-top: 10px !important;
-
-}
 
 .tabPanel {
   width: 95%;
   height: 70%;
 }
 
-.treeTab li>span {
-  font-family: 'Brandon';
-  font-size: 15;
+.tabs {
+  width: 100%;
+  background: #CCD9DE;
+  z-index: 99999;
+  list-style-type: none;
+  float: left;
+  border-bottom: solid 1px #bababa;
+  background: #ecf4f7;
 }
 
-
-
-.treeTab{
-  border-bottom: 1px solid #aaa;
-    margin: 0 0 10px;
-    padding: 0;
-}
-
-.treeTab li {
+.tabs li {
   display: inline-block;
-    border: 1px solid transparent;
-    border-bottom: none;
-    bottom: -1px;
-    position: relative;
-    list-style: none;
-    padding: 6px 12px;
-    cursor: pointer;
+  cursor: pointer;
+  width: 10%;
+  min-width: 100px;
+  text-align: center;
+  font-family: 'Brandon';
+  cursor: pointer;
+  padding-bottom: 13px;
+  padding-top: 15px;
+  font-size: 17px;
 }
 
 .activeTab {
-  background: #fff;
-border-color: #aaa;
-color: black;
-border-radius: 5px 5px 0 0;
--moz-border-radius: 5px 5px 0 0;
--webkit-border-radius: 5px 5px 0 0;
+   border-bottom: solid 6px #2494d0;
+   font-weight: 600;
+   color: #2494d0;
+   cursor: pointer;
 }
-
 
 .errorMessage {
   padding: 10px;
   color: red;
-  
+
 }

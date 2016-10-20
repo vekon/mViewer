@@ -21,6 +21,7 @@ class newDocumentComponent extends React.Component {
 
   openModal() {
     this.setState({modalIsOpen: true});
+    this.setState({successMessage : false});
     this.setState({message: ''});
     if(this.props.addOrEdit == 'Edit'){
       this.setState({newDocument: this.props.documentValue});

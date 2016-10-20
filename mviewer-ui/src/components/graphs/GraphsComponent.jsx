@@ -84,12 +84,12 @@ class GraphsComponent extends React.Component {
     return (
       <div className = {graphStyles.mainContainer}>
       {!this.state.error ? <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
-        <TabList className={graphStyles.treeTab}>
-          <Tab className={this.state.selectedTab==0 ? graphStyles.activeTab : ''}><span>Combined View</span></Tab>
-          <Tab className={this.state.selectedTab==1 ? graphStyles.activeTab : ''}><span>Queries</span></Tab>
-          <Tab className={this.state.selectedTab==2 ? graphStyles.activeTab : ''}><span>Updates</span></Tab>
-          <Tab className={this.state.selectedTab==3 ? graphStyles.activeTab : ''}><span>Inserts</span></Tab>
-          <Tab className={this.state.selectedTab==4 ? graphStyles.activeTab : ''}><span>Deletes</span></Tab>
+        <TabList className={graphStyles.tabs}>
+          <Tab className={this.state.selectedTab==0 ? graphStyles.activeTab : ''}>Combined View</Tab>
+          <Tab className={this.state.selectedTab==1 ? graphStyles.activeTab : ''}>Queries</Tab>
+          <Tab className={this.state.selectedTab==2 ? graphStyles.activeTab : ''}>Updates</Tab>
+          <Tab className={this.state.selectedTab==3 ? graphStyles.activeTab : ''}>Inserts</Tab>
+          <Tab className={this.state.selectedTab==4 ? graphStyles.activeTab : ''}>Deletes</Tab>
         </TabList>
         <TabPanel className={graphStyles.tabPanel}>
           <p className={graphStyles.tabTitle}>Combined View</p>
