@@ -10,6 +10,7 @@ import NewDocument from '../newdocument/newDocumentComponent.jsx'
 import CollectionStats from '../collectionstats/CollectionStatsComponent.jsx'
 import Document from '../document/DocumentComponent.jsx'
 import NewFile from '../newfile/NewFileComponent.jsx'
+import NewIndex from '../index/NewIndexComponent.jsx'
 import service from '../../gateway/service.js'
 import TextInput from '../TextInput/TextInputComponent.jsx'
 import { Form } from 'formsy-react'
@@ -410,7 +411,7 @@ class QueryExecutorComponent extends React.Component {
 
   skipHandler(){
     return function(e) {
-      this.setState({skip:e.target.value});
+      this.setState({skip:e});
     }.bind(this);
   }
 
@@ -422,7 +423,7 @@ class QueryExecutorComponent extends React.Component {
 
   sortHandler(){
     return function(e) {
-      this.setState({sort:e.target.value});
+      this.setState({sort:e});
     }.bind(this);
   }
 
@@ -516,6 +517,7 @@ class QueryExecutorComponent extends React.Component {
           { this.props.queryType == "collection" ?
             <div className = {queryExecutorStyles.actionsContainer}>
               <div>
+              <NewIndex currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this,'new')} addOrEdit='Add' ></NewIndex>
               <CollectionStats selectedDB={this.props.currentDb} selectedCollection={this.props.currentItem} connectionId={this.props.connectionId}></CollectionStats>
               <NewCollection queryType='collection' currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} addOrUpdate={2} refreshCollectionList={this.props.refreshCollectionList.bind(this)} refreshRespectiveData = {this.props.refreshRespectiveData.bind(this)}/>
               <NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this,'new')} addOrEdit='Add' ></NewDocument>

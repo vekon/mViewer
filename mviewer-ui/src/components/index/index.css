@@ -17,11 +17,12 @@ padding-right: 10px;
 }
 
 .two label {
-  margin-top: 5%;
-  margin-left: 4.7%;
+  /*margin-top: 5%;*/
+  /*margin-left: 4.7%;*/
   font-size: 16px;
   color: #484848;
   font-weight: 600;
+  padding-left: 10px;
 }
 
 .header{
@@ -80,20 +81,22 @@ padding-right: 10px;
     font-size: 13px;
     font-weight: 600;
     height: 30px;
+    padding: 10px;
 }
 
 .cancel {
   color: #484848;
-  margin-left: 175px;
+  /*margin-left: 175px;*/
   font-family: 'Brandon-Light';
+  float: right;
 }
 
 .submit {
   float: right;
-  margin-bottom: 4%;
-  margin-right: 8px;
+  /*margin-bottom: 4%;*/
+  /*margin-right: 8px;*/
   font-family: 'Brandon-Light';
-  margin-top: .01%;
+  /*margin-top: .01%;*/
 }
 
 .submit:enabled {
@@ -132,6 +135,7 @@ padding-right: 10px;
   padding: 10px;
   margin: 5px auto;
   font-size: 13px;
+  word-wrap: break-word;
 }
 
 .errorMessage.hidden {
@@ -148,6 +152,7 @@ padding-right: 10px;
   padding: 10px;
   margin: 5px auto;
   font-size: 13px;
+  word-wrap: break-word;
 }
 
 
@@ -161,6 +166,7 @@ padding-right: 10px;
   padding: 10px;
   margin: 5px auto;
   font-size: 13px;
+  word-wrap: break-word;
 }
 
 
@@ -172,15 +178,33 @@ padding-right: 10px;
 
 .ascCheckboxSpan {
   float: right;
-  margin-right: 4%;
+  margin-right: 6%;
 }
 
 .orderLabel {
-  margin-left: 53% !important;
+  /*margin-left: 53% !important;*/
+  float: right;
+  padding-right: 10px;
+  padding-bottom: 5px;
 }
 
 .valueSpan{
   margin-top: -1%;
-  position: absolute;
+  /*position: absolute;*/
   width: 75%;
+}
+
+
+.clear {
+  clear: both;
+}
+
+/*-------Clear Floats-------*/
+.clearfix { zoom : 1}
+.clearfix:after {
+    content: '.';
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
 }
