@@ -153,7 +153,7 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
       } catch (MongoException e) {
         throw new ApplicationException(ErrorCodes.USER_CREATION_EXCEPTION, e.getMessage());
       }
-      return "User: " + username + " has been modifies for the DB: " + dbName;
+      return "User: " + username + " has been modified for the DB: " + dbName;
     }
 
   /**
