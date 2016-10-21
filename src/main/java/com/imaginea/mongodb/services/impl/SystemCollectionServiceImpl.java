@@ -364,7 +364,9 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
        }
 
        mongoInstance.getDatabase(dbName).getCollection(collectionName).dropIndexes();
-       mongoInstance.getDatabase(dbName).getCollection(collectionName).createIndex(keys);
+       if(!(keys.isEmpty() || keys==null)) {
+         mongoInstance.getDatabase(dbName).getCollection(collectionName).createIndex(keys);
+       }
      } catch (MongoException e) {
        throw new ApplicationException(ErrorCodes.INDEX_UPDATION_EXCEPTION, e.getMessage());
      }
