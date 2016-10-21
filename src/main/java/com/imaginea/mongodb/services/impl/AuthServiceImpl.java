@@ -21,6 +21,8 @@ import com.mongodb.client.MongoDatabase;
 
 import org.bson.Document;
 
+import javax.print.Doc;
+
 import edu.emory.mathcs.backport.java.util.Arrays;
 import edu.emory.mathcs.backport.java.util.Collections;
 
