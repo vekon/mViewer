@@ -32,7 +32,9 @@ import com.imaginea.mongodb.domain.UserLoginData;
 import com.imaginea.mongodb.exceptions.ApplicationException;
 import com.imaginea.mongodb.exceptions.ErrorCodes;
 import com.imaginea.mongodb.exceptions.MongoConnectionException;
+import com.imaginea.mongodb.services.impl.AuthServiceImpl;
 import com.imaginea.mongodb.services.impl.DatabaseServiceImpl;
+import com.imaginea.mongodb.services.impl.SystemCollectionServiceImpl;
 import com.mongodb.MongoException;
 import com.mongodb.MongoInternalException;
 
@@ -192,6 +194,7 @@ public class LoginController extends BaseController {
             MongoConnectionDetails mongoConnectionDetails =
                 authService.getMongoConnectionDetails(connectionId);
             ConnectionDetails connectionDetails = mongoConnectionDetails.getConnectionDetails();
+            boolean privileges=(connectionDetails.getUsername()==null || connectionDetails.getDbNames()==null)?false:true;
             JSONObject jsonResponse = new JSONObject();
             try {
               jsonResponse.put("username", connectionDetails.getUsername());
@@ -200,6 +203,8 @@ public class LoginController extends BaseController {
               jsonResponse.put("dbNames", new DatabaseServiceImpl(connectionId).getDbList());
               jsonResponse.put("authMode", connectionDetails.isAuthMode());
               jsonResponse.put("hasAdminLoggedIn", connectionDetails.isAdminLogin());
+              if(privileges)
+                jsonResponse.put("rolesAndPrivileges", new SystemCollectionServiceImpl(connectionId).getUsersPrivileges(connectionDetails.getDbNames(),connectionDetails.getUsername()));
             } catch (JSONException e) {
               logger.error(e);
             }
