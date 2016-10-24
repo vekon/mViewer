@@ -14,6 +14,7 @@ package com.imaginea.mongodb.services.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bson.Document;
 import org.json.JSONObject;
@@ -220,6 +221,35 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
 
   }
 
+  public JSONObject getUsersPrivileges(String dbName, String userName) throws ApplicationException {
+    if (dbName == null) {
+      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
+    }
+    if (dbName.equals("")) {
+      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Empty");
+    }
+    if (userName == null) {
+      throw new DatabaseException(ErrorCodes.USERNAME_IS_EMPTY, "User name is null");
+    }
+    if (userName.equals("")) {
+      throw new DatabaseException(ErrorCodes.USERNAME_IS_EMPTY, "User Name Empty");
+    }
+
+    try {
+      Document doc = new Document();
+              Document user = new Document("user",userName).append("db", dbName);
+              doc.put("usersInfo",user);
+              doc.put("showCredentials", true);
+              doc.put("showPrivileges", true);
+
+      //System.out.print(doc.toJson());
+            Document comm = mongoInstance.getDatabase(dbName).runCommand(doc);
+      return ApplicationUtils.constructResponse(false, comm);
+    } catch (MongoException e) {
+      throw new ApplicationException(ErrorCodes.ANY_OTHER_EXCEPTION, e.getMessage());
+    }
+
+  }
   /**
    * Drops all the users from the given mongo db
    *
@@ -334,7 +364,9 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
        }
 
        mongoInstance.getDatabase(dbName).getCollection(collectionName).dropIndexes();
-       mongoInstance.getDatabase(dbName).getCollection(collectionName).createIndex(keys);
+       if(!(keys.isEmpty() || keys==null)) {
+         mongoInstance.getDatabase(dbName).getCollection(collectionName).createIndex(keys);
+       }
      } catch (MongoException e) {
        throw new ApplicationException(ErrorCodes.INDEX_UPDATION_EXCEPTION, e.getMessage());
      }
