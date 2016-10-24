@@ -14,9 +14,9 @@ class NewUserComponent extends React.Component {
     this.state = {
       modalIsOpen: false,
       autoIndex: true,
-      addUser_password: null,
-      addUser_user_name: null,
-      addUser_roles: "",
+      password: null,
+      user_name: null,
+      roles: "",
       canSubmit:false,
       title:'',
       submitted:false,
@@ -131,9 +131,9 @@ class NewUserComponent extends React.Component {
       this.setState({selectedRoles:""});
       return;
     }
-    obj['addUser_roles'] = this.state.selectedRoles;
-    if ((obj['addUser_user_name']!= '' && obj['addUser_user_name']!= null)
-         && (obj['addUser_password']!= '' && obj['addUser_password']!=null)){
+    obj['roles'] = this.state.selectedRoles;
+    if ((obj['user_name']!= '' && obj['user_name']!= null)
+         && (obj['password']!= '' && obj['password']!=null)){
       this.setState({submitted:true});
     } else {
       this.setState({error:true});
@@ -149,8 +149,8 @@ class NewUserComponent extends React.Component {
     var that = this;
     var userDetail= [];
     if(this.props.modifyUser) {
-      this.setState({addUser_password:""});
-      this.setState({addUser_user_name: this.props.userName});
+      this.setState({password:""});
+      this.setState({user_name: this.props.userName});
       this.setState({title:'Modify User'});
       this.setRoles();
     }
@@ -177,10 +177,10 @@ class NewUserComponent extends React.Component {
     if (calledFrom == 'clickHandler'){
       if (data.response.result) {
         if(this.props.modifyUser)
-          this.setState({message:'User '+obj['addUser_user_name']+ ' was successfully modified for database ' + this.props.currentDb});
+          this.setState({message:'User '+obj['user_name']+ ' was successfully modified for database ' + this.props.currentDb});
         else
-          this.setState({message:'User '+obj['addUser_user_name']+ ' was successfully added to database ' + this.props.currentDb});
-        this.state.newUser = obj['addUser_user_name'];
+          this.setState({message:'User '+obj['user_name']+ ' was successfully added to database ' + this.props.currentDb});
+        this.state.newUser = obj['user_name'];
         this.setState({successMessage:true});
         setTimeout(function() { this.closeModal() }.bind(this), 2000);
       }
@@ -190,7 +190,7 @@ class NewUserComponent extends React.Component {
           if(data.response.error.message.indexOf("not authorized") >= 0) {
             this.setState({message:'Not Authorized to create user with role' + this.state.selectedRoles});
           } else {
-            this.setState({message:'User '+obj['addUser_user_name']+ ' already exists in database ' + this.props.currentDb});
+            this.setState({message:'User '+obj['user_name']+ ' already exists in database ' + this.props.currentDb});
           }
         }
       }
@@ -237,10 +237,10 @@ class NewUserComponent extends React.Component {
            <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
              <div className={ newUserStyles.formContainer}>
                <div className={newUserStyles.name}>
-                 <TextInput type="text" name="addUser_user_name" id="addUser_user_name" placeholder="User Name" value={this.state.addUser_user_name} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'User name must not be empty'}} validations={'isRequired2:'+this.state.error}/>
+                 <TextInput type="text" name="user_name" id="user_name" placeholder="User Name" value={this.state.user_name} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'User name must not be empty'}} validations={'isRequired2:'+this.state.error}/>
                </div>
                <div className={newUserStyles.userPassword}>
-                 <TextInput type="password" name="addUser_password" id="addUser_password" placeholder="Password" value={this.state.name} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Password must not be empty'}} validations={'isRequired2:'+this.state.error}/>
+                 <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.name} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Password must not be empty'}} validations={'isRequired2:'+this.state.error}/>
                </div>
                <div className={newUserStyles.rolesDiv +' '+newUserStyles.clearfix}>
                  {this.state.roles.map(function(item){

@@ -239,7 +239,7 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
       Document doc = new Document();
               Document user = new Document("user",userName).append("db", dbName);
               doc.put("usersInfo",user);
-              doc.put("showCredentials", false);
+              doc.put("showCredentials", true);
               doc.put("showPrivileges", true);
 
       //System.out.print(doc.toJson());
