@@ -4,6 +4,8 @@ import $ from 'jquery'
 import service from '../../gateway/service.js';
 import DeleteComponent from '../deletecomponent/DeleteComponent.jsx'
 import ModifyUser from '../newuser/NewUserComponent.jsx'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 
 class UserDetailsComponent extends React.Component {
 
@@ -16,14 +18,27 @@ class UserDetailsComponent extends React.Component {
       sidebarOpen: false,
       currentUser: null,
       _isMounted: false,
-      roles: ""
+      roles: "",
+      showAuth: false
     }
   }
 
   openModal() {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
+    var hasPriv = privilegesAPI.hasPrivilege('dropRole','', this.props.currentDb);
+    if(hasPriv){
+      this.setState({showAuth : false});    }
+    else{
+      this.setState({showAuth : true});
+    }
   }
+
+  authClose(){
+    this.setState({showAuth:false});
+    this.setState({modalIsOpen:false});
+  }
+
 
   closeModal(successMessage) {
     if(this.state._isMounted == true){
@@ -94,7 +109,7 @@ class UserDetailsComponent extends React.Component {
           <div className= {userDetailsStyles.actionsContainer}>
             <span className={userDetailsStyles.detailsLabel}> {this.state.currentUser} Details:</span>
               <div className={userDetailsStyles.deleteButtonGridfs} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete User</span></div>
-              { this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'User' dbName = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} ></DeleteComponent> : '' }
+              { this.state.modalIsOpen?(!this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'User' dbName = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action = 'Drop User' ></AuthPopUp>) : '' }
               <ModifyUser className={userDetailsStyles.modifyUser} users={this.props.users} modifyUser="true" currentDb = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}></ModifyUser>
           </div>
         <div className={userDetailsStyles.detailsBody}>

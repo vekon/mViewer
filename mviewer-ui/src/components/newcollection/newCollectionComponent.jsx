@@ -6,6 +6,7 @@ import { Form } from 'formsy-react'
 import TextInput from '../TextInput/TextInputComponent.jsx'
 import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 import service from '../../gateway/service.js'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
 
 class newCollectionComponent extends React.Component {
 
@@ -32,18 +33,42 @@ class newCollectionComponent extends React.Component {
   }
 
   openModal() {
-    // if (false){
+    if (this.props.addOrUpdate == '1'){
+      var hasPriv = privilegesAPI.hasPrivilege('createCollection',this.props.name, this.props.currentDb);
+      if(hasPriv){
+        this.setState({showAuth : false});    }
+      else{
+        this.setState({showAuth : true});
+      }
+    }
+    else{
+      var hasPriv = privilegesAPI.hasPrivilege('renameCollectionSameDB',this.props.name, this.props.currentDb);
+      if(hasPriv){
+        this.setState({showAuth : false});    }
+      else{
+        this.setState({showAuth : true});
+      }
+
+    }
+
+    if (!this.state.showAuth){
       if (this.props.addOrUpdate == '2'){
         this.getCappedData.call(this);
       }
       this.setState({modalIsOpen: true});
       this.setState({message: ''});
       this.setState({successMessage: false});
-    // }
-    // else {
-    //   this.setState({showAuth:true});
-    // }
+    }
+    else {
+      this.setState({showAuth:true});
+    }
   }
+
+  authClose(){
+      this.setState({showAuth:false});
+      this.setState({modalIsOpen:false});
+  }
+
 
   closeModal() {
     this.setState({modalIsOpen: false});
@@ -241,7 +266,7 @@ class newCollectionComponent extends React.Component {
             </Form>
              <div className={!this.state.successMessage? (newCollectionStyles.errorMessage + ' ' + (this.state.message!='' ? newCollectionStyles.show : newCollectionStyles.hidden)) : (this.state.message != '' ? newCollectionStyles.successMessage : '')}>{this.state.message}</div>
           </div>
-        </Modal>: <AuthPopUp modalIsOpen = {this.state.showAuth} action = 'Add/Edit collection' ></AuthPopUp>}
+        </Modal>: <AuthPopUp modalIsOpen = {this.state.showAuth} action = {this.props.addOrUpdate == '1' ? 'Add collection' : 'Edit Collection' }  authClose = {this.authClose.bind(this)} ></AuthPopUp>}
      </div>
     );
   }

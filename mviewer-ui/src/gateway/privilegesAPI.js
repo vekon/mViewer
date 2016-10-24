@@ -2,7 +2,6 @@ var privileges;
 
 function setRolesAndPrivileges(privs) {
   privileges = privs;
-  console.log('privileges : ' + privileges);
 }
 
 function hasPrivilege(privilege,collection,db) {

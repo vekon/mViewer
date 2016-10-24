@@ -16,10 +16,12 @@ class AuthPopUpComponent extends React.Component {
 
   closeModal() {
     this.setState({modalIsOpen : false});
+    this.props.authClose();
   }
 
   componentWillReceiveProps(){
-    this.setState({modalIsOpen: this.props.modalIsOpen});
+    // if(this.props.db == next.props.db && this.props.collection !=nextprops.collection)
+     // this.setState({modalIsOpen: this.props.modalIsOpen});
   }
 
 

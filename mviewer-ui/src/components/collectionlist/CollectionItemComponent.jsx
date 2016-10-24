@@ -3,6 +3,8 @@ import collectionListStyles from '../shared/listpanel.css'
 import sharedStyles from '../shared/listpanel.css'
 import $ from 'jquery'
 import DeleteComponent from '../deletecomponent/DeleteComponent.jsx'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 
 class CollectionItemComponent extends React.Component {
 
@@ -11,14 +13,26 @@ class CollectionItemComponent extends React.Component {
    this.state = {
      hover_flag: false,
      modalIsOpen: false,
-     _isMounted: false
+     _isMounted: false,
+     showAuth: false
    }
  }
 
  openModal() {
    this.setState({modalIsOpen: true});
    this.setState({message: ''});
+   var hasPriv = privilegesAPI.hasPrivilege('dropCollection',this.props.name, this.props.dbName);
+    if(hasPriv){
+      this.setState({showAuth : false});    }
+    else{
+      this.setState({showAuth : true});
+    }
  }
+
+ authClose(){
+      this.setState({showAuth:false});
+      this.setState({modalIsOpen:false});
+  }
 
  closeModal(successMessage, fromDeleteButton) {
    if(this.state._isMounted == true){
@@ -52,7 +66,7 @@ class CollectionItemComponent extends React.Component {
         </span>
         <span className = {collectionListStyles.button}>{this.props.name}</span>
         <i className={"fa fa-trash "+ collectionListStyles.trash} aria-hidden="true" onClick = {this.openModal.bind(this)}></i>
-        {this.state.modalIsOpen ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'collection' dbName = {this.props.dbName} collectionName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent> : null}
+        {this.state.modalIsOpen ? ( !this.state.showAuth ?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'collection' dbName = {this.props.dbName} collectionName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action = 'Drop collection' ></AuthPopUp> ) : null}
       </div>
     );
   }

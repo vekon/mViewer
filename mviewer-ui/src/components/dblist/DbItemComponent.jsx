@@ -2,6 +2,8 @@ import React from 'react'
 import dbListStyles from './dblist.css'
 import $ from 'jquery'
 import DeleteComponent from '../deletecomponent/DeleteComponent.jsx'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 
 class DbItemComponent extends React.Component {
 
@@ -10,7 +12,8 @@ class DbItemComponent extends React.Component {
     this.state = {
       hover_flag: false,
       modalIsOpen: false,
-      _isMounted: false
+      _isMounted: false,
+      showAuth: false
     }
   }
 
@@ -18,6 +21,18 @@ class DbItemComponent extends React.Component {
     e.stopPropagation();
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
+    var hasPriv = privilegesAPI.hasPrivilege('dropDatabase','', this.props.name);
+    if(hasPriv){
+      this.setState({showAuth : false});    }
+    else{
+      this.setState({showAuth : true});
+    }
+
+  }
+
+  authClose(){
+      this.setState({showAuth:false});
+      this.setState({modalIsOpen:false});
   }
 
   closeModal(successMessage) {
@@ -46,7 +61,7 @@ class DbItemComponent extends React.Component {
           </span>
           <span className={dbListStyles.content}>{this.props.name}</span>
           <i className={"fa fa-trash " +  dbListStyles.removeIcon} aria-hidden="true" onClick={this.openModal.bind(this)}></i>
-        {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'database' dbName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent> : ''}
+        {this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'database' dbName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent>  : <AuthPopUp modalIsOpen = {this.state.showAuth}  authClose = {this.authClose.bind(this)} action = 'Drop Database' ></AuthPopUp>) : ''}        
       </div>
     );
   }

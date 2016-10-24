@@ -118,7 +118,7 @@ class CreateDbComponent extends React.Component {
       <div className={createDbStyles.mainContainer}>
         <div className = {createDbStyles.topContainer}>
           <section className={createDbStyles.topSection}>WELCOME TO MVIEWER</section>
-          <section className={createDbStyles.midSection}>A MONOGO DB MANAGEMENT TOOL</section>
+          <section className={createDbStyles.midSection}>A MONOGODB MANAGEMENT TOOL</section>
           <section className={createDbStyles.bottomSection}>LET'S GET STARTED</section>
         </div>
         <div className = {createDbStyles.bottomContainer}>
