@@ -15,6 +15,8 @@ import service from '../../gateway/service.js'
 import TextInput from '../TextInput/TextInputComponent.jsx'
 import { Form } from 'formsy-react'
 import autosize from 'autosize'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 
 class QueryExecutorComponent extends React.Component {
 
@@ -41,6 +43,8 @@ class QueryExecutorComponent extends React.Component {
             modalIsOpen: false,
             errorMessage: '',
             singleDocument: '',
+            showAuth: false,
+            hasPriv: false,
             query: this.props.queryType == "collection" ? 'db.'+this.props.currentItem+'.find({})' :
                    'db.'+this.props.currentItem+'.files.find({})'
       }
@@ -49,6 +53,17 @@ class QueryExecutorComponent extends React.Component {
   openModal() {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
+    var hasPriv = privilegesAPI.hasPrivilege('remove','', this.props.currentDb);
+    if(hasPriv){
+      this.setState({showAuth : false});    }
+    else{
+      this.setState({showAuth : true});
+    }
+  }
+
+  authClose(){
+      this.setState({showAuth:false});
+      this.setState({modalIsOpen:false});
   }
 
   closeModal(successMessage) {
@@ -525,7 +540,7 @@ class QueryExecutorComponent extends React.Component {
             </div>
             : <div className = {queryExecutorStyles.actionsContainer}>
               <div className={queryExecutorStyles.deleteButtonGridfs} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete GridFS Bucket</span></div>
-              { this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'GridFS Bucket' dbName = {this.props.currentDb} gridFSName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : '' }
+              { this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'GridFS Bucket' dbName = {this.props.currentDb} gridFSName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =  'Drop Bucket' ></AuthPopUp> ) : '' }
                <NewFile currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this, 'new')}></NewFile>
               </div>
           }

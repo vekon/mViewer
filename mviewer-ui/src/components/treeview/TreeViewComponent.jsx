@@ -3,6 +3,8 @@ import treeViewStyles from './treeview.css'
 import $ from 'jquery'
 import TreeView from 'react-json-tree'
 import DeleteComponent from '../deletecomponent/DeleteComponent.jsx'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 
 class TreeViewComponent extends React.Component {
 
@@ -11,13 +13,26 @@ class TreeViewComponent extends React.Component {
     this.state = {
       modalIsOpen: false,
       message: '',
-      uId: ''
+      uId: '',
+      showAuth: false,
+      hasPriv: false
     }
   }
   openModal(id) {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
     this.setState({uId: id});
+    var hasPriv = privilegesAPI.hasPrivilege('remove',this.props.currentItem, this.props.currentDb);
+    if(hasPriv){
+      this.setState({showAuth : false});    }
+    else{
+      this.setState({showAuth : true});
+    }
+  }
+
+  authClose(){
+      this.setState({showAuth:false});
+      this.setState({modalIsOpen:false});
   }
 
   closeModal(successMessage) {
@@ -45,7 +60,7 @@ class TreeViewComponent extends React.Component {
        <span className={treeViewStyles.headContainer}>
          <span className={treeViewStyles.key}>Key</span> <span className={treeViewStyles.value}>Value</span>
        </span>
-       {this.state.modalIsOpen?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = {this.props.queryType == "collection" ? 'document' : 'file'} dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} uId= {this.state.uId} ></DeleteComponent> : ''}
+       {this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = {this.props.queryType == "collection" ? 'document' : 'file'} dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} uId= {this.state.uId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =  {this.props.queryType == "collection" ? 'Drop Document' : 'Drop File'} ></AuthPopUp>): ''}
        {items.length>0 ? items : <span className={treeViewStyles.exceptionContainer}>No Records to be displayed</span>}
      </div>
    );

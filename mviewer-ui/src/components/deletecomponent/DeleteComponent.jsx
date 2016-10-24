@@ -11,7 +11,8 @@ class DeleteComponent extends React.Component {
     this.state = {
       modalIsOpen: false,
       message:'',
-      successMessage: false
+      successMessage: false,
+      showAuth: false
     }
   }
 
@@ -24,6 +25,7 @@ class DeleteComponent extends React.Component {
     var type = this.props.title;
     var obj={};
     var deleteUrl ='';
+    
     if(type === 'database'){
       deleteUrl = 'db/'+this.props.dbName+'?connectionId='+this.props.connectionId;
     }
@@ -51,8 +53,8 @@ class DeleteComponent extends React.Component {
     } else {
       var deleteCall = service('DELETE', deleteUrl, obj);
     }
-    deleteCall.then(this.success.bind(this), this.failure.bind(this));
-
+    deleteCall.then(this.success.bind(this), this.failure.bind(this));  
+    
   }
 
   success(data) {
@@ -105,6 +107,7 @@ class DeleteComponent extends React.Component {
              </div>
         </div>
       </Modal>
+      
     );
   }
 }

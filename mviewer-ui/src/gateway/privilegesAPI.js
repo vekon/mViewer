@@ -2,18 +2,27 @@ var privileges;
 
 function setRolesAndPrivileges(privs) {
   privileges = privs;
-  console.log('privileges : ' + privileges);
 }
 
 function hasPrivilege(privilege,collection,db) {
-  var privs = privileges.inheritedPrivileges.filter(function(eachPriv){
-    return eachPriv.resource.collection == collection && eachPriv.resource.db == db;
-  });
-
-  if (privs.length == 0) {
-    privs = privileges.inheritedPrivileges.filter(function(eachPriv){
-      return eachPriv.resource.collection == "" && eachPriv.resource.db == db;
+  if (typeof(privileges) != 'undefined'){
+    var privs = privileges.inheritedPrivileges.filter(function(eachPriv){
+      return eachPriv.resource.collection == collection && eachPriv.resource.db == db;
     });
+  }
+  else{
+    return true;
+  }
+
+  if (typeof(privileges) != 'undefined'){
+    if (privs.length == 0) {
+      privs = privileges.inheritedPrivileges.filter(function(eachPriv){
+        return eachPriv.resource.collection == "" && eachPriv.resource.db == db;
+      });
+    }
+  }
+  else {
+    return true;
   }
 
   var actions;

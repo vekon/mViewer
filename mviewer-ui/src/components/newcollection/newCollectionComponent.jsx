@@ -4,7 +4,9 @@ import $ from 'jquery'
 import Modal from 'react-modal'
 import { Form } from 'formsy-react'
 import TextInput from '../TextInput/TextInputComponent.jsx'
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 import service from '../../gateway/service.js'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
 
 class newCollectionComponent extends React.Component {
 
@@ -25,18 +27,48 @@ class newCollectionComponent extends React.Component {
       successMessage: false,
       _isMounted: false,
       error:false,
-      newCollection: this.props.currentItem
+      newCollection: this.props.currentItem,
+      showAuth: false
     }
   }
 
   openModal() {
-    if (this.props.addOrUpdate == '2'){
-      this.getCappedData.call(this);
+    if (this.props.addOrUpdate == '1'){
+      var hasPriv = privilegesAPI.hasPrivilege('createCollection',this.props.name, this.props.currentDb);
+      if(hasPriv){
+        this.setState({showAuth : false});    }
+      else{
+        this.setState({showAuth : true});
+      }
     }
-    this.setState({modalIsOpen: true});
-    this.setState({message: ''});
-    this.setState({successMessage: false});
+    else{
+      var hasPriv = privilegesAPI.hasPrivilege('renameCollectionSameDB',this.props.name, this.props.currentDb);
+      if(hasPriv){
+        this.setState({showAuth : false});    }
+      else{
+        this.setState({showAuth : true});
+      }
+
+    }
+
+    if (!this.state.showAuth){
+      if (this.props.addOrUpdate == '2'){
+        this.getCappedData.call(this);
+      }
+      this.setState({modalIsOpen: true});
+      this.setState({message: ''});
+      this.setState({successMessage: false});
+    }
+    else {
+      this.setState({showAuth:true});
+    }
   }
+
+  authClose(){
+      this.setState({showAuth:false});
+      this.setState({modalIsOpen:false});
+  }
+
 
   closeModal() {
     this.setState({modalIsOpen: false});
@@ -198,7 +230,7 @@ class newCollectionComponent extends React.Component {
     return(
       <div className={this.props.addOrUpdate=='1'? newCollectionStyles.modalContainer : newCollectionStyles.updateModalContainer}>
         {this.props.addOrUpdate=='1'? <span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Collection</span> : <span className={newCollectionStyles.updateButton} onClick={this.openModal.bind(this)}><i className="fa fa-pencil" aria-hidden="true"></i>Update Collection</span>}
-        <Modal
+        {!this.state.showAuth ? <Modal
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal.bind(this)}
           style = {customStyles}>
@@ -234,7 +266,7 @@ class newCollectionComponent extends React.Component {
             </Form>
              <div className={!this.state.successMessage? (newCollectionStyles.errorMessage + ' ' + (this.state.message!='' ? newCollectionStyles.show : newCollectionStyles.hidden)) : (this.state.message != '' ? newCollectionStyles.successMessage : '')}>{this.state.message}</div>
           </div>
-        </Modal>
+        </Modal>: <AuthPopUp modalIsOpen = {this.state.showAuth} action = {this.props.addOrUpdate == '1' ? 'Add collection' : 'Edit Collection' }  authClose = {this.authClose.bind(this)} ></AuthPopUp>}
      </div>
     );
   }
