@@ -11,6 +11,7 @@ import TextInput from '../TextInput/TextInputComponent.jsx'
 import Modal from 'react-modal'
 import service from '../../gateway/service.js'
 import SearchInput, {createFilter} from 'react-search-input'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
 class DbListComponent extends React.Component {
 
   constructor(props) {
@@ -149,7 +150,12 @@ class DbListComponent extends React.Component {
     if(calledFrom == 'componentDidMount'){
       if (typeof(data.response.result) != 'undefined')
         {
-          this.setState({dbNames: data.response.result.dbNames});
+          var result = data.response.result;
+          this.setState({dbNames: result.dbNames});
+          if (result.rolesAndPrivileges) {
+            privilegesAPI.setRoles(result.rolesAndPrivileges.documents[0].users[0]);
+          }
+          var test = privilegesAPI.hasPrivilege('collStats','','admin');
         }
       else {
         {
