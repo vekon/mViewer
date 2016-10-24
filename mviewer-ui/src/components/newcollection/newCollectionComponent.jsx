@@ -4,6 +4,7 @@ import $ from 'jquery'
 import Modal from 'react-modal'
 import { Form } from 'formsy-react'
 import TextInput from '../TextInput/TextInputComponent.jsx'
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 import service from '../../gateway/service.js'
 
 class newCollectionComponent extends React.Component {
@@ -25,17 +26,23 @@ class newCollectionComponent extends React.Component {
       successMessage: false,
       _isMounted: false,
       error:false,
-      newCollection: this.props.currentItem
+      newCollection: this.props.currentItem,
+      showAuth: false
     }
   }
 
   openModal() {
-    if (this.props.addOrUpdate == '2'){
-      this.getCappedData.call(this);
-    }
-    this.setState({modalIsOpen: true});
-    this.setState({message: ''});
-    this.setState({successMessage: false});
+    // if (false){
+      if (this.props.addOrUpdate == '2'){
+        this.getCappedData.call(this);
+      }
+      this.setState({modalIsOpen: true});
+      this.setState({message: ''});
+      this.setState({successMessage: false});
+    // }
+    // else {
+    //   this.setState({showAuth:true});
+    // }
   }
 
   closeModal() {
@@ -198,7 +205,7 @@ class newCollectionComponent extends React.Component {
     return(
       <div className={this.props.addOrUpdate=='1'? newCollectionStyles.modalContainer : newCollectionStyles.updateModalContainer}>
         {this.props.addOrUpdate=='1'? <span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Collection</span> : <span className={newCollectionStyles.updateButton} onClick={this.openModal.bind(this)}><i className="fa fa-pencil" aria-hidden="true"></i>Update Collection</span>}
-        <Modal
+        {!this.state.showAuth ? <Modal
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal.bind(this)}
           style = {customStyles}>
@@ -234,7 +241,7 @@ class newCollectionComponent extends React.Component {
             </Form>
              <div className={!this.state.successMessage? (newCollectionStyles.errorMessage + ' ' + (this.state.message!='' ? newCollectionStyles.show : newCollectionStyles.hidden)) : (this.state.message != '' ? newCollectionStyles.successMessage : '')}>{this.state.message}</div>
           </div>
-        </Modal>
+        </Modal>: <AuthPopUp modalIsOpen = {this.state.showAuth} action = 'Add/Edit collection' ></AuthPopUp>}
      </div>
     );
   }

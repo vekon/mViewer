@@ -90,7 +90,6 @@ class CreateDbComponent extends React.Component {
       if(data.response.error.code == 'ANY_OTHER_EXCEPTION'){
         this.setState({message : 'Error occured while creating the database'});
       }
-
     }
   }
 
@@ -120,7 +119,7 @@ class CreateDbComponent extends React.Component {
         <div className = {createDbStyles.topContainer}>
           <section className={createDbStyles.topSection}>WELCOME TO MVIEWER</section>
           <section className={createDbStyles.midSection}>A MONOGO DB MANAGEMENT TOOL</section>
-          <section className={createDbStyles.bottomSection}>LET'S GET STARTED</section>
+          <section className={createDbStyles.bdottomSection}>LET'S GET STARTED</section>
         </div>
         <div className = {createDbStyles.bottomContainer}>
           <button className={createDbStyles.createButton} onClick={this.openModal.bind(this)}>CREATE NEW DATABASE</button>
