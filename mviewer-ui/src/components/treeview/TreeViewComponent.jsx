@@ -14,7 +14,8 @@ class TreeViewComponent extends React.Component {
       modalIsOpen: false,
       message: '',
       uId: '',
-      showAuth: false
+      showAuth: false,
+      hasPriv: false
     }
   }
   openModal(id) {

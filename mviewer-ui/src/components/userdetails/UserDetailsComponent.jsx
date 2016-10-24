@@ -19,7 +19,8 @@ class UserDetailsComponent extends React.Component {
       currentUser: null,
       _isMounted: false,
       roles: "",
-      showAuth: false
+      showAuth: false,
+      hasPriv: false
     }
   }
 

@@ -13,7 +13,8 @@ class DbItemComponent extends React.Component {
       hover_flag: false,
       modalIsOpen: false,
       _isMounted: false,
-      showAuth: false
+      showAuth: false,
+      hasPriv: false
     }
   }
 

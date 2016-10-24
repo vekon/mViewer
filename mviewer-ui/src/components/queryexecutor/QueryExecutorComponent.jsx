@@ -44,6 +44,7 @@ class QueryExecutorComponent extends React.Component {
             errorMessage: '',
             singleDocument: '',
             showAuth: false,
+            hasPriv: false,
             query: this.props.queryType == "collection" ? 'db.'+this.props.currentItem+'.find({})' :
                    'db.'+this.props.currentItem+'.files.find({})'
       }

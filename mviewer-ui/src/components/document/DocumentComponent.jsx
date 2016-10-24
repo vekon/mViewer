@@ -19,7 +19,8 @@ class DocumentComponent extends React.Component {
       value:this.props.value,
       disabled: true,
       _isMounted: false,
-      showAuth: false
+      showAuth: false,
+      hasPriv: false
     }
   }
 
