@@ -71,3 +71,12 @@
    color: #2494d0;
    cursor: pointer;
 }
+
+.errorHolder {
+  text-align: center;
+    font-size: 17px;
+    padding: 20px;
+    display: inline-block;
+    width: 100%;
+    color: red;
+}

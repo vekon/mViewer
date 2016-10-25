@@ -11,6 +11,8 @@ import progress from '../shared/jquery.ajax-progress.jsx'
 import Line from 'rc-progress/lib/Line.js'
 import 'rc-progress/assets/index.less'
 import service from '../../gateway/service.js'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 
 class newFileComponent extends React.Component {
 
@@ -27,7 +29,9 @@ class newFileComponent extends React.Component {
       newFile: [],
       uploadClick: false,
       count: 0,
-      disableSubmit: true
+      disableSubmit: true,
+      showAuth: false,
+      hasPriv: false
     }
   }
 
@@ -36,6 +40,18 @@ class newFileComponent extends React.Component {
     this.setState({message: ''});
     this.setState({disableSubmit: true});
     this.setState({successMessage: false});
+
+    var hasPriv = privilegesAPI.hasPrivilege('insert','', this.props.currentDb);
+    if(hasPriv){
+      this.setState({showAuth : false});    }
+    else{
+      this.setState({showAuth : true});
+    }
+  }
+
+  authClose(){
+      this.setState({showAuth:false});
+      this.setState({modalIsOpen:false});
   }
 
   closeModal() {
@@ -196,7 +212,7 @@ class newFileComponent extends React.Component {
     return(
       <div>
        <span className={newFileStyles.addButton} onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add File(s)</span>
-       <Modal
+       {!this.state.showAuth ? <Modal
          isOpen={this.state.modalIsOpen}
          onRequestClose={this.closeModal.bind(this)}
          style = {customStyles}>
@@ -245,7 +261,7 @@ class newFileComponent extends React.Component {
             <div className={newFileStyles.clear}></div>
             <div className={!this.state.successMessage? (newFileStyles.errorMessage + ' ' + (this.state.message!='' ? newFileStyles.show : newFileStyles.hidden)) : (this.state.message != '' ? newFileStyles.successMessage : '')}>{this.state.message}</div>
           </div>
-       </Modal>
+       </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} action = 'add File'   authClose = {this.authClose.bind(this)} ></AuthPopUp> }
       </div>
     );
   }

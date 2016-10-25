@@ -10,6 +10,8 @@ import newFileStyles from '../newfile/newfile.css'
 import 'rc-progress/assets/index.less'
 import FileInput from 'react-file-input'
 import service from '../../gateway/service.js'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 
 class newFileComponent extends React.Component {
 
@@ -31,7 +33,8 @@ class newFileComponent extends React.Component {
       count: 0,
       disableSubmit: true,
       newFile: [],
-      errorFile: false
+      errorFile: false,
+      showAuth: false
     }
   }
 
@@ -40,6 +43,17 @@ class newFileComponent extends React.Component {
     this.setState({message: ''});
     this.setState({disableSubmit: true});
     this.setState({newBucket: null});
+    var hasPriv = privilegesAPI.hasPrivilege('createCollection','', this.props.currentDb);
+      if(hasPriv){
+        this.setState({showAuth : false});    }
+      else{
+        this.setState({showAuth : true});
+      }
+  }
+
+  authClose(){
+      this.setState({showAuth:false});
+      this.setState({modalIsOpen:false});
   }
 
   closeModal() {
@@ -208,7 +222,7 @@ class newFileComponent extends React.Component {
     return(
       <div>
         <span onClick= {this.openModal.bind(this)} className={newBucketStyles.newBucket}><i className="fa fa-plus-circle" aria-hidden="true"></i> Add GridFS Bucket</span>
-        <Modal
+        { !this.state.showAuth ? <Modal
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal.bind(this)}
           style = {customStyles}>
@@ -260,7 +274,7 @@ class newFileComponent extends React.Component {
             </Form>
 
           </div>
-        </Modal>
+        </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} action = 'Add Bucket' authClose = {this.authClose.bind(this)} ></AuthPopUp> }
       </div>
     );
   }

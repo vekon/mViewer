@@ -53,7 +53,7 @@ class QueryExecutorComponent extends React.Component {
   openModal() {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
-    var hasPriv = privilegesAPI.hasPrivilege('remove','', this.props.currentDb);
+    var hasPriv = privilegesAPI.hasPrivilege('dropCollection','', this.props.currentDb);
     if(hasPriv){
       this.setState({showAuth : false});    }
     else{
