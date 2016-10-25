@@ -3,6 +3,8 @@ import collectionStatsStyles from './collectionstats.css'
 import $ from 'jquery'
 import Modal from 'react-modal'
 import service from '../../gateway/service.js';
+import privilegesAPI from '../../gateway/privilegesAPI.js';
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 
 class CollectionStatsComponent extends React.Component {
 
@@ -14,16 +16,31 @@ class CollectionStatsComponent extends React.Component {
       collectionStats: [],
       selectedDB: null,
       sidebarOpen: false,
-      modalIsOpen: false
+      modalIsOpen: false,
+      showAuth: false,
+      hasPriv: false
     }
   }
 
   openModal() {
     var that = this;
     var partialUrl = 'stats/db/' + this.props.selectedDB + '/collection/'+this.props.selectedCollection+'?connectionId=' + this.props.connectionId;
-    var collectionStatsCall = service('GET', partialUrl, '');
-    collectionStatsCall.then(this.success.bind(this), this.failure.bind(this));
+    
     this.setState({modalIsOpen: true});
+    var hasPriv = privilegesAPI.hasPrivilege('collStats',this.props.selectedCollection, this.props.selectedDB);
+    if(hasPriv){
+      this.setState({showAuth : false});   
+      var collectionStatsCall = service('GET', partialUrl, '');
+      collectionStatsCall.then(this.success.bind(this), this.failure.bind(this));
+    }
+    else{
+      this.setState({showAuth : true});
+    }
+  }
+
+  authClose(){
+      this.setState({showAuth:false});
+      this.setState({modalIsOpen:false});
   }
 
   success(data) {
@@ -44,7 +61,7 @@ class CollectionStatsComponent extends React.Component {
 
       <div className={collectionStatsStyles.mainContainer}>
         <span className={collectionStatsStyles.statsButton} onClick={this.openModal.bind(this)}><i className="fa fa-area-chart" aria-hidden="true"></i>Stats</span>
-        <Modal
+        { !this.state.showAuth ?<Modal
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal.bind(this)}
           className={collectionStatsStyles.modal}>
@@ -68,7 +85,7 @@ class CollectionStatsComponent extends React.Component {
           </table>
           </div>
           </div>
-    </Modal>
+    </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth}  authClose = {this.authClose.bind(this)} action = 'Collection Stats' ></AuthPopUp> }
   </div>
     );
   }

@@ -5,6 +5,8 @@ import Modal from 'react-modal'
 import { Form } from 'formsy-react'
 import TextInput from '../TextInput/TextInputComponent.jsx'
 import service from '../../gateway/service.js'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 
 class newDocumentComponent extends React.Component {
 
@@ -15,11 +17,30 @@ class newDocumentComponent extends React.Component {
       message:'',
       successMessage: false,
       newDocument: '{}',
-      errorMessage: false
+      errorMessage: false,
+      showAuth: false,
+      hasPriv: false
     }
   }
 
   openModal() {
+    if (this.props.addOrUpdate == 'Edit'){
+      var hasPriv = privilegesAPI.hasPrivilege('update',this.props.currentItem, this.props.currentDb);
+      if(hasPriv){
+        this.setState({showAuth : false});    }
+      else{
+        this.setState({showAuth : true});
+      }
+    }
+    else{
+      var hasPriv = privilegesAPI.hasPrivilege('insert',this.props.currentItem, this.props.currentDb);
+      if(hasPriv){
+        this.setState({showAuth : false});    }
+      else{
+        this.setState({showAuth : true});
+      }
+    }
+
     this.setState({modalIsOpen: true});
     this.setState({successMessage : false});
     this.setState({message: ''});
@@ -27,6 +48,11 @@ class newDocumentComponent extends React.Component {
       this.setState({newDocument: this.props.documentValue});
     }
     this.setState({errorMessage : false});
+  }
+
+  authClose(){
+      this.setState({showAuth:false});
+      this.setState({modalIsOpen:false});
   }
 
   closeModal() {
@@ -124,7 +150,7 @@ class newDocumentComponent extends React.Component {
     return(
       <div className = {this.props.addOrEdit != 'Edit' ? newDocumentStyles.mainContainer : newDocumentStyles.editMainContainer }>
       <span className={this.props.addOrEdit != 'Edit' ?newDocumentStyles.addButton : newDocumentStyles.editButton} onClick= {this.openModal.bind(this)} >{this.props.addOrEdit != 'Edit' ? (<i className="fa fa-plus-circle" aria-hidden="true"></i> ) : (<i className="fa fa-pencil" aria-hidden="true"></i> )}  {this.props.addOrEdit!='Edit' ? <span>Add Document</span> : null} </span>
-       <Modal
+       { !this.state.showAuth ? <Modal
          isOpen={this.state.modalIsOpen}
          onRequestClose={this.closeModal.bind(this)}
          style = {customStyles}>
@@ -142,7 +168,7 @@ class newDocumentComponent extends React.Component {
             </div>
             <div className={!this.state.successMessage? (newDocumentStyles.errorMessage + ' ' + (this.state.message!='' ? newDocumentStyles.show : newDocumentStyles.hidden)) : (this.state.message != '' ? newDocumentStyles.successMessage : '')}>{this.state.message}</div>
          </div>
-       </Modal>
+       </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} action = {this.props.addOrEdit == 'Edit' ? 'edit Document' : 'add Document' }  authClose = {this.authClose.bind(this)} ></AuthPopUp>}
      </div>
     );
   }

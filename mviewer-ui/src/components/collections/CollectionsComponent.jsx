@@ -10,6 +10,7 @@ import UserList from '../userlist/UserListComponent.jsx'
 import $ from 'jquery'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import UserDetails from '../userdetails/UserDetailsComponent.jsx'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
 
 class CollectionsComponent extends React.Component {
 
@@ -19,13 +20,15 @@ class CollectionsComponent extends React.Component {
         selectedTab : 0,
         showQueryExecutor: false,
         selectedCollection: '',
-        userDetails: []
+        userDetails: [],
+        hasListColPriv: false
       }
   }
 
   handleSelect(index){
     this.setState({selectedTab:index}, function(){
     });
+    this.setState({hasListColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db)});
   }
 
   showQueryExecutor(){
@@ -37,6 +40,20 @@ class CollectionsComponent extends React.Component {
     this.setState({selectedTab:0});
     this.setState({showQueryExecutor: false});
     this.setState({selectedCollection: ''});
+    // this.setState({hasListColPriv: false});
+    // this.setState({hasListColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db)});
+    setTimeout(function(){
+      this.setState({hasListColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db)}, function(){
+   }); 
+    }.bind(this), 500);
+  }
+
+  componentDidMount (){
+    setTimeout(function(){
+      this.setState({hasListColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db)}, function(){
+   }); 
+    }.bind(this), 500);
+   
   }
 
   setStates(collection, data, type){
@@ -70,6 +87,11 @@ class CollectionsComponent extends React.Component {
 
   render () {
     Tabs.setUseDefaultStyles(false);
+    var hasUserAdminPriv = privilegesAPI.hasPrivilege('viewUser', '',this.props.location.query.db ); 
+    var hasUserAdminAnyDatabasePriv = privilegesAPI.hasPrivilege('viewUser','',this.props.location.query.db );
+    var hasDbStatsPriv   = privilegesAPI.hasPrivilege('dbStats' , '' , this.props.location.query.db);
+
+    var hasListColPriv   = privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db);
     return(
       <div className = {this.props.location.query.collapsed == 'false' ? collectionsStyles.mainContainer : collectionsStyles.mainContainer+' ' +collectionsStyles.collapsedContainer}>
         {this.props.location.query.db !== 'undefined' ? <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
@@ -80,21 +102,33 @@ class CollectionsComponent extends React.Component {
             <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 3 ? collectionsStyles.activeTab : '' }>Statistics</Tab>
           </TabList>
           <TabPanel>
-            <div className={collectionsStyles.holder}>
-              <CollectionList ref="left"  visible={true} propps = {this.props} showQueryExecutor = {this.showQueryExecutor.bind(this)} hideQueryExecutor = {this.hideQueryExecutor.bind(this)} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></CollectionList>
-              {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "collection" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
-            </div>
+            { this.state.hasListColPriv ?
+              <div className={collectionsStyles.holder}>
+                <CollectionList ref="left"  visible={true} propps = {this.props} showQueryExecutor = {this.showQueryExecutor.bind(this)} hideQueryExecutor = {this.hideQueryExecutor.bind(this)} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></CollectionList>
+                {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "collection" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
+              </div> : <div className = {collectionsStyles.errorHolder}>You are not authorised to view Collections</div>
+            }
           </TabPanel>
           <TabPanel>
-            <GridFSList ref="left"  visible={true} propps = {this.props} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></GridFSList>
-            {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "fs" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
+            { hasListColPriv ?
+              <div>
+                <GridFSList ref="left"  visible={true} propps = {this.props} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></GridFSList>
+                {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "fs" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
+              </div> : <div className = {collectionsStyles.errorHolder}>You are not authorised to view GridFS</div>
+            }
           </TabPanel>
           <TabPanel>
-            <UserList ref="left"  visible={true} propps = {this.props} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></UserList>
-            {this.state.showQueryExecutor ? <UserDetails ref='right' refreshData={this.refreshRespectiveData.bind(this)} users={this.state.userDetails} currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)}></UserDetails> : null}
+            { hasUserAdminPriv || hasUserAdminAnyDatabasePriv ? 
+              <div>
+                <UserList ref="left"  visible={true} propps = {this.props} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></UserList>
+                {this.state.showQueryExecutor ? <UserDetails ref='right' refreshData={this.refreshRespectiveData.bind(this)} users={this.state.userDetails} currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)}></UserDetails> : null}
+              </div> : <div className = {collectionsStyles.errorHolder}>You are not authorised to view Users</div>}  
           </TabPanel>
           <TabPanel>
+          { hasDbStatsPriv ?
             <DbStats ref="left"  visible={true} connectionId = {this.props.connectionId} selectedDB={this.props.location.query.db}></DbStats>
+            : <div className = {collectionsStyles.errorHolder}>You are not authorised to view Db Statistics</div>
+          }
           </TabPanel>
       </Tabs> : null}
       </div>

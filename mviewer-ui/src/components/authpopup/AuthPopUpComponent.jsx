@@ -37,7 +37,9 @@ class AuthPopUpComponent extends React.Component {
         marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)',
         zIndex                :  '4',
-        borderRadius          :  '2px'
+        borderRadius          :  '2px',
+        padding               :  '0px',
+        border                :  '0px'
       }
     };
 
@@ -47,7 +49,15 @@ class AuthPopUpComponent extends React.Component {
         onRequestClose={this.closeModal.bind(this)}
         style = {customStyles}>
         <div className={authPopUpStyles.two}>
-          <label>You Don't Have Previlages to {this.props.action}</label>
+          <div className={authPopUpStyles.header}>
+            <span className={authPopUpStyles.text}>Info</span>
+          </div>
+          <div className = {authPopUpStyles.popupBody}>
+            <label>You Don't Have Previleges to {this.props.action}</label>
+            <div className={authPopUpStyles.buttons}>
+              <span onClick={this.closeModal.bind(this)} className={authPopUpStyles.close}>CLOSE</span>
+            </div>
+          </div>
         </div>
       </Modal>
     );

@@ -155,6 +155,9 @@ class DbListComponent extends React.Component {
           if (result.rolesAndPrivileges) {
             privilegesAPI.setRoles(result.rolesAndPrivileges.documents[0].users[0]);
           }
+          else{
+            privilegesAPI.setRoles(undefined);
+          }
           var test = privilegesAPI.hasPrivilege('collStats','','admin');
         }
       else {

@@ -127,7 +127,7 @@ class LoginComponent extends React.Component {
   render() {
     var rowClass = 'row inputLabel';
     return (
-      <section className={styles.loginForm + ' ' + styles.clearfix}>
+      <section className={styles.loginForm}>
         <div className={styles.parentDiv + ' ' + styles.clearfix}>
 
            <div className={styles.two}>

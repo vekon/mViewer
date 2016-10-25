@@ -90,6 +90,23 @@ div.parentDiv {
     width: 341px;
     margin: 0 auto;
 }
+
+.loginForm {
+  /*text-align: center;*/
+}
+
+.loginForm:before {
+  content: '';
+  display: inline-block;
+  height: 100%; 
+  vertical-align: middle;
+  margin-right: -0.25em; /* Adjusts for spacing */
+}
+
+.loginForm > * {
+  display: inline-block;
+  vertical-align: middle;
+}
 .two input[type=text],
 .two input[type=password] {
     padding: 10px;
@@ -138,7 +155,7 @@ div.parentDiv {
 }
 
 section {
-    padding: 5% 0;
+    /*padding: 5% 0;*/
 }
 /*Headings*/
 

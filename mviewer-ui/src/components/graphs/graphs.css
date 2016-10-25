@@ -20,6 +20,7 @@
 }
 
 .tabs {
+  padding-left: 20px;
   width: 100%;
   background: #CCD9DE;
   z-index: 99999;

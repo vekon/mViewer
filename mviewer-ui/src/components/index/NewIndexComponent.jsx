@@ -6,6 +6,8 @@ import update from 'react-addons-update'
 import { Form } from 'formsy-react';
 import TextInput from '../TextInput/TextInputComponent.jsx';
 import service from '../../gateway/service.js'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 
 class NewIndexComponent extends React.Component {
 
@@ -18,7 +20,10 @@ class NewIndexComponent extends React.Component {
       indexes: [],
       errorMessage: false,
       fields: [],
-      attrCreated : false
+      attrCreated : false,
+      showAuth: false,
+      showAuth1: false,
+      hasPriv: false
     }
   }
 
@@ -91,10 +96,27 @@ class NewIndexComponent extends React.Component {
   }
 
   openModal() {
+    var hasPriv = privilegesAPI.hasPrivilege('listIndexes','', this.props.currentDb);
+    if(hasPriv){
+      this.setState({showAuth1 : false});   
+      this.getAttributes();
+      this.getIndexes();
+    }
+      
+    else{
+      this.setState({showAuth1 : true});
+    }
+
     this.setState({modalIsOpen: true});
-    this.getAttributes();
-    this.getIndexes();
+    
     this.setState({message: ''});
+
+  }
+
+  authClose(){
+      this.setState({showAuth: false});
+      this.setState({showAuth1: false});
+      this.setState({modalIsOpen:false});
   }
 
   closeModal() {
@@ -195,6 +217,39 @@ class NewIndexComponent extends React.Component {
     }.bind(this);
   }
 
+  componentDidMount(){
+    var hasPriv = privilegesAPI.hasPrivilege('listIndexes','system.indexes', this.props.currentDb);
+    if(hasPriv){
+      this.setState({showAuth : true});    }
+    else{
+      this.setState({showAuth : false});
+    }
+
+    var hasPriv = privilegesAPI.hasPrivilege('createIndex','', this.props.currentDb);
+    if(hasPriv){
+      this.setState({showAuth : false});    }
+    else{
+      this.setState({showAuth : true});
+    }
+
+  }
+
+  componentWillReceiveProps (){
+    var hasPriv = privilegesAPI.hasPrivilege('listIndexes','', this.props.currentDb);
+    if(hasPriv){
+      this.setState({showAuth : true});    }
+    else{
+      this.setState({showAuth : false});
+    }
+
+    var hasPriv = privilegesAPI.hasPrivilege('createIndex','', this.props.currentDb);
+    if(hasPriv){
+      this.setState({showAuth : false});    }
+    else{
+      this.setState({showAuth : true});
+    }
+  }
+
   render () {
     var that = this;
     const customStyles = {
@@ -219,7 +274,7 @@ class NewIndexComponent extends React.Component {
     return(
       <div className = {indexStyles.mainContainer}>
       <span className= {indexStyles.addButton} onClick= {this.openModal.bind(this)} ><i className="fa fa-pencil" aria-hidden="true"></i> Add/Edit Indexes</span>
-       <Modal
+       {!this.state.showAuth1 ? <Modal
          isOpen={this.state.modalIsOpen}
          onRequestClose={this.closeModal.bind(this)}
          style = {customStyles}>
@@ -235,9 +290,9 @@ class NewIndexComponent extends React.Component {
                   <ol id="attributesList" className={indexStyles.attributeList}>
                     { this.state.fields && this.state.fields.length > 0 ? this.state.fields.map(function(result) {
                       return <li key={result.value} className={indexStyles.attributesItems}>
-                      <span className={indexStyles.checkboxSpan}><input type="checkbox" id={result.value} checked={result.attrSelected} onChange = {that.attributeHandler({result}).bind(that)}></input></span>
+                      <span className={indexStyles.checkboxSpan}><input type="checkbox" id={result.value} checked={result.attrSelected} onChange = {that.attributeHandler({result}).bind(that)} disabled={that.state.showAuth}></input></span>
                             <span className={indexStyles.valueSpan}>{result.value}</span>
-                      <span className={indexStyles.ascCheckboxSpan}><input type="checkbox" id={result.value} checked={result.asc} onChange = {that.orderHandler({result}).bind(that)}></input></span>
+                      <span className={indexStyles.ascCheckboxSpan}><input type="checkbox" id={result.value} checked={result.asc} onChange = {that.orderHandler({result}).bind(that)}  disabled={that.state.showAuth}></input></span>
                       </li>;
 
                     }) : null }
@@ -245,14 +300,16 @@ class NewIndexComponent extends React.Component {
                 </div>
               </div>
             </form>
+            {!this.state.showAuth ? 
             <div className={indexStyles.buttonContainer+' '+ indexStyles.clearfix}>
                 <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={indexStyles.submit} disabled = {this.state.errorMessage}>SUBMIT</button>
                 <button onClick={this.closeModal.bind(this)} value='CANCEL' className={indexStyles.cancel}>CANCEL</button>
-            </div>
+            </div> : null}
             <div className = {indexStyles.clear}></div>
             <div className={!this.state.successMessage? (indexStyles.errorMessage + ' ' + (this.state.message!='' ? indexStyles.show : indexStyles.hidden)) : (this.state.message != '' ? indexStyles.successMessage : '')}>{this.state.message}</div>
          </div>
-       </Modal>
+         {this.state.showAuth ? <div className={indexStyles.errorMessage} >You are not allowed to Add/Edit indexes</div> : ''}
+       </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth1}  authClose = {this.authClose.bind(this)} action = 'View Indexes' ></AuthPopUp> }
      </div>
     );
   }
