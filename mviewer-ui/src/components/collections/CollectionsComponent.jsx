@@ -10,6 +10,7 @@ import UserList from '../userlist/UserListComponent.jsx'
 import $ from 'jquery'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import UserDetails from '../userdetails/UserDetailsComponent.jsx'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
 
 class CollectionsComponent extends React.Component {
 
@@ -70,6 +71,7 @@ class CollectionsComponent extends React.Component {
 
   render () {
     Tabs.setUseDefaultStyles(false);
+    var hasRole = privilegesAPI.hasRole('userAdmin',this.props.location.query.db );
     return(
       <div className = {this.props.location.query.collapsed == 'false' ? collectionsStyles.mainContainer : collectionsStyles.mainContainer+' ' +collectionsStyles.collapsedContainer}>
         {this.props.location.query.db !== 'undefined' ? <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>

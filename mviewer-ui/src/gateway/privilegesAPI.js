@@ -5,8 +5,9 @@ function setRolesAndPrivileges(privs) {
 }
 
 function hasPrivilege(privilege,collection,db) {
+  var privs;
   if (typeof(privileges) != 'undefined'){
-    var privs = privileges.inheritedPrivileges.filter(function(eachPriv){
+      privs = privileges.inheritedPrivileges.filter(function(eachPriv){
       return eachPriv.resource.collection == collection && eachPriv.resource.db == db;
     });
   }
@@ -32,12 +33,41 @@ function hasPrivilege(privilege,collection,db) {
     });
   }
 
-  return actions && actions.length > 0;
+  if (typeof(privileges) != 'undefined'){
+    return actions && actions.length > 0;
+  }
+  else
+  {
+    return true;
+  }
+}
+
+function hasRole(role,db){
+  var rols;
+  if(typeof(privileges) != 'undefined'){
+       rols = privileges.roles.filter(function(eachRole){
+       return eachRole.db == db;   
+     }); 
+  }
+  else{
+    return true;
+  }
+
+
+  var roles;
+  if (rols && rols.length > 0 ){
+    roles = rols.filter(function(eachRole){
+      return eachRole.role == role;
+    });
+  }
+  
+  return roles && roles.length > 0
 }
 
 var privilegesAPI = {
   setRoles: setRolesAndPrivileges,
-  hasPrivilege: hasPrivilege
+  hasPrivilege: hasPrivilege,
+  hasRole: hasRole
 }
 
 export default privilegesAPI;
