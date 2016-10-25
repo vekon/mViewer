@@ -5,6 +5,8 @@ import com.imaginea.mongodb.domain.MongoConnectionDetails;
 import com.imaginea.mongodb.exceptions.ApplicationException;
 import com.mongodb.MongoClient;
 
+import java.util.List;
+
 /**
  * @author Uday Shankar
  */
@@ -17,4 +19,5 @@ public interface AuthService {
   MongoClient getMongoInstance(String connectionId) throws ApplicationException;
 
   void disconnectConnection(String connectionId) throws ApplicationException;
+  List listDatabases(String connectionId,String dbName) throws ApplicationException;
 }
