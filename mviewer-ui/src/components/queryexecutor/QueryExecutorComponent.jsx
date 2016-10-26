@@ -266,8 +266,22 @@ class QueryExecutorComponent extends React.Component {
     if(data.response.error) {
       this.setState({collectionObjects:[]});
       this.setState({errorMessage : 'There is an error with the Query, Please check the parameters'});
+      if (data.response.error.code == 'Command is not yet supported'){
+        this.setState({errorMessage : 'Command is not yet supported'});  
+      }
+
+      if (data.response.error.code == 'INVALID_QUERY'){
+        this.setState({errorMessage : 'Invalid Query'});  
+      }
+
+      if (data.response.error.code == 'QUERY_EXECUTION_EXCEPTION'){
+        if(data.response.error.message.indexOf("not authorized") >= 0) {
+            this.setState({errorMessage:'User is not authorized to perform this query'});
+          } 
+      }
+
       setTimeout(function(){
-           this.setState({errorMessage: ''});
+        this.setState({errorMessage: ''});
       }.bind(this), 2000);
       this.setState({startLabel: 0});
       this.setState({endLabel: 0});
@@ -519,7 +533,7 @@ class QueryExecutorComponent extends React.Component {
     var that = this;
     var items =null;
     var items = this.state.collectionObjects.map(function (collection ,i) {
-      return <Document  key={collection._id["counter"] || collection._id } uId={collection._id} key1={collection._id["counter"] || collection._id} value={JSON.stringify(collection,null,4)} onChange={this.hand.bind(this)} currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this)} queryType = {this.props.queryType} ></Document>
+      return <Document  key={collection._id } uId={collection._id} key1={collection._id} value={JSON.stringify(collection,null,4)} onChange={this.hand.bind(this)} currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this)} queryType = {this.props.queryType} ></Document>
     }.bind(this));
 
     return(
@@ -540,7 +554,7 @@ class QueryExecutorComponent extends React.Component {
             </div>
             : <div className = {queryExecutorStyles.actionsContainer}>
               <div className={queryExecutorStyles.deleteButtonGridfs} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete GridFS Bucket</span></div>
-              { this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'GridFS Bucket' dbName = {this.props.currentDb} gridFSName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =  'Drop Bucket' ></AuthPopUp> ) : '' }
+              { this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'GridFS Bucket' dbName = {this.props.currentDb} gridFSName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =  'drop bucket' ></AuthPopUp> ) : '' }
                <NewFile currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this, 'new')}></NewFile>
               </div>
           }

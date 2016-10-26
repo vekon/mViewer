@@ -261,7 +261,7 @@ class newFileComponent extends React.Component {
             <div className={newFileStyles.clear}></div>
             <div className={!this.state.successMessage? (newFileStyles.errorMessage + ' ' + (this.state.message!='' ? newFileStyles.show : newFileStyles.hidden)) : (this.state.message != '' ? newFileStyles.successMessage : '')}>{this.state.message}</div>
           </div>
-       </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} action = 'add File'   authClose = {this.authClose.bind(this)} ></AuthPopUp> }
+       </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} action = 'add file'   authClose = {this.authClose.bind(this)} ></AuthPopUp> }
       </div>
     );
   }

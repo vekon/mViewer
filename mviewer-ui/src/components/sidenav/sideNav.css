@@ -7,7 +7,7 @@
 .mainContainerCollapsed {
   display: inline-block;
   float: left;
-  width: 8%;
+  width: 10%;
 }
 
 .sideContainer {
@@ -20,7 +20,7 @@
 }
 
 .sideContainerCollapsed {
-  width: 62%;
+  width: 60%;
   background-color: #212f30;
   font-family: 'Arial' !important;
   height: 100%;

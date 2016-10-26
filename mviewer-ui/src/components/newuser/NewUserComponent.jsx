@@ -108,10 +108,12 @@ class NewUserComponent extends React.Component {
     if(selectedCount > 0) {
       this.setState({message:''});
     }
+
   }
 
   clickHandler(){
     var that =this;
+    this.setState({selectedRoles : []});
     var data = $("form").serialize().split("&");
     var obj={};
     for(var key in data)
@@ -138,6 +140,7 @@ class NewUserComponent extends React.Component {
     } else {
       this.setState({error:true});
     }
+
 
     var partialUrl = this.props.modifyUser ? this.props.currentDb+'/usersIndexes/modifyUser?connectionId='+this.props.connectionId
                      : this.props.currentDb+'/usersIndexes/addUser?connectionId='+this.props.connectionId;
@@ -189,7 +192,18 @@ class NewUserComponent extends React.Component {
           this.setState({successMessage:false});
           if(data.response.error.message.indexOf("not authorized") >= 0) {
             this.setState({message:'Not Authorized to create user with role' + this.state.selectedRoles});
-          } else {
+          } 
+
+          else if (
+              data.response.error.message.indexOf('readWriteAnyDatabase@') >= 0 ||
+              data.response.error.message.indexOf('readAnyDatabase@')      >= 0 ||
+              data.response.error.message.indexOf('userAdminAnyDatabase@') >= 0 ||
+              data.response.error.message.indexOf('dbAdminAnyDatabase@')   >= 0 
+            ){
+            this.setState({message:'Users with selected roles  cannot be created on this database'});
+          } 
+
+          else {
             this.setState({message:'User '+obj['user_name']+ ' already exists in database ' + this.props.currentDb});
           }
         }

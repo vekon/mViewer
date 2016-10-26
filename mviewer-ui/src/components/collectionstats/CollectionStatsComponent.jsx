@@ -85,7 +85,7 @@ class CollectionStatsComponent extends React.Component {
           </table>
           </div>
           </div>
-    </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth}  authClose = {this.authClose.bind(this)} action = 'Collection Stats' ></AuthPopUp> }
+    </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth}  authClose = {this.authClose.bind(this)} action = 'view collection stats' ></AuthPopUp> }
   </div>
     );
   }

@@ -82,7 +82,7 @@ class DocumentComponent extends React.Component {
         <form>
           <span className={documentStyles.deleteButton} ><i className="fa fa-trash" aria-hidden="true" onClick={this.openModal.bind(this)}></i></span>
           <textarea key={this.props.key1} className ='textArea' value={this.state.value} onChange={this.changeHandler()} disabled={this.state.disabled}></textarea>
-          {this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = {this.props.queryType == "collection" ? 'document' : 'file'} dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} uId= {this.props.uId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =  {this.props.queryType == "collection" ? 'Drop Document' : 'Drop File'} ></AuthPopUp> ) : ''}
+          {this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = {this.props.queryType == "collection" ? 'document' : 'file'} dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} uId= {this.props.uId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =  {this.props.queryType == "collection" ? 'drop document' : 'drop file'} ></AuthPopUp> ) : ''}
         </form>
       </div>
     );

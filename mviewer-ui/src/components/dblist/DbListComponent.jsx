@@ -12,6 +12,7 @@ import Modal from 'react-modal'
 import service from '../../gateway/service.js'
 import SearchInput, {createFilter} from 'react-search-input'
 import privilegesAPI from '../../gateway/privilegesAPI.js';
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 class DbListComponent extends React.Component {
 
   constructor(props) {
@@ -27,13 +28,28 @@ class DbListComponent extends React.Component {
       name: null,
       error:false,
       searchTerm: '',
-      selectedNav: this.props.selectedNav
+      selectedNav: this.props.selectedNav,
+      showAuth: false,
+      hasPriv: false
     }
   }
 
   openModal() {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
+    var hasPriv = privilegesAPI.hasPrivilege('createCollection','', this.props.propps.propss.location.query.db);
+    var hasRole = privilegesAPI.hasRole('readWriteAnyDatabase',this.props.propps.propss.location.query.db);
+    var hasRole1 = privilegesAPI.hasRole('dbAdminAnyDatabase',this.props.propps.propss.location.query.db);
+    if(hasPriv && (hasRole || hasRole1)){
+      this.setState({showAuth : false});    }
+    else{
+      this.setState({showAuth : true});
+    }
+  }
+
+  authClose(){
+      this.setState({showAuth:false});
+      this.setState({modalIsOpen:false});
   }
 
   closeModal() {
@@ -84,9 +100,9 @@ class DbListComponent extends React.Component {
 
   refreshDbList(dbName){
 
-      var partialUrl = 'login/details?connectionId='+ this.state.connectionId;
-      var refreshDbCall = service('GET', partialUrl, '');
-      refreshDbCall.then(this.success.bind(this , 'refreshDbList' , ''), this.failure.bind(this , 'refreshDbList', ''));
+    var partialUrl = 'login/details?connectionId='+ this.state.connectionId;
+    var refreshDbCall = service('GET', partialUrl, '');
+    refreshDbCall.then(this.success.bind(this , 'refreshDbList' , ''), this.failure.bind(this , 'refreshDbList', ''));
     if(dbName != null){
       window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+dbName + '&queryType="collection"&collapsed=false&tab=1';
     }
@@ -253,7 +269,7 @@ class DbListComponent extends React.Component {
           <span className={dbListStyles.collapsedData}>{(this.state.selectedDb != null ? this.state.selectedDb : '') || (this.props.propps.propss != undefined ? this.props.propps.propss.location.query.db : null)}</span>
         </div>
      </div>
-     <Modal
+    { !this.state.showAuth ? <Modal
        isOpen={this.state.modalIsOpen}
        onRequestClose={this.closeModal.bind(this)}
        style = {customStyles}>
@@ -277,7 +293,7 @@ class DbListComponent extends React.Component {
            </div>
          </Form>
        </div>
-     </Modal>
+     </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =   'create Database' ></AuthPopUp> }
     </div>
     );
   }

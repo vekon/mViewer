@@ -309,7 +309,7 @@ class NewIndexComponent extends React.Component {
             <div className={!this.state.successMessage? (indexStyles.errorMessage + ' ' + (this.state.message!='' ? indexStyles.show : indexStyles.hidden)) : (this.state.message != '' ? indexStyles.successMessage : '')}>{this.state.message}</div>
          </div>
          {this.state.showAuth ? <div className={indexStyles.errorMessage} >You are not allowed to Add/Edit indexes</div> : ''}
-       </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth1}  authClose = {this.authClose.bind(this)} action = 'View Indexes' ></AuthPopUp> }
+       </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth1}  authClose = {this.authClose.bind(this)} action = 'view indexes' ></AuthPopUp> }
      </div>
     );
   }
