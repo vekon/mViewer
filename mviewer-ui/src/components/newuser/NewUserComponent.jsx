@@ -37,12 +37,13 @@ class NewUserComponent extends React.Component {
     var that = this;
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
-    this.setRoles();
+    this.setForm();
   }
 
   setRoles(){
     var that = this;
     var userDetail = [];
+
     if(this.props.modifyUser) {
       this.props.users.roles.map(function(key) {
         userDetail.push({'key': key.role, 'selected': true});
@@ -108,18 +109,19 @@ class NewUserComponent extends React.Component {
     if(selectedCount > 0) {
       this.setState({message:''});
     }
-
   }
 
   clickHandler(){
     var that =this;
-    this.setState({selectedRoles : []});
     var data = $("form").serialize().split("&");
     var obj={};
     for(var key in data)
     {
       obj[data[key].split("=")[0]] = data[key].split("=")[1];
     }
+    if(this.props.modifyUser)
+      obj['user_name'] = this.props.userName;
+
     var selectedCount = 0;
     this.state.roles.map(function(item){
       if(item.selected){
@@ -140,7 +142,6 @@ class NewUserComponent extends React.Component {
     } else {
       this.setState({error:true});
     }
-
 
     var partialUrl = this.props.modifyUser ? this.props.currentDb+'/usersIndexes/modifyUser?connectionId='+this.props.connectionId
                      : this.props.currentDb+'/usersIndexes/addUser?connectionId='+this.props.connectionId;
@@ -163,17 +164,15 @@ class NewUserComponent extends React.Component {
 
   componentDidMount(){
     this.state._isMounted =  true;
-    this.setForm();
   }
 
   componentWillUnmount(){
     this.state._isMounted =  false;
-    this.setForm();
   }
 
   componentWillReceiveProps(nextProps){
     this.props = nextProps;
-    this.setForm();
+
   }
 
   success(calledFrom, obj,  data) {
@@ -190,23 +189,14 @@ class NewUserComponent extends React.Component {
       if (data.response.error) {
         if (data.response.error.code === 'USER_CREATION_EXCEPTION'){
           this.setState({successMessage:false});
-          if(data.response.error.message.indexOf("not authorized") >= 0) {
-            this.setState({message:'Not Authorized to create user with role' + this.state.selectedRoles});
-          } 
-
-          else if (
-              data.response.error.message.indexOf('readWriteAnyDatabase@') >= 0 ||
-              data.response.error.message.indexOf('readAnyDatabase@')      >= 0 ||
-              data.response.error.message.indexOf('userAdminAnyDatabase@') >= 0 ||
-              data.response.error.message.indexOf('dbAdminAnyDatabase@')   >= 0 
-            ){
-            this.setState({message:'Users with selected roles  cannot be created on this database'});
-          } 
-
+          if(data.response.error.message.indexOf("not authorized") >= 0 || data.response.error.message.indexOf("No role") >= 0) {
+            this.setState({message:'Not Authorized to create user with role ' + this.state.selectedRoles});
+          }
           else {
             this.setState({message:'User '+obj['user_name']+ ' already exists in database ' + this.props.currentDb});
           }
         }
+        this.setState({selectedRoles:""});
       }
     }
   }
@@ -225,7 +215,7 @@ class NewUserComponent extends React.Component {
         border                : 'none',
         borderRadius          : '4px',
         right                 : 'auto',
-        width                 : '35%',
+        width                 : '30%',
         bottom                : 'auto',
         marginRight           : '-50%',
         padding               : '0px',
@@ -251,7 +241,7 @@ class NewUserComponent extends React.Component {
            <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
              <div className={ newUserStyles.formContainer}>
                <div className={newUserStyles.name}>
-                 <TextInput type="text" name="user_name" id="user_name" placeholder="User Name" value={this.state.user_name} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'User name must not be empty'}} validations={'isRequired2:'+this.state.error}/>
+                 <TextInput type="text" name="user_name" id="user_name" placeholder="User Name" value={this.state.user_name} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'User name must not be empty'}} validations={'isRequired2:'+this.state.error} shouldBeDisabled={this.props.modifyUser}/>
                </div>
                <div className={newUserStyles.userPassword}>
                  <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.name} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Password must not be empty'}} validations={'isRequired2:'+this.state.error}/>

@@ -284,32 +284,37 @@ class NewIndexComponent extends React.Component {
            </div>
             <form>
               <div className = {indexStyles.attrDiv}>
-                <label className={indexStyles.attributesLabel}>Attributes</label>
-                <label className={indexStyles.orderLabel}>Asc Index</label>
-                <div className={indexStyles.queryAttributesDiv}>
-                  <ol id="attributesList" className={indexStyles.attributeList}>
-                    { this.state.fields && this.state.fields.length > 0 ? this.state.fields.map(function(result) {
-                      return <li key={result.value} className={indexStyles.attributesItems}>
-                      <span className={indexStyles.checkboxSpan}><input type="checkbox" id={result.value} checked={result.attrSelected} onChange = {that.attributeHandler({result}).bind(that)} disabled={that.state.showAuth}></input></span>
-                            <span className={indexStyles.valueSpan}>{result.value}</span>
-                      <span className={indexStyles.ascCheckboxSpan}><input type="checkbox" id={result.value} checked={result.asc} onChange = {that.orderHandler({result}).bind(that)}  disabled={that.state.showAuth}></input></span>
-                      </li>;
-
-                    }) : null }
-                  </ol>
+                { this.state.fields && this.state.fields.length > 0 ?
+                <div>
+                  <label className={indexStyles.attributesLabel}>Attributes</label>
+                  <label className={indexStyles.orderLabel}>Asc Index</label>
+                  <div className={indexStyles.queryAttributesDiv}>
+                    <ol id="attributesList" className={indexStyles.attributeList}>
+                      { this.state.fields.map(function(result) {
+                        return <li key={result.value} className={indexStyles.attributesItems}>
+                        <span className={indexStyles.checkboxSpan}><input type="checkbox" id={result.value} checked={result.attrSelected} onChange = {that.attributeHandler({result}).bind(that)} disabled={that.state.showAuth}></input></span>
+                              <div className={indexStyles.valueSpan}>{result.value}</div>
+                        <span className={indexStyles.ascCheckboxSpan}><input type="checkbox" id={result.value} checked={result.asc} onChange = {that.orderHandler({result}).bind(that)}  disabled={that.state.showAuth}></input></span>
+                        </li>;
+                      }) }
+                    </ol>
+                  </div>
                 </div>
+                : <div className={indexStyles.empty}>This collection does not contain any documents. Please add a document and then try to Add/Edit Index</div> }
               </div>
             </form>
-            {!this.state.showAuth ? 
-            <div className={indexStyles.buttonContainer+' '+ indexStyles.clearfix}>
-                <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={indexStyles.submit} disabled = {this.state.errorMessage}>SUBMIT</button>
-                <button onClick={this.closeModal.bind(this)} value='CANCEL' className={indexStyles.cancel}>CANCEL</button>
-            </div> : null}
+            {!this.state.showAuth ?
+              this.state.fields && this.state.fields.length > 0 ?
+              <div className={indexStyles.buttonContainer+' '+ indexStyles.clearfix}>
+                  <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={indexStyles.submit} disabled = {this.state.errorMessage}>SUBMIT</button>
+                  <button onClick={this.closeModal.bind(this)} value='CANCEL' className={indexStyles.cancel}>CANCEL</button>
+              </div> : null
+            : null}
             <div className = {indexStyles.clear}></div>
             <div className={!this.state.successMessage? (indexStyles.errorMessage + ' ' + (this.state.message!='' ? indexStyles.show : indexStyles.hidden)) : (this.state.message != '' ? indexStyles.successMessage : '')}>{this.state.message}</div>
          </div>
          {this.state.showAuth ? <div className={indexStyles.errorMessage} >You are not allowed to Add/Edit indexes</div> : ''}
-       </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth1}  authClose = {this.authClose.bind(this)} action = 'view indexes' ></AuthPopUp> }
+       </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth1}  authClose = {this.authClose.bind(this)} action = 'View Indexes' ></AuthPopUp> }
      </div>
     );
   }
