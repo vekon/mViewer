@@ -42,6 +42,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import java.util.List;
+
 /**
  * O Authenticates User to Mongo Db by checking the user in <system.users> collection of admin
  * database.
@@ -135,7 +137,7 @@ public class LoginController extends BaseController {
       @Context final HttpServletRequest request) {
 
 
-    
+
     String response = ErrorTemplate.execute(logger, new ResponseCallback() {
       public Object execute() throws Exception {
         if ("".equals(host) || "".equals(mongoPort)) {
@@ -194,17 +196,20 @@ public class LoginController extends BaseController {
             MongoConnectionDetails mongoConnectionDetails =
                 authService.getMongoConnectionDetails(connectionId);
             ConnectionDetails connectionDetails = mongoConnectionDetails.getConnectionDetails();
-            boolean privileges=(connectionDetails.getUsername()==null || connectionDetails.getDbNames()==null)?false:true;
+            boolean privileges=(connectionDetails.getUsername()==null || connectionDetails.getDbName()==null)?false:true;
+
+            List dbList = authService.listDatabases(connectionId,connectionDetails.getDbName());
+
             JSONObject jsonResponse = new JSONObject();
             try {
               jsonResponse.put("username", connectionDetails.getUsername());
               jsonResponse.put("host", connectionDetails.getHostIp());
               jsonResponse.put("port", connectionDetails.getHostPort());
-              jsonResponse.put("dbNames", new DatabaseServiceImpl(connectionId).getDbList());
+              jsonResponse.put("dbNames", dbList);
               jsonResponse.put("authMode", connectionDetails.isAuthMode());
               jsonResponse.put("hasAdminLoggedIn", connectionDetails.isAdminLogin());
               if(privileges)
-                jsonResponse.put("rolesAndPrivileges", new SystemCollectionServiceImpl(connectionId).getUsersPrivileges(connectionDetails.getDbNames(),connectionDetails.getUsername()));
+                jsonResponse.put("rolesAndPrivileges", new SystemCollectionServiceImpl(connectionId).getUsersPrivileges(connectionDetails.getDbName(),connectionDetails.getUsername()));
             } catch (JSONException e) {
               logger.error(e);
             }

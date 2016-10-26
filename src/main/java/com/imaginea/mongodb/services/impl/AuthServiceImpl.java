@@ -1,22 +1,16 @@
 package com.imaginea.mongodb.services.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.imaginea.mongodb.domain.ConnectionDetails;
 import com.imaginea.mongodb.domain.MongoConnectionDetails;
 import com.imaginea.mongodb.exceptions.ApplicationException;
+import com.imaginea.mongodb.exceptions.DatabaseException;
 import com.imaginea.mongodb.exceptions.ErrorCodes;
 import com.imaginea.mongodb.services.AuthService;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoCredential;
-import com.mongodb.MongoException;
-import com.mongodb.ServerAddress;
+import com.mongodb.*;
 import com.mongodb.client.MongoDatabase;
 
 import org.bson.Document;
@@ -48,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
     if (authMode) {
       String username = connectionDetails.getUsername();
       String pwd = connectionDetails.getPassword();
-      String db = connectionDetails.getDbNames();
+      String db = connectionDetails.getDbName();
       if (username == null || pwd == null || db == null) {
         throw new ApplicationException(ErrorCodes.NEED_AUTHORISATION,
                                        "Mongo DB Running in Auth Mode. Please perform Authentication.");
@@ -102,12 +96,11 @@ public class AuthServiceImpl implements AuthService {
     if(!authModeUi) {
       mongo = new MongoClient(connectionDetails.getHostIp(), connectionDetails.getHostPort());
     }
-    String dbNames = connectionDetails.getDbNames();
-    String[] dbNamesList = dbNames.split(",");
+    String dbName = connectionDetails.getDbName();
+    // String[] dbNamesList = dbNames.split(",");
     String username = connectionDetails.getUsername();
     String password = connectionDetails.getPassword();
-    for (String dbName : dbNamesList) {
-      dbName = dbName.trim();
+    dbName = dbName.trim();
       boolean loginStatus = false;
       try {
         if (authModeUi) {
@@ -122,6 +115,7 @@ public class AuthServiceImpl implements AuthService {
                   java.util.Arrays.asList(credential),
                   MongoClientOptions.builder().serverSelectionTimeout(1000).build());
           Iterator iterator = mongo.listDatabaseNames().iterator();
+
           while (iterator.hasNext()) {
             if (iterator.next().toString().equals(dbName)) {
               mongo.getDatabase(dbName).listCollections().iterator();
@@ -137,22 +131,23 @@ public class AuthServiceImpl implements AuthService {
         // Hack. Checking server connectivity status by fetching collection names on selected db
         // this line will throw exception in two cases.1)On Invalid mongo
         // host Address,2)Invalid authorization to fetch collection names
-
       }
-      catch (MongoException me) {
-
-        // loginStatus = db.authenticate(username, password.toCharArray());//login using given
-        // username and password.This line will throw exception if invalid mongo host address
+      catch (MongoCommandException me) {
+        // User is authenticated but user doesn't have sufficient privilges
+          loginStatus = true;
+              // loginStatus = db.authenticate(username, password.toCharArray());//login using given
+              // username and password.This line will throw exception if invalid mongo host address
       }
-      catch(Exception e)
-      {
-
+      catch(Exception e) {
+        if(((MongoTimeoutException) e).getCode() == -3)
+          throw new ApplicationException(ErrorCodes.NEED_AUTHORISATION,"Invalid Credentials. Please enter correct combination of Username, password and Database");
+        else
+          throw new ApplicationException(ErrorCodes.NEED_AUTHORISATION,e.getMessage());
       }
-
       if (loginStatus) {
         connectionDetails.addToAuthenticatedDbNames(dbName);
       }
-    }
+
     if (connectionDetails.getAuthenticatedDbNames().isEmpty()) {
       throw new ApplicationException(
           ("".equals(username) && "".equals(password))
@@ -228,13 +223,25 @@ public class AuthServiceImpl implements AuthService {
     throw new ApplicationException(ErrorCodes.INVALID_CONNECTION, "Invalid Connection");
   }
 
+  @Override
+  public List listDatabases(String connectionId,String dbName) throws ApplicationException {
+    List dbList;
+    try {
+       dbList=new DatabaseServiceImpl(connectionId).getDbList();
+    }catch (DatabaseException e) {
+      dbList = new ArrayList();
+        dbList.add(dbName);
+    }
+    return dbList;
+  }
+
   private void sanitizeConnectionDetails(ConnectionDetails connectionDetails) {
     if ("localhost".equals(connectionDetails.getHostIp())) {
       connectionDetails.setHostIp("127.0.0.1");
     }
-    String dbNames = connectionDetails.getDbNames();
+    String dbNames = connectionDetails.getDbName();
     if (dbNames == null || dbNames.isEmpty()) {
-      connectionDetails.setDbNames("admin");
+      connectionDetails.setDbName("admin");
     }
   }
 
