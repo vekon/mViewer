@@ -5,7 +5,7 @@ import CollectionItem from './CollectionItemComponent.jsx'
 import NewCollection from '../newcollection/newCollectionComponent.jsx'
 import SearchInput, {createFilter} from 'react-search-input'
 import service from '../../gateway/service.js'
-import privilegesAPI from '../../gateway/privilegesAPI.js'
+
 class CollectionList extends React.Component {
 
   constructor(props) {
@@ -19,9 +19,7 @@ class CollectionList extends React.Component {
       selectedItem: null,
       loading: 'Loading',
       searchTerm: '',
-      selectedCollection:null,
-      _isMounted:false,
-      hasColPriv: true
+      selectedCollection:null
     }
   }
 
@@ -53,7 +51,6 @@ class CollectionList extends React.Component {
   success(calledFrom, data) {
     if(calledFrom == 'componentDidMount'){
       this.setState({collections: data.response.result});
-      this.setState ({hasColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.selectedDB)});
     }
 
     if(calledFrom == 'componentWillReceiveProps'){
@@ -133,7 +130,7 @@ class CollectionList extends React.Component {
 
        return (
          <div className={collectionListStyles.menu} key = {this.props.visible}>
-          {this.state.hasColPriv ? <div className={(this.props.visible ?(this.state.visible ? collectionListStyles.visible : this.props.alignment): this.props.alignment ) }>
+          <div className={(this.props.visible ?(this.state.visible ? collectionListStyles.visible : this.props.alignment): this.props.alignment ) }>
              <SearchInput className={collectionListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
              <h5 className={collectionListStyles.menuTitle}><NewCollection queryType= {this.props.propps.location.query.queryType} currentDb={this.props.selectedDB} currentItem={''} connectionId={this.props.propps.connectionId} addOrUpdate={'1'} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}/></h5>
                { this.state.collections != undefined ?
@@ -151,7 +148,7 @@ class CollectionList extends React.Component {
                      />)
                 })): null}
 
-            </div> : null}
+            </div>
         </div>
       );
 }

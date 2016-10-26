@@ -5,6 +5,8 @@ import Modal from 'react-modal'
 import { Form } from 'formsy-react';
 import TextInput from '../TextInput/TextInputComponent.jsx';
 import service from '../../gateway/service.js';
+import privilegesAPI from '../../gateway/privilegesAPI.js';
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
 
 class CreateDbComponent extends React.Component {
   constructor(props) {
@@ -15,13 +17,26 @@ class CreateDbComponent extends React.Component {
       canSubmit:false,
       message:'',
       successMessage: false,
-      error:false
+      error:false,
+      showAuth: false,
+      hasPriv: false
     }
   }
 
   openModal() {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
+    var hasPriv = privilegesAPI.hasPrivilege('createCollection','', this.state.selectedItem);
+    if(hasPriv){
+      this.setState({showAuth : false});    }
+    else{
+      this.setState({showAuth : true});
+    }
+  }
+
+  authClose(){
+      this.setState({showAuth:false});
+      this.setState({modalIsOpen:false});
   }
 
   closeModal() {
@@ -128,7 +143,7 @@ class CreateDbComponent extends React.Component {
             <img src={'./images/Pramati_Logo.png'} className={createDbStyles.logo}></img>
           </section>
         </div>
-        <Modal
+        { !this.state.showAuth ? <Modal
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal.bind(this)}
           style = {customStyles}>
@@ -152,7 +167,7 @@ class CreateDbComponent extends React.Component {
              <div className={createDbStyles.clear}></div>
              <div className={!this.state.successMessage? (createDbStyles.errorMessage + ' ' + (this.state.message!='' ? createDbStyles.show : createDbStyles.hidden)) : (this.state.message != '' ? createDbStyles.successMessage : '')}>{this.state.message}</div>
           </div>
-        </Modal>
+        </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =   'create Database' ></AuthPopUp> }
       </div>
     );
   }

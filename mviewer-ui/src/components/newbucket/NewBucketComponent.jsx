@@ -274,7 +274,7 @@ class newFileComponent extends React.Component {
             </Form>
 
           </div>
-        </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} action = 'Add Bucket' authClose = {this.authClose.bind(this)} ></AuthPopUp> }
+        </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} action = 'add bucket' authClose = {this.authClose.bind(this)} ></AuthPopUp> }
       </div>
     );
   }

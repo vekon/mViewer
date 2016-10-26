@@ -60,7 +60,7 @@ class TreeViewComponent extends React.Component {
        <span className={treeViewStyles.headContainer}>
          <span className={treeViewStyles.key}>Key</span> <span className={treeViewStyles.value}>Value</span>
        </span>
-       {this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = {this.props.queryType == "collection" ? 'document' : 'file'} dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} uId= {this.state.uId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =  {this.props.queryType == "collection" ? 'Drop Document' : 'Drop File'} ></AuthPopUp>): ''}
+       {this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = {this.props.queryType == "collection" ? 'document' : 'file'} dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} uId= {this.state.uId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =  {this.props.queryType == "collection" ? 'drop document' : 'drop file'} ></AuthPopUp>): ''}
        {items.length>0 ? items : <span className={treeViewStyles.exceptionContainer}>No Records to be displayed</span>}
      </div>
    );

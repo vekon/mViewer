@@ -53,7 +53,7 @@ class AuthPopUpComponent extends React.Component {
             <span className={authPopUpStyles.text}>Info</span>
           </div>
           <div className = {authPopUpStyles.popupBody}>
-            <label>You Don't Have Previleges to {this.props.action}</label>
+            <label>You don't have previleges to {this.props.action}</label>
             <div className={authPopUpStyles.buttons}>
               <span onClick={this.closeModal.bind(this)} className={authPopUpStyles.close}>CLOSE</span>
             </div>

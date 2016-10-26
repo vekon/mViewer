@@ -266,7 +266,7 @@ class newCollectionComponent extends React.Component {
             </Form>
              <div className={!this.state.successMessage? (newCollectionStyles.errorMessage + ' ' + (this.state.message!='' ? newCollectionStyles.show : newCollectionStyles.hidden)) : (this.state.message != '' ? newCollectionStyles.successMessage : '')}>{this.state.message}</div>
           </div>
-        </Modal>: <AuthPopUp modalIsOpen = {this.state.showAuth} action = {this.props.addOrUpdate == '1' ? 'Add collection' : 'Edit Collection' }  authClose = {this.authClose.bind(this)} ></AuthPopUp>}
+        </Modal>: <AuthPopUp modalIsOpen = {this.state.showAuth} action = {this.props.addOrUpdate == '1' ? 'add collection' : 'edit collection' }  authClose = {this.authClose.bind(this)} ></AuthPopUp>}
      </div>
     );
   }

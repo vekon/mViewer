@@ -168,7 +168,7 @@ class newDocumentComponent extends React.Component {
             </div>
             <div className={!this.state.successMessage? (newDocumentStyles.errorMessage + ' ' + (this.state.message!='' ? newDocumentStyles.show : newDocumentStyles.hidden)) : (this.state.message != '' ? newDocumentStyles.successMessage : '')}>{this.state.message}</div>
          </div>
-       </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} action = {this.props.addOrEdit == 'Edit' ? 'edit Document' : 'add Document' }  authClose = {this.authClose.bind(this)} ></AuthPopUp>}
+       </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} action = {this.props.addOrEdit == 'Edit' ? 'edit document' : 'add document' }  authClose = {this.authClose.bind(this)} ></AuthPopUp>}
      </div>
     );
   }
