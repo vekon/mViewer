@@ -179,6 +179,7 @@ padding-right: 10px;
 .ascCheckboxSpan {
   float: right;
   margin-right: 6%;
+  margin-top: -6%;
 }
 
 .orderLabel {
@@ -189,9 +190,12 @@ padding-right: 10px;
 }
 
 .valueSpan{
-  margin-top: -1%;
-  /*position: absolute;*/
-  width: 75%;
+    width: 70%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: -5.5%;
+    margin-left: 7%;
 }
 
 
@@ -207,4 +211,13 @@ padding-right: 10px;
     display: block;
     height: 0;
     visibility: hidden;
+}
+
+.empty {
+    font-size: 16px;
+    color: #484848;
+    font-weight: 600;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 20px;
 }
