@@ -169,6 +169,7 @@ class DbListComponent extends React.Component {
         {
           var result = data.response.result;
           this.setState({dbNames: result.dbNames});
+          localStorage.setItem('dbNames', JSON.stringify(this.state.dbNames));
           if (result.rolesAndPrivileges) {
             privilegesAPI.setRoles(result.rolesAndPrivileges.documents[0].users[0]);
           }
