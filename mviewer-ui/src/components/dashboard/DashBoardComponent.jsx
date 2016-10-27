@@ -10,6 +10,7 @@ class DashBoardComponent extends React.Component {
     super(props);
     this.state = {
       connectionId:this.props.location.query.connectionId,
+      loggedInDatabase: this.props.location.query.database
     }
   }
 
@@ -42,6 +43,7 @@ class DashBoardComponent extends React.Component {
     const childrenWithProps = React.Children.map(this.props.children,
       (child) => React.cloneElement(child, {
       connectionId: this.state.connectionId,
+      loggedInDatabase: this.state.loggedInDatabase,
       refreshDb: function(){
         this.refreshDb();
       }.bind(this)
@@ -62,7 +64,7 @@ class DashBoardComponent extends React.Component {
                </div>
              </nav>
           </header>
-          <SideNav ref='sideNav' connectionId = {this.state.connectionId} propss = {this.props}></SideNav>
+          <SideNav ref='sideNav' connectionId = {this.state.connectionId} loggedInDatabase ={this.state.loggedInDatabase} propss = {this.props}></SideNav>
           {childrenWithProps}
         </div>
       </div>

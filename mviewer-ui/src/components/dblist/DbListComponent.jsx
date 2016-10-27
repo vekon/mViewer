@@ -30,8 +30,7 @@ class DbListComponent extends React.Component {
       searchTerm: '',
       selectedNav: this.props.selectedNav,
       showAuth: false,
-      hasPriv: false,
-      loggedInUser : ''
+      hasPriv: false
     }
   }
 
@@ -39,8 +38,8 @@ class DbListComponent extends React.Component {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
     var hasPriv = privilegesAPI.hasPrivilege('createCollection','', this.props.propps.propss.location.query.db);
-    var hasRole = privilegesAPI.hasRole('readWriteAnyDatabase',this.state.loggedInUser);
-    var hasRole1 = privilegesAPI.hasRole('dbAdminAnyDatabase',this.state.loggedInUser);
+    var hasRole = privilegesAPI.hasRole('readWriteAnyDatabase',this.props.propps.loggedInDatabase);
+    var hasRole1 = privilegesAPI.hasRole('dbAdminAnyDatabase',this.props.propps.loggedInDatabase);
     if(hasPriv && (hasRole || hasRole1)){
       this.setState({showAuth : false});    }
     else{
@@ -175,9 +174,7 @@ class DbListComponent extends React.Component {
           else{
             privilegesAPI.setRoles(undefined);
           }
-          console.log(result.rolesAndPrivileges.documents[0].users[0].user);
-          this.setState({loggedInUser:result.rolesAndPrivileges.documents[0].users[0].user})
-          var test = privilegesAPI.hasPrivilege('collStats','',result.rolesAndPrivileges.documents[0].users[0].user);
+          var test = privilegesAPI.hasPrivilege('collStats','',this.props.propps.loggedInDatabase);
         }
       else {
         {
