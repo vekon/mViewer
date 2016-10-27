@@ -48,12 +48,13 @@ public interface SystemCollectionService {
    * @param dbName   Name of the database
    * @param username username of the user being modifies to the database
    * @param password password of the user being modified to the database
-   * @param roles    The parameter for modifying the user roles
+   * @param removedRoles    The parameter for removedRoles the user roles
+   * @param newRoles    The parameter for removedRoles the user roles
    * @return Returns the success message that should be shown to the user
    * @throws DatabaseException throw super type of UndefinedDatabaseException
    */
 
-    public String modifyUser(String dbName, String username, String password, String roles)
+    public String modifyUser(String dbName, String username, String password, String removedRoles, String newRoles,String dbSource)
         throws ApplicationException;
 
   /**
