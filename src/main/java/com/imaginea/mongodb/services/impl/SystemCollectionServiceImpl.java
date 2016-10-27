@@ -114,13 +114,14 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
    * @param dbName   Name of the database
    * @param username username of the user being modifies to the database
    * @param password password of the user being modified to the database
-   * @param role    The parameter for modifying the user roles
+   * @param revokedRoles The parameter for removedRoles the user roles
+   * @param grantNewRoles The parameter for removedRoles the user roles
    * @return Returns the success message that should be shown to the user
    * @throws DatabaseException throw super type of UndefinedDatabaseException
    */
 
     @Override
-    public String modifyUser(String dbName, String username, String password, String role)
+    public String modifyUser(String dbName, String username, String password, String revokedRoles, String grantNewRoles,String dbSource)
         throws ApplicationException {
       if (dbName == null) {
         throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
@@ -142,15 +143,29 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
       }
       try {
 
-        List<Document> roles = new ArrayList<Document>();
-        String[] roleSep=role.split(",");
-        for(String eachRole:roleSep) {
-          roles.add(new Document("role", eachRole).append("db", dbName));
+        if(username!=null && password!=null) {
+          mongoInstance.getDatabase(dbName)
+                  .runCommand(new Document("updateUser", username).append("pwd", password));
         }
-        mongoInstance.getDatabase(dbName)
-            .runCommand(new Document("updateUser", username).append("pwd", password)
-                            .append("roles", roles));
+        if (revokedRoles!=null && revokedRoles.length()>0) {
+          List<Document> roles = new ArrayList<>();
+          String[] remRoles = revokedRoles.split(",");
+          for(String eachRole: remRoles) {
+            roles.add(new Document("role", eachRole).append("db", dbSource));
+          }
+          mongoInstance.getDatabase(dbName)
+                  .runCommand(new Document("revokeRolesFromUser", username).append("roles", roles));
+        }
 
+        if (grantNewRoles!=null && grantNewRoles.length()>0) {
+          List<Document> roles = new ArrayList<>();
+          String[] newRoles = grantNewRoles.split(",");
+          for(String eachRole: newRoles) {
+            roles.add(new Document("role", eachRole).append("db", dbSource));
+          }
+          mongoInstance.getDatabase(dbName)
+                  .runCommand(new Document("grantRolesToUser", username).append("roles", roles));
+        }
       } catch (MongoException e) {
         throw new ApplicationException(ErrorCodes.USER_CREATION_EXCEPTION, e.getMessage());
       }

@@ -100,7 +100,8 @@ public class SystemCollectionController extends BaseController {
      * @param connectionId Mongo Db Configuration provided by user to connect to.
      * @param username username of the user being modifies to the database
      * @param password password of the user being modified to the database
-     * @param roles The parameter for modifying the user roles
+     * @param revokedRoles The parameter for modifying the user roles
+     * @param grantNewRoles The parameter for modifying the user roles
      * @param request Get the HTTP request context to extract session parameters
      * @return A String of JSON format with list of All Documents in a collection.
      */
@@ -112,7 +113,8 @@ public class SystemCollectionController extends BaseController {
         @DefaultValue("POST") @QueryParam("connectionId") final String connectionId,
         @FormParam("user_name") final String username,
         @FormParam("password") final String password,
-        @FormParam("roles") final String roles,
+        @FormParam("removedRoles") final String revokedRoles,@FormParam("newRoles") final String grantNewRoles,
+                                    @FormParam("dbSource") final String dbSource,
         @Context final HttpServletRequest request) {
 
       String response =
@@ -122,7 +124,7 @@ public class SystemCollectionController extends BaseController {
               SystemCollectionService systemCollectionService =
                   new SystemCollectionServiceImpl(connectionId);
 
-              return systemCollectionService.modifyUser(dbName, username, password, roles);
+              return systemCollectionService.modifyUser(dbName, username, password, revokedRoles , grantNewRoles ,dbSource);
             }
           });
       return response;
