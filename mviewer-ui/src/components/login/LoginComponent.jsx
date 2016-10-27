@@ -23,7 +23,8 @@ class LoginComponent extends React.Component {
       canSubmit: false,
       message: '',
       connectionId:'',
-      authEnabled: false
+      authEnabled: false,
+      loading: false
     }
     this.onSubmit = this.onSubmit.bind(this);
     this.success = this.success.bind(this);
@@ -74,6 +75,8 @@ class LoginComponent extends React.Component {
 
   onSubmit() {
     var obj = this.getRequest();
+    this.setState({loading : true});
+    this.setState({message: ''});
     var loginCall = service('POST', 'login',  obj);
     loginCall.then(this.success, this.failure);
     return loginCall;
@@ -88,10 +91,14 @@ class LoginComponent extends React.Component {
     if (data.response.error) {
       this.setState({message: data.response.error.message});
     }
+    this.setState({loading: false});
   }
 
   failure() {
-    this.setState({ message: 'Unexpected Error Occurred' })
+    this.setState({ message: 'Unexpected Error Occurred' });
+    this.setState({loading: false});
+    // console.log(this.state.loading);
+
   }
 
   enableButton() {
@@ -154,7 +161,8 @@ class LoginComponent extends React.Component {
                   <TextInput type="text" name="databases" id="databases" placeholder="Database" value={this.state.databases} onChange={this.handleChange( 'databases')} shouldBeDisabled={!this.state.authEnabled} validations={'isRequired1:'+this.state.dbError} validationErrors={{isRequired1: 'DB name must not be empty'}}/>
                 </div>
                 <div>
-                  <input type="submit" value="CONNECT" disabled={!this.state.canSubmit} className={ styles.gobutton} />
+                  <input type="submit" value={this.state.loading == true ? "Loading.." : "CONNECT" } disabled={!this.state.canSubmit || this.state.loading} className={ styles.gobutton} />
+                  {this.state.loading == true ? <div className={styles.loader}></div> : null}
                 </div>
                 <div className={styles.footerLink}>
                    <a href='http://venkoux.github.io/mViewer'>Need Help?</a>

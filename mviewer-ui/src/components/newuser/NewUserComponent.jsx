@@ -27,6 +27,11 @@ class NewUserComponent extends React.Component {
       error: false,
       role: "",
       selectedRoles: "",
+      addedRoles:[],
+      removedRoles:[],
+      retrievedRoles:[],
+      uniqueRetrievedRoles:[],
+      finalRoles:[],
       roles: [{key:"read","selected": false},{key:"userAdmin","selected":false},{key:"userAdminAnyDatabase","selected": false},
               {key:"readWrite","selected": false},{key:"dbAdmin","selected":false},{key:"readWriteAnyDatabase","selected":false},
               {key:"clusterAdmin","selected": false},{key:"readAnyDatabase","selected": false},{key:"dbAdminAnyDatabase","selected":false}]
@@ -37,7 +42,14 @@ class NewUserComponent extends React.Component {
     var that = this;
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
+    this.setState({successMessage: false});
     this.setForm();
+
+    var unique = this.state.retrievedRoles.filter(function(item, pos) {
+      return this.state.retrievedRoles.indexOf(item) == pos;
+    }.bind(this));
+
+    this.state.uniqueRetrievedRoles = unique;
   }
 
   setRoles(){
@@ -54,6 +66,7 @@ class NewUserComponent extends React.Component {
           if(item.key == result.key){
             item.selected = result.selected;
             that.setState(update(that.state.roles[index], {selected: {$set: result.selected}}));
+            that.state.retrievedRoles.push(item.key);
           }
           ++index;
         });
@@ -112,6 +125,7 @@ class NewUserComponent extends React.Component {
   }
 
   clickHandler(){
+    this.setState({finalRoles:[]});
     var that =this;
     var data = $("form").serialize().split("&");
     var obj={};
@@ -126,6 +140,7 @@ class NewUserComponent extends React.Component {
     this.state.roles.map(function(item){
       if(item.selected){
         ++selectedCount;
+        that.state.finalRoles.push(item.key);
         that.state.selectedRoles = that.state.selectedRoles.length > 0 ? that.state.selectedRoles + "," + item.key : item.key;
       }
     });
@@ -142,6 +157,28 @@ class NewUserComponent extends React.Component {
     } else {
       this.setState({error:true});
     }
+
+    if (this.props.modifyUser){
+      var addedRoles = this.state.finalRoles.filter( function( el ) {
+        return this.state.retrievedRoles.indexOf( el ) < 0;
+      }.bind(this));
+
+      var removedRoles = this.state.retrievedRoles.filter( function( el ) {
+        return this.state.finalRoles.indexOf( el ) < 0;
+      }.bind(this));
+
+
+      var removedRoles = removedRoles.filter(function(item, pos) {
+        return removedRoles.indexOf(item) == pos;
+      });
+
+      obj['newRoles'] = addedRoles.toString();
+      obj['removedRoles'] =  removedRoles.toString();
+      // delete obj['roles'];
+
+    }
+
+    // console.log(obj);
 
     var partialUrl = this.props.modifyUser ? this.props.currentDb+'/usersIndexes/modifyUser?connectionId='+this.props.connectionId
                      : this.props.currentDb+'/usersIndexes/addUser?connectionId='+this.props.connectionId;
