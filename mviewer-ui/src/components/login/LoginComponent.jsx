@@ -161,8 +161,8 @@ class LoginComponent extends React.Component {
                   <TextInput type="text" name="databases" id="databases" placeholder="Database" value={this.state.databases} onChange={this.handleChange( 'databases')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.dbError} validationErrors={{isRequired1: 'DB name must not be empty'}}/>
                 </div>
                 <div className={styles.submitContainer}>
-                  <input type="submit" value={this.state.loading == true ? "Connecting.." : "CONNECT" } disabled={!this.state.canSubmit || this.state.loading} className={ styles.gobutton} />
                   {this.state.loading == true ? <div className={styles.loader}></div> : null}
+                  <input type="submit" value={this.state.loading == true ? "Connecting.." : "CONNECT" } disabled={!this.state.canSubmit || this.state.loading} className={ styles.gobutton} />
                 </div>
                 <div className={styles.footerLink}>
                    <a href='http://venkoux.github.io/mViewer'>Need Help?</a>
