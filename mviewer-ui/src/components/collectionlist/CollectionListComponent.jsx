@@ -61,7 +61,13 @@ class CollectionList extends React.Component {
 
     if(calledFrom == 'refreshCollectionList'){
       if(typeof(data.response.result) !== 'undefined'){
-        this.setState({collections: data.response.result});
+        if(data.response.result.length != 0){
+          this.setState({collections: data.response.result});
+        }
+        else{
+          this.props.refreshDb();
+          window.location.hash = '#dashboard/home?collapsed=false&connectionId='+this.state.connectionId+'&tab=1'
+        }
       }
       if(typeof(data.response.error) !== 'undefined'){
         if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){
@@ -72,8 +78,15 @@ class CollectionList extends React.Component {
 
     if(calledFrom == 'refreshCollectionListForDelete'){
       if(typeof(data.response.result) !== 'undefined'){
-        this.setState({collections: data.response.result});
-        this.props.hideQueryExecutor();
+        if(data.response.result.length != 0){
+          this.setState({collections: data.response.result});
+          this.props.hideQueryExecutor();
+        }
+        else{
+          this.props.refreshDb();
+          window.location.hash = '#dashboard/home?collapsed=false&connectionId='+this.state.connectionId+'&tab=1'
+        }
+        
       }
       if(typeof(data.response.error) !== 'undefined'){
         if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){

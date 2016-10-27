@@ -186,16 +186,22 @@ h2:after {
     padding: 10px 30px;
     width: 100%;
     height: 47px;
-    background-color: #2494d0;
     font-size: 13px;
-    color: white;
     margin-left: 0px;
     border-radius: 1px;
     margin-top:4px;
     border: 0;
+    background-color: #2494d0;
+    color: white;
 }
-.two input[type=submit]:hover,
-.two input[type=submit]:active {
+
+.two input[type=submit]:enabled {
+  
+  
+}
+
+.two input[type=submit]:enabled:hover,
+.two input[type=submit]:enabled:active {
     background-color: #576d96;
     cursor: pointer;
 }
@@ -259,4 +265,30 @@ h2:after {
     margin-left: 9%;
     font-weight: 500;
     margin-bottom: 5%;
+}
+
+
+/*Spinner*/
+.loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #2494d0;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    animation: spin 2s linear infinite;
+    float: right;
+    position: absolute;
+    display: inline;
+    margin-top: 15px;
+    margin-left: -61px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
 }
