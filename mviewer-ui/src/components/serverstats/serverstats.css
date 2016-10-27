@@ -8,7 +8,7 @@
   font-size: 14px;
 }
 
-.mainContainer p {
+.title {
   padding-bottom: 17px;
   padding-top: 17px;
   font-family: 'Brandon';
@@ -92,4 +92,25 @@
 
 .value{
   margin-left: 60%;
+}
+
+
+.errorHolder {
+  text-align: center;
+    font-size: 17px;
+    padding: 20px;
+    display: inline-block;
+    width: 100%;
+    color: red;
+}
+
+
+.loading {
+  text-align: center;
+}
+
+.loading label {
+  display: block;
+  font-size: 17px;
+  font-family: 'Brandon-Light';
 }

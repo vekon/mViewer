@@ -14,7 +14,7 @@ class UserItemComponent extends React.Component {
     return (
       <div onClick={this.props.onClick} value={this.props.name} className={(this.props.isSelected ? UserListStyles.menuItem +' ' +UserListStyles.highlight :UserListStyles.menuItem)} key={this.props.name} >
         <span className = {UserListStyles.collectionIcon}>
-          <i className="fa fa-folder-open-o" aria-hidden="true"></i>
+          <i className="fa fa-user" aria-hidden="true"></i>
         </span>
         <span className = {UserListStyles.button}>{this.props.name}</span>
       </div>
