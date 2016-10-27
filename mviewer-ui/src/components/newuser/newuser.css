@@ -174,9 +174,9 @@
 }
 
 .checkLabel{
-    font-size: 14.2px;
+    font-size: 15px;
     color: #a5a5a5;
-    margin-top: -3.8%;
+    margin-top: -4%;
     margin-left: 4%;
     font-weight: 500;
     margin-bottom: 5%;
@@ -229,4 +229,17 @@
     display: block;
     height: 0;
     visibility: hidden;
+}
+
+.dataSource select{
+    padding-left: 5px;
+    border-radius: 1px;
+    border: 1px solid #cccccc;
+    background-color: inherit;
+    font-size: 15px;
+    color: #808285 !important;
+    height: 35px;
+    width: 100%;
+    font-family: 'Brandon-Light';
+    margin-bottom: 8%;
 }

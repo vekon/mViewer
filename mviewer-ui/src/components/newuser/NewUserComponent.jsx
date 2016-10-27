@@ -1,5 +1,6 @@
 import React from 'react'
 import newUserStyles from './newuser.css'
+import Dropdown from 'react-drop-down'
 import $ from 'jquery'
 import Modal from 'react-modal'
 import { Form } from 'formsy-react'
@@ -32,6 +33,8 @@ class NewUserComponent extends React.Component {
       retrievedRoles:[],
       uniqueRetrievedRoles:[],
       finalRoles:[],
+      dbSource: "",
+      dbSourceList: [],      
       roles: [{key:"read","selected": false},{key:"userAdmin","selected":false},{key:"userAdminAnyDatabase","selected": false},
               {key:"readWrite","selected": false},{key:"dbAdmin","selected":false},{key:"readWriteAnyDatabase","selected":false},
               {key:"clusterAdmin","selected": false},{key:"readAnyDatabase","selected": false},{key:"dbAdminAnyDatabase","selected":false}]
@@ -44,7 +47,13 @@ class NewUserComponent extends React.Component {
     this.setState({message: ''});
     this.setState({successMessage: false});
     this.setForm();
-
+    var ds = ["Please select a DataSource"];
+    var dbList = [];
+    dbList = JSON.parse(localStorage.getItem('dbNames') || '{}');
+    dbList.map(function(item){
+      ds.push(item);
+    });
+    this.setState({dbSourceList: ds});
     var unique = this.state.retrievedRoles.filter(function(item, pos) {
       return this.state.retrievedRoles.indexOf(item) == pos;
     }.bind(this));
@@ -77,6 +86,7 @@ class NewUserComponent extends React.Component {
     this.setState({modalIsOpen: false});
     this.setState({error: false});
     this.setState({selectedRoles:""});
+    this.setState({dbSource:""});
     this.setState({roles: [{key:"read","selected": false},{key:"userAdmin","selected":false},{key:"userAdminAnyDatabase","selected": false},
               {key:"readWrite","selected": false},{key:"dbAdmin","selected":false},{key:"readWriteAnyDatabase","selected":false},
               {key:"clusterAdmin","selected": false},{key:"readAnyDatabase","selected": false},{key:"dbAdminAnyDatabase","selected":false}]});
@@ -136,6 +146,13 @@ class NewUserComponent extends React.Component {
     if(this.props.modifyUser)
       obj['user_name'] = this.props.userName;
 
+    if(this.state.dbSource.length < 1 && this.state.dbSource == "Please select a DbSource"){
+      this.setState({successMessage:false});
+      this.setState({message:'Please select a DbSource'});
+      this.setState({dbSource:""});
+      return;
+    }
+    obj['dbSource'] = this.state.dbSource;
     var selectedCount = 0;
     this.state.roles.map(function(item){
       if(item.selected){
@@ -238,6 +255,14 @@ class NewUserComponent extends React.Component {
     }
   }
 
+  DDhandleChange(e) {
+    this.setState({dbSource: e});
+    if(e != "Please select a DbSource") {
+      this.setState({successMessage:false});
+      this.setState({message:''});
+    }
+  }
+
   failure() {
 
   }
@@ -252,7 +277,7 @@ class NewUserComponent extends React.Component {
         border                : 'none',
         borderRadius          : '4px',
         right                 : 'auto',
-        width                 : '30%',
+        width                 : '34%',
         bottom                : 'auto',
         marginRight           : '-50%',
         padding               : '0px',
@@ -282,6 +307,9 @@ class NewUserComponent extends React.Component {
                </div>
                <div className={newUserStyles.userPassword}>
                  <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.name} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Password must not be empty'}} validations={'isRequired2:'+this.state.error}/>
+               </div>
+               <div className={newUserStyles.dbSource}>
+                 <Dropdown value={this.state.dbSource} onChange={this.DDhandleChange.bind(this)} options={this.state.dbSourceList} />
                </div>
                <div className={newUserStyles.rolesDiv +' '+newUserStyles.clearfix}>
                  {this.state.roles.map(function(item){

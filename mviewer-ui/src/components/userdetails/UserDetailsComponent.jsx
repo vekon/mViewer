@@ -68,10 +68,13 @@ class UserDetailsComponent extends React.Component {
        sortItem = this.props.users;
      }
     var roles = "";
+    var Db = "";
     sortItem.roles.map(function(item) {
       roles = roles.length > 0 ? roles + ", " +  item.role : item.role;
+      Db = item.db;
     });
     userDetail.push({'key': 'role', 'value': roles});
+    userDetail.push({'key': 'DbSource', 'value': Db});
     Object.keys(sortItem).map(function(key) {
       if(key != "roles")
         userDetail.push({'key': key, 'value': sortItem[key]});
