@@ -74,7 +74,7 @@ public class SystemCollectionController extends BaseController {
       @DefaultValue("POST") @QueryParam("connectionId") final String connectionId,
       @FormParam("user_name") final String username,
       @FormParam("password") final String password,
-      @FormParam("roles") final String roles,
+      @FormParam("roles") final String roles,@FormParam("dbSource") final String dbSource,
       @Context final HttpServletRequest request) {
 
     String response =
@@ -84,7 +84,7 @@ public class SystemCollectionController extends BaseController {
             SystemCollectionService systemCollectionService =
                 new SystemCollectionServiceImpl(connectionId);
 
-            return systemCollectionService.addUser(dbName, username, password, roles);
+            return systemCollectionService.addUser(dbName, username, password, roles, dbSource);
           }
         });
     return response;
