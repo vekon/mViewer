@@ -87,7 +87,7 @@ class LoginComponent extends React.Component {
       this.setState({message: data.response.result['success']});
       this.setState({loading: false});
       hashHistory.push({ pathname: '/dashboard/home', query: { host: this.state.host, port: this.state.port, username: this.state.username,
-                         password: this.state.password, connectionId: data.response.result.connectionId, tab: 1, database: this.state.databases } });
+                         password: this.state.password, connectionId: data.response.result.connectionId, database: this.state.databases } });
     }
     if (data.response.error) {
       this.setState({message: data.response.error.message});
@@ -147,9 +147,9 @@ class LoginComponent extends React.Component {
                 <div className={styles.inputBoxLogin}>
                   <TextInput type="text" name="port" id="port" placeholder="Port" value={this.state.port} onChange={this.handleChange( 'port')} validations={{isRequired:true, isNumeric:true}} validationErrors={{isRequired : "Port must not be empty", isNumeric : "Inavlid Port number" }} shouldBeDisabled ={this.state.loading} />
                 </div>
-                <div className={styles.inputBoxLogin}>
+                <div className={styles.inputBoxLogin+' '+ styles.checkBox}>
                   <input type="checkbox" className={styles.checkboxClass} name="auth" id="auth"  onChange={this.handleCheck.bind(this)} checked={this.state.authEnabled} disabled ={this.state.loading}  />
-                  <div className={styles.checkLabel}><span>Perform Authentication</span></div>
+                  <div className={styles.checkLabel} onClick ={this.handleCheck.bind(this)} ><span>Perform Authentication</span></div>
                 </div>
                 <div className={styles.inputBoxLogin}>
                   <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.userNameError} validationErrors={{isRequired1: 'User name must not be empty' }}/>

@@ -10,10 +10,11 @@ class SideNavComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedItem:this.props.propss.location.query.tab,
+      selectedItem:0,
       selectedDB: null,
       connectionId: this.props.connectionId,
-      visible: false
+      visible: false,
+      urlPart: ''
     }
   }
 
@@ -31,17 +32,62 @@ class SideNavComponent extends React.Component {
 
   dbList(){
     this.setState({selectedItem:1});
-    hashHistory.push({ pathname: '/dashboard/home', query: {connectionId: this.props.connectionId, tab: 1, collapsed: 'false'} });
+    hashHistory.push({ pathname: '/dashboard/home', query: {connectionId: this.props.connectionId, collapsed: 'false'} });
   }
 
   mongoGraphs(){
     this.setState({selectedItem:2});
-    hashHistory.push({ pathname: 'dashboard/mongoGraphs', query: {connectionId: this.props.connectionId, tab: 2, db: this.props.loggedInDatabase} });
+    hashHistory.push({ pathname: 'dashboard/mongoGraphs', query: {connectionId: this.props.connectionId, db: this.props.loggedInDatabase} });
   }
 
   serverStats(){
     this.setState({selectedItem:3});
-    hashHistory.push({ pathname: 'dashboard/serverStats', query: {connectionId: this.props.connectionId, tab: 3, db: this.props.loggedInDatabase} });
+    hashHistory.push({ pathname: 'dashboard/serverStats', query: {connectionId: this.props.connectionId, db: this.props.loggedInDatabase} });
+  }
+
+  componentDidMount(){
+
+    var homeUrl = window.location.href.split('?')[0].search("/home") != -1;
+    var collectionUrl = window.location.href.split('?')[0].search("/collection") != -1;
+    var graphsUrl = window.location.href.split('?')[0].search("/mongoGraphs") != -1;
+    var statsUrl = window.location.href.split('?')[0].search("/serverStats") != -1;
+
+    this.setState({urlPart : (homeUrl || collectionUrl)});
+
+    if(homeUrl || collectionUrl){
+      this.setState({selectedItem : 1});
+    }
+
+    if (graphsUrl){
+      this.setState({selectedItem : 2});
+    }
+
+    if (statsUrl){
+      this.setState({selectedItem : 3});
+    }
+
+  }
+
+  componentWillReceiveProps(){
+
+    var homeUrl = window.location.href.split('?')[0].search("/home") != -1;
+    var collectionUrl = window.location.href.split('?')[0].search("/collection") != -1;
+    var graphsUrl = window.location.href.split('?')[0].search("/mongoGraphs") != -1;
+    var statsUrl = window.location.href.split('?')[0].search("/serverStats") != -1;
+
+    this.setState({urlPart : (homeUrl || collectionUrl)});
+
+    if(homeUrl || collectionUrl){
+      this.setState({selectedItem : 1});
+    }
+
+    if (graphsUrl){
+      this.setState({selectedItem : 2});
+    }
+
+    if (statsUrl){
+      this.setState({selectedItem : 3});
+    }
   }
 
   render () {
@@ -50,8 +96,8 @@ class SideNavComponent extends React.Component {
     var n = params[1].search("&collapsed=true");
     return(
 
-        <div className ={this.props.propss.location.query.tab ==1 ? (n == -1 ? sideNavStyles.mainContainer : sideNavStyles.mainContainerCollapsed) : sideNavStyles.otherContainer}>
-          <div className={this.props.propss.location.query.tab ==1 ?(n == -1 ? sideNavStyles.sideContainer : sideNavStyles.sideContainerCollapsed) : sideNavStyles.otherSideContainer}>
+        <div className ={this.state.urlPart == true ? (n == -1 ? sideNavStyles.mainContainer : sideNavStyles.mainContainerCollapsed) : sideNavStyles.otherContainer}>
+          <div className={this.state.urlPart == true ?(n == -1 ? sideNavStyles.sideContainer : sideNavStyles.sideContainerCollapsed) : sideNavStyles.otherSideContainer}>
             <ul className={sideNavStyles.sideNav} >
               <li onClick={this.dbList.bind(this)} className ={this.state.selectedItem == 1 ? sideNavStyles.active : ''}><button data-id = '1'><div><i className={"fa fa-database " + sideNavStyles.icon} aria-hidden="true"></i></div></button></li>
               <li onClick={this.mongoGraphs.bind(this)} className ={this.state.selectedItem == 2 ? sideNavStyles.active : ''}><button data-id = '2'><div><i className={"fa fa-area-chart " + sideNavStyles.icon} aria-hidden="true"></i></div></button></li>
