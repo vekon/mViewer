@@ -23,7 +23,7 @@ class DashBoardComponent extends React.Component {
   success(data) {
     if(data.response.result==='User Logged Out')
       {
-          window.location.hash = '#';
+          window.location.hash = '#?code=INVALID_CONNECTION';
       }
   }
 
