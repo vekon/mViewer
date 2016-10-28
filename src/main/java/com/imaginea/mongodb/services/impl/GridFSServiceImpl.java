@@ -178,10 +178,10 @@ public class GridFSServiceImpl implements GridFSService {
     if (bucketType.equals("")) {
       throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection Name Empty");
     }
-    if (!databaseService.getDbList().contains(dbName)) {
-      throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-          "Database with dbName [ " + dbName + "] does not exist");
-    }
+    // if (!databaseService.getDbList().contains(dbName)) {
+    //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+    //       "Database with dbName [ " + dbName + "] does not exist");
+    // }
     MongoDatabase db = mongoInstance.getDatabase(dbName);
 
     GridFSBucket gridFS = GridFSBuckets.create(db, bucketName);
@@ -292,11 +292,11 @@ public class GridFSServiceImpl implements GridFSService {
     }
     File tempFile = null;
     try {
-      if (!databaseService.getDbList().contains(dbName)) {
-        throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+      // if (!databaseService.getDbList().contains(dbName)) {
+      //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
 
-            "Database with dbName [ " + dbName + "] does not exist");
-      }
+      //       "Database with dbName [ " + dbName + "] does not exist");
+      // }
 
 
       ObjectId objectId = new ObjectId(_id);
@@ -364,10 +364,10 @@ public class GridFSServiceImpl implements GridFSService {
     JSONArray result = new JSONArray();
 
     try {
-      if (!databaseService.getDbList().contains(dbName)) {
-        throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-            "DB [" + dbName + "] DOES NOT EXIST");
-      }
+      // if (!databaseService.getDbList().contains(dbName)) {
+      //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+      //       "DB [" + dbName + "] DOES NOT EXIST");
+      // }
 
       MongoDatabase db = mongoInstance.getDatabase(dbName);
 
@@ -429,10 +429,10 @@ public class GridFSServiceImpl implements GridFSService {
     String result = null;
     GridFSFile gridFSFile = null;
     try {
-      if (!databaseService.getDbList().contains(dbName)) {
-        throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-            "DB [" + dbName + "] DOES NOT EXIST");
-      }
+      // if (!databaseService.getDbList().contains(dbName)) {
+      //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+      //       "DB [" + dbName + "] DOES NOT EXIST");
+      // }
       if (_id == null) {
         throw new DocumentException(ErrorCodes.DOCUMENT_EMPTY, "File is empty");
       }
@@ -473,10 +473,10 @@ public class GridFSServiceImpl implements GridFSService {
       throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Empty");
     }
 
-    if (!databaseService.getDbList().contains(dbName)) {
-      throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-          "DB [" + dbName + "] DOES NOT EXIST");
-    }
+    // if (!databaseService.getDbList().contains(dbName)) {
+    //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+    //       "DB [" + dbName + "] DOES NOT EXIST");
+    // }
 
     MongoCursor<String> iterator =
         mongoInstance.getDatabase(dbName).listCollectionNames().iterator();
@@ -522,10 +522,10 @@ public class GridFSServiceImpl implements GridFSService {
 
     String result = null;
     try {
-      if (!databaseService.getDbList().contains(dbName)) {
-        throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-            "DB [" + dbName + "] DOES NOT EXIST");
-      }
+      // if (!databaseService.getDbList().contains(dbName)) {
+      //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+      //       "DB [" + dbName + "] DOES NOT EXIST");
+      // }
       executeDrop(mongoInstance.getDatabase(dbName), bucketName);
     } catch (MongoException e) {
       throw new DocumentException(ErrorCodes.DOCUMENT_DELETION_EXCEPTION, e.getMessage());
@@ -560,10 +560,10 @@ public class GridFSServiceImpl implements GridFSService {
 
     JSONObject result = new JSONObject();
     try {
-      if (!databaseService.getDbList().contains(dbName)) {
-        throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-            "DB [" + dbName + "] DOES NOT EXIST");
-      }
+      // if (!databaseService.getDbList().contains(dbName)) {
+      //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+      //       "DB [" + dbName + "] DOES NOT EXIST");
+      // }
 
       long count = mongoInstance.getDB(dbName).getCollection(bucketName + ".files").count();
       result.put("count", count);

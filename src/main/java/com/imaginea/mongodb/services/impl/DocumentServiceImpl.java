@@ -106,11 +106,11 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     try {
-      List<String> databaseNames = databaseService.getDbList();
-      if (!databaseNames.contains(dbName)) {
-        throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-            "DB with name [" + dbName + "]DOES_NOT_EXIST");
-      }
+      // List<String> databaseNames = databaseService.getDbList();
+      // if (!databaseNames.contains(dbName)) {
+      //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+      //       "DB with name [" + dbName + "]DOES_NOT_EXIST");
+      // }
       MongoDatabase db = mongoInstance.getDatabase(dbName);
       if (collectionName == null) {
         throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection name is null");
@@ -165,10 +165,10 @@ public class DocumentServiceImpl implements DocumentService {
 
     String result = null;
     try {
-      if (!databaseService.getDbList().contains(dbName)) {
-        throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-            "DB [" + dbName + "] DOES NOT EXIST");
-      }
+      // if (!databaseService.getDbList().contains(dbName)) {
+      //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+      //       "DB [" + dbName + "] DOES NOT EXIST");
+      // }
 
       MongoCursor<String> iterator =
           mongoInstance.getDatabase(dbName).listCollectionNames().iterator();
@@ -229,10 +229,10 @@ public class DocumentServiceImpl implements DocumentService {
     String result = null;
 
     try {
-      if (!databaseService.getDbList().contains(dbName)) {
-        throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-            "DB [" + dbName + "] DOES NOT EXIST");
-      }
+      // if (!databaseService.getDbList().contains(dbName)) {
+      //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+      //       "DB [" + dbName + "] DOES NOT EXIST");
+      // }
 
       if (!collectionService.getCollList(dbName).contains(collectionName)) {
         throw new CollectionException(ErrorCodes.COLLECTION_DOES_NOT_EXIST,
@@ -327,10 +327,10 @@ public class DocumentServiceImpl implements DocumentService {
     String result = null;
     Document documentData = null;
     try {
-      if (!databaseService.getDbList().contains(dbName)) {
-        throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-            "DB [" + dbName + "] DOES NOT EXIST");
-      }
+      // if (!databaseService.getDbList().contains(dbName)) {
+      //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+      //       "DB [" + dbName + "] DOES NOT EXIST");
+      // }
 
       if (!collectionService.getCollList(dbName).contains(collectionName)) {
         throw new CollectionException(ErrorCodes.COLLECTION_DOES_NOT_EXIST,

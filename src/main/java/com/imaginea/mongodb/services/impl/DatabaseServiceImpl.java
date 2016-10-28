@@ -239,11 +239,11 @@ public class DatabaseServiceImpl implements DatabaseService {
     if (dbName.equals("")) {
       throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Empty");
     }
-    List<String> databaseNames = getDbList();
-    if (!databaseNames.contains(dbName)) {
-      throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-          "DB with name [" + dbName + "]DOES_NOT_EXIST");
-    }
+    // List<String> databaseNames = getDbList();
+    // if (!databaseNames.contains(dbName)) {
+    //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+    //       "DB with name [" + dbName + "]DOES_NOT_EXIST");
+    // }
     try {
       MongoDatabase db = mongoInstance.getDatabase(dbName);
       return DatabaseQueryExecutor.executeQuery(db, command, queryStr, keys, sortBy, limit, skip);

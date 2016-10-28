@@ -84,11 +84,11 @@ public class CollectionServiceImpl implements CollectionService {
       throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Empty");
     }
     try {
-      List<String> dbList = databaseService.getDbList();
-      if (!dbList.contains(dbName)) {
-        throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-            "Database with dbName [ " + dbName + "] does not exist");
-      }
+      // List<String> dbList = databaseService.getDbList();
+      // if (!dbList.contains(dbName)) {
+      //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+      //       "Database with dbName [ " + dbName + "] does not exist");
+      // }
       MongoIterable<String> listCollectionNames =
           mongoInstance.getDatabase(dbName).listCollectionNames();
 
@@ -156,10 +156,10 @@ public class CollectionServiceImpl implements CollectionService {
           "Collection name cannot be empty");
     }
     try {
-      if (!databaseService.getDbList().contains(dbName)) {
-        throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-            "Db with name [" + dbName + "] doesn't exist.");
-      }
+      // if (!databaseService.getDbList().contains(dbName)) {
+      //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+      //       "Db with name [" + dbName + "] doesn't exist.");
+      // }
 
       if (getCollList(dbName).contains(newCollName)) {
         throw new CollectionException(ErrorCodes.COLLECTION_ALREADY_EXISTS,
@@ -221,10 +221,10 @@ public class CollectionServiceImpl implements CollectionService {
     }
     String result = "No updates were specified!";
     try {
-      if (!databaseService.getDbList().contains(dbName)) {
-        throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-            "Db with name [" + dbName + "] doesn't exist.");
-      }
+      // if (!databaseService.getDbList().contains(dbName)) {
+      //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+      //       "Db with name [" + dbName + "] doesn't exist.");
+      // }
 
       boolean convertedToCapped = false, convertedToNormal = false, renamed = false;
 
@@ -333,10 +333,10 @@ public class CollectionServiceImpl implements CollectionService {
       throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection Name Empty");
     }
     try {
-      if (!databaseService.getDbList().contains(dbName)) {
-        throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-            "DB with name [" + dbName + "]DOES_NOT_EXIST");
-      }
+      // if (!databaseService.getDbList().contains(dbName)) {
+      //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+      //       "DB with name [" + dbName + "]DOES_NOT_EXIST");
+      // }
       if (!getCollList(dbName).contains(collectionName)) {
         throw new CollectionException(ErrorCodes.COLLECTION_DOES_NOT_EXIST, "Collection with name ["
             + collectionName + "] DOES NOT EXIST in Database [" + dbName + "]");
@@ -382,10 +382,10 @@ public class CollectionServiceImpl implements CollectionService {
     JSONArray collStats = new JSONArray();
 
     try {
-      if (!databaseService.getDbList().contains(dbName)) {
-        throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
-            "DB with name [" + dbName + "]DOES_NOT_EXIST");
-      }
+      // if (!databaseService.getDbList().contains(dbName)) {
+      //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
+      //       "DB with name [" + dbName + "]DOES_NOT_EXIST");
+      // }
       if (!getCollList(dbName).contains(collectionName)) {
         throw new CollectionException(ErrorCodes.COLLECTION_DOES_NOT_EXIST, "Collection with name ["
             + collectionName + "] DOES NOT EXIST in Database [" + dbName + "]");
