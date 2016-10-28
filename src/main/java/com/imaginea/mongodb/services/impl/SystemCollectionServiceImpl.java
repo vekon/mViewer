@@ -66,12 +66,13 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
    * @param username Username of the user to be added
    * @param password Password of the usre to be added
    * @param role optional attribute for creating the user
+   * @param dbSource optional attribute for creating the dbSource
    * @return Returns the success message that should be shown to the user
    * @throws DatabaseException throw super type of UndefinedDatabaseException
    */
 
   @Override
-  public String addUser(String dbName, String username, String password, String role)
+  public String addUser(String dbName, String username, String password, String role, String dbSource)
       throws ApplicationException {
     if (dbName == null) {
       throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
@@ -96,7 +97,7 @@ public class SystemCollectionServiceImpl implements SystemCollectionService {
       List<Document> roles = new ArrayList<Document>();
       String[] roleSep=role.split(",");
       for(String eachRole:roleSep) {
-        roles.add(new Document("role", eachRole).append("db", dbName));
+        roles.add(new Document("role", eachRole).append("db", dbSource));
       }
       mongoInstance.getDatabase(dbName)
           .runCommand(new Document("createUser", username).append("pwd", password)
