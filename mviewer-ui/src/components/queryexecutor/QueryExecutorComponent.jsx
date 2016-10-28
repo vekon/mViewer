@@ -189,6 +189,13 @@ class QueryExecutorComponent extends React.Component {
   }
   if(data.response.error) {
     this.setState({collectionObjects:[]});
+    if (data.response.error.code == 'QUERY_EXECUTION_EXCEPTION' && data.response.error.message.indexOf('not authorized on') != -1 ){
+      this.setState({errorMessage:'User is not authorized to perform this query'});
+    }
+
+    setTimeout(function(){
+        this.setState({errorMessage: ''});
+      }.bind(this), 2000);
   }
 }
 
@@ -231,6 +238,13 @@ class QueryExecutorComponent extends React.Component {
         }
         if(data.response.error) {
           this.setState({collectionObjects:[]});
+           if (data.response.error.code == 'QUERY_EXECUTION_EXCEPTION' && data.response.error.message.indexOf('not authorized on') != -1 ){
+              this.setState({errorMessage:'User is not authorized to perform this query'});
+           }
+
+           setTimeout(function(){
+              this.setState({errorMessage: ''});
+            }.bind(this), 2000);
         }
     }
   }

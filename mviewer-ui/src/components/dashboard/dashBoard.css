@@ -40,11 +40,17 @@ align-items: center;
     width: 100%;
 }
 
-.mainNav li:last-child::before {
+/*.mainNav li:last-child::before {
   content: '|';
   border: 0;
   padding: 0;
   font-size: 34px;
+}*/
+
+.seperator {
+  width: 1px;
+  height: 47%;
+  border: solid 1px #6f7576;
 }
 
 .mainNav li a:hover {

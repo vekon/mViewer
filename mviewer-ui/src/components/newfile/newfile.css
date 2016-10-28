@@ -66,6 +66,8 @@
     overflow: auto;
     margin: 5px 10px;
     width: 90%;
+    color: #808285;
+    font-family: 'Brandon-Light';
 }
 .errorMessage {
   color: red;
