@@ -191,11 +191,7 @@ class NewUserComponent extends React.Component {
 
       obj['newRoles'] = addedRoles.toString();
       obj['removedRoles'] =  removedRoles.toString();
-      // delete obj['roles'];
-
     }
-
-    // console.log(obj);
 
     var partialUrl = this.props.modifyUser ? this.props.currentDb+'/usersIndexes/modifyUser?connectionId='+this.props.connectionId
                      : this.props.currentDb+'/usersIndexes/addUser?connectionId='+this.props.connectionId;
@@ -243,8 +239,11 @@ class NewUserComponent extends React.Component {
       if (data.response.error) {
         if (data.response.error.code === 'USER_CREATION_EXCEPTION'){
           this.setState({successMessage:false});
-          if(data.response.error.message.indexOf("not authorized") >= 0 || data.response.error.message.indexOf("No role") >= 0) {
+          if(data.response.error.message.indexOf("not authorized") >= 0) {
             this.setState({message:'Not Authorized to create user with role ' + this.state.selectedRoles});
+          } else if (data.response.error.message.indexOf("No role") >= 0) {
+            var db = data.response.error.message.match("errmsg(.*)@")[1].match("named(.*)")[1];
+            this.setState({message:'Not Authorized to create user with role ' + db});
           }
           else {
             this.setState({message:'User '+obj['user_name']+ ' already exists in database ' + this.props.currentDb});

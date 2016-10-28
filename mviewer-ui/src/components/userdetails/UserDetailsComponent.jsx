@@ -111,10 +111,9 @@ class UserDetailsComponent extends React.Component {
     return(
       <div className={userDetailsStyles.mainContainer}>
           <div className= {userDetailsStyles.actionsContainer}>
-            <span className={userDetailsStyles.detailsLabel}> {this.state.currentUser} Details:</span>
-              <div className={userDetailsStyles.deleteButtonGridfs} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete User</span></div>
-              { this.state.modalIsOpen?(!this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'User' dbName = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action = 'drop user' ></AuthPopUp>) : '' }
-              <ModifyUser className={userDetailsStyles.modifyUser} users={this.props.users} modifyUser="true" currentDb = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}></ModifyUser>
+            <div className={userDetailsStyles.deleteButtonGridfs} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete User</span></div>
+            { this.state.modalIsOpen?(!this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'User' dbName = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action = 'drop user' ></AuthPopUp>) : '' }
+            <ModifyUser className={userDetailsStyles.modifyUser} users={this.props.users} modifyUser="true" currentDb = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}></ModifyUser>
           </div>
         <div className={userDetailsStyles.detailsBody}>
           <table>

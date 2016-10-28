@@ -9,8 +9,10 @@ class DashBoardComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      connectionId:this.props.location.query.connectionId,
-      loggedInDatabase: this.props.location.query.database
+      connectionId: JSON.parse(sessionStorage.getItem('connectionId') || '{}'),
+      loggedInDatabase: this.props.location.query.database,
+      host: JSON.parse(sessionStorage.getItem('host') || '{}'),
+      username: JSON.parse(sessionStorage.getItem('username') || '{}')
     }
   }
 
@@ -57,6 +59,7 @@ class DashBoardComponent extends React.Component {
             <nav>
               <div className={"row " + dashStyles.row}>
                 <a href= {"#/dashboard/home?collapsed=false&connectionId="+this.state.connectionId} className={dashStyles.logo} onClick={this.clearActiveClass.bind(this)}><img src={'./images/Logo.png'}></img></a>
+	          <label className={dashStyles.details}>{this.state.host} / {this.state.username}</label>
                 <ul className={dashStyles.mainNav + ' ' + dashStyles.clearfix} >
                   <li><a target = "_blank" href="https://venkoux.github.io/mViewer/"><span><i className="fa fa-question-circle-o"></i></span></a></li>
                   <li className={dashStyles.seperator}><span></span></li>
