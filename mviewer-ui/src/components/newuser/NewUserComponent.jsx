@@ -308,7 +308,7 @@ class NewUserComponent extends React.Component {
                <div className={newUserStyles.userPassword}>
                  <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.name} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Password must not be empty'}} validations={'isRequired2:'+this.state.error}/>
                </div>
-               <div className={newUserStyles.dbSource}>
+               <div className={newUserStyles.dataSource}>
                  <Dropdown value={this.state.dbSource} onChange={this.DDhandleChange.bind(this)} options={this.state.dbSourceList} />
                </div>
                <div className={newUserStyles.rolesDiv +' '+newUserStyles.clearfix}>

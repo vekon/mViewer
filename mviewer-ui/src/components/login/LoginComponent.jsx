@@ -24,7 +24,7 @@ class LoginComponent extends React.Component {
       message: '',
       connectionId:'',
       authEnabled: false,
-      loading: false
+      loading: false,
     }
     this.onSubmit = this.onSubmit.bind(this);
     this.success = this.success.bind(this);
@@ -85,20 +85,20 @@ class LoginComponent extends React.Component {
   success(data) {
     if (data.response.result) {
       this.setState({message: data.response.result['success']});
+      this.setState({loading: false});
       hashHistory.push({ pathname: '/dashboard/home', query: { host: this.state.host, port: this.state.port, username: this.state.username,
-                         password: this.state.password, connectionId: data.response.result.connectionId, tab: 1 } });
+                         password: this.state.password, connectionId: data.response.result.connectionId, tab: 1, database: this.state.databases } });
     }
     if (data.response.error) {
       this.setState({message: data.response.error.message});
+      this.setState({loading: false});
     }
-    this.setState({loading: false});
+    
   }
 
   failure() {
     this.setState({ message: 'Unexpected Error Occurred' });
     this.setState({loading: false});
-    // console.log(this.state.loading);
-
   }
 
   enableButton() {
@@ -142,27 +142,27 @@ class LoginComponent extends React.Component {
             <Form method='POST' onValid={this.enableButton()} onSubmit={this.onSubmit} onInvalid={this.disableButton()} >
               <div className={ styles.formContainer}>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="text" name="host" id="host" placeholder="Host" value={this.state.host} validations='isRequired' onChange={this.handleChange( 'host')} validationError="Host must not be empty" />
+                  <TextInput type="text" name="host" id="host" placeholder="Host" value={this.state.host} validations='isRequired' onChange={this.handleChange( 'host')} validationError="Host must not be empty" shouldBeDisabled ={this.state.loading} />
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="text" name="port" id="port" placeholder="Port" value={this.state.port} onChange={this.handleChange( 'port')} validations={{isRequired:true, isNumeric:true}} validationErrors={{isRequired : "Port must not be empty", isNumeric : "Inavlid Port number" }} />
+                  <TextInput type="text" name="port" id="port" placeholder="Port" value={this.state.port} onChange={this.handleChange( 'port')} validations={{isRequired:true, isNumeric:true}} validationErrors={{isRequired : "Port must not be empty", isNumeric : "Inavlid Port number" }} shouldBeDisabled ={this.state.loading} />
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <input type="checkbox" className={styles.checkboxClass} name="auth" id="auth"  onChange={this.handleCheck.bind(this)} checked={this.state.authEnabled}  />
+                  <input type="checkbox" className={styles.checkboxClass} name="auth" id="auth"  onChange={this.handleCheck.bind(this)} checked={this.state.authEnabled} disabled ={this.state.loading}  />
                   <div className={styles.checkLabel}><span>Perform Authentication</span></div>
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} shouldBeDisabled={!this.state.authEnabled} validations={'isRequired1:'+this.state.userNameError} validationErrors={{isRequired1: 'User name must not be empty' }}/>
+                  <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.userNameError} validationErrors={{isRequired1: 'User name must not be empty' }}/>
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleChange( 'password')} shouldBeDisabled={!this.state.authEnabled} validations={'isRequired1:'+this.state.passwordError}  validationErrors={{isRequired1: 'Password must not be empty' }}/>
+                  <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleChange( 'password')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.passwordError}  validationErrors={{isRequired1: 'Password must not be empty' }}/>
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="text" name="databases" id="databases" placeholder="Database" value={this.state.databases} onChange={this.handleChange( 'databases')} shouldBeDisabled={!this.state.authEnabled} validations={'isRequired1:'+this.state.dbError} validationErrors={{isRequired1: 'DB name must not be empty'}}/>
+                  <TextInput type="text" name="databases" id="databases" placeholder="Database" value={this.state.databases} onChange={this.handleChange( 'databases')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.dbError} validationErrors={{isRequired1: 'DB name must not be empty'}}/>
                 </div>
-                <div>
-                  <input type="submit" value={this.state.loading == true ? "Loading.." : "CONNECT" } disabled={!this.state.canSubmit || this.state.loading} className={ styles.gobutton} />
+                <div className={styles.submitContainer}>
                   {this.state.loading == true ? <div className={styles.loader}></div> : null}
+                  <input type="submit" value={this.state.loading == true ? "Connecting.." : "CONNECT" } disabled={!this.state.canSubmit || this.state.loading} className={ styles.gobutton} />
                 </div>
                 <div className={styles.footerLink}>
                    <a href='http://venkoux.github.io/mViewer'>Need Help?</a>

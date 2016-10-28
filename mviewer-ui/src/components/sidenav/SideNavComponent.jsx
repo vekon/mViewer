@@ -36,12 +36,12 @@ class SideNavComponent extends React.Component {
 
   mongoGraphs(){
     this.setState({selectedItem:2});
-    hashHistory.push({ pathname: 'dashboard/mongoGraphs', query: {connectionId: this.props.connectionId, tab: 2} });
+    hashHistory.push({ pathname: 'dashboard/mongoGraphs', query: {connectionId: this.props.connectionId, tab: 2, db: this.props.loggedInDatabase} });
   }
 
   serverStats(){
     this.setState({selectedItem:3});
-    hashHistory.push({ pathname: 'dashboard/serverStats', query: {connectionId: this.props.connectionId, tab: 3} });
+    hashHistory.push({ pathname: 'dashboard/serverStats', query: {connectionId: this.props.connectionId, tab: 3, db: this.props.loggedInDatabase} });
   }
 
   render () {
@@ -58,7 +58,7 @@ class SideNavComponent extends React.Component {
               <li onClick={this.serverStats.bind(this)} className ={this.state.selectedItem == 3 ? sideNavStyles.active : ''}><button data-id = '3'><div><i className={"fa fa-bar-chart " + sideNavStyles.icon} aria-hidden="true"></i></div></button></li>
             </ul>
           </div>
-          { (this.state.selectedItem == 1 || this.state.selectedItem == 0) ? <DbList ref="left" selectedNav = {this.state.selectedItem} selectedDB = { this.setActiveItem.bind(this)} alignment={dbListStyles.left} propps = {this.props}></DbList> : null }
+          { (this.state.selectedItem == 1 || this.state.selectedItem == 0) ? <DbList ref="left" selectedNav = {this.state.selectedItem} selectedDB = { this.setActiveItem.bind(this)} alignment={dbListStyles.left} propps = {this.props} ></DbList> : null }
         </div>
 
     );

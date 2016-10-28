@@ -63,7 +63,7 @@ class CollectionItemComponent extends React.Component {
     return (
       <div className={(this.props.isSelected ? collectionListStyles.menuItem +' ' +collectionListStyles.highlight :collectionListStyles.menuItem)} key={this.props.name} onClick={this.props.onClick} value={this.props.name} >
         <span className = {collectionListStyles.collectionIcon}>
-          <i className="fa fa-folder-open-o" aria-hidden="true"></i>
+          <i className="fa fa-files-o" aria-hidden="true"></i>
         </span>
         <span className = {collectionListStyles.button}>{this.props.name}</span>
         <i className={"fa fa-trash "+ collectionListStyles.trash} aria-hidden="true" onClick = {this.openModal.bind(this)}></i>

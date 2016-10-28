@@ -5,6 +5,7 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, ReferenceLine,
   ReferenceDot, Tooltip, CartesianGrid, Legend, Brush } from 'recharts';
 import service from '../../gateway/service.js'
 import graphStyles from './graphs.css'
+import privilegesAPI from '../../gateway/privilegesAPI.js';
 
 class GraphsComponent extends React.Component {
   constructor(props) {
@@ -13,7 +14,8 @@ class GraphsComponent extends React.Component {
       data: [],
       selectedTab: 0,
       interval: 0,
-      error: false
+      error: false,
+      hasRole: null
     }
   }
 
@@ -40,9 +42,23 @@ class GraphsComponent extends React.Component {
 
   success(data){
      this.setState({data: data.response.result});
-     if(data.response.error){
+     
+     if(typeof(data.response.error) != 'undefined'){
+        if(data.response.error.code == 'INVALID_CONNECTION'){
         this.setState({error:true});
+       }
+        if (data.response.error.message.indexOf('not authorized on') == -1){
+         this.setState({hasRole: true});
+       }
+       else{
+        this.setState({hasRole:false});
+       }
      }
+     else{
+        this.setState({hasRole: true});
+     }
+     
+
   }
 
   success1(data){
@@ -92,6 +108,7 @@ class GraphsComponent extends React.Component {
           <Tab className={this.state.selectedTab==4 ? graphStyles.activeTab : ''}>Deletes</Tab>
         </TabList>
         <TabPanel className={graphStyles.tabPanel}>
+         {this.state.hasRole ? <div> 
           <p className={graphStyles.tabTitle}>Combined View</p>
           <ResponsiveContainer width = '100%' height = '100%'>
             <LineChart  data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }} syncId="test" width={this.props.width} height = {this.props.height}>
@@ -107,8 +124,10 @@ class GraphsComponent extends React.Component {
               <Brush dataKey="TimeStamp" height={30} />
             </LineChart>
          </ResponsiveContainer>
+         </div> : (this.state.hasRole ==null ? <div className={graphStyles.loading}><img src={'./images/loading.gif'} ></img><label>Checking for Privileges</label></div> : <div className = {graphStyles.errorHolder}>You are not authorised to view Graphs</div> ) }
         </TabPanel>
         <TabPanel className={graphStyles.tabPanel}>
+        {this.state.hasRole ? <div> 
           <p className={graphStyles.tabTitle}>Queries/Second</p>
           <ResponsiveContainer width = '100%' height = '100%'>
             <LineChart  data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }} width={this.props.width} height = {this.props.height} syncId="test">
@@ -121,8 +140,10 @@ class GraphsComponent extends React.Component {
               <Brush dataKey="name" height={30} />
             </LineChart>
           </ResponsiveContainer>
+          </div> : <div className = {graphStyles.errorHolder}>You are not authorised to view Graphs</div> }
         </TabPanel>
         <TabPanel className={graphStyles.tabPanel}>
+        {this.state.hasRole ? <div> 
           <p className={graphStyles.tabTitle}>Updates/Second</p>
           <ResponsiveContainer width = '100%' height = '100%'>
             <LineChart  data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }} width={this.props.width} height = {this.props.height} syncId="test">
@@ -135,8 +156,10 @@ class GraphsComponent extends React.Component {
               <Brush dataKey="name" height={30} />
             </LineChart>
           </ResponsiveContainer>
+          </div> : <div className = {graphStyles.errorHolder}>You are not authorised to view Graphs</div> }
         </TabPanel>
         <TabPanel className={graphStyles.tabPanel}>
+        {this.state.hasRole ? <div> 
           <p className={graphStyles.tabTitle}>Inserts/Second</p>
           <ResponsiveContainer width = '100%' height = '100%'>
             <LineChart  data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }} width={this.props.width} height = {this.props.height} syncId="test">
@@ -149,8 +172,10 @@ class GraphsComponent extends React.Component {
               <Brush dataKey="name" height={30} />
             </LineChart>
           </ResponsiveContainer>
+          </div> : <div className = {graphStyles.errorHolder}>You are not authorised to view Graphs</div> }
         </TabPanel>
         <TabPanel className={graphStyles.tabPanel}>
+        {this.state.hasRole ? <div> 
           <p className={graphStyles.tabTitle}>Deletes/Second</p>
           <ResponsiveContainer width = '100%' height = '100%'>
             <LineChart data={this.state.data} margin={{ top: 20, right: 40, bottom: 20, left: 20 }}  width={this.props.width} height = {this.props.height} syncId="test">
@@ -163,8 +188,9 @@ class GraphsComponent extends React.Component {
               <Brush dataKey="TimeStamp" height={30} />
             </LineChart>
           </ResponsiveContainer>
+          </div> : <div className = {graphStyles.errorHolder}>You are not authorised to view Graphs</div> }
         </TabPanel>
-      </Tabs> : <p className = {graphStyles.errorMessage}>Not Connected To Mongodb</p>}
+      </Tabs> : <p className = {graphStyles.errorHolder}>Not Connected To Mongodb</p>}
       </div>
     );
   }
