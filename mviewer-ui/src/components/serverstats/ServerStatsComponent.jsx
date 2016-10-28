@@ -11,13 +11,14 @@ class ServerStatsComponent extends React.Component {
     this.state = {
       serverStats: {},
       hasRole: null,
+      connectionId: JSON.parse(sessionStorage.getItem('connectionId') || '{}'),
       error:false
     }
   }
 
   componentDidMount(){
     var that = this;
-    var partialUrl = 'stats?connectionId='+this.props.location.query.connectionId;
+    var partialUrl = 'stats?connectionId='+this.state.connectionId;
     var serverStatsCall = service('GET', partialUrl, '');
     serverStatsCall.then(this.success.bind(this), this.failure.bind(this));
   }

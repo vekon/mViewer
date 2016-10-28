@@ -82,7 +82,8 @@ class DbListComponent extends React.Component {
     this.setState({selectedItem: db});
     this.props.selectedDB(db);
     this.setState({selectedDb : db});
-    window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+db + '&queryType="collection"&collapsed='+this.state.visible;
+    sessionStorage.setItem('queryType', JSON.stringify("collection"));
+    window.location.hash = '#/dashboard/database?db='+db + '&collapsed='+this.state.visible;
   }
 
   componentDidMount(){
@@ -104,11 +105,11 @@ class DbListComponent extends React.Component {
     var refreshDbCall = service('GET', partialUrl, '');
     refreshDbCall.then(this.success.bind(this , 'refreshDbList' , ''), this.failure.bind(this , 'refreshDbList', ''));
     if(dbName != null){
-      window.location.hash = '#/dashboard/collections?connectionId='+this.props.propps.connectionId+'&db='+dbName + '&queryType="collection"&collapsed=false';
+      window.location.hash = '#/dashboard/database?db='+dbName + '&collapsed=false';
     }
 
     if (dbName == 'undefined') {
-      window.location.hash = '#/dashboard/home?collapsed=false&connectionId='+this.props.propps.connectionId;
+      window.location.hash = '#/dashboard/home?collapsed=false';
     }
   }
 
@@ -119,7 +120,7 @@ class DbListComponent extends React.Component {
   collapsedDivHandler(){
     var that =this;
     this.setState({visible: !this.state.visible}, function(){
-      window.location.hash = '#/dashboard/collections?connectionId='+that.props.propps.connectionId+'&db='+that.state.selectedDb + '&queryType="collection"&collapsed='+false;
+      window.location.hash = '#/dashboard/database?db='+that.state.selectedDb + '&collapsed='+false;
     });
 
   }
@@ -150,7 +151,7 @@ class DbListComponent extends React.Component {
     var url = window.location.href;
     var params = url.split('?');
     var shouldCollapse = params[1].search("&collapsed=true");
-    var queryType = params[1].search('&queryType');
+    var queryType = JSON.parse(sessionStorage.getItem('queryType'));
     if (shouldCollapse!= -1) {
       this.setState({visible:false});
     }

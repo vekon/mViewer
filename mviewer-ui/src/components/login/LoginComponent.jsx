@@ -84,10 +84,12 @@ class LoginComponent extends React.Component {
 
   success(data) {
     if (data.response.result) {
+      sessionStorage.setItem('connectionId', JSON.stringify(data.response.result.connectionId));
+      sessionStorage.setItem('username', JSON.stringify(this.state.username));
+      sessionStorage.setItem('host', JSON.stringify(this.state.host));
       this.setState({message: data.response.result['success']});
       this.setState({loading: false});
-      hashHistory.push({ pathname: '/dashboard/home', query: { host: this.state.host, port: this.state.port, username: this.state.username,
-                         password: this.state.password, connectionId: data.response.result.connectionId, database: this.state.databases } });
+      hashHistory.push({ pathname: '/dashboard/home', query: { database: this.state.databases} });
     }
     if (data.response.error) {
       this.setState({message: data.response.error.message});

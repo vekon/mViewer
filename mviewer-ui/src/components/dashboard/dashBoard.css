@@ -136,3 +136,11 @@ header {
 
 .disconnect::before {
 }
+
+.details {
+  text-transform: uppercase;
+  font-size: 13px;
+  color: white;
+  font-family: 'Brandon-Light';
+  text-align: center;
+}

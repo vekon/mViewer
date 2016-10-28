@@ -32,23 +32,23 @@ class SideNavComponent extends React.Component {
 
   dbList(){
     this.setState({selectedItem:1});
-    hashHistory.push({ pathname: '/dashboard/home', query: {connectionId: this.props.connectionId, collapsed: 'false'} });
+    hashHistory.push({ pathname: '/dashboard/home', query: { collapsed: 'false'} });
   }
 
   mongoGraphs(){
     this.setState({selectedItem:2});
-    hashHistory.push({ pathname: 'dashboard/mongoGraphs', query: {connectionId: this.props.connectionId, db: this.props.loggedInDatabase} });
+    hashHistory.push({ pathname: 'dashboard/mongoGraphs', query: { db: this.props.loggedInDatabase} });
   }
 
   serverStats(){
     this.setState({selectedItem:3});
-    hashHistory.push({ pathname: 'dashboard/serverStats', query: {connectionId: this.props.connectionId, db: this.props.loggedInDatabase} });
+    hashHistory.push({ pathname: 'dashboard/serverStats', query: { db: this.props.loggedInDatabase} });
   }
 
   componentDidMount(){
 
     var homeUrl = window.location.href.split('?')[0].search("/home") != -1;
-    var collectionUrl = window.location.href.split('?')[0].search("/collection") != -1;
+    var collectionUrl = window.location.href.split('?')[0].search("/database") != -1;
     var graphsUrl = window.location.href.split('?')[0].search("/mongoGraphs") != -1;
     var statsUrl = window.location.href.split('?')[0].search("/serverStats") != -1;
 
@@ -71,7 +71,7 @@ class SideNavComponent extends React.Component {
   componentWillReceiveProps(){
 
     var homeUrl = window.location.href.split('?')[0].search("/home") != -1;
-    var collectionUrl = window.location.href.split('?')[0].search("/collection") != -1;
+    var collectionUrl = window.location.href.split('?')[0].search("/database") != -1;
     var graphsUrl = window.location.href.split('?')[0].search("/mongoGraphs") != -1;
     var statsUrl = window.location.href.split('?')[0].search("/serverStats") != -1;
 

@@ -15,18 +15,19 @@ class GraphsComponent extends React.Component {
       selectedTab: 0,
       interval: 0,
       error: false,
+      connectionId: JSON.parse(sessionStorage.getItem('connectionId') || '{}'),
       hasRole: null
     }
   }
 
   componentDidMount(){
     var requestTime = new Date().getTime().toString();
-    var partialUrl1 = 'graphs/initiate?connectionId='+this.props.location.query.connectionId+'&ts='+requestTime+'&pollingTime=5000';
+    var partialUrl1 = 'graphs/initiate?connectionId='+this.state.connectionId+'&ts='+requestTime+'&pollingTime=5000';
     var graphsInitialCall = service('GET', partialUrl1, '');
     graphsInitialCall.then(this.success1.bind(this), this.failure1.bind(this));
 
     requestTime = new Date().getTime().toString();
-    var partialUrl = 'graphs/query?connectionId='+this.props.location.query.connectionId+'&ts='+requestTime;
+    var partialUrl = 'graphs/query?connectionId='+this.state.connectionId+'&ts='+requestTime;
     var interval = setInterval (function () {
       var graphsCall = service('GET', partialUrl, '');
       graphsCall.then(this.success.bind(this), this.failure.bind(this))
