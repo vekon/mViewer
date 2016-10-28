@@ -198,7 +198,7 @@ public class LoginController extends BaseController {
             ConnectionDetails connectionDetails = mongoConnectionDetails.getConnectionDetails();
             boolean privileges=(connectionDetails.getUsername()==null || connectionDetails.getDbName()==null)?false:true;
 
-            List dbList = authService.listDatabases(connectionId,connectionDetails.getDbName());
+            List dbList = authService.listDatabases(connectionId, connectionDetails.getDbName());
 
             JSONObject jsonResponse = new JSONObject();
             try {

@@ -33,13 +33,14 @@ public interface SystemCollectionService {
          *
          * @param dbName Name of the database
          * @param username Username of the user to be added
-         * @param password Password of the usre to be added
+         * @param password Password of the user to be added
          * @param roles optional attribute for creating the user
+         * @param dbSource optional attribute for creating the dbSource
          * @return Returns the success message that should be shown to the user
          * @throws DatabaseException throw super type of UndefinedDatabaseException
          */
 
-        public String addUser(String dbName, String username, String password, String roles)
+        public String addUser(String dbName, String username, String password, String roles, String dbSource)
             throws ApplicationException;
 
   /**
