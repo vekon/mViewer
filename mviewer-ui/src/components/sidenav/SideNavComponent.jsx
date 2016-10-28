@@ -32,7 +32,7 @@ class SideNavComponent extends React.Component {
 
   dbList(){
     this.setState({selectedItem:1});
-    hashHistory.push({ pathname: '/dashboard/home', query: { collapsed: 'false'} });
+    hashHistory.push({ pathname: '/dashboard/home' });
   }
 
   mongoGraphs(){
