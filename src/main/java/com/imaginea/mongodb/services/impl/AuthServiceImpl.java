@@ -134,16 +134,16 @@ public class AuthServiceImpl implements AuthService {
         }
         catch (Exception e) {
             String errMsg = e.getMessage();
-
-            if (((MongoTimeoutException) e).getCode() == -3){
-              if(errMsg.contains("UnknownHost") || errMsg.contains("port out of range"))
-                  throw new ApplicationException(ErrorCodes.NEED_AUTHORISATION,"Invalid IP or Port");
-              else {
-                  errMsg = "Invalid Credentials. Please enter correct combination of Username, password and Database name";
-                  throw new ApplicationException(ErrorCodes.NEED_AUTHORISATION, errMsg);
-              }
-            } else
+            if (((MongoTimeoutException) e).getCode() == -3) {
+                if (errMsg.contains("Authentication failed")) {
+                    errMsg = "Invalid Credentials. Please enter correct combination of Username, password and Database name";
+                    throw new ApplicationException(ErrorCodes.NEED_AUTHORISATION, errMsg);
+                } else {
+                    throw new ApplicationException(ErrorCodes.NEED_AUTHORISATION, "Invalid IP Address or Port");
+                }
+            } else {
                 throw new ApplicationException(ErrorCodes.NEED_AUTHORISATION, errMsg);
+            }
         }
         if (loginStatus) {
             connectionDetails.addToAuthenticatedDbNames(dbName);
