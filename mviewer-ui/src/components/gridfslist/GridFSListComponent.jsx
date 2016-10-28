@@ -81,9 +81,11 @@ class GridFSList extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     var that = this;
-    var partialUrl = nextProps.selectedDB +'/gridfs?connectionId=' + this.state.connectionId;
-    var gridFSListCall = service('GET', partialUrl, '');
-    gridFSListCall.then(this.success.bind(this, 'componentWillReceiveProps'), this.failure.bind(this, 'componentWillReceiveProps'));
+    if(this.state.gridfs && this.state.gridfs.length <  1) {
+      var partialUrl = nextProps.selectedDB +'/gridfs?connectionId=' + this.state.connectionId;
+      var gridFSListCall = service('GET', partialUrl, '');
+      gridFSListCall.then(this.success.bind(this, 'componentWillReceiveProps'), this.failure.bind(this, 'componentWillReceiveProps'));
+    }
   }
 
   render () {

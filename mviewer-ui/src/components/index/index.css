@@ -45,7 +45,7 @@ padding-right: 10px;
     padding-left: 1%;
     width: 90%;
     margin-left: 5%;
-    height: 100px;
+    height: 130px;
     overflow-y: auto;
 }
 
@@ -178,7 +178,7 @@ padding-right: 10px;
 
 .ascCheckboxSpan {
   float: right;
-  margin-right: 6%;
+  margin-right: 4%;
   margin-top: -6%;
 }
 
