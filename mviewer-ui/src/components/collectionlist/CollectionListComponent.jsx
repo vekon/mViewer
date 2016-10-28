@@ -19,6 +19,7 @@ class CollectionList extends React.Component {
       selectedItem: null,
       loading: 'Loading',
       searchTerm: '',
+      queryType: JSON.parse(sessionStorage.getItem('queryType') || '{}'),
       selectedCollection:null
     }
   }
@@ -66,7 +67,7 @@ class CollectionList extends React.Component {
         }
         else{
           this.props.refreshDb();
-          window.location.hash = '#dashboard/home?collapsed=false&connectionId='+this.state.connectionId
+          window.location.hash = '#dashboard/home?collapsed=false'
         }
       }
       if(typeof(data.response.error) !== 'undefined'){
@@ -84,14 +85,14 @@ class CollectionList extends React.Component {
         }
         else{
           this.props.refreshDb();
-          window.location.hash = '#dashboard/home?collapsed=false&connectionId='+this.state.connectionId
+          window.location.hash = '#dashboard/home?collapsed=false'
         }
         
       }
       if(typeof(data.response.error) !== 'undefined'){
         if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){
             this.props.refreshDb();
-            window.location.hash = '#dashboard/home?collapsed=false&connectionId='+this.state.connectionId
+            window.location.hash = '#dashboard/home?collapsed=false'
         }
       }
 
@@ -145,7 +146,7 @@ class CollectionList extends React.Component {
          <div className={collectionListStyles.menu} key = {this.props.visible}>
           <div className={(this.props.visible ?(this.state.visible ? collectionListStyles.visible : this.props.alignment): this.props.alignment ) }>
              <SearchInput className={collectionListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
-             <h5 className={collectionListStyles.menuTitle}><NewCollection queryType= {this.props.propps.location.query.queryType} currentDb={this.props.selectedDB} currentItem={''} connectionId={this.props.propps.connectionId} addOrUpdate={'1'} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}/></h5>
+             <h5 className={collectionListStyles.menuTitle}><NewCollection queryType= {this.state.queryType} currentDb={this.props.selectedDB} currentItem={''} connectionId={this.props.propps.connectionId} addOrUpdate={'1'} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}/></h5>
                { this.state.collections != undefined ?
                  (filteredData.map((item,idx) => {
                    return(

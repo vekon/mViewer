@@ -136,3 +136,10 @@ header {
 
 .disconnect::before {
 }
+
+.details {
+  padding-left: 2%;
+  font-size: 18px;
+  color: white;
+  font-family: 'Brandon-Light';
+}

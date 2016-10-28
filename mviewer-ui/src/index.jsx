@@ -18,7 +18,7 @@ render((
       <Route path="/dashboard" component={DashBoardComponent} >
         <Route path="/dashboard/home" component={HomeComponent} />
         <Route path="/dashboard/databases" component={DbStatsComponent} />
-        <Route path="/dashboard/collections" component={CollectionsComponent} />
+        <Route path="/dashboard/database" component={CollectionsComponent} />
         <Route path="/dashboard/serverStats" component={ServerStatsComponent} />
         <Route path='/dashboard/mongoGraphs' component = {GraphsComponent} />
       </Route>
