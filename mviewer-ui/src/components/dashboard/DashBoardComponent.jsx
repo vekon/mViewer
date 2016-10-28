@@ -24,9 +24,13 @@ class DashBoardComponent extends React.Component {
 
   success(data) {
     if(data.response.result==='User Logged Out')
-      {
-          window.location.hash = '#';
-      }
+    {
+      window.location.hash = '#';
+      sessionStorage.setItem('connectionId', JSON.stringify(" "));
+      sessionStorage.setItem('username', JSON.stringify(" "));
+      sessionStorage.setItem('host', JSON.stringify(" "));
+      sessionStorage.setItem('queryType', JSON.stringify(" "));
+    }
   }
 
   failure() {
