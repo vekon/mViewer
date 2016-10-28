@@ -58,7 +58,7 @@ class DashBoardComponent extends React.Component {
           <header>
             <nav>
               <div className={"row " + dashStyles.row}>
-                <a href= {"#/dashboard/home?collapsed=false&connectionId="+this.state.connectionId} className={dashStyles.logo} onClick={this.clearActiveClass.bind(this)}><img src={'./images/Logo.png'}></img></a>
+                <a href= {"#/dashboard/home"} className={dashStyles.logo} onClick={this.clearActiveClass.bind(this)}><img src={'./images/Logo.png'}></img></a>
 	          
                 <ul className={dashStyles.mainNav + ' ' + dashStyles.clearfix} >
                   <li><div className={dashStyles.details}>{this.state.host}</div>  

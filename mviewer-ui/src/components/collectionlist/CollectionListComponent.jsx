@@ -121,9 +121,9 @@ class CollectionList extends React.Component {
       this.setState({selectedCollection : null});
     }
     this.setState({selectedDB: nextProps.selectedDB});
-    var partialUrl = nextProps.selectedDB +'/collection?connectionId=' + this.state.connectionId;
-    var collectionListCall = service('GET', partialUrl, '');
-    collectionListCall.then(this.success.bind(this , 'componentWillReceiveProps'), this.failure.bind(this , 'componentWillReceiveProps'));
+    // var partialUrl = nextProps.selectedDB +'/collection?connectionId=' + this.state.connectionId;
+    // var collectionListCall = service('GET', partialUrl, '');
+    // collectionListCall.then(this.success.bind(this , 'componentWillReceiveProps'), this.failure.bind(this , 'componentWillReceiveProps'));
   }
 
   componentWillUnmount(){
