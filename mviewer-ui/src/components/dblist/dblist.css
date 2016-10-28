@@ -178,7 +178,7 @@ border-right: 1px solid #bababa;
   margin-left: -200%;
   overflow: hidden;
   text-overflow: ellipsis;*/
-
+  transform: rotate(180deg);
   display: inline-block;
   height: 40%;
   font-size: 19px;
@@ -187,7 +187,7 @@ border-right: 1px solid #bababa;
   text-overflow: ellipsis;
   text-align: center;
   writing-mode: vertical-lr;
-  margin: 260% 31%;
+  margin: 260% 19%;
 }
 
 

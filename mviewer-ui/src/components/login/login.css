@@ -254,17 +254,23 @@ h2:after {
     height: 22px;
     background-color: white !important;
     color: inherit;
-    margin-top: 4%;
-    margin-right: 2%;
+    /*margin-top: 4%;
+    margin-right: 2%;*/
+    float: left;
+    
+}
+
+.checkBox {
+  padding-top: 5px;
 }
 
 .checkLabel{
     font-size: 15px;
     color: #a5a5a5;
-    margin-top: -7.1%;
-    margin-left: 9%;
     font-weight: 500;
-    margin-bottom: 5%;
+    display: inline-block;
+    padding-left: 5px;
+    cursor: pointer;
 }
 
 

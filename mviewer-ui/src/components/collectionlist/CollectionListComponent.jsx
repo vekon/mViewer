@@ -66,7 +66,7 @@ class CollectionList extends React.Component {
         }
         else{
           this.props.refreshDb();
-          window.location.hash = '#dashboard/home?collapsed=false&connectionId='+this.state.connectionId+'&tab=1'
+          window.location.hash = '#dashboard/home?collapsed=false&connectionId='+this.state.connectionId
         }
       }
       if(typeof(data.response.error) !== 'undefined'){
@@ -84,14 +84,14 @@ class CollectionList extends React.Component {
         }
         else{
           this.props.refreshDb();
-          window.location.hash = '#dashboard/home?collapsed=false&connectionId='+this.state.connectionId+'&tab=1'
+          window.location.hash = '#dashboard/home?collapsed=false&connectionId='+this.state.connectionId
         }
         
       }
       if(typeof(data.response.error) !== 'undefined'){
         if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){
             this.props.refreshDb();
-            window.location.hash = '#dashboard/home?collapsed=false&connectionId='+this.state.connectionId+'&tab=1'
+            window.location.hash = '#dashboard/home?collapsed=false&connectionId='+this.state.connectionId
         }
       }
 
