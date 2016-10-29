@@ -46,6 +46,7 @@ class NewUserComponent extends React.Component {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
     this.setState({successMessage: false});
+    this.setState({uniqueRetrievedRoles: []});
     this.setForm();
     var ds = ["Please select a DataSource"];
     var dbList = [];
@@ -58,12 +59,14 @@ class NewUserComponent extends React.Component {
       return this.state.retrievedRoles.indexOf(item) == pos;
     }.bind(this));
 
-    this.state.uniqueRetrievedRoles = unique;
+    this.setState({uniqueRetrievedRoles : unique});
   }
 
   setRoles(){
     var that = this;
     var userDetail = [];
+    var retrievedRoles = [];
+    this.setState({retrievedRoles : []});
 
     if(this.props.modifyUser) {
       this.props.users.roles.map(function(key) {
@@ -75,11 +78,13 @@ class NewUserComponent extends React.Component {
           if(item.key == result.key){
             item.selected = result.selected;
             that.setState(update(that.state.roles[index], {selected: {$set: result.selected}}));
-            that.state.retrievedRoles.push(item.key);
+            retrievedRoles.push(item.key);
           }
           ++index;
         });
       });
+      // this.setState({retrievedRoles : retrievedRoles});
+      this.state.retrievedRoles = retrievedRoles;
     }
   }
   closeModal() {
@@ -177,10 +182,10 @@ class NewUserComponent extends React.Component {
 
     if (this.props.modifyUser){
       var addedRoles = this.state.finalRoles.filter( function( el ) {
-        return this.state.retrievedRoles.indexOf( el ) < 0;
+        return this.state.uniqueRetrievedRoles.indexOf( el ) < 0;
       }.bind(this));
-
-      var removedRoles = this.state.retrievedRoles.filter( function( el ) {
+      
+      var removedRoles = this.state.uniqueRetrievedRoles.filter( function( el ) {
         return this.state.finalRoles.indexOf( el ) < 0;
       }.bind(this));
 
