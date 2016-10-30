@@ -68,15 +68,18 @@ public class AuthServiceImpl implements AuthService {
         return connectionId;
     }
 
-    private boolean checkAuthMode(ConnectionDetails connectionDetails) {
+    private boolean checkAuthMode(ConnectionDetails connectionDetails) throws ApplicationException {
         MongoClient mongo = null;
         try {
             mongo = new MongoClient(connectionDetails.getHostIp(), connectionDetails.getHostPort());
             mongo.listDatabaseNames().iterator().next();
             return false;
-        } catch (Exception e) {
+        }catch (Exception e) {
+            if (e instanceof MongoTimeoutException) {
+                throw new ApplicationException(ErrorCodes.NEED_AUTHORISATION, "Invalid IP Address or Port");
+            }
             return true;
-        } finally {
+        }finally {
             if (mongo != null) {
                 mongo.close();
                 mongo = null;
