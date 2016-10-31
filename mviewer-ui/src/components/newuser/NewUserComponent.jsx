@@ -150,7 +150,6 @@ class NewUserComponent extends React.Component {
     }
     if(this.props.modifyUser)
       obj['user_name'] = this.props.userName;
-    console.log(this.state.dbSource);
     if(this.state.dbSource.length < 1 || this.state.dbSource == "Please select a DataSource"){
       this.setState({successMessage:false});
       this.setState({message:'Please select a DbSource'});
