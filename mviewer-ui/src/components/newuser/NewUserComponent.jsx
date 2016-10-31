@@ -150,8 +150,8 @@ class NewUserComponent extends React.Component {
     }
     if(this.props.modifyUser)
       obj['user_name'] = this.props.userName;
-
-    if(this.state.dbSource.length < 1 && this.state.dbSource == "Please select a DbSource"){
+    console.log(this.state.dbSource);
+    if(this.state.dbSource.length < 1 || this.state.dbSource == "Please select a DataSource"){
       this.setState({successMessage:false});
       this.setState({message:'Please select a DbSource'});
       this.setState({dbSource:""});
@@ -194,8 +194,11 @@ class NewUserComponent extends React.Component {
         return removedRoles.indexOf(item) == pos;
       });
 
-      obj['newRoles'] = addedRoles.toString();
-      obj['removedRoles'] =  removedRoles.toString();
+      // obj['newRoles'] = addedRoles.toString();
+      // obj['removedRoles'] =  removedRoles.toString();
+
+      obj['removedRoles'] = this.state.uniqueRetrievedRoles.toString();
+      obj['newRoles'] = this.state.finalRoles.toString();
     }
 
     var partialUrl = this.props.modifyUser ? this.props.currentDb+'/usersIndexes/modifyUser?connectionId='+this.props.connectionId
@@ -260,7 +263,7 @@ class NewUserComponent extends React.Component {
   }
 
   DDhandleChange(e) {
-    this.setState({dbSource: e});
+    this.state.dbSource = e;
     if(e != "Please select a DbSource") {
       this.setState({successMessage:false});
       this.setState({message:''});
