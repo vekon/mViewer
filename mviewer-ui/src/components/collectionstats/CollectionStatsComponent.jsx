@@ -27,15 +27,15 @@ class CollectionStatsComponent extends React.Component {
     var partialUrl = 'stats/db/' + this.props.selectedDB + '/collection/'+this.props.selectedCollection+'?connectionId=' + this.props.connectionId;
     
     this.setState({modalIsOpen: true});
-    var hasPriv = privilegesAPI.hasPrivilege('collStats',this.props.selectedCollection, this.props.selectedDB);
-    if(hasPriv){
-      this.setState({showAuth : false});   
+    // var hasPriv = privilegesAPI.hasPrivilege('collStats',this.props.selectedCollection, this.props.selectedDB);
+    // if(hasPriv){
+      // this.setState({showAuth : false});   
       var collectionStatsCall = service('GET', partialUrl, '');
       collectionStatsCall.then(this.success.bind(this), this.failure.bind(this));
-    }
-    else{
-      this.setState({showAuth : true});
-    }
+    // }
+    // else{
+      // this.setState({showAuth : true});
+    // }
   }
 
   authClose(){
@@ -44,7 +44,16 @@ class CollectionStatsComponent extends React.Component {
   }
 
   success(data) {
-    this.setState({collectionStats: data.response.result});
+    if(typeof(data.response.result) != 'undefined'){
+      this.setState({showAuth: false});
+      this.setState({collectionStats: data.response.result});
+    }
+    
+
+    if(typeof(data.response.error) != 'undefined' && data.response.error.code == 'GET_COLL_STATS_EXCEPTION' ){
+      this.setState({showAuth: true});
+      this.setState({collectionStats :[]});
+    }
   }
 
   failure() {

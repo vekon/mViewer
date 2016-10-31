@@ -26,7 +26,7 @@ class newDocumentComponent extends React.Component {
   openModal() {
     if (this.props.addOrUpdate == 'Edit'){
       var hasPriv = privilegesAPI.hasPrivilege('update',this.props.currentItem, this.props.currentDb);
-      if(hasPriv){
+      if(hasPriv && !this.props.currentItem.startsWith('system.')){
         this.setState({showAuth : false});    }
       else{
         this.setState({showAuth : true});
@@ -34,7 +34,7 @@ class newDocumentComponent extends React.Component {
     }
     else{
       var hasPriv = privilegesAPI.hasPrivilege('insert',this.props.currentItem, this.props.currentDb);
-      if(hasPriv){
+      if(hasPriv && !this.props.currentItem.startsWith('system.')){
         this.setState({showAuth : false});    }
       else{
         this.setState({showAuth : true});

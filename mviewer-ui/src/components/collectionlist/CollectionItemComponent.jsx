@@ -23,7 +23,7 @@ class CollectionItemComponent extends React.Component {
    this.setState({modalIsOpen: true});
    this.setState({message: ''});
    var hasPriv = privilegesAPI.hasPrivilege('dropCollection',this.props.name, this.props.dbName);
-    if(hasPriv){
+    if(hasPriv && !this.props.name.startsWith("system.")){
       this.setState({showAuth : false});    }
     else{
       this.setState({showAuth : true});
