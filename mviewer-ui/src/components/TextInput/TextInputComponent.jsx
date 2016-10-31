@@ -38,6 +38,17 @@ Formsy.addValidationRule('isAlpha2', (values, value, otherField) => {
   }
 });
 
+
+Formsy.addValidationRule('checkSystemCol', (values, value, otherField) => {
+  if (value !== null){
+    return (!value.startsWith('system.'));
+
+  }
+  else {
+    return true;
+  }
+});
+
 const TextInput = React.createClass({
   // Add the Formsy Mixin
   mixins: [Formsy.Mixin],

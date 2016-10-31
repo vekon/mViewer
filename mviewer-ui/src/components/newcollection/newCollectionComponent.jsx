@@ -43,7 +43,7 @@ class newCollectionComponent extends React.Component {
     }
     else{
       var hasPriv = privilegesAPI.hasPrivilege('renameCollectionSameDB',this.props.name, this.props.currentDb);
-      if(hasPriv){
+      if(hasPriv && !this.state.name.startsWith("system.")){
         this.setState({showAuth : false});    }
       else{
         this.setState({showAuth : true});
@@ -242,7 +242,7 @@ class newCollectionComponent extends React.Component {
               <div className={ newCollectionStyles.formContainer}>
                 <div className={newCollectionStyles.inputBox}>
 
-                  <TextInput type="text" name="newCollName" id="newCollName" placeholder="Collection name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha2:'+this.state.error+',maxLength:'+(119-this.props.currentDb.length)} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Collection name must not be empty', isAlpha2: 'Invalid Collection name', maxLength: 'Collection name cannot be more than '+(119- this.props.currentDb.length)+' characters for this Db' }}  />
+                  <TextInput type="text" name="newCollName" id="newCollName" placeholder="Collection name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha2:'+this.state.error+',maxLength:'+(119-this.props.currentDb.length)+',checkSystemCol'} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Collection name must not be empty', isAlpha2: 'Invalid Collection name', maxLength: 'Collection name cannot be more than '+(119- this.props.currentDb.length)+' characters for this Db', checkSystemCol: 'Collection name cannot start with system.' }}  />
                 </div>
                 <div className={newCollectionStyles.inputBox}>
                   <input type="checkbox" name="isCapped" id="isCapped" className={newCollectionStyles.checkBox} onChange={this.handleCheck.bind(this)} checked={this.state.cap}  />
