@@ -115,6 +115,7 @@ class UserDetailsComponent extends React.Component {
             { this.state.modalIsOpen?(!this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'User' dbName = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action = 'drop user' ></AuthPopUp>) : '' }
             <ModifyUser className={userDetailsStyles.modifyUser} users={this.props.users} modifyUser="true" currentDb = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}></ModifyUser>
           </div>
+        
         <div className={userDetailsStyles.detailsBody}>
           <table>
             <tbody>
