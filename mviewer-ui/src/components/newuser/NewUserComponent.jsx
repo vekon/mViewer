@@ -55,9 +55,11 @@ class NewUserComponent extends React.Component {
       ds.push(item);
     });
     // this.setState({dbSourceList: ds});
-    this.setState({dbSource : this.props.currentDb});
-    ds=[];
-    ds.push(this.props.currentDb)
+    if(this.props.modifyUser) {
+      this.setState({dbSource : this.props.currentDb});
+      ds=[];
+      ds.push(this.props.currentDb)
+    }
     this.setState({dbSourceList: ds});
     var unique = this.state.retrievedRoles.filter(function(item, pos) {
       return this.state.retrievedRoles.indexOf(item) == pos;
@@ -204,8 +206,8 @@ class NewUserComponent extends React.Component {
       // obj['newRoles'] = this.state.finalRoles.toString();
     }
 
-    var partialUrl = this.props.modifyUser ? this.props.currentDb+'/usersIndexes/modifyUser?connectionId='+this.props.connectionId
-                     : this.props.currentDb+'/usersIndexes/addUser?connectionId='+this.props.connectionId;
+    var partialUrl = this.props.modifyUser ? this.state.dbSource+'/usersIndexes/modifyUser?connectionId='+this.props.connectionId
+                     : this.state.dbSource+'/usersIndexes/addUser?connectionId='+this.props.connectionId;
     var addUserCall = service('POST', partialUrl, obj);
     addUserCall.then(this.success.bind(this, 'clickHandler', obj), this.failure.bind(this, 'clickHandler', obj));
   }
