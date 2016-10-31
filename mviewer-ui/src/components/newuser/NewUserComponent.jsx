@@ -54,6 +54,10 @@ class NewUserComponent extends React.Component {
     dbList.map(function(item){
       ds.push(item);
     });
+    // this.setState({dbSourceList: ds});
+    this.setState({dbSource : this.props.currentDb});
+    ds=[];
+    ds.push(this.props.currentDb)
     this.setState({dbSourceList: ds});
     var unique = this.state.retrievedRoles.filter(function(item, pos) {
       return this.state.retrievedRoles.indexOf(item) == pos;
@@ -150,8 +154,7 @@ class NewUserComponent extends React.Component {
     }
     if(this.props.modifyUser)
       obj['user_name'] = this.props.userName;
-
-    if(this.state.dbSource.length < 1 && this.state.dbSource == "Please select a DbSource"){
+    if(this.state.dbSource.length < 1 && this.state.dbSource == "Please select a DataSource"){
       this.setState({successMessage:false});
       this.setState({message:'Please select a DbSource'});
       this.setState({dbSource:""});
@@ -196,6 +199,9 @@ class NewUserComponent extends React.Component {
 
       obj['newRoles'] = addedRoles.toString();
       obj['removedRoles'] =  removedRoles.toString();
+
+      // obj['removedRoles'] = this.state.uniqueRetrievedRoles.toString();
+      // obj['newRoles'] = this.state.finalRoles.toString();
     }
 
     var partialUrl = this.props.modifyUser ? this.props.currentDb+'/usersIndexes/modifyUser?connectionId='+this.props.connectionId
@@ -260,7 +266,7 @@ class NewUserComponent extends React.Component {
   }
 
   DDhandleChange(e) {
-    this.setState({dbSource: e});
+    this.state.dbSource = e;
     if(e != "Please select a DbSource") {
       this.setState({successMessage:false});
       this.setState({message:''});
@@ -313,7 +319,7 @@ class NewUserComponent extends React.Component {
                  <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.name} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Password must not be empty'}} validations={'isRequired2:'+this.state.error}/>
                </div>
                <div className={newUserStyles.dataSource}>
-                 <Dropdown value={this.state.dbSource} onChange={this.DDhandleChange.bind(this)} options={this.state.dbSourceList} />
+                 <Dropdown value={this.state.dbSource} onChange={this.DDhandleChange.bind(this)} options={this.state.dbSourceList} disabled={true} />
                </div>
                <div className={newUserStyles.rolesDiv +' '+newUserStyles.clearfix}>
                  {this.state.roles.map(function(item){

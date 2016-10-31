@@ -4,7 +4,7 @@ var path = '../services/';
 
 function setupServicePath() {
   if (ENV && ENV != 'prod') {
-    path = 'http://localhost:8080/mViewer/services/';
+    path = 'http://localhost:8080/mViewer-1.0/services/';
   }
 }
 
