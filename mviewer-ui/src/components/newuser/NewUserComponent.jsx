@@ -200,8 +200,8 @@ class NewUserComponent extends React.Component {
       obj['newRoles'] = this.state.finalRoles.toString();
     }
 
-    var partialUrl = this.props.modifyUser ? this.props.currentDb+'/usersIndexes/modifyUser?connectionId='+this.props.connectionId
-                     : this.props.currentDb+'/usersIndexes/addUser?connectionId='+this.props.connectionId;
+    var partialUrl = this.props.modifyUser ? this.state.dbSource+'/usersIndexes/modifyUser?connectionId='+this.props.connectionId
+                     : this.state.dbSource+'/usersIndexes/addUser?connectionId='+this.props.connectionId;
     var addUserCall = service('POST', partialUrl, obj);
     addUserCall.then(this.success.bind(this, 'clickHandler', obj), this.failure.bind(this, 'clickHandler', obj));
   }
