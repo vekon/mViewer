@@ -195,7 +195,6 @@ public class GridFSController extends BaseController {
    *
    * @param dbName Name of Database
    * @param bucketName Name of GridFS Bucket
-   * @param fileDialogData formDataBodyPart representing the containing form
    * @param formData formDataBodyPart of the uploaded file
    * @param inputStream inputStream of the uploaded file
    * @param connectionId Mongo Db Configuration provided by user to connect to.
