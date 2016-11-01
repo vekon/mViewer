@@ -36,6 +36,13 @@ class CollectionsComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
+   //  $.fn.equalizeHeights = function(){
+   //    console.log('maxHeight ' + $('.collectionsContainer').height());
+   //    return this.height( $('.collectionsContainer').height() );
+   //  }
+
+   // $('.sideContainer').equalizeHeights();
+
     Tabs.setUseDefaultStyles(false);
     this.setState({selectedTab:0});
     this.setState({showQueryExecutor: false});
@@ -90,6 +97,15 @@ class CollectionsComponent extends React.Component {
   }
 
   render () {
+    
+
+   //  $.fn.equalizeHeights = function(){
+   //    console.log('maxHeight ' + $('.collectionsContainer').height());
+   //    return this.height( $('.collectionsContainer').height() );
+   //  }
+
+   // $('.sideContainer').equalizeHeights();
+
     Tabs.setUseDefaultStyles(false);
     var hasUserAdminPriv = privilegesAPI.hasPrivilege('viewUser', '',this.props.location.query.db ); 
     var hasUserAdminAnyDatabasePriv = privilegesAPI.hasPrivilege('viewUser','',this.props.location.query.db );
@@ -97,7 +113,7 @@ class CollectionsComponent extends React.Component {
 
     var hasListColPriv   = privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db);
     return(
-      <div className = {this.props.location.query.collapsed == 'false' ? collectionsStyles.mainContainer : collectionsStyles.mainContainer+' ' +collectionsStyles.collapsedContainer}>
+      <div className = {this.props.location.query.collapsed == 'false' ? collectionsStyles.mainContainer+ ' collectionsContainer' : collectionsStyles.mainContainer+' collectionsContainer ' +collectionsStyles.collapsedContainer}>
         {this.props.location.query.db !== 'undefined' ? 
         
         <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>

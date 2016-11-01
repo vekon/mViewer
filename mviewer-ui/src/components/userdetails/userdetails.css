@@ -23,15 +23,19 @@
   border: 1.5px solid #bababa;
   text-align: center;
   line-height: 25px;
-  width: 450px;
+  max-width: 425px;
   background-color: #eff4f8;
+}
+
+.detailsBody table th{
+  text-align: center;
 }
 .detailsBody table td, .detailsBody table th {
   border: 1.5px solid #bababa;
 }
 .detailsBody table tr:first-child th {
   border-top: 0;
-  width: 225px;
+  /*width: 225px;*/
 }
 .detailsBody table tr:last-child td {
   border-bottom: 0;
@@ -46,7 +50,7 @@
 }
 
 .detailsBody table tr td {
-    padding: 5px 50px;
+    /*padding: 5px 50px;*/
     text-transform: capitalize;
 }
 

@@ -96,7 +96,7 @@ class SideNavComponent extends React.Component {
     var n = params[1].search("&collapsed=true");
     return(
 
-        <div className ={this.state.urlPart == true ? (n == -1 ? sideNavStyles.mainContainer : sideNavStyles.mainContainerCollapsed) : sideNavStyles.otherContainer}>
+        <div className ={this.state.urlPart == true ? (n == -1 ? sideNavStyles.mainContainer+' sideContainer' : sideNavStyles.mainContainerCollapsed+ ' sideContainer') : sideNavStyles.otherContainer}>
           <div className={this.state.urlPart == true ?(n == -1 ? sideNavStyles.sideContainer : sideNavStyles.sideContainerCollapsed) : sideNavStyles.otherSideContainer}>
             <ul className={sideNavStyles.sideNav} >
               <li onClick={this.dbList.bind(this)} className ={this.state.selectedItem == 1 ? sideNavStyles.active : ''}><button data-id = '1'><div><i className={"fa fa-database " + sideNavStyles.icon} aria-hidden="true"></i></div></button></li>

@@ -345,6 +345,12 @@ class QueryExecutorComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
+    // $.fn.equalizeHeights = function(){
+    //   console.log('maxHeight ' + $('.collectionsContainer').height());
+    //   return this.height( $('.collectionsContainer').height() );
+    // }
+
+   // $('.sideContainer').equalizeHeights();
     if((this.props.currentDb == nextProps.currentDb && this.props.currentItem !== nextProps.currentItem) || (this.props.currentDb !== nextProps.currentDb)){
       this.setState({selectedTab:0});
       this.setState({query:this.props.queryType == "collection" ? 'db.'+this.props.currentItem+'.find({})' :
@@ -362,6 +368,8 @@ class QueryExecutorComponent extends React.Component {
       var queryExecutorCall2 = service('GET', partialUrl, '');
       queryExecutorCall2.then(this.success2.bind(this , currentDb, currentItem, connectionId), this.failure2.bind(this));
     }
+
+
   }
 
   clickHandler(){
@@ -585,7 +593,7 @@ class QueryExecutorComponent extends React.Component {
           }
           </div>
           <div className={' row'}>
-          <div className={ this.props.queryType == "collection" ? queryExecutorStyles.queryBoxDiv + ' col-sm-12 col-md-6 col-xs-12' : queryExecutorStyles.queryBoxDiv1 + 'col-sm-12 col-md-6 col-xs-12'}>
+          <div className={ this.props.queryType == "collection" ? queryExecutorStyles.queryBoxDiv + ' col-sm-12 col-md-6 col-xs-12' : queryExecutorStyles.queryBoxDiv1 + ' col-sm-12 col-md-6 col-xs-12'}>
             <div className={queryExecutorStyles.queryBoxlabels}>
               <label>Define Query</label>
             </div>
@@ -597,7 +605,7 @@ class QueryExecutorComponent extends React.Component {
 
           <div className = {this.props.queryType == "collection"  ? queryExecutorStyles.attrDiv + ' col-sm-12 col-md-3 col-xs-12' : queryExecutorStyles.attrDivCollapsed}>
           { this.props.queryType == "collection" ?
-             <label className={queryExecutorStyles.attributesLabel}>Attributes
+             <label className={queryExecutorStyles.attributesLabel}>
                <span className={queryExecutorStyles.attributesSpan}>
                  <a onClick = {this.selectAllHandler()}>Select All</a> /
                  <a onClick = {this.unSelectAllHandler()}>Unselect All</a>

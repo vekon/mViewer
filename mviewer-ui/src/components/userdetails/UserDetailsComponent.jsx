@@ -128,7 +128,7 @@ class UserDetailsComponent extends React.Component {
       </div>
         
       <div className={userDetailsStyles.detailsBody}>
-        <table>
+        <table className={'table'}>
           <tbody>
             <tr>
               <th>Keys</th>

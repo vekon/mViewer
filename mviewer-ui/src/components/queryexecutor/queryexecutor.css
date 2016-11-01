@@ -92,11 +92,15 @@
 }
 
 .parametersDiv1{
-  padding-top: 2px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
+
 }
 
 .parametersDiv label:first-child {
   padding-bottom: 2% !important;
+  padding-top: 0 !important;
 }
 
 
@@ -125,13 +129,20 @@
 .parametersDiv label {
   display: inline-block;
   padding-top: 5px;
-  /*padding-bottom: 3%;*/
+  padding-bottom: 2%;
+}
+
+
+.parametersDiv1 label:first-child {
+  padding-top: 0 !important;
+  margin-bottom: 1% !important;
 }
 
 .parametersDiv1 label {
   display: inline-block;
-  padding-top: 5px;
-  padding-bottom: 0.6%;
+  /*padding-top: 5px;*/
+  margin-top: 5px;
+  /*padding-bottom: 2%;*/
 }
 
 .parametersDiv1 .selectOptions label{
