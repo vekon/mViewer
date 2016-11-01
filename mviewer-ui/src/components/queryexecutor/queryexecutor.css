@@ -1,8 +1,17 @@
-.mainContainer{
+.mainContainer,
+.mainContainerCollapsed{
   display: inline-block;
-  width: 85%;
+  /*width: 85%;*/
   padding: 5px;
 
+}
+
+.mainContainer {
+  width: calc(100vw - 330px);
+}
+
+.mainContainerCollapsed {
+  width: calc(100vw - 460px);
 }
 
 .actionsContainer {
@@ -22,6 +31,9 @@
 .tab{
    font-size: 15px;
    font-weight: 600;
+   border: 0;
+  background: #fff;
+  border-radius: 0;
 }
 
 .tab label {
@@ -38,7 +50,7 @@
 .queryBoxDiv,
 .queryBoxDiv1 {
   display: inline-block;
-  width: 50%;
+  /*width: 50%;*/
   padding: 10px;
   position: relative;
 }
@@ -71,11 +83,11 @@
 .parametersDiv,
 .parametersDiv1{
   display: inline-block;
-  width: 23%;
+  /*width: 23%;*/
 }
 
 .parametersDiv{
-  float: right;
+  /*float: right;*/
   padding: 10px;
 }
 
@@ -113,13 +125,13 @@
 .parametersDiv label {
   display: inline-block;
   padding-top: 5px;
-  padding-bottom: 3%;
+  /*padding-bottom: 3%;*/
 }
 
 .parametersDiv1 label {
   display: inline-block;
   padding-top: 5px;
-  padding-bottom: 2.6%;
+  padding-bottom: 0.6%;
 }
 
 .parametersDiv1 .selectOptions label{
@@ -271,7 +283,7 @@ padding-right: 10px;
 
 
 .deleteButtonGridfs {
-float: right;
+/*float: right;*/
 display: inline-block;
 font-size: 14px;
 cursor: pointer;
@@ -299,7 +311,7 @@ cursor: pointer;
 
 .treeTab li span {
   display: inline-block;
-  width: 10%;
+  /*width: 10%;*/
   font-size: 14px;
   text-align: center;
   font-family: 'Brandon';
@@ -325,7 +337,7 @@ cursor: pointer;
 .attrDiv {
   position: relative;
   display: inline-block;
-  width: 27%;
+  /*width: 27%;*/
   padding: 10px;
 }
 
@@ -338,4 +350,13 @@ cursor: pointer;
   color: red;
   padding: 0 10px 10px 0;
   font-size: 15px;
+}
+
+
+
+.navBar {
+  list-style-type: none;
+  padding-top: 10px;
+  margin: 0;
+  padding-left: 10px;
 }

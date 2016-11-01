@@ -2,7 +2,8 @@
     background-color: #ecf4f7;
     display: inline-block;
     float: right;
-    width: 80%;
+    /*width: 80%;*/
+    width: calc(100vw - 275px);
     height: 100%;
     overflow: hidden;
 }

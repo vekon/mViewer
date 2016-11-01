@@ -98,13 +98,17 @@ class CollectionsComponent extends React.Component {
     var hasListColPriv   = privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db);
     return(
       <div className = {this.props.location.query.collapsed == 'false' ? collectionsStyles.mainContainer : collectionsStyles.mainContainer+' ' +collectionsStyles.collapsedContainer}>
-        {this.props.location.query.db !== 'undefined' ? <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
-          <TabList className={collectionsStyles.tabs}>
+        {this.props.location.query.db !== 'undefined' ? 
+        
+        <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
+          
+          <TabList className={collectionsStyles.tabs + ' nav navbar-nav mainTab'}>
             <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 0 ? collectionsStyles.activeTab : '' } >Collections</Tab>
             <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 1 ? collectionsStyles.activeTab : '' }>GridFS</Tab>
             <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 2 ? collectionsStyles.activeTab : '' }>Users</Tab>
             <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 3 ? collectionsStyles.activeTab : '' }>Statistics</Tab>
           </TabList>
+          
           <TabPanel>
             { this.state.hasListColPriv == true ?
               <div className={collectionsStyles.holder}>

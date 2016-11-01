@@ -2,7 +2,8 @@
     display:inline-block;
     z-index:2;
     top:0;
-    width:15%;
+    /*width:15%;*/
+    width: 170px;
     height:auto;
     min-height: 100%;
     transition: transform ease 0.3s;

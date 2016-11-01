@@ -544,6 +544,10 @@ class QueryExecutorComponent extends React.Component {
   }
 
   render () {
+
+    var url = window.location.href;
+    var params = url.split('?');
+    var n = params[1].search("&collapsed=true");
     var i =0;
     var that = this;
     var items =null;
@@ -552,30 +556,36 @@ class QueryExecutorComponent extends React.Component {
     }.bind(this));
 
     return(
-      <div className = {queryExecutorStyles.mainContainer}>
+      <div className = { n != -1 ?queryExecutorStyles.mainContainer : queryExecutorStyles.mainContainerCollapsed }>
 
         <div className={queryExecutorStyles.buffer}>
-          <div id="queryExecutor" className={queryExecutorStyles.tab}>
-            <label>Query Executor</label>
-
+          <div id="queryExecutor" className={queryExecutorStyles.tab + ' navbar navbar-default'}>
+            <label className = {'navbar-header'}>Query Executor</label>
+            <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span className="icon-bar"></span>
+              <span className="icon-bar"></span>
+              <span className="icon-bar"></span>
+            </button>
           { this.props.queryType == "collection" ?
-            <div className = {queryExecutorStyles.actionsContainer}>
-              <div>
-              <NewIndex currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this,'new')} addOrEdit='Add' ></NewIndex>
-              <CollectionStats selectedDB={this.props.currentDb} selectedCollection={this.props.currentItem} connectionId={this.props.connectionId}></CollectionStats>
-              <NewCollection queryType='collection' currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} addOrUpdate={2} refreshCollectionList={this.props.refreshCollectionList.bind(this)} refreshRespectiveData = {this.props.refreshRespectiveData.bind(this)}/>
-              <NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this,'new')} addOrEdit='Add' ></NewDocument>
-              </div>
+            <div className="collapse navbar-collapse" id="myNavbar">
+              <ul className = { queryExecutorStyles.navBar + ' navbar navbar-nav navbar-right innerTab'}>
+              <li><NewIndex currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this,'new')} addOrEdit='Add' ></NewIndex></li>
+              <li><CollectionStats selectedDB={this.props.currentDb} selectedCollection={this.props.currentItem} connectionId={this.props.connectionId}></CollectionStats></li>
+              <li><NewCollection queryType='collection' currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} addOrUpdate={2} refreshCollectionList={this.props.refreshCollectionList.bind(this)} refreshRespectiveData = {this.props.refreshRespectiveData.bind(this)}/></li>
+              <li><NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this,'new')} addOrEdit='Add' ></NewDocument></li>
+              </ul>
             </div>
-            : <div className = {queryExecutorStyles.actionsContainer}>
-              <div className={queryExecutorStyles.deleteButtonGridfs} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete GridFS Bucket</span></div>
+            : <div className="collapse navbar-collapse innerTab" id="myNavbar">
+              <ul className = { queryExecutorStyles.navBar + ' navbar navbar-nav navbar-right'}>
+              <li className={queryExecutorStyles.deleteButtonGridfs} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete GridFS Bucket</span></li>
               { this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'GridFS Bucket' dbName = {this.props.currentDb} gridFSName = {this.props.currentItem} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =  'drop bucket' ></AuthPopUp> ) : '' }
-               <NewFile currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this, 'new')}></NewFile>
+               <li><NewFile currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this, 'new')}></NewFile></li>
+              </ul>
               </div>
           }
           </div>
-          <div>
-          <div className={ this.props.queryType == "collection" ? queryExecutorStyles.queryBoxDiv : queryExecutorStyles.queryBoxDiv1}>
+          <div className={' row'}>
+          <div className={ this.props.queryType == "collection" ? queryExecutorStyles.queryBoxDiv + ' col-sm-12 col-md-6 col-xs-12' : queryExecutorStyles.queryBoxDiv1 + 'col-sm-12 col-md-6 col-xs-12'}>
             <div className={queryExecutorStyles.queryBoxlabels}>
               <label>Define Query</label>
             </div>
@@ -585,7 +595,7 @@ class QueryExecutorComponent extends React.Component {
             </div>
           </div>
 
-          <div className = {this.props.queryType == "collection"  ? queryExecutorStyles.attrDiv : queryExecutorStyles.attrDivCollapsed}>
+          <div className = {this.props.queryType == "collection"  ? queryExecutorStyles.attrDiv + ' col-sm-12 col-md-3 col-xs-12' : queryExecutorStyles.attrDivCollapsed}>
           { this.props.queryType == "collection" ?
              <label className={queryExecutorStyles.attributesLabel}>Attributes
                <span className={queryExecutorStyles.attributesSpan}>
@@ -607,7 +617,7 @@ class QueryExecutorComponent extends React.Component {
             : null
           }
           </div>
-          <div className={this.props.queryType == "collection" ? queryExecutorStyles.parametersDiv : queryExecutorStyles.parametersDiv1}>
+          <div className={this.props.queryType == "collection" ? queryExecutorStyles.parametersDiv + ' col-sm-12 col-md-3 col-xs-12' : queryExecutorStyles.parametersDiv1 + ' col-sm-12 col-md-3 col-xs-12'}>
             <Form onValid={this.enableButton()} onInvalid={this.disableButton()}>
             <label htmlFor="skip"> Skip(No. of records) </label><TextInput type="text" name="skip" id="skip" value={this.state.skip} validations={{isRequired:true,isNumeric:true}} onChange={this.skipHandler()}/>
             <label htmlFor="limit"> Max page size: </label><div className = {queryExecutorStyles.selectOptions}><span><select id="limit" name="limit" onChange = {this.limitHandler()} value={this.state.limit} data-search_name="max limit" ><option value="10">10</option><option value="25">25</option><option value="50">50</option></select></span></div>
