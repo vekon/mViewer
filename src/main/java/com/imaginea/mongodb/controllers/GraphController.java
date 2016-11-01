@@ -18,6 +18,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
@@ -69,7 +70,7 @@ public class GraphController extends BaseController {
   @Path("/initiate")
   @Produces(MediaType.APPLICATION_JSON)
   public String initiateGraphsRequest(@QueryParam("connectionId") final String connectionId,
-      @QueryParam("pollingTime") final String pollingTime, final HttpServletRequest request)
+      @QueryParam("pollingTime") final String pollingTime, @Context final HttpServletRequest request)
       throws IOException {
 
     String result =
@@ -98,7 +99,7 @@ public class GraphController extends BaseController {
   @Path("/query")
   @Produces(MediaType.APPLICATION_JSON)
   public String queryGraphsRequest(@QueryParam("connectionId") final String connectionId,
-      final HttpServletRequest request) throws IOException {
+      @Context final HttpServletRequest request) throws IOException {
 
     String result =
         new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {

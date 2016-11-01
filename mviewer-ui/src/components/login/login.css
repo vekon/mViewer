@@ -50,14 +50,13 @@ div.parentDiv {
 .one{
   text-align: center;
   display: table-cell;
-  vertical-align: middle;
-  width:inherit;;
-  height:114px;
-  background:#2494d0;
+  width: inherit;
+  background: #2494d0;
   color: #fff;
   font-weight: bold;
-  font-size: 18px;
-  border-radius: 3px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  padding: 34px;
 }
 
 .two{
@@ -89,10 +88,6 @@ div.parentDiv {
 .loginForm {
     width: 341px;
     margin: 0 auto;
-}
-
-.loginForm {
-  /*text-align: center;*/
 }
 
 .loginForm:before {
@@ -154,9 +149,6 @@ div.parentDiv {
   padding: 5% 0;
 }
 
-section {
-    /*padding: 5% 0;*/
-}
 /*Headings*/
 
 h2 {
@@ -254,14 +246,11 @@ h2:after {
     height: 22px;
     background-color: white !important;
     color: inherit;
-    /*margin-top: 4%;
-    margin-right: 2%;*/
     float: left;
-    
 }
 
 .checkBox {
-  padding-top: 5px;
+  padding-top: 15px;
 }
 
 .checkLabel{
