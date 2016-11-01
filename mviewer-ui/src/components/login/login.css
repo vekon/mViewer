@@ -91,10 +91,6 @@ div.parentDiv {
     margin: 0 auto;
 }
 
-.loginForm {
-  /*text-align: center;*/
-}
-
 .loginForm:before {
   content: '';
   display: inline-block;
@@ -154,9 +150,6 @@ div.parentDiv {
   padding: 5% 0;
 }
 
-section {
-    /*padding: 5% 0;*/
-}
 /*Headings*/
 
 h2 {
@@ -254,10 +247,7 @@ h2:after {
     height: 22px;
     background-color: white !important;
     color: inherit;
-    /*margin-top: 4%;
-    margin-right: 2%;*/
     float: left;
-    
 }
 
 .checkBox {
@@ -300,4 +290,9 @@ h2:after {
 
 .submitContainer {
   position: relative;
+}
+
+.logo {
+  position: relative;
+  top: 12px;
 }
