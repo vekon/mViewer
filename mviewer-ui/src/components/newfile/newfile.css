@@ -39,7 +39,7 @@
 .submit {
   color: #2494d0;
   font-family: 'Brandon-Light';
-  margin-left: 10px;
+  margin-left: 40px;
 }
 .submit:hover:enabled,
 .submit:active:enabled {

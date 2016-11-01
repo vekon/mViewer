@@ -55,9 +55,11 @@ class NewUserComponent extends React.Component {
       ds.push(item);
     });
     // this.setState({dbSourceList: ds});
-    this.setState({dbSource : this.props.currentDb});
-    ds=[];
-    ds.push(this.props.currentDb)
+    if(this.props.modifyUser) {
+      this.setState({dbSource : this.props.currentDb});
+      ds=[];
+      ds.push(this.props.currentDb)
+    }
     this.setState({dbSourceList: ds});
     var unique = this.state.retrievedRoles.filter(function(item, pos) {
       return this.state.retrievedRoles.indexOf(item) == pos;
@@ -99,10 +101,20 @@ class NewUserComponent extends React.Component {
     this.setState({roles: [{key:"read","selected": false},{key:"userAdmin","selected":false},{key:"userAdminAnyDatabase","selected": false},
               {key:"readWrite","selected": false},{key:"dbAdmin","selected":false},{key:"readWriteAnyDatabase","selected":false},
               {key:"clusterAdmin","selected": false},{key:"readAnyDatabase","selected": false},{key:"dbAdminAnyDatabase","selected":false}]});
+    
+
+
+
     if(this.state.successMessage==true)
     {
+      if(this.props.currentDb != this.state.dbSource){
+       this.props.refreshCollectionList('');
+      }
+
+    else{
       this.props.refreshCollectionList(this.props.currentDb);
       this.props.refreshRespectiveData(this.state.newUser);
+      }
     }
   }
 
@@ -154,7 +166,7 @@ class NewUserComponent extends React.Component {
     }
     if(this.props.modifyUser)
       obj['user_name'] = this.props.userName;
-    if(this.state.dbSource.length < 1 && this.state.dbSource == "Please select a DataSource"){
+    if(this.state.dbSource.length < 1 || this.state.dbSource == "Please select a DataSource"){
       this.setState({successMessage:false});
       this.setState({message:'Please select a DbSource'});
       this.setState({dbSource:""});
@@ -204,8 +216,8 @@ class NewUserComponent extends React.Component {
       // obj['newRoles'] = this.state.finalRoles.toString();
     }
 
-    var partialUrl = this.props.modifyUser ? this.props.currentDb+'/usersIndexes/modifyUser?connectionId='+this.props.connectionId
-                     : this.props.currentDb+'/usersIndexes/addUser?connectionId='+this.props.connectionId;
+    var partialUrl = this.props.modifyUser ? this.state.dbSource+'/usersIndexes/modifyUser?connectionId='+this.props.connectionId
+                     : this.state.dbSource+'/usersIndexes/addUser?connectionId='+this.props.connectionId;
     var addUserCall = service('POST', partialUrl, obj);
     addUserCall.then(this.success.bind(this, 'clickHandler', obj), this.failure.bind(this, 'clickHandler', obj));
   }
@@ -240,9 +252,9 @@ class NewUserComponent extends React.Component {
     if (calledFrom == 'clickHandler'){
       if (data.response.result) {
         if(this.props.modifyUser)
-          this.setState({message:'User '+obj['user_name']+ ' was successfully modified for database ' + this.props.currentDb});
+          this.setState({message:'User '+obj['user_name']+ ' was successfully modified for database ' + this.props.dbSource});
         else
-          this.setState({message:'User '+obj['user_name']+ ' was successfully added to database ' + this.props.currentDb});
+          this.setState({message:'User '+obj['user_name']+ ' was successfully added to database ' + this.state.dbSource});
         this.state.newUser = obj['user_name'];
         this.setState({successMessage:true});
         setTimeout(function() { this.closeModal() }.bind(this), 2000);
@@ -257,7 +269,7 @@ class NewUserComponent extends React.Component {
             this.setState({message:'Not Authorized to create user with role ' + db});
           }
           else {
-            this.setState({message:'User '+obj['user_name']+ ' already exists in database ' + this.props.currentDb});
+            this.setState({message:'User '+obj['user_name']+ ' already exists in database ' + this.state.dbSource});
           }
         }
         this.setState({selectedRoles:""});
