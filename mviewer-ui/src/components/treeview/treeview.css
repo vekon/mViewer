@@ -37,7 +37,7 @@
   background-color: inherit !important;
   position: relative !important;
   display: inline-block;
-  width: 97%;
+  width: 95%;
 }
 
 .container div>ul>li>label {
@@ -59,15 +59,17 @@
   margin-left: 50;
 }
 
-.deleteButton {
+.deleteButton,
+.downloadButton {
   float: right;
   display: inline-block;
   margin-top: 1%;
-  width: 20px;
   text-align: left;
+  margin-right: 1%
 }
 
-.deleteButton i {
+.deleteButton i,
+.downloadButton i{
   cursor: pointer;
 }
 .exceptionContainer {

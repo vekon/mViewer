@@ -29,18 +29,8 @@ function service(typex, serviceName, req , component, data) {
       }
     });
   }
-  else if(component == 'getUser') {
-  	return $.ajax({
-      type: typex,
-      dataType: 'json',
-      processData: false,
-      contentType: false,
-      headers: {
-        Accept: "application/json"
-      },
-      url: path + serviceName,
-      data : req
-    });
+  else if(component == 'download') {
+  	window.open(path + serviceName);
   }
   else{
   	return $.ajax({
