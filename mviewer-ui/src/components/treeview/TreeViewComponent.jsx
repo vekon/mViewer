@@ -5,6 +5,7 @@ import TreeView from 'react-json-tree'
 import DeleteComponent from '../deletecomponent/DeleteComponent.jsx'
 import privilegesAPI from '../../gateway/privilegesAPI.js';
 import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
+import service from '../../gateway/service.js'
 
 class TreeViewComponent extends React.Component {
 
@@ -30,6 +31,11 @@ class TreeViewComponent extends React.Component {
     }
   }
 
+  downloadCall(id) {
+    var partialUrl = this.props.currentDb+'/gridfs/' + this.props.currentItem + '/getfile?id=' + id +'&download=true&connectionId='+this.props.connectionId;
+    service('', partialUrl, '', 'download');
+  }
+
   authClose(){
       this.setState({showAuth:false});
       this.setState({modalIsOpen:false});
@@ -49,8 +55,12 @@ class TreeViewComponent extends React.Component {
      return(
      <div className={treeViewStyles.innerContainer +' '+ treeViewStyles.clearfix} key={collection._id}>
        <span className={treeViewStyles.deleteButton}>
-           <i className="fa fa-trash" aria-hidden="true" onClick={this.openModal.bind(this,collection._id)}></i>
+         <i className="fa fa-trash" aria-hidden="true" onClick={this.openModal.bind(this,collection._id)}></i>
        </span>
+       { this.props.queryType != "collection" ?
+         <span className={treeViewStyles.downloadButton}>
+           <i className="fa fa-download" aria-hidden="true" onClick={this.downloadCall.bind(this,collection._id)}></i>
+         </span>: null }
        <form method='DELETE'></form>
          <TreeView data={collection} shouldExpandNode={() => false } keyPath ={this.props.queryType == "collection" ? ['Document '+i] : ['File '+i]} key = {collection._id} getItemString={getItemString}/>
      </div>)
