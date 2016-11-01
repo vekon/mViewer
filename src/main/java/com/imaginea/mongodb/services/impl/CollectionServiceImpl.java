@@ -77,12 +77,10 @@ public class CollectionServiceImpl implements CollectionService {
    */
   public Set<String> getCollList(String dbName) throws DatabaseException, CollectionException {
 
-    if (dbName == null) {
-      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Is Null");
+    if (dbName == null || dbName.equals("")) {
+      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Invalid Database name");
     }
-    if (dbName.equals("")) {
-      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Empty");
-    }
+
     try {
       // List<String> dbList = databaseService.getDbList();
       // if (!dbList.contains(dbName)) {
@@ -139,22 +137,13 @@ public class CollectionServiceImpl implements CollectionService {
       int maxDocs, boolean autoIndexId)
       throws DatabaseException, CollectionException, ValidationException {
 
-    if (dbName == null) {
-      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name should be provided");
+    if (dbName == null || dbName.equals("")) {
+      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Invalid Database name");
+    }
+    if (newCollName == null || newCollName.equals("")) {
+      throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Invalid Collection name");
+    }
 
-    }
-    if (dbName.equals("")) {
-      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name cannot be empty");
-    }
-
-    if (newCollName == null) {
-      throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY,
-          "Collection name should be provided");
-    }
-    if (newCollName.equals("")) {
-      throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY,
-          "Collection name cannot be empty");
-    }
     try {
       // if (!databaseService.getDbList().contains(dbName)) {
       //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
@@ -203,12 +192,8 @@ public class CollectionServiceImpl implements CollectionService {
       boolean capped, int size, int maxDocs, boolean autoIndexId)
       throws DatabaseException, CollectionException, ValidationException {
 
-    if (dbName == null) {
-      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name should be provided");
-
-    }
-    if (dbName.equals("")) {
-      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name cannot be empty");
+    if (dbName == null || dbName.equals("")) {
+      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Invalid Database name");
     }
 
     if (selectedCollectionName == null || newCollName == null) {
@@ -318,20 +303,13 @@ public class CollectionServiceImpl implements CollectionService {
   public String deleteCollection(String dbName, String collectionName)
       throws DatabaseException, CollectionException, ValidationException {
 
-    if (dbName == null) {
-      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
+    if (dbName == null || dbName.equals("")) {
+      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Invalid Database name");
+    }
+    if (collectionName == null || collectionName.equals("")) {
+      throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Invalid Collection name");
+    }
 
-    }
-    if (dbName.equals("")) {
-      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Empty");
-    }
-
-    if (collectionName == null) {
-      throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection name is null");
-    }
-    if (collectionName.equals("")) {
-      throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection Name Empty");
-    }
     try {
       // if (!databaseService.getDbList().contains(dbName)) {
       //   throw new DatabaseException(ErrorCodes.DB_DOES_NOT_EXISTS,
@@ -364,19 +342,12 @@ public class CollectionServiceImpl implements CollectionService {
 
   public JSONArray getCollStats(String dbName, String collectionName)
       throws DatabaseException, CollectionException, ValidationException, JSONException {
-    if (dbName == null) {
-      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
 
+    if (dbName == null || dbName.equals("")) {
+      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Invalid Database name");
     }
-    if (dbName.equals("")) {
-      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Empty");
-    }
-
-    if (collectionName == null) {
-      throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection name is null");
-    }
-    if (collectionName.equals("")) {
-      throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection Name Empty");
+    if (collectionName == null || collectionName.equals("")) {
+      throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Invalid Collection name");
     }
 
     JSONArray collStats = new JSONArray();
@@ -415,19 +386,11 @@ public class CollectionServiceImpl implements CollectionService {
   public boolean isCappedCollection(String dbName, String collectionName)
       throws DatabaseException, CollectionException, ValidationException {
 
-    if (dbName == null) {
-      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database name is null");
-
+    if (dbName == null || dbName.equals("")) {
+      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Invalid Database name");
     }
-    if (dbName.equals("")) {
-      throw new DatabaseException(ErrorCodes.DB_NAME_EMPTY, "Database Name Empty");
-    }
-
-    if (collectionName == null) {
-      throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection name is null");
-    }
-    if (collectionName.equals("")) {
-      throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Collection Name Empty");
+    if (collectionName == null || collectionName.equals("")) {
+      throw new CollectionException(ErrorCodes.COLLECTION_NAME_EMPTY, "Invalid Collection name");
     }
 
     Document document =
@@ -437,4 +400,6 @@ public class CollectionServiceImpl implements CollectionService {
 
     return isCapped;
   }
+
+
 }
