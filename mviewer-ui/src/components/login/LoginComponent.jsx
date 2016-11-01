@@ -140,7 +140,7 @@ class LoginComponent extends React.Component {
         <div className={styles.parentDiv + ' ' + styles.clearfix}>
 
            <div className={styles.two}>
-             <div className ={styles.one}>WELCOME TO <img src={'./images/Logo.png'} className={styles.logo}></img></div>
+             <div className ={styles.one}> <img src={'./images/Logo.png'} className={styles.logo}></img></div>
             <Form method='POST' onValid={this.enableButton()} onSubmit={this.onSubmit} onInvalid={this.disableButton()} >
               <div className={ styles.formContainer}>
                 <div className={styles.inputBoxLogin}>
