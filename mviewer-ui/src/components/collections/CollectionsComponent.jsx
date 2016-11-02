@@ -22,7 +22,8 @@ class CollectionsComponent extends React.Component {
         showQueryExecutor: false,
         selectedCollection: '',
         userDetails: [],
-        hasListColPriv: null
+        hasListColPriv: null,
+        navMessage:'expand'
       }
   }
 
@@ -102,6 +103,15 @@ class CollectionsComponent extends React.Component {
     $('.body').height(height);
   }
 
+  toggleMessage(){
+    if(this.state.navMessage == 'expand'){
+      this.setState({navMessage : 'collapse'});
+    }
+    else{
+      this.setState({navMessage : 'expand'});
+    }
+  }
+
   render () {
 
     Tabs.setUseDefaultStyles(false);
@@ -112,12 +122,12 @@ class CollectionsComponent extends React.Component {
     var hasListColPriv   = privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db);
     return(
       <div className = {this.props.location.query.collapsed == 'false' ? collectionsStyles.mainContainer+ ' collectionsContainer' : collectionsStyles.mainContainer+' collectionsContainer ' +collectionsStyles.collapsedContainer}>
-        
+        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#mainNavbar" aria-expanded="false" onClick={this.toggleMessage.bind(this)}><span className={collectionsStyles.collapseSpan}>Click to {this.state.navMessage}</span></button>
         {this.props.location.query.db !== 'undefined' ? 
         
         <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
           
-          <TabList className={collectionsStyles.tabs + ' nav navbar-nav mainTab'}>
+          <TabList id = "mainNavbar" className={collectionsStyles.tabs + ' nav navbar-nav mainTab collapse navbar-collapse'}>
             <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 0 ? collectionsStyles.activeTab : '' } >Collections</Tab>
             <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 1 ? collectionsStyles.activeTab : '' }>GridFS</Tab>
             <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 2 ? collectionsStyles.activeTab : '' }>Users</Tab>

@@ -16,7 +16,17 @@ class GraphsComponent extends React.Component {
       interval: 0,
       error: false,
       connectionId: JSON.parse(sessionStorage.getItem('connectionId') || '{}'),
-      hasRole: null
+      hasRole: null,
+      navMessage:'expand'
+    }
+  }
+
+  toggleMessage(){
+    if(this.state.navMessage == 'expand'){
+      this.setState({navMessage : 'collapse'});
+    }
+    else{
+      this.setState({navMessage : 'expand'});
     }
   }
 
@@ -100,8 +110,9 @@ class GraphsComponent extends React.Component {
 
     return (
       <div className = {graphStyles.mainContainer}>
+      <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#graphsNavbar" aria-expanded="false" onClick={this.toggleMessage.bind(this)}><span className={graphStyles.collapseSpan}>Click to {this.state.navMessage}</span></button>
       {!this.state.error ? <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
-        <TabList className={graphStyles.tabs+' nav navbar-nav graphsTab'}>
+        <TabList id = "graphsNavbar" className={graphStyles.tabs+' nav navbar-nav mainTab collapse navbar-collapse'}>
           <Tab className={this.state.selectedTab==0 ? graphStyles.activeTab : ''}>Combined View</Tab>
           <Tab className={this.state.selectedTab==1 ? graphStyles.activeTab : ''}>Queries</Tab>
           <Tab className={this.state.selectedTab==2 ? graphStyles.activeTab : ''}>Updates</Tab>
