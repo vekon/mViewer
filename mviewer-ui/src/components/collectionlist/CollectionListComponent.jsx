@@ -143,7 +143,7 @@ class CollectionList extends React.Component {
 
 
        return (
-         <div className={collectionListStyles.menu} key = {this.props.visible}>
+         <div className={collectionListStyles.menu + ' innerList'} key = {this.props.visible}>
           <div className={(this.props.visible ?(this.state.visible ? collectionListStyles.visible : this.props.alignment): this.props.alignment ) }>
              <SearchInput className={collectionListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
              <h5 className={collectionListStyles.menuTitle}><NewCollection queryType= {this.state.queryType} currentDb={this.props.selectedDB} currentItem={''} connectionId={this.props.propps.connectionId} addOrUpdate={'1'} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}/></h5>

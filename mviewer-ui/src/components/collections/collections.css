@@ -4,14 +4,14 @@
     width: 85%;
     overflow: auto;
     /*width: 80%;*/
-    width: calc(100vw - 275px);
+    width: calc(100vw - 277px);
 
     height: 100%;
 }
 
 .collapsedContainer {
   /*width: 90% !important;*/
-  width: calc(100vw - 145px) !important;
+  width: calc(100vw - 147px) !important;
 }
 
 .breadCrumb {

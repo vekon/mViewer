@@ -101,7 +101,7 @@ class GraphsComponent extends React.Component {
     return (
       <div className = {graphStyles.mainContainer}>
       {!this.state.error ? <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
-        <TabList className={graphStyles.tabs}>
+        <TabList className={graphStyles.tabs+' nav navbar-nav graphsTab'}>
           <Tab className={this.state.selectedTab==0 ? graphStyles.activeTab : ''}>Combined View</Tab>
           <Tab className={this.state.selectedTab==1 ? graphStyles.activeTab : ''}>Queries</Tab>
           <Tab className={this.state.selectedTab==2 ? graphStyles.activeTab : ''}>Updates</Tab>

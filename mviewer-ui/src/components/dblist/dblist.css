@@ -4,17 +4,20 @@
 .mainMenu {
   display: inline-block;
   width: 70%;
+  height: 100%
 }
 
 .mainMenuCollapsed {
   display: inline-block;
   width: 39%;
+  height: 100%;
 }
 
 .menu {
   display: inline-block;
   width: 100%;
   float: left;
+  height: 100%;
 }
 
 .visible {

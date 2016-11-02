@@ -37,7 +37,7 @@
   background-color: inherit !important;
   position: relative !important;
   display: inline-block;
-  width: 95%;
+  width: 100%;
 }
 
 .container div>ul>li>label {
@@ -49,6 +49,10 @@
   color: #26344e !important;
 }
 
+.contianer div {
+  color: #555 !important;
+}
+
 .container div>ul li>span {
   float: right !important;
   display: inline-block !important;
@@ -57,6 +61,7 @@
   text-align: left !important;
   font-weight: 400 !important;
   margin-left: 50;
+  color: #555 !important;
 }
 
 .deleteButton,

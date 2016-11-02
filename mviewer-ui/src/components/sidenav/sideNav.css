@@ -110,7 +110,8 @@
 
 
 .otherContainer {
-  width: 6%;
+  /*width: 6%;*/
+  width: 78px;
   display: inline-block;
   float: left;
 }

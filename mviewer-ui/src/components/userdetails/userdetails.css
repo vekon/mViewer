@@ -1,7 +1,7 @@
 .mainContainer {
   overflow: hidden;
   /*width: 85%;*/
-  width: calc(100vw - 330px);
+  width: calc(100vw - 334px);
   padding: 20px;
   display: inline-block;
   padding-left: 5%;

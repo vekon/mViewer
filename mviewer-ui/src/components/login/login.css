@@ -247,10 +247,11 @@ h2:after {
     background-color: white !important;
     color: inherit;
     float: left;
+    margin: 0 !important;
 }
 
 .checkBox {
-  padding-top: 15px;
+  padding-top: 6px;
 }
 
 .checkLabel{

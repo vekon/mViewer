@@ -241,6 +241,7 @@ class DbListComponent extends React.Component {
         backgroundColor       : 'rgba(0,0,0, 0.74902)'
       }
     };
+
     var that = this;
     const filteredData = this.state.dbNames.filter(createFilter(this.state.searchTerm));
     return(
