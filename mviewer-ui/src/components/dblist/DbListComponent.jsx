@@ -37,6 +37,7 @@ class DbListComponent extends React.Component {
   openModal() {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
+    this.setState({error:false});
     var hasPriv = privilegesAPI.hasPrivilege('createCollection','', '');
     // var hasPriv = privilegesAPI.hasPrivilege('createCollection','', this.props.propps.propss.location.query.db);
     // var hasRole = privilegesAPI.hasRole('readWriteAnyDatabase',this.props.propps.loggedInDatabase);

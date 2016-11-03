@@ -26,6 +26,7 @@ class CreateDbComponent extends React.Component {
   openModal() {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
+    this.setState({error:false});
     var hasPriv = privilegesAPI.hasPrivilege('createCollection','', this.state.selectedItem);
     if(hasPriv){
       this.setState({showAuth : false});    }

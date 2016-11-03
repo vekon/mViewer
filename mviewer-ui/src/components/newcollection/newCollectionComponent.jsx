@@ -72,6 +72,8 @@ class newCollectionComponent extends React.Component {
 
   closeModal() {
     this.setState({modalIsOpen: false});
+    this.setState({cap: false});
+    this.setState({error: false});
     if(this.state.successMessage==true)
     {
       this.props.refreshCollectionList(this.props.currentDb);
