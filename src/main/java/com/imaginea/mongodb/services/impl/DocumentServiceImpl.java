@@ -336,7 +336,9 @@ public class DocumentServiceImpl implements DocumentService {
         throw new CollectionException(ErrorCodes.COLLECTION_DOES_NOT_EXIST,
             "COLLECTION [ " + collectionName + "] _DOES_NOT_EXIST in Db [ " + dbName + "]");
       }
-      boolean cappedCollection = collectionService.isCappedCollection(dbName, collectionName);
+
+
+      boolean cappedCollection = (boolean)collectionService.isCappedCollection(dbName, collectionName).get("capped");
 
       if (cappedCollection) {
         throw new DocumentException(ErrorCodes.DELETING_FROM_CAPPED_COLLECTION,

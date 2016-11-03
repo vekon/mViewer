@@ -11,21 +11,7 @@
  */
 package com.imaginea.mongodb.services.impl;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import org.bson.Document;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.imaginea.mongodb.exceptions.ApplicationException;
-import com.imaginea.mongodb.exceptions.CollectionException;
-import com.imaginea.mongodb.exceptions.DatabaseException;
-import com.imaginea.mongodb.exceptions.ErrorCodes;
-import com.imaginea.mongodb.exceptions.ValidationException;
+import com.imaginea.mongodb.exceptions.*;
 import com.imaginea.mongodb.services.AuthService;
 import com.imaginea.mongodb.services.CollectionService;
 import com.imaginea.mongodb.services.DatabaseService;
@@ -37,6 +23,14 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.CreateCollectionOptions;
+import org.bson.Document;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Defines services definitions for performing operations like create/drop on collections inside a
@@ -216,8 +210,9 @@ public class CollectionServiceImpl implements CollectionService {
       MongoDatabase db = mongoInstance.getDatabase(dbName);
       MongoCollection<Document> selectedCollection = db.getCollection(selectedCollectionName);
 
-      if (!isCappedCollection(dbName, selectedCollectionName) && capped) {
+      boolean isCapped =(boolean)isCappedCollection(dbName, selectedCollectionName).get("capped");
 
+      if (isCapped && !capped){
         Document options = new Document();
         options.put("convertToCapped", selectedCollectionName);
         options.put("size", size);
@@ -233,7 +228,7 @@ public class CollectionServiceImpl implements CollectionService {
         convertedToCapped = true;
       }
 
-      if (isCappedCollection(dbName, selectedCollectionName) && !capped) {
+      if (isCapped && !capped) {
 
         CreateCollectionOptions options = new CreateCollectionOptions();
         options.capped(false);
@@ -383,7 +378,7 @@ public class CollectionServiceImpl implements CollectionService {
   }
 
   @Override
-  public boolean isCappedCollection(String dbName, String collectionName)
+  public JSONObject isCappedCollection(String dbName, String collectionName)
       throws DatabaseException, CollectionException, ValidationException {
 
     if (dbName == null || dbName.equals("")) {
@@ -396,9 +391,17 @@ public class CollectionServiceImpl implements CollectionService {
     Document document =
         mongoInstance.getDatabase(dbName).runCommand(new Document("collStats", collectionName));
 
-    boolean isCapped = (Boolean) document.get("capped");
+    JSONObject collectionJSON = new JSONObject();
 
-    return isCapped;
+    boolean isCapped = (Boolean) document.get("capped");
+    int size = (int) document.get("maxSize");
+    int maxDocs = (int) document.get("max");
+
+    collectionJSON.put("size",size);
+    collectionJSON.put("maxDocs",maxDocs);
+    collectionJSON.put("capped",isCapped);
+
+    return collectionJSON;
   }
 
 

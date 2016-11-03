@@ -16,6 +16,7 @@ import com.imaginea.mongodb.exceptions.DatabaseException;
 import com.imaginea.mongodb.exceptions.ValidationException;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Set;
 
@@ -110,7 +111,7 @@ public interface CollectionService {
   public JSONArray getCollStats(String dbName, String collectionName)
       throws DatabaseException, CollectionException, ValidationException, JSONException;
 
-  public boolean isCappedCollection(String dbName, String collectionName)
+  public JSONObject isCappedCollection(String dbName, String collectionName)
       throws DatabaseException, CollectionException, ValidationException;
 
 }
