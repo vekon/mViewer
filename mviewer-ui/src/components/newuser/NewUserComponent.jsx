@@ -97,7 +97,7 @@ class NewUserComponent extends React.Component {
     this.setState({modalIsOpen: false});
     this.setState({error: false});
     this.setState({selectedRoles:""});
-    this.setState({dbSource:""});
+    
     this.setState({roles: [{key:"read","selected": false},{key:"userAdmin","selected":false},{key:"userAdminAnyDatabase","selected": false},
               {key:"readWrite","selected": false},{key:"dbAdmin","selected":false},{key:"readWriteAnyDatabase","selected":false},
               {key:"clusterAdmin","selected": false},{key:"readAnyDatabase","selected": false},{key:"dbAdminAnyDatabase","selected":false}]});
@@ -108,7 +108,7 @@ class NewUserComponent extends React.Component {
     if(this.state.successMessage==true)
     {
       if(this.props.currentDb != this.state.dbSource){
-       this.props.refreshCollectionList('');
+       // this.props.refreshCollectionList(this.state.dbSource);
       }
 
     else{
@@ -116,6 +116,7 @@ class NewUserComponent extends React.Component {
       this.props.refreshRespectiveData(this.state.newUser);
       }
     }
+    this.setState({dbSource:""});
   }
 
   enableButton() {
@@ -252,7 +253,7 @@ class NewUserComponent extends React.Component {
     if (calledFrom == 'clickHandler'){
       if (data.response.result) {
         if(this.props.modifyUser)
-          this.setState({message:'User '+obj['user_name']+ ' was successfully modified for database ' + this.props.dbSource});
+          this.setState({message:'User '+obj['user_name']+ ' was successfully modified for database ' + this.state.dbSource});
         else
           this.setState({message:'User '+obj['user_name']+ ' was successfully added to database ' + this.state.dbSource});
         this.state.newUser = obj['user_name'];
@@ -268,6 +269,10 @@ class NewUserComponent extends React.Component {
             var db = data.response.error.message.match("errmsg(.*)@")[1].match("named(.*)")[1];
             this.setState({message:'Not Authorized to create user with role ' + db});
           }
+          else if (data.response.error.message.indexOf("Cannot create users in the") >= 0){
+            this.setState({message:'Cannot create users in ' + this.state.dbSource + ' database'});
+          }
+          
           else {
             this.setState({message:'User '+obj['user_name']+ ' already exists in database ' + this.state.dbSource});
           }
