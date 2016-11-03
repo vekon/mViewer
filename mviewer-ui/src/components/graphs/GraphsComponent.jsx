@@ -17,20 +17,30 @@ class GraphsComponent extends React.Component {
       error: false,
       connectionId: JSON.parse(sessionStorage.getItem('connectionId') || '{}'),
       hasRole: null,
-      navMessage:'expand'
+      navMessage:'Combined View'
     }
   }
 
   toggleMessage(){
-    if(this.state.navMessage == 'expand'){
-      this.setState({navMessage : 'collapse'});
+    if (this.state.selectedTab == 0){
+      this.setState({navMessage : 'Combined View'});
     }
-    else{
-      this.setState({navMessage : 'expand'});
+    else if (this.state.selectedTab == 1){
+      this.setState({navMessage : 'Queries'});
+    }
+    else if (this.state.selectedTab == 2){
+      this.setState({navMessage : 'Updates'});
+    }
+    else if (this.state.selectedTab == 3){
+      this.setState({navMessage : 'Inserts'});
+    }
+    else if (this.state.selectedTab == 4){
+      this.setState({navMessage : 'Deletes'});
     }
   }
 
   componentDidMount(){
+
     var requestTime = new Date().getTime().toString();
     var partialUrl1 = 'graphs/initiate?connectionId='+this.state.connectionId+'&ts='+requestTime+'&pollingTime=5000';
     var graphsInitialCall = service('GET', partialUrl1, '');
@@ -87,6 +97,22 @@ class GraphsComponent extends React.Component {
   handleSelect(index){
     this.setState({selectedTab:index}, function(){
     });
+
+    if (index == 0){
+      this.setState({navMessage : 'Combined View'});
+    }
+    else if (index == 1){
+      this.setState({navMessage : 'Queries'});
+    }
+    else if (index == 2){
+      this.setState({navMessage : 'Updates'});
+    }
+    else if (index == 3){
+      this.setState({navMessage : 'Inserts'});
+    }
+    else if (index == 4){
+      this.setState({navMessage : 'Deletes'});
+    }
   }
 
 
@@ -110,7 +136,7 @@ class GraphsComponent extends React.Component {
 
     return (
       <div className = {graphStyles.mainContainer}>
-      <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#graphsNavbar" aria-expanded="false" onClick={this.toggleMessage.bind(this)}><span className={graphStyles.collapseSpan}>Click to {this.state.navMessage}</span></button>
+      <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#graphsNavbar" aria-expanded="false" onClick={this.toggleMessage.bind(this)}><span className={graphStyles.collapseSpan}>{this.state.navMessage}</span></button>
       {!this.state.error ? <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
         <TabList id = "graphsNavbar" className={graphStyles.tabs+' nav navbar-nav mainTab collapse navbar-collapse'}>
           <Tab className={this.state.selectedTab==0 ? graphStyles.activeTab : ''}>Combined View</Tab>

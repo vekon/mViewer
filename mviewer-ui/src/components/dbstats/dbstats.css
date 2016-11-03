@@ -3,8 +3,10 @@
     display: inline-block;
     width: 100%;
     overflow: hidden;
-    height: 100%;
-    overflow: hidden;
+    /*height: 100%;*/
+    /*overflow: hidden;*/
+    height: calc(100vh - 130px);
+    overflow: auto;
     font-family: 'Brandon-Light';
 }
 
@@ -24,7 +26,8 @@
     text-align: center;
     line-height: 25px;
     margin-top: 5%;
-    margin-left: 5%;
+    /*margin-left: 5%;*/
+    margin-left: 8%;
     width: 50%;
 }
 

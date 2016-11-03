@@ -112,7 +112,7 @@ class GridFSList extends React.Component {
           <div className={(this.props.visible ?(this.state.visible ? GridFSListStyles.visible   : this.props.alignment): this.props.alignment ) }>
             <SearchInput className={GridFSListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
             <h5 className={GridFSListStyles.menuTitle}><NewBucket gridList= {this.state.gridfs} currentDb={this.props.selectedDB} currentItem="fs" connectionId={this.state.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}></NewBucket></h5>
-            {items}
+            <div className = {GridFSListStyles.gridListBody}>{items}</div>
           </div>
         </div>
       );

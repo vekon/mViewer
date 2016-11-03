@@ -57,7 +57,7 @@ class DbItemComponent extends React.Component {
   render () {
     return (
       <div onClick={this.props.onClick} value={this.props.name} className={(this.props.isSelected ? dbListStyles.menuItem +' ' +dbListStyles.highlight :dbListStyles.menuItem)} key={this.props.name} >
-          <span>
+          <span className={dbListStyles.dbIcon}>
             <i className="fa fa-database" aria-hidden="true"></i>
           </span>
           <span className={dbListStyles.content}>{this.props.name}</span>

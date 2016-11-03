@@ -4,7 +4,11 @@
     /*width: 85%;*/
     overflow: auto;
     /*width: 80%;*/
-    width: calc(100vw - 277px);
+    /*width: calc(100vw - 277px);*/
+    height: calc(100vh - 70px);
+    /*height: 100%;*/
+    padding-right: 0;
+    padding-left: 0;
 }
 
 .mainContainer>button {
@@ -15,6 +19,7 @@
   margin-top: 0;
   margin-bottom: 0;
   border-bottom: 1px solid #bababa;
+  height: 59px;
 }
 
 .collapseSpan {
@@ -28,7 +33,7 @@
 
 .collapsedContainer {
   /*width: 90% !important;*/
-  width: calc(100vw - 147px) !important;
+  /*width: calc(100vw - 147px) !important;*/
 }
 
 .breadCrumb {

@@ -74,8 +74,10 @@ class DashBoardComponent extends React.Component {
                </div>
              </nav>
           </header>
-          <SideNav ref='sideNav' connectionId = {this.state.connectionId} loggedInDatabase ={this.state.loggedInDatabase} propss = {this.props}></SideNav>
-          {childrenWithProps}
+          <div>
+            <SideNav ref='sideNav' connectionId = {this.state.connectionId} loggedInDatabase ={this.state.loggedInDatabase} propss = {this.props}></SideNav>
+            {childrenWithProps}
+          </div>
         </div>
       </div>
     );

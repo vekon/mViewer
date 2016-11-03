@@ -23,13 +23,26 @@ class CollectionsComponent extends React.Component {
         selectedCollection: '',
         userDetails: [],
         hasListColPriv: null,
-        navMessage:'expand'
+        navMessage:'Collections'
       }
   }
 
   handleSelect(index){
     this.setState({selectedTab:index}, function(){
     });
+    if (index == 0){
+      this.setState({navMessage : 'Collections'});
+    }
+    else if (index == 1){
+      this.setState({navMessage : 'GridFS'});
+    }
+    else if (index == 2){
+      this.setState({navMessage : 'Users'});
+    }
+    else if (index == 3){
+      this.setState({navMessage : 'Statistics'});
+    }
+
     this.setState({hasListColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db)});
   }
 
@@ -44,6 +57,7 @@ class CollectionsComponent extends React.Component {
    //  }
 
    // $('.sideContainer').equalizeHeights();
+   // this.setState({navMessage:'Click to expand'});
 
     Tabs.setUseDefaultStyles(false);
     this.setState({selectedTab:0});
@@ -51,6 +65,7 @@ class CollectionsComponent extends React.Component {
     this.setState({selectedCollection: ''});
   
     if (this.props.location.query.db  != nextProps.location.query.db){
+
       this.setState({hasListColPriv: null});
       setTimeout(function(){
         this.setState({hasListColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db)}, function(){
@@ -61,7 +76,6 @@ class CollectionsComponent extends React.Component {
 
 
   componentDidMount (){
-
     setTimeout(function(){
       this.setState({hasListColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db)}, function(){
       }); 
@@ -104,12 +118,7 @@ class CollectionsComponent extends React.Component {
   }
 
   toggleMessage(){
-    if(this.state.navMessage == 'expand'){
-      this.setState({navMessage : 'collapse'});
-    }
-    else{
-      this.setState({navMessage : 'expand'});
-    }
+
   }
 
   render () {
@@ -121,8 +130,8 @@ class CollectionsComponent extends React.Component {
 
     var hasListColPriv   = privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db);
     return(
-      <div className = {this.props.location.query.collapsed == 'false' ? collectionsStyles.mainContainer+ ' collectionsContainer' : collectionsStyles.mainContainer+' collectionsContainer ' +collectionsStyles.collapsedContainer}>
-        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#mainNavbar" aria-expanded="false" onClick={this.toggleMessage.bind(this)}><span className={collectionsStyles.collapseSpan}>Click to {this.state.navMessage}</span></button>
+      <div className = {this.props.location.query.collapsed == 'false' ? collectionsStyles.mainContainer+ ' collectionsContainer col-lg-10  col-sm-9 col-xs-8 col-md-9' : collectionsStyles.mainContainer+' collectionsContainer col-lg-11  col-sm-11 col-xs-10 col-md-10 ' +collectionsStyles.collapsedContainer}>
+        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#mainNavbar" aria-expanded="false" onClick={this.toggleMessage.bind(this)}><span className={collectionsStyles.collapseSpan}>{this.state.navMessage}</span></button>
         {this.props.location.query.db !== 'undefined' ? 
         
         <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>

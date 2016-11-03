@@ -1,7 +1,9 @@
 .mainContainer {
   display: inline-block;
-  width: calc( 100vw - 95px);
-  height: 100%;
+  /*width: calc( 100vw - 95px);
+  height: 100%;*/
+  height: calc(100vh - 70px);
+  width: calc(100% - 66px);
   background: #fff;
   overflow: auto;
 }
@@ -14,6 +16,7 @@
   margin-top: 0;
   margin-bottom: 0;
   border-bottom: 1px solid #bababa;
+  height: 59px;
 }
 
 .collapseSpan {

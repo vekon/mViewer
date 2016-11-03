@@ -4,6 +4,7 @@
 .mainMenu {
   display: inline-block;
   width: 70%;
+  height: 100%
 }
 
 .mainMenuCollapsed {
@@ -16,14 +17,17 @@
   display: inline-block;
   width: 100%;
   float: left;
+  height: 100%;
 }
 
 .visible {
-    overflow: auto;
+    /*overflow: auto;*/
+    overflow: hidden;
     display: inline-block;
     float: left;
     z-index: 2;
     top: 0;
+    height: 100%;
     transition: transform ease 0.5s;
     color: #484848;
     background: #fff;
@@ -38,14 +42,18 @@
 }
 
 .dbListHeader {
+ /*position: absolute;*/
  width: 100%;
- border-bottom: solid 1px #ccc;
 }
 
 .dbListBody{
   width: 100%;
-  overflow-y: auto;
-  height: calc(100vh - 170px)
+    /*position: absolute;*/
+    /*top: 82px;
+    bottom: 0;*/
+    /*overflow-y: auto;*/
+    height: calc(100vh - 153px);
+    overflow: auto;
 }
 
 .left {
@@ -56,16 +64,19 @@
 
 .menuItem {
   width:auto;
-  min-width: 160px;
+  /*min-width: 160px;*/
+  min-width: 102px;
   margin:0;
-  padding:10px 15px;
+  /*padding:10px 15px;*/
+  padding: 3% 4%;
   border-bottom:solid 1px #bababa;
   cursor:pointer;
   font-size: 17px;
   color:#484848;
-  white-space: nowrap;
+  /*white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis;*/
+
 }
 .menuItem span {
   font-weight: 400;
@@ -95,7 +106,10 @@
 }
 
 .content{
-  width: 250px;
+  /*width: 250px;*/
+  width: 50%;
+  padding: 10px;
+  display: inline-block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -113,27 +127,32 @@
 }
 
 .menuItem i {
-    padding: 10px;
+    /*padding: 10px;*/
     color: inherit;
 }
 
 .menuTitle {
     text-align: center;
-    padding: 8px;
+    /*padding: 8px;*/
+    padding: 10px;
     background-color: #fff;
     color: #484848;
     font-family: 'Brandon-Light';
     font-size: 17px;
     cursor: pointer;
     width: auto;
-    min-width: 178px;
+    /*min-width: 178px;*/
+    border-bottom: 1px solid #bdc1c3;
+    margin: 0;
 }
 
 
 .removeIcon {
-  color: #85adad;
-  text-align: center;
+  color: inherit;
   font-size: 13px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  display: inline-block;
   float: right;
 }
 
@@ -143,6 +162,7 @@
   visibility: hidden !important;
   opacity: 0 !important;
   position: relative;
+  display: none;
 }
 
 .collapsedDiv{
@@ -175,6 +195,8 @@ border-right: 1px solid #bababa;
   margin-left: -200%;
   overflow: hidden;
   text-overflow: ellipsis;*/
+
+  /*
   transform: rotate(180deg);
   display: inline-block;
   height: 40%;
@@ -184,7 +206,18 @@ border-right: 1px solid #bababa;
   text-overflow: ellipsis;
   text-align: center;
   writing-mode: vertical-lr;
-  margin: 260% 19%;
+  margin: 260% 19%;*/
+
+  transform: rotate(180deg);
+  display: inline-block;
+  height: calc(100vh - 100px);
+  font-size: 19px;
+  font-family: 'Brandon';
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  writing-mode: vertical-lr;
+  padding: 18%;
 }
 
 
@@ -361,7 +394,7 @@ border-right: 1px solid #bababa;
     padding: 10px 5px 10px 25px;
     border: 3px solid #ccc;
     width: 100%;
-    min-width: 160px;
+    /*min-width: 160px;*/
 }
 
 .searchInput::before {
@@ -420,4 +453,11 @@ border-right: 1px solid #bababa;
 
 .innerItem {
 
+}
+
+
+
+.dbIcon {
+  float: left;
+  padding-top: 15px;
 }

@@ -1,9 +1,19 @@
 .mainContainer {
+  /*width: 702px;*/
+  width: 70%;
   margin: 4% auto;
+  /*height: 426px;*/
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 30%;
+    margin: -19% 0 0 -35%
 }
 
 .topContainer {
   background-color: #fff;
+  /*height: 70%;*/
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 
@@ -19,21 +29,23 @@
 
 
 .createButton {
-  width: 332px;
-  padding: 10px 0;
-  border: 1px solid;
-  display: inline-block;
-  background-color: #2494d0;
-  color: #fff;
-  padding: 20px 0;
-  font-weight: 600;
-  border-radius: 5px;
-  font-size: 20px;
-  letter-spacing: 0.5;
-  transition: background-color 0.2s, color 0.2s;
-  cursor: pointer;
-  font-family: 'Brandon-Light';
-  font-weight: 300;
+  /*width: 332px;*/
+/*margin: 2% 10% 2% 26%;*/
+padding: 20px 48px;
+border: 1px solid;
+/*display: inline-block;*/
+text-align: center;
+background-color: #2494d0;
+color: #fff;
+/*padding: 20px 0;*/
+/*font-weight: 600;*/
+border-radius: 5px;
+font-size: 20px;
+letter-spacing: 0.5;
+transition: background-color 0.2s, color 0.2s;
+cursor: pointer;
+font-family: 'Brandon-Light';
+font-weight: 300;
 }
 
 .createButton:hover {
@@ -47,7 +59,10 @@
 .logoSection {
   position: relative;
   padding: 2% 5% 4% 5%;
+  /*text-align: center;
+  font-size: 60%;*/
   color: #999999;
+
 }
 
 .logoSection span {
@@ -86,6 +101,7 @@ font-size: 26px;
 .bottomSection {
   color: #2494d0;
   font-weight: 300;
+  /*margin-top: 7%;*/
   margin-top: 40px;
   font-size: 46px;
 

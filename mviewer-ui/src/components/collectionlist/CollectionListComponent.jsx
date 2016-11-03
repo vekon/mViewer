@@ -147,7 +147,7 @@ class CollectionList extends React.Component {
           <div className={(this.props.visible ?(this.state.visible ? collectionListStyles.visible : this.props.alignment): this.props.alignment ) }>
              <SearchInput className={collectionListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
              <h5 className={collectionListStyles.menuTitle}><NewCollection queryType= {this.state.queryType} currentDb={this.props.selectedDB} currentItem={''} connectionId={this.props.propps.connectionId} addOrUpdate={'1'} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}/></h5>
-               { this.state.collections != undefined ?
+               <div className = {collectionListStyles.listBody}>{ this.state.collections != undefined ?
                  (filteredData.map((item,idx) => {
                    return(
                      <CollectionItem
@@ -161,7 +161,7 @@ class CollectionList extends React.Component {
                       refreshCollectionListForDelete={this.refreshCollectionListForDelete.bind(this)}
                      />)
                 })): null}
-
+                 </div>
             </div>
         </div>
       );
