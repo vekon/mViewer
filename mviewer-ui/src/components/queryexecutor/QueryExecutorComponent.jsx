@@ -564,7 +564,7 @@ class QueryExecutorComponent extends React.Component {
     }.bind(this));
 
     return(
-      <div className = { n != -1 ?queryExecutorStyles.mainContainer : queryExecutorStyles.mainContainerCollapsed }>
+      <div className = { n != -1 ?queryExecutorStyles.mainContainer + ' col-md-10 col-xs-7 col-sm-9' : queryExecutorStyles.mainContainerCollapsed + ' col-md-10 col-xs-7 col-sm-9' }>
 
         <div className={queryExecutorStyles.buffer}>
           <div id="queryExecutor" className={queryExecutorStyles.tab + ' navbar navbar-default'}>

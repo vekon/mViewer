@@ -7,11 +7,11 @@
 }
 
 .mainContainer {
-  width: calc(100vw - 334px);
+  /*width: calc(100vw - 334px);*/
 }
 
 .mainContainerCollapsed {
-  width: calc(100vw - 464px);
+  /*width: calc(100vw - 464px);*/
 }
 
 .actionsContainer {

@@ -136,7 +136,7 @@ class CollectionsComponent extends React.Component {
           
           <TabPanel className ='mainTabPanel'>
             { this.state.hasListColPriv == true ?
-              <div className={collectionsStyles.holder}>
+              <div className={collectionsStyles.holder + ' row'}>
                 <CollectionList ref="left"  visible={true} propps = {this.props} showQueryExecutor = {this.showQueryExecutor.bind(this)} hideQueryExecutor = {this.hideQueryExecutor.bind(this)} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></CollectionList>
                 {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "collection" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
               </div> : ( this.state.hasListColPriv ==null ? <div className={collectionsStyles.loading}><img src={'./images/loading.gif'} ></img><label>Checking for Privileges</label></div>:<div className = {collectionsStyles.errorHolder}>You are not authorised to view Collections</div>)
@@ -144,7 +144,7 @@ class CollectionsComponent extends React.Component {
           </TabPanel>
           <TabPanel className ='mainTabPanel'>
             { hasListColPriv  ?
-              <div>
+              <div className={'row'}>
                 <GridFSList ref="left"  visible={true} propps = {this.props} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></GridFSList>
                 {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "fs" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
               </div> : <div className = {collectionsStyles.errorHolder}>You are not authorised to view GridFS</div>
@@ -152,7 +152,7 @@ class CollectionsComponent extends React.Component {
           </TabPanel>
           <TabPanel className ='mainTabPanel'>
             { hasUserAdminPriv || hasUserAdminAnyDatabasePriv ? 
-              <div>
+              <div className={'row'}>
                 <UserList ref="left"  visible={true} propps = {this.props} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></UserList>
                 {this.state.showQueryExecutor ? <UserDetails ref='right' refreshData={this.refreshRespectiveData.bind(this)} users={this.state.userDetails} currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)}></UserDetails> : null}
               </div> : <div className = {collectionsStyles.errorHolder}>You are not authorised to view Users</div>}  
