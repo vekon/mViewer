@@ -12,7 +12,8 @@ import Modal from 'react-modal'
 import service from '../../gateway/service.js'
 import SearchInput, {createFilter} from 'react-search-input'
 import privilegesAPI from '../../gateway/privilegesAPI.js';
-import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
+import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx';
+import ReactHeight from 'react-height';
 class DbListComponent extends React.Component {
 
   constructor(props) {
@@ -30,7 +31,9 @@ class DbListComponent extends React.Component {
       searchTerm: '',
       selectedNav: this.props.selectedNav,
       showAuth: false,
-      hasPriv: false
+      hasPriv: false,
+      viewMore: false,
+      viewMoreLink: false
     }
   }
 
@@ -101,6 +104,17 @@ class DbListComponent extends React.Component {
     refreshDbCall.then(this.success.bind(this , 'componentDidMount' , ''), this.failure.bind(this , 'componentDidMount', ''));
   }
 
+  setViewMore(height) {
+    var dbListHeight = $('.dbContainer').height();
+    var listContainerHeight = height;
+
+    if (listContainerHeight > dbListHeight) {
+      this.setState({viewMoreLink: true});
+    } else {
+      this.setState({viewMoreLink: false});
+    }
+  }
+
   refreshDbList(dbName){
 
     var partialUrl = 'login/details?connectionId='+ this.state.connectionId;
@@ -143,6 +157,10 @@ class DbListComponent extends React.Component {
     else{
       this.setState({error : true})
     }
+  }
+
+  moreClick() {
+    this.setState({viewMore: !this.state.viewMore});
   }
 
   searchUpdated (term) {
@@ -254,18 +272,27 @@ class DbListComponent extends React.Component {
              <SearchInput className={dbListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
              <h5 className={dbListStyles.menuTitle}><span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Database</span></h5>
           </div>
-          <div className = {dbListStyles.dbListBody}>
-           {filteredData.map((item,idx) => {
-               return(
-                 <DbItem
-                 key={item}
-                 name={item}
-                 onClick={this.clickHandler.bind(this,idx, item)}
-                 isSelected={this.state.selectedDb==item}
-                 connectionId = {this.state.connectionId}
-                 refreshDbList={this.refreshDbList.bind(this)}
-                 />)
-             })}
+          
+            <div className = {(this.state.viewMore ? dbListStyles.dbListBody : dbListStyles.dbListBodyExpanded) + ' dbContainer'}>
+            <ReactHeight onHeightReady={this.setViewMore.bind(this)}>
+                <div className='listcontainer'>
+                {filteredData.map((item,idx) => {
+                   return(
+                     <DbItem
+                     key={item}
+                     name={item}
+                     onClick={this.clickHandler.bind(this,idx, item)}
+                     isSelected={this.state.selectedDb==item}
+                     connectionId = {this.state.connectionId}
+                     refreshDbList={this.refreshDbList.bind(this)}
+                     />)
+                 })}
+                </div>
+                </ReactHeight>
+            </div>
+          
+          <div className= {(this.state.viewMoreLink ? dbListStyles.viewMoreContainer : dbListStyles.displayNone)}>
+            <a className = {dbListStyles.viewMore} onClick={this.moreClick.bind(this)}>+ View More</a>
           </div>
         </div>
         <div className={this.state.visible ?dbListStyles.collapsedDiv: dbListStyles.openDiv} onClick={this.collapsedDivHandler.bind(this)} >

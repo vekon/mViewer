@@ -38,6 +38,10 @@
     border-right: 1px solid #bababa;
 }
 
+.displayNone {
+  display: none;
+}
+
 .visible div:last-child {
 }
 
@@ -48,12 +52,24 @@
 
 .dbListBody{
   width: 100%;
-    /*position: absolute;*/
-    /*top: 82px;
-    bottom: 0;*/
-    /*overflow-y: auto;*/
-    height: calc(100vh - 153px);
-    overflow: auto;
+  height: calc(100vh - 190px);
+  overflow: auto;
+}
+
+.dbListBodyExpanded {
+  width: 100%;
+  height: calc(100vh - 190px);
+  overflow: hidden;
+}
+
+.viewMoreContainer {
+  text-align: center;
+}
+
+.viewMore {
+  padding: 10px 0px;
+  cursor: pointer;
+  display: inline-block;
 }
 
 .left {
