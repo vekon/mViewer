@@ -107,7 +107,8 @@
 
 .content{
   /*width: 250px;*/
-  width: 50%;
+  /*width: 50%;*/
+  width: 70%;
   padding: 10px;
   display: inline-block;
   white-space: nowrap;
