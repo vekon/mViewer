@@ -78,7 +78,7 @@ const LoginTextInput = React.createClass({
 
 
   focusValue(event){
-    console.log(event);
+    // console.log(event);
     this.setState({hoverClass: 'floating-label-hovered'});
   },
 
