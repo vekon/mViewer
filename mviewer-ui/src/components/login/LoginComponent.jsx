@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './login.css';
 import classNames from 'classnames/bind';
 import { Form } from 'formsy-react';
-import TextInput from '../TextInput/TextInputComponent.jsx';
+import TextInput from '../LoginTextInput/LoginTextInputComponent.jsx';
 import $ from 'jquery';
 import service from '../../gateway/service.js';
 import { browserHistory, hashHistory } from 'react-router';
@@ -12,10 +12,12 @@ class LoginComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      host: '127.0.0.1',
-      port: '27017',
+      host: '',
+      port: '',
       username: '',
       password: '',
+      hostError: false,
+      portError: false,
       userNameError: false,
       passwordError: false,
       dbError: false,
@@ -45,6 +47,17 @@ class LoginComponent extends React.Component {
 
   getRequest() {
     var that = this;
+    if(this.state.host == null || this.state.host == ''){
+        this.state.hostError = true;
+      } else {
+        this.state.hostError = false;
+      }
+      if(this.state.port == null || this.state.port == ''){
+        this.state.portError = true;
+      } else{
+        this.state.portError = false;
+      }
+      
     if(this.state.authEnabled) {
       if(this.state.username == null || this.state.username == ''){
         this.state.userNameError = true;
@@ -62,7 +75,7 @@ class LoginComponent extends React.Component {
         this.state.dbError = false;
       }
     }
-    if(this.state.userNameError || this.state.passwordError || this.state.dbError)
+    if(this.state.hostError || this.state.portError || this.state.userNameError || this.state.passwordError || this.state.dbError)
       return false;
 
     var data = $("form").serialize().split("&");
@@ -144,23 +157,23 @@ class LoginComponent extends React.Component {
             <Form method='POST' onValid={this.enableButton()} onSubmit={this.onSubmit} onInvalid={this.disableButton()} >
               <div className={ styles.formContainer}>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="text" name="host" id="host" placeholder="Host" value={this.state.host} validations='isRequired' onChange={this.handleChange( 'host')} validationError="Host must not be empty" shouldBeDisabled ={this.state.loading} />
+                  <TextInput type="text" name="host" id="host" placeholder="host" value={this.state.host} onChange={this.handleChange( 'host')} validations={'isRequired1:'+this.state.hostError} validationErrors={{isRequired1: 'Host must not be empty' }} shouldBeDisabled ={this.state.loading} />
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="text" name="port" id="port" placeholder="Port" value={this.state.port} onChange={this.handleChange( 'port')} validations={{isRequired:true, isNumeric:true}} validationErrors={{isRequired : "Port must not be empty", isNumeric : "Inavlid Port number" }} shouldBeDisabled ={this.state.loading} />
+                  <TextInput type="text" name="port" id="port" placeholder="port" value={this.state.port} onChange={this.handleChange( 'port')} validations={{isRequired1:this.state.portError , isNumeric:true}} validationErrors={{isRequired1 : "Port must not be empty", isNumeric : "Inavlid Port number" }} shouldBeDisabled ={this.state.loading} />
                 </div>
                 <div className={styles.inputBoxLogin+' '+ styles.checkBox}>
                   <input type="checkbox" className={styles.checkboxClass} name="auth" id="auth"  onChange={this.handleCheck.bind(this)} checked={this.state.authEnabled} disabled ={this.state.loading}  />
                   <div className={styles.checkLabel} onClick ={this.handleCheck.bind(this)} ><span>Perform Authentication</span></div>
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="text" name="username" id="username" placeholder="Username" value={this.state.username} onChange={this.handleChange( 'username')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.userNameError} validationErrors={{isRequired1: 'User name must not be empty' }}/>
+                  <TextInput type="text" name="username" id="username" placeholder="usename" value={this.state.username} onChange={this.handleChange( 'username')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.userNameError} validationErrors={{isRequired1: 'User name must not be empty' }}/>
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleChange( 'password')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.passwordError}  validationErrors={{isRequired1: 'Password must not be empty' }}/>
+                  <TextInput type="password" name="password" id="password" placeholder="password" value={this.state.password} onChange={this.handleChange( 'password')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.passwordError}  validationErrors={{isRequired1: 'Password must not be empty' }}/>
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="text" name="databases" id="databases" placeholder="Database" value={this.state.databases} onChange={this.handleChange( 'databases')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.dbError} validationErrors={{isRequired1: 'DB name must not be empty'}}/>
+                  <TextInput type="text" name="databases" id="databases" placeholder="database" value={this.state.databases} onChange={this.handleChange( 'databases')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.dbError} validationErrors={{isRequired1: 'DB name must not be empty'}}/>
                 </div>
                 <div className={styles.submitContainer}>
                   {this.state.loading == true ? <div className={styles.loader}></div> : null}
