@@ -73,6 +73,8 @@ class newCollectionComponent extends React.Component {
   closeModal() {
     this.setState({modalIsOpen: false});
     this.setState({cap: false});
+    this.setState({size:''});
+    this.setState({max:''});
     this.setState({error: false});
     if(this.state.successMessage==true)
     {
@@ -120,7 +122,7 @@ class newCollectionComponent extends React.Component {
     {
       obj[data[key].split("=")[0]] = data[key].split("=")[1];
     }
-    if (obj['capSize']!= '' && obj['size']!=null){
+    if (obj['capSize']!= '' && obj['capSize']!=null){
       this.setState({submitted:true});
     }
 
@@ -199,7 +201,9 @@ class newCollectionComponent extends React.Component {
     if (calledFrom == 'getCappedData'){
       if(this.state._isMounted == true){
         if(typeof(data.response) != 'undefined'){
-          this.setState({cap:data.response.result});
+          this.setState({cap:data.response.result.capped});
+          this.setState({size:data.response.result.size != undefined ? data.response.result.size : ''});
+          this.setState({max:data.response.result.maxDocs != undefined ? data.response.result.maxDocs : ''});
         }
       }
     }
