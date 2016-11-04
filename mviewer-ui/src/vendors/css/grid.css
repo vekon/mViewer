@@ -13,6 +13,31 @@
 }
 
 
+.floating-label-hovered{
+  top: 5px;
+  bottom: 10px;
+  left: 10px;
+  font-size: 11px;
+  opacity: 1;
+  position: absolute;
+  pointer-events: none;
+  transition: 0.2s ease all;
+  color: #2494d0 !important; 
+
+}
+
+
+
+.floating-label{
+    position: absolute;
+    pointer-events: none;
+    left: 10px;
+    top: 18px;
+    transition: 0.2s ease all;
+    font-size: 17px;
+}
+
+
 /*  SECTIONS  ============================================================================= */
 
 .section {
