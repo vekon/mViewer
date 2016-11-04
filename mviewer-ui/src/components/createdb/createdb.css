@@ -1,14 +1,19 @@
 .mainContainer {
   /*width: 702px;*/
   width: 70%;
-  margin: 4% auto;
+  /*margin: 4% auto;*/
   /*height: 426px;*/
-    padding: 10px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    height: 30%;
-    margin: -19% 0 0 -35%
+  padding: 10px;
+  /*position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 30%;
+  margin: -19% 0 0 -35%*/
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .topContainer {

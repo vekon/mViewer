@@ -6,6 +6,7 @@
   padding: 20px;
   display: inline-block;
   padding-left: 5%;
+  padding-right: 3%;
 
   float: right;
   height: calc(100vh - 130px);
@@ -29,6 +30,7 @@
   line-height: 25px;
   max-width: 425px;
   background-color: #eff4f8;
+  margin-bottom: 0;
 }
 
 .detailsBody table th{

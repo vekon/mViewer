@@ -6,7 +6,7 @@
   height: calc(100vh - 130px);
   overflow: auto;
   float: right;
-
+  padding-right: 3%;
 
 }
 
