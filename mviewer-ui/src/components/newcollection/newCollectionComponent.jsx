@@ -253,7 +253,7 @@ class newCollectionComponent extends React.Component {
                 </div>
                 <div className={newCollectionStyles.inputBox}>
                   <input type="checkbox" name="isCapped" id="isCapped" className={newCollectionStyles.checkBox} onChange={this.handleCheck.bind(this)} checked={this.state.cap}  />
-                  <div className={newCollectionStyles.checkLabel}><span>Capped</span></div>
+                  <div className={newCollectionStyles.checkLabel} onClick={this.handleCheck.bind(this)}><span>Capped</span></div>
                 </div>
                 <div className={newCollectionStyles.inputBox}>
                   <TextInput type="text" name="capSize" id="capSize" placeholder="size (bytes)" value={this.state.size} onChange={this.handleChange.bind(this)} validations={'isRequired1:'+this.state.cap+',isNumeric1:'+this.state.cap} checkforOtherErrors ={this.state.submitted} validationErrors={{isNumeric1: 'Please enter the size in numeric', isRequired1: 'Please enter the size'}} shouldBeDisabled = {!this.state.cap}  />
@@ -263,7 +263,7 @@ class newCollectionComponent extends React.Component {
                 </div>
                 <div className={newCollectionStyles.inputBox}>
                   <input type="checkbox" name="autoIndexId" id="autoIndexId"  className={newCollectionStyles.checkBox} checked={this.state.autoIndex} onChange={this.handleIndex.bind(this)} checked={this.state.autoIndex} disabled={!this.state.cap} />
-                  <div className={newCollectionStyles.checkLabel}><span>Auto Indent</span></div>
+                  <div className={newCollectionStyles.checkLabel} onClick={this.handleIndex.bind(this)}><span>Auto Indent</span></div>
                 </div>
                 <div >
                   <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={newCollectionStyles.submit} disabled={!this.state.canSubmit}>SUBMIT</button>

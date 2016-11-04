@@ -27,6 +27,7 @@ class LoginComponent extends React.Component {
       connectionId:'',
       authEnabled: false,
       loading: false,
+      rememberMe: false
     }
     this.onSubmit = this.onSubmit.bind(this);
     this.success = this.success.bind(this);
@@ -42,7 +43,10 @@ class LoginComponent extends React.Component {
     this.setState({userNameError: false});
     this.setState({passwordError: false});
     this.setState({dbError: false});
+  }
 
+  rememberMeCheck(){
+    this.setState({rememberMe:!this.state.rememberMe});
   }
 
   getRequest() {
@@ -86,10 +90,31 @@ class LoginComponent extends React.Component {
     return obj;
   }
 
+  loadLoginData() {
+    if(localStorage.getItem('loginData') != undefined && localStorage.getItem('loginData') != null){
+      var loginObject = JSON.parse(localStorage.getItem('loginData'));
+      this.setState({host : loginObject.host});
+      this.setState({port: loginObject.port});
+      this.setState({username : loginObject.username});
+      this.setState({password : loginObject.password});
+      this.setState({databases: loginObject.databases});
+      this.setState({authEnabled : loginObject.authEnabled});
+      this.setState({rememberMe: true});
+    }
+  }
+
   onSubmit() {
     var obj = this.getRequest();
     this.setState({loading : true});
     this.setState({message: ''});
+    if(this.state.rememberMe){
+      var loginData = { 'host': this.state.host, 'port': this.state.port, 'username': this.state.username,
+                        'password': this.state.password, 'databases': this.state.databases,'authEnabled': this.state.authEnabled};
+      localStorage.setItem('loginData', JSON.stringify(loginData));
+    } else {
+      localStorage.removeItem('loginData');
+    }
+
     var loginCall = service('POST', 'login',  obj);
     loginCall.then(this.success, this.failure);
     return loginCall;
@@ -140,10 +165,13 @@ class LoginComponent extends React.Component {
     }.bind(this);
   }
 
+
+
   componentDidMount() {
     if (typeof(this.props.location.query.code) != 'undefined' ) {
       this.setState({message: 'You are not connected to Mongo DB'});
     }
+    this.loadLoginData();
   }
 
   render() {
@@ -163,8 +191,8 @@ class LoginComponent extends React.Component {
                   <TextInput type="text" name="port" id="port" placeholder="port" value={this.state.port} onChange={this.handleChange( 'port')} validations={{isRequired1:this.state.portError , isNumeric:true}} validationErrors={{isRequired1 : "Port must not be empty", isNumeric : "Inavlid Port number" }} shouldBeDisabled ={this.state.loading} />
                 </div>
                 <div className={styles.inputBoxLogin+' '+ styles.checkBox}>
+                  <span className={styles.checkLabel} onClick ={this.handleCheck.bind(this)}>Perform Authentication</span>
                   <input type="checkbox" className={styles.checkboxClass} name="auth" id="auth"  onChange={this.handleCheck.bind(this)} checked={this.state.authEnabled} disabled ={this.state.loading}  />
-                  <div className={styles.checkLabel} onClick ={this.handleCheck.bind(this)} ><span>Perform Authentication</span></div>
                 </div>
                 <div className={styles.inputBoxLogin}>
                   <TextInput type="text" name="username" id="username" placeholder="usename" value={this.state.username} onChange={this.handleChange( 'username')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.userNameError} validationErrors={{isRequired1: 'User name must not be empty' }}/>
@@ -180,7 +208,9 @@ class LoginComponent extends React.Component {
                   <input type="submit" value={this.state.loading == true ? "Connecting.." : "CONNECT" } disabled={!this.state.canSubmit || this.state.loading} className={ styles.gobutton} />
                 </div>
                 <div className={styles.footerLink}>
-                   <a href='http://venkoux.github.io/mViewer'>Need Help?</a>
+                  <input type="checkbox" className={styles.rememberClass} name="rememberMe" id="rememberMe"  onChange={this.rememberMeCheck.bind(this)} checked={this.state.rememberMe}/>
+                  <div className={styles.rememberLabel} onClick ={this.rememberMeCheck.bind(this)} ><span>Remember Me</span></div>
+                  <a href='http://venkoux.github.io/mViewer'>Need Help?</a>
                 </div>
                 <div className={styles.errorMessage + ' ' + (this.state.message != undefined && this.state.message!='' && this.state.message !='Login Success' ? styles.show : styles.hidden)}>{this.state.message}</div>
               </div>
