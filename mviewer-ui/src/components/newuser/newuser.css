@@ -21,14 +21,6 @@
     font-family: 'Brandon-Light';
 }
 
-.rolesDiv {
-
-}
-
-.roleInputBox {
-
-}
-
 .inputBox label {
     font-size: 15px;
     color: black;
@@ -183,12 +175,8 @@
     position: absolute;
 }
 
-.inputBox input[type=checkbox].checkboxClass {
-    display: inline;
-    width: 16px;
-    height: 16px;
-    background-color: white !important;
-    color: inherit;
+.checkboxClass {
+  cursor:pointer;
 }
 
 .name,
@@ -200,6 +188,7 @@
   margin-bottom: 7px;
   float: left;
   width: 31%;
+  cursor: pointer;
 }
 
 .modifyUser {

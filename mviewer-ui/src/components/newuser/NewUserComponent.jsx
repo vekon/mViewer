@@ -344,7 +344,7 @@ class NewUserComponent extends React.Component {
                     return (
                      <div className={newUserStyles.roleInputBox} key={item.key}>
                        <input type="checkbox" className={newUserStyles.checkboxClass} name="{item.key}" id="{item.key}"  onChange={that.handleCheck.bind(that,item)} checked={item.selected}  />
-                       <div className={newUserStyles.checkLabel}><span>{item.key}</span></div>
+                       <div className={newUserStyles.checkLabel} onClick={that.handleCheck.bind(that,item)}><span>{item.key}</span></div>
                      </div> );
                  })}
                </div>
