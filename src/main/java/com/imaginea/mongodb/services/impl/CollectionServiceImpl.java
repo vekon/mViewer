@@ -209,46 +209,16 @@ public class CollectionServiceImpl implements CollectionService {
 
       MongoDatabase db = mongoInstance.getDatabase(dbName);
       MongoCollection<Document> selectedCollection = db.getCollection(selectedCollectionName);
-
-      boolean isCapped =(boolean)isCappedCollection(dbName, selectedCollectionName).get("capped");
-
-      if (isCapped && !capped){
-        Document options = new Document();
-        options.put("convertToCapped", selectedCollectionName);
-        options.put("size", size);
-        options.put("max", maxDocs);
-        options.put("autoIndexId", autoIndexId);
-        Document commandResult = db.runCommand(options);
-
-        String errMsg = (String) commandResult.get("errmsg");
-        if (errMsg != null) {
-          return "Failed to convert [" + selectedCollectionName + "] to capped Collection! "
-              + errMsg;
-        }
+      CreateCollectionOptions options = new CreateCollectionOptions();
+      options.capped(capped);
+      if (capped){
+        options.maxDocuments(maxDocs);
+        options.autoIndex(autoIndexId);
+        options.sizeInBytes(size);
+        createCollection(options,selectedCollection,selectedCollectionName, db);
         convertedToCapped = true;
-      }
-
-      if (isCapped && !capped) {
-
-        CreateCollectionOptions options = new CreateCollectionOptions();
-        options.capped(false);
-
-        db.createCollection(selectedCollectionName + "_temp", options);
-        MongoCollection<Document> tempCollection =
-            db.getCollection(selectedCollectionName + "_temp");
-
-        MongoCursor<Document> cur = selectedCollection.find().iterator();
-        while (cur.hasNext()) {
-          Document obj = cur.next();
-          tempCollection.insertOne(obj);
-        }
-
-        MongoNamespace namespace = selectedCollection.getNamespace();
-
-        selectedCollection.drop();
-
-        tempCollection.renameCollection(namespace);
-
+      } else {
+        createCollection(options, selectedCollection, selectedCollectionName, db);
         convertedToNormal = true;
       }
 
@@ -294,6 +264,21 @@ public class CollectionServiceImpl implements CollectionService {
    * @throws CollectionException throw super type of
    *         UndefinedCollectionException,DeleteCollectionException
    */
+
+  private void createCollection(CreateCollectionOptions options, MongoCollection<Document> selectedCollection, String selectedCollectionName,MongoDatabase db) {
+    db.createCollection(selectedCollectionName + "_temp", options);
+    MongoCollection<Document> tempCollection =
+            db.getCollection(selectedCollectionName + "_temp");
+
+    MongoCursor<Document> cur = selectedCollection.find().iterator();
+    while (cur.hasNext()) {
+      Document obj = cur.next();
+      tempCollection.insertOne(obj);
+    }
+    MongoNamespace namespace = selectedCollection.getNamespace();
+    selectedCollection.drop();
+    tempCollection.renameCollection(namespace);
+  }
 
   public String deleteCollection(String dbName, String collectionName)
       throws DatabaseException, CollectionException, ValidationException {
@@ -394,13 +379,14 @@ public class CollectionServiceImpl implements CollectionService {
     JSONObject collectionJSON = new JSONObject();
 
     boolean isCapped = (Boolean) document.get("capped");
-    int size = (int) document.get("maxSize");
-    int maxDocs = (int) document.get("max");
-
-    collectionJSON.put("size",size);
-    collectionJSON.put("maxDocs",maxDocs);
     collectionJSON.put("capped",isCapped);
+    if(isCapped) {
+      String size = document.get("maxSize").toString();
+      String maxDocs = document.get("max").toString();
 
+      collectionJSON.put("size", size);
+      collectionJSON.put("maxDocs", maxDocs);
+    }
     return collectionJSON;
   }
 
