@@ -219,6 +219,7 @@ class newCollectionComponent extends React.Component {
         borderRadius          : '4px',
         right                 : 'auto',
         width                 : '25%',
+        minWidth              : '329px',
         bottom                : 'auto',
         marginRight           : '-50%',
         padding               : '0px',

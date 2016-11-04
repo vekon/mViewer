@@ -199,6 +199,7 @@ class newFileComponent extends React.Component {
         borderRadius          : '4px',
         right                 : 'auto',
         width                 : '25%',
+        minWidth              : '310px',
         padding               : '0px',
         bottom                : 'auto',
         marginRight           : '-50%',

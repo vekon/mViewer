@@ -68,7 +68,8 @@
   min-width: 102px;
   margin:0;
   /*padding:10px 15px;*/
-  padding: 3% 4%;
+  /*padding: 3% 4%;*/
+  padding: 5px 15px;
   border-bottom:solid 1px #bababa;
   cursor:pointer;
   font-size: 17px;
@@ -151,7 +152,8 @@
 .removeIcon {
   color: inherit;
   font-size: 13px;
-  padding-top: 15px;
+  /*padding-top: 15px;*/
+  padding-top: 17px;
   padding-bottom: 15px;
   display: inline-block;
   float: right;

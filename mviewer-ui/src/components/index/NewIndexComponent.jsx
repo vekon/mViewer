@@ -260,6 +260,7 @@ class NewIndexComponent extends React.Component {
         borderRadius          : '4px',
         right                 : 'auto',
         width                 : '30%',
+        minWidth              : '329px',
         overflow              : 'hidden',
         bottom                : 'auto',
         marginRight           : '-50%',

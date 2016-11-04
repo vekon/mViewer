@@ -68,6 +68,11 @@
   text-align: center;
 }
 
+.tabs li span {
+  display: inline-block;
+  width: 100%;
+}
+
 .activeTab {
    border-bottom: solid 6px #2494d0;
    font-weight: 600;

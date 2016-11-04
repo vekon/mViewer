@@ -305,6 +305,7 @@ class NewUserComponent extends React.Component {
         borderRadius          : '4px',
         right                 : 'auto',
         width                 : '34%',
+        minWidth              : '450px',
         bottom                : 'auto',
         marginRight           : '-50%',
         padding               : '0px',

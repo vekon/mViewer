@@ -84,9 +84,7 @@ class DeleteComponent extends React.Component {
         top                   : '50%',
         left                  : '50%',
         right                 : 'auto',
-        width                 : '25%',
         bottom                : 'auto',
-        marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)',
         zIndex                :  '4',
         borderRadius          :  '2px'

@@ -231,6 +231,7 @@ class DbListComponent extends React.Component {
         left                  : '53%',
         right                 : 'auto',
         width                 : '25%',
+        minWidth              : '200px',
         bottom                : 'auto',
         padding               : '0px',
         marginRight           : '-50%',
