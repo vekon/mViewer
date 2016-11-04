@@ -231,6 +231,7 @@ class DbListComponent extends React.Component {
         left                  : '53%',
         right                 : 'auto',
         width                 : '25%',
+        minWidth              : '200px',
         bottom                : 'auto',
         padding               : '0px',
         marginRight           : '-50%',
@@ -242,6 +243,7 @@ class DbListComponent extends React.Component {
         backgroundColor       : 'rgba(0,0,0, 0.74902)'
       }
     };
+
     var that = this;
     const filteredData = this.state.dbNames.filter(createFilter(this.state.searchTerm));
     return(

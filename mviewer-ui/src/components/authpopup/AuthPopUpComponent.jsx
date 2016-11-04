@@ -33,6 +33,7 @@ class AuthPopUpComponent extends React.Component {
         left                  : '50%',
         right                 : 'auto',
         width                 : '25%',
+        minWidth              : '300px',
         bottom                : 'auto',
         marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)',

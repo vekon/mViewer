@@ -120,6 +120,7 @@ class CreateDbComponent extends React.Component {
         left                  : '53%',
         right                 : 'auto',
         width                 : '25%',
+        minWidth              : '200px',
         bottom                : 'auto',
         marginRight           : '-50%',
         padding               : '0px',

@@ -1,8 +1,31 @@
 .mainContainer {
   display: inline-block;
-  width: 94%;
-  height: 100%;
+  /*width: calc( 100vw - 95px);
+  height: 100%;*/
+  height: calc(100vh - 70px);
+  width: calc(100% - 66px);
   background: #fff;
+  overflow: auto;
+}
+
+.mainContainer>button {
+  float: none !important;
+  background: #ecf4f7 !important;
+  width: 100%;
+  border-radius: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid #bababa;
+  height: 59px;
+}
+
+.collapseSpan {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border-radius: 1px;
+    font-size: 15px;
+    font-family: 'Brandon';
 }
 
 .tabTitle {
@@ -28,12 +51,13 @@
   float: left;
   border-bottom: solid 1px #bababa;
   background: #ecf4f7;
+  margin: 0;
 }
 
 .tabs li {
-  display: inline-block;
+  /*display: inline-block;*/
   cursor: pointer;
-  width: 10%;
+  /*width: 10%;*/
   min-width: 100px;
   text-align: center;
   font-family: 'Brandon';
@@ -41,6 +65,12 @@
   padding-bottom: 13px;
   padding-top: 15px;
   font-size: 17px;
+  text-align: center;
+}
+
+.tabs li span {
+  display: inline-block;
+  width: 100%;
 }
 
 .activeTab {

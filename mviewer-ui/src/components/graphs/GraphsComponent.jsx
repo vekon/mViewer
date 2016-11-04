@@ -16,11 +16,31 @@ class GraphsComponent extends React.Component {
       interval: 0,
       error: false,
       connectionId: JSON.parse(sessionStorage.getItem('connectionId') || '{}'),
-      hasRole: null
+      hasRole: null,
+      navMessage:'Combined View'
+    }
+  }
+
+  toggleMessage(){
+    if (this.state.selectedTab == 0){
+      this.setState({navMessage : 'Combined View'});
+    }
+    else if (this.state.selectedTab == 1){
+      this.setState({navMessage : 'Queries'});
+    }
+    else if (this.state.selectedTab == 2){
+      this.setState({navMessage : 'Updates'});
+    }
+    else if (this.state.selectedTab == 3){
+      this.setState({navMessage : 'Inserts'});
+    }
+    else if (this.state.selectedTab == 4){
+      this.setState({navMessage : 'Deletes'});
     }
   }
 
   componentDidMount(){
+
     var requestTime = new Date().getTime().toString();
     var partialUrl1 = 'graphs/initiate?connectionId='+this.state.connectionId+'&ts='+requestTime+'&pollingTime=5000';
     var graphsInitialCall = service('GET', partialUrl1, '');
@@ -77,6 +97,22 @@ class GraphsComponent extends React.Component {
   handleSelect(index){
     this.setState({selectedTab:index}, function(){
     });
+
+    if (index == 0){
+      this.setState({navMessage : 'Combined View'});
+    }
+    else if (index == 1){
+      this.setState({navMessage : 'Queries'});
+    }
+    else if (index == 2){
+      this.setState({navMessage : 'Updates'});
+    }
+    else if (index == 3){
+      this.setState({navMessage : 'Inserts'});
+    }
+    else if (index == 4){
+      this.setState({navMessage : 'Deletes'});
+    }
   }
 
 
@@ -100,13 +136,14 @@ class GraphsComponent extends React.Component {
 
     return (
       <div className = {graphStyles.mainContainer}>
+      <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#graphsNavbar" aria-expanded="false" onClick={this.toggleMessage.bind(this)}><span className={graphStyles.collapseSpan}>{this.state.navMessage}</span></button>
       {!this.state.error ? <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
-        <TabList className={graphStyles.tabs}>
-          <Tab className={this.state.selectedTab==0 ? graphStyles.activeTab : ''}>Combined View</Tab>
-          <Tab className={this.state.selectedTab==1 ? graphStyles.activeTab : ''}>Queries</Tab>
-          <Tab className={this.state.selectedTab==2 ? graphStyles.activeTab : ''}>Updates</Tab>
-          <Tab className={this.state.selectedTab==3 ? graphStyles.activeTab : ''}>Inserts</Tab>
-          <Tab className={this.state.selectedTab==4 ? graphStyles.activeTab : ''}>Deletes</Tab>
+        <TabList id = "graphsNavbar" className={graphStyles.tabs+' nav navbar-nav mainTab collapse navbar-collapse'}>
+          <Tab className={this.state.selectedTab==0 ? graphStyles.activeTab : ''}><span data-target=".navbar-collapse.in" data-toggle="collapse">Combined View</span></Tab>
+          <Tab className={this.state.selectedTab==1 ? graphStyles.activeTab : ''}><span data-target=".navbar-collapse.in" data-toggle="collapse">Queries</span></Tab>
+          <Tab className={this.state.selectedTab==2 ? graphStyles.activeTab : ''}><span data-target=".navbar-collapse.in" data-toggle="collapse">Updates</span></Tab>
+          <Tab className={this.state.selectedTab==3 ? graphStyles.activeTab : ''}><span data-target=".navbar-collapse.in" data-toggle="collapse">Inserts</span></Tab>
+          <Tab className={this.state.selectedTab==4 ? graphStyles.activeTab : ''}><span data-target=".navbar-collapse.in" data-toggle="collapse">Deletes</span></Tab>
         </TabList>
         <TabPanel className={graphStyles.tabPanel}>
          {this.state.hasRole ? <div> 

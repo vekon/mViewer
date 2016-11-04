@@ -11,6 +11,7 @@ import $ from 'jquery'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import UserDetails from '../userdetails/UserDetailsComponent.jsx'
 import privilegesAPI from '../../gateway/privilegesAPI.js';
+import ReactResizeDetector from 'react-resize-detector';
 
 class CollectionsComponent extends React.Component {
 
@@ -21,13 +22,27 @@ class CollectionsComponent extends React.Component {
         showQueryExecutor: false,
         selectedCollection: '',
         userDetails: [],
-        hasListColPriv: null
+        hasListColPriv: null,
+        navMessage:'Collections'
       }
   }
 
   handleSelect(index){
     this.setState({selectedTab:index}, function(){
     });
+    if (index == 0){
+      this.setState({navMessage : 'Collections'});
+    }
+    else if (index == 1){
+      this.setState({navMessage : 'GridFS'});
+    }
+    else if (index == 2){
+      this.setState({navMessage : 'Users'});
+    }
+    else if (index == 3){
+      this.setState({navMessage : 'Statistics'});
+    }
+
     this.setState({hasListColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db)});
   }
 
@@ -36,12 +51,21 @@ class CollectionsComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
+   //  $.fn.equalizeHeights = function(){
+   //    console.log('maxHeight ' + $('.collectionsContainer').height());
+   //    return this.height( $('.collectionsContainer').height() );
+   //  }
+
+   // $('.sideContainer').equalizeHeights();
+   // this.setState({navMessage:'Click to expand'});
+
     Tabs.setUseDefaultStyles(false);
     this.setState({selectedTab:0});
     this.setState({showQueryExecutor: false});
     this.setState({selectedCollection: ''});
   
     if (this.props.location.query.db  != nextProps.location.query.db){
+
       this.setState({hasListColPriv: null});
       setTimeout(function(){
         this.setState({hasListColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db)}, function(){
@@ -52,7 +76,6 @@ class CollectionsComponent extends React.Component {
 
 
   componentDidMount (){
-
     setTimeout(function(){
       this.setState({hasListColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db)}, function(){
       }); 
@@ -89,7 +112,17 @@ class CollectionsComponent extends React.Component {
     this.refs.left.refreshRespectiveData(updatedcollectionName);
   }
 
+  _onResize(height, width){
+    console.log('height: '+height + ' , width: '+width);
+    $('.body').height(height);
+  }
+
+  toggleMessage(){
+
+  }
+
   render () {
+
     Tabs.setUseDefaultStyles(false);
     var hasUserAdminPriv = privilegesAPI.hasPrivilege('viewUser', '',this.props.location.query.db ); 
     var hasUserAdminAnyDatabasePriv = privilegesAPI.hasPrivilege('viewUser','',this.props.location.query.db );
@@ -97,38 +130,43 @@ class CollectionsComponent extends React.Component {
 
     var hasListColPriv   = privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db);
     return(
-      <div className = {this.props.location.query.collapsed == 'false' ? collectionsStyles.mainContainer : collectionsStyles.mainContainer+' ' +collectionsStyles.collapsedContainer}>
-        {this.props.location.query.db !== 'undefined' ? <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
-          <TabList className={collectionsStyles.tabs}>
-            <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 0 ? collectionsStyles.activeTab : '' } >Collections</Tab>
-            <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 1 ? collectionsStyles.activeTab : '' }>GridFS</Tab>
-            <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 2 ? collectionsStyles.activeTab : '' }>Users</Tab>
-            <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 3 ? collectionsStyles.activeTab : '' }>Statistics</Tab>
+      <div className = {this.props.location.query.collapsed == 'false' ? collectionsStyles.mainContainer+ ' collectionsContainer col-lg-10  col-sm-9 col-xs-8 col-md-9' : collectionsStyles.mainContainer+' collectionsContainer col-lg-11  col-sm-11 col-xs-10 col-md-11 ' +collectionsStyles.collapsedContainer}>
+        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#mainNavbar" aria-expanded="false" onClick={this.toggleMessage.bind(this)}><span className={collectionsStyles.collapseSpan}>{this.state.navMessage}</span></button>
+        {this.props.location.query.db !== 'undefined' ? 
+        
+        <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
+          
+          <TabList id = "mainNavbar" className={collectionsStyles.tabs + ' nav navbar-nav mainTab collapse navbar-collapse'}>
+            <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 0 ? collectionsStyles.activeTab : '' } ><span data-target=".navbar-collapse.in" data-toggle="collapse">Collections</span></Tab>
+            <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 1 ? collectionsStyles.activeTab : '' }><span data-target=".navbar-collapse.in" data-toggle="collapse">GridFS</span></Tab>
+            <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 2 ? collectionsStyles.activeTab : '' }><span data-target=".navbar-collapse.in" data-toggle="collapse">Users</span></Tab>
+            <Tab onClick={this.switchTab.bind(this)} className={this.state.selectedTab == 3 ? collectionsStyles.activeTab : '' }><span data-target=".navbar-collapse.in" data-toggle="collapse">Statistics</span></Tab>
           </TabList>
-          <TabPanel>
+          
+          <TabPanel className ='mainTabPanel'>
             { this.state.hasListColPriv == true ?
-              <div className={collectionsStyles.holder}>
+              <div className={collectionsStyles.holder + ' row'}>
                 <CollectionList ref="left"  visible={true} propps = {this.props} showQueryExecutor = {this.showQueryExecutor.bind(this)} hideQueryExecutor = {this.hideQueryExecutor.bind(this)} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></CollectionList>
                 {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "collection" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
               </div> : ( this.state.hasListColPriv ==null ? <div className={collectionsStyles.loading}><img src={'./images/loading.gif'} ></img><label>Checking for Privileges</label></div>:<div className = {collectionsStyles.errorHolder}>You are not authorised to view Collections</div>)
             }
           </TabPanel>
-          <TabPanel>
+          <TabPanel className ='mainTabPanel'>
             { hasListColPriv  ?
-              <div>
+              <div className={'row'}>
                 <GridFSList ref="left"  visible={true} propps = {this.props} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></GridFSList>
                 {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "fs" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
               </div> : <div className = {collectionsStyles.errorHolder}>You are not authorised to view GridFS</div>
             }
           </TabPanel>
-          <TabPanel>
+          <TabPanel className ='mainTabPanel'>
             { hasUserAdminPriv || hasUserAdminAnyDatabasePriv ? 
-              <div>
+              <div className={'row'}>
                 <UserList ref="left"  visible={true} propps = {this.props} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></UserList>
                 {this.state.showQueryExecutor ? <UserDetails ref='right' refreshData={this.refreshRespectiveData.bind(this)} users={this.state.userDetails} currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)}></UserDetails> : null}
               </div> : <div className = {collectionsStyles.errorHolder}>You are not authorised to view Users</div>}  
           </TabPanel>
-          <TabPanel>
+          <TabPanel className ='mainTabPanel'>
           { hasDbStatsPriv ?
             <DbStats ref="left"  visible={true} connectionId = {this.props.connectionId} selectedDB={this.props.location.query.db}></DbStats>
             : <div className = {collectionsStyles.errorHolder}>You are not authorised to view DB Statistics</div>

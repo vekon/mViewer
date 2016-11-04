@@ -126,11 +126,11 @@ class UserList extends React.Component {
         }.bind(this));
     }
       return (
-        <div className={UserListStyles.menu} key = {this.props.visible}>
+        <div className={UserListStyles.menu + ' col-md-2 col-xs-5 col-sm-3'} key = {this.props.visible}>
           <div className={(this.props.visible ?(this.state.visible ? UserListStyles.visible   : this.props.alignment): this.props.alignment ) }>
             <SearchInput className={UserListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
             <h5 className={UserListStyles.menuTitle}><NewUser currentDb={this.props.selectedDB} currentItem="fs" connectionId={this.state.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}></NewUser></h5>
-            {items}
+            <div className = {UserListStyles.listBody}>{items}</div>
           </div>
         </div>
       );

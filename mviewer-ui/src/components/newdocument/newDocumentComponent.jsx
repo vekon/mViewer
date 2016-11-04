@@ -136,6 +136,7 @@ class newDocumentComponent extends React.Component {
         borderRadius          : '4px',
         right                 : 'auto',
         width                 : '25%',
+        minWidth              : '329px',
         overflow              : 'hidden',
         bottom                : 'auto',
         marginRight           : '-50%',

@@ -1,15 +1,16 @@
 .results
 {
-  width: 99%;
+  /*width: 99%;*/
   height: auto;
   margin-top: 10px;
+  margin-right: 10px;
   display: block;
   overflow: hidden;
   resize: none;
   font-family: 'Brandon-Light';
   font-weight: 300;
   background: #edf1f4;
-  min-height: 20%;
+  /*min-height: 20%;*/
 }
 
 .results textarea {

@@ -1,14 +1,39 @@
 .mainContainer {
     background-color: #fff;
     display: inline-block;
-    width: 85%;
+    /*width: 85%;*/
     overflow: auto;
-    width: 80%;
-    height: 100%;
+    /*width: 80%;*/
+    /*width: calc(100vw - 277px);*/
+    height: calc(100vh - 70px);
+    /*height: 100%;*/
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.mainContainer>button {
+  float: none !important;
+  background: #ecf4f7 !important;
+  width: 100%;
+  border-radius: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid #bababa;
+  height: 59px;
+}
+
+.collapseSpan {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border-radius: 1px;
+    font-size: 15px;
+    font-family: 'Brandon';
 }
 
 .collapsedContainer {
-  width: 90% !important;
+  /*width: 90% !important;*/
+  /*width: calc(100vw - 147px) !important;*/
 }
 
 .breadCrumb {
@@ -32,6 +57,17 @@
   text-decoration: none;
 }
 
+.navBar {
+  margin-bottom: 0;
+  border: none;
+  border-radius: 0;
+  background: #fff;
+}
+
+.navContainer {
+  padding: 0;
+}
+
 .tabs {
   width: 100%;
   background: #CCD9DE;
@@ -40,12 +76,13 @@
   float: left;
   border-bottom: solid 1px #bababa;
   background: #ecf4f7;
+  margin: 0;
 }
 
 .tabs li {
-  display: inline-block;
+  /*display: inline-block;*/
   cursor: pointer;
-  width: 10%;
+  /*width: 10%;*/
   min-width: 100px;
   text-align: center;
   font-family: 'Brandon';
@@ -55,14 +92,16 @@
   font-size: 17px;
 }
 
+
+
 .tabs li span {
   display: inline-block;
-  width: 10%;
-  font-size: 120%;
+  width: 100%;
+  /*font-size: 120%;
   height: 100%;
   text-align: center;
   font-family: 'Brandon-Light';
-  cursor: pointer;
+  cursor: pointer;*/
 }
 
 .activeTab {
@@ -90,4 +129,13 @@
   display: block;
   font-size: 17px;
   font-family: 'Brandon-Light';
+}
+
+.holder {
+
+}
+
+
+.toggleButton {
+  background: blue;
 }

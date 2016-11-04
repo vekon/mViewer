@@ -11,6 +11,7 @@ import DbStatsComponent from './components/dbstats/DbStatsComponent.jsx';
 import CollectionsComponent from  './components/collections/CollectionsComponent.jsx';
 import GraphsComponent from  './components/graphs/GraphsComponent.jsx';
 import ServerStatsComponent from  './components/serverstats/ServerStatsComponent.jsx';
+// import Bootstrap from './vendors/css/bootstrap/dist/css/bootstrap.css';
 
 render((
   <Router history={hashHistory}>

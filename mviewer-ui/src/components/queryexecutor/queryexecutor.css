@@ -1,8 +1,23 @@
-.mainContainer{
+.mainContainer,
+.mainContainerCollapsed{
   display: inline-block;
-  width: 85%;
+  /*width: 85%;*/
   padding: 5px;
+  height: calc(100vh - 130px);
+  overflow: auto;
+  float: right;
+  padding-right: 3%;
 
+}
+
+.mainContainer {
+  /*width: calc(100vw - 334px);*/
+
+
+}
+
+.mainContainerCollapsed {
+  /*width: calc(100vw - 464px);*/
 }
 
 .actionsContainer {
@@ -22,6 +37,9 @@
 .tab{
    font-size: 15px;
    font-weight: 600;
+   border: 0;
+  background: #fff;
+  border-radius: 0;
 }
 
 .tab label {
@@ -38,7 +56,7 @@
 .queryBoxDiv,
 .queryBoxDiv1 {
   display: inline-block;
-  width: 50%;
+  /*width: 50%;*/
   padding: 10px;
   position: relative;
 }
@@ -71,20 +89,24 @@
 .parametersDiv,
 .parametersDiv1{
   display: inline-block;
-  width: 23%;
+  /*width: 23%;*/
 }
 
 .parametersDiv{
-  float: right;
+  /*float: right;*/
   padding: 10px;
 }
 
 .parametersDiv1{
-  padding-top: 2px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
+
 }
 
 .parametersDiv label:first-child {
   padding-bottom: 2% !important;
+  padding-top: 0 !important;
 }
 
 
@@ -113,13 +135,20 @@
 .parametersDiv label {
   display: inline-block;
   padding-top: 5px;
-  padding-bottom: 3%;
+  padding-bottom: 2%;
+}
+
+
+.parametersDiv1 label:first-child {
+  padding-top: 0 !important;
+  margin-bottom: 1% !important;
 }
 
 .parametersDiv1 label {
   display: inline-block;
-  padding-top: 5px;
-  padding-bottom: 2.6%;
+  /*padding-top: 5px;*/
+  margin-top: 5px;
+  /*padding-bottom: 2%;*/
 }
 
 .parametersDiv1 .selectOptions label{
@@ -211,6 +240,7 @@
 }
 
 
+
 .results
 {
   width: 93%;
@@ -236,8 +266,9 @@
 .paginator {
   font-size: 14px;
   float: right;
-  height: 20px;
+  /*height: 20px;*/
   padding: 10px;
+  padding-right: 20px;
 }
 
 .paginator label {
@@ -271,7 +302,7 @@ padding-right: 10px;
 
 
 .deleteButtonGridfs {
-float: right;
+/*float: right;*/
 display: inline-block;
 font-size: 14px;
 cursor: pointer;
@@ -287,10 +318,11 @@ cursor: pointer;
 }
 
 .treeTab {
-  width: 99%;
+  /*width: 99%;*/
   border-top: 1px solid #bababa;
   border-bottom: 1px solid #bababa;
-  height: 50px;
+  /*height: 50px;*/
+  margin-right: 10px;
 }
 
 .treeTab li {
@@ -299,18 +331,19 @@ cursor: pointer;
 
 .treeTab li span {
   display: inline-block;
-  width: 10%;
+  /*width: 10%;*/
   font-size: 14px;
   text-align: center;
   font-family: 'Brandon';
   cursor: pointer;
-  height: 100%;
+  /*height: 100%;*/
+  padding: 12px;
 }
 
 .activeTab {
    background: #2494d0;
    color: #fff;
-   padding: 1%;
+   /*padding: 1%;*/
 }
 
 .exceptionContainer {
@@ -325,7 +358,7 @@ cursor: pointer;
 .attrDiv {
   position: relative;
   display: inline-block;
-  width: 27%;
+  /*width: 27%;*/
   padding: 10px;
 }
 
@@ -338,4 +371,13 @@ cursor: pointer;
   color: red;
   padding: 0 10px 10px 0;
   font-size: 15px;
+}
+
+
+
+.navBar {
+  list-style-type: none;
+  padding-top: 10px;
+  margin: 0;
+  padding-left: 10px;
 }
