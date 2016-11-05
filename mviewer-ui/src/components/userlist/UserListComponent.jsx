@@ -5,6 +5,7 @@ import UserItem from './UserItemComponent.jsx'
 import NewUser from '../newuser/NewUserComponent.jsx'
 import SearchInput, {createFilter} from 'react-search-input'
 import service from '../../gateway/service.js'
+import ReactHeight from 'react-height'
 
 class UserList extends React.Component {
 
@@ -19,7 +20,9 @@ class UserList extends React.Component {
       selectedItem: null,
       loading: 'Loading',
       selectedCollection:null,
-      searchTerm: ''
+      searchTerm: '',
+      viewMore: false,
+      viewMoreLink: false
     }
   }
 
@@ -106,6 +109,21 @@ class UserList extends React.Component {
     userListCall.then(this.success.bind(this, 'componentWillReceiveProps'), this.failure.bind(this, 'componentWillReceiveProps'));
   }
 
+  setViewMore(height) {
+    var usersListHeight = $('.usersContainer').height();
+    var listContainerHeight = height;
+
+    if (listContainerHeight > usersListHeight) {
+      this.setState({viewMoreLink: true});
+    } else {
+      this.setState({viewMoreLink: false});
+    }
+  }
+
+  usersMoreClick() {
+    this.setState({viewMore: !this.state.viewMore});
+  }
+
   render () {
     var that=this;
     var items=null;
@@ -130,7 +148,14 @@ class UserList extends React.Component {
           <div className={(this.props.visible ?(this.state.visible ? UserListStyles.visible   : this.props.alignment): this.props.alignment ) }>
             <SearchInput className={UserListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
             <h5 className={UserListStyles.menuTitle}><NewUser currentDb={this.props.selectedDB} currentItem="fs" connectionId={this.state.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}></NewUser></h5>
-            <div className = {UserListStyles.listBody}>{items}</div>
+            <div className = {(this.state.viewMore ? UserListStyles.listBody : UserListStyles.listBodyExpanded) + ' usersContainer'}>
+              <ReactHeight onHeightReady={this.setViewMore.bind(this)}>
+                {items}
+              </ReactHeight>
+            </div>
+            <div className= {(this.state.viewMoreLink ? UserListStyles.viewMoreContainer : UserListStyles.displayNone)}>
+              <a className = {UserListStyles.viewMore} onClick={this.usersMoreClick.bind(this)}>+ View More</a>
+            </div>
           </div>
         </div>
       );

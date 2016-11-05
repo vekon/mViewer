@@ -52,18 +52,19 @@
 
 .dbListBody{
   width: 100%;
-  height: calc(100vh - 190px);
+  height: calc(100vh - 192px);
   overflow: auto;
 }
 
 .dbListBodyExpanded {
   width: 100%;
-  height: calc(100vh - 190px);
+  height: calc(100vh - 192px);
   overflow: hidden;
 }
 
 .viewMoreContainer {
   text-align: center;
+  border-top: solid 1px #ccc;
 }
 
 .viewMore {

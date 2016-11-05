@@ -274,21 +274,19 @@ class DbListComponent extends React.Component {
           </div>
           
             <div className = {(this.state.viewMore ? dbListStyles.dbListBody : dbListStyles.dbListBodyExpanded) + ' dbContainer'}>
-            <ReactHeight onHeightReady={this.setViewMore.bind(this)}>
-                <div className='listcontainer'>
-                {filteredData.map((item,idx) => {
-                   return(
-                     <DbItem
-                     key={item}
-                     name={item}
-                     onClick={this.clickHandler.bind(this,idx, item)}
-                     isSelected={this.state.selectedDb==item}
-                     connectionId = {this.state.connectionId}
-                     refreshDbList={this.refreshDbList.bind(this)}
-                     />)
-                 })}
-                </div>
-                </ReactHeight>
+              <ReactHeight onHeightReady={this.setViewMore.bind(this)}>
+                  {filteredData.map((item,idx) => {
+                     return(
+                       <DbItem
+                       key={item}
+                       name={item}
+                       onClick={this.clickHandler.bind(this,idx, item)}
+                       isSelected={this.state.selectedDb==item}
+                       connectionId = {this.state.connectionId}
+                       refreshDbList={this.refreshDbList.bind(this)}
+                       />)
+                   })}
+              </ReactHeight>
             </div>
           
           <div className= {(this.state.viewMoreLink ? dbListStyles.viewMoreContainer : dbListStyles.displayNone)}>

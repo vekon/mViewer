@@ -5,6 +5,7 @@ import CollectionItem from './CollectionItemComponent.jsx'
 import NewCollection from '../newcollection/newCollectionComponent.jsx'
 import SearchInput, {createFilter} from 'react-search-input'
 import service from '../../gateway/service.js'
+import ReactHeight from 'react-height';
 
 class CollectionList extends React.Component {
 
@@ -20,7 +21,9 @@ class CollectionList extends React.Component {
       loading: 'Loading',
       searchTerm: '',
       queryType: JSON.parse(sessionStorage.getItem('queryType') || '{}'),
-      selectedCollection:null
+      selectedCollection:null,
+      viewMore: false,
+      viewMoreLink: false
     }
   }
 
@@ -134,6 +137,21 @@ class CollectionList extends React.Component {
     this.setState({searchTerm: term})
   }
 
+  setViewMore(height) {
+    var collListHeight = $('.collContainer').height();
+    var listContainerHeight = height;
+
+    if (listContainerHeight > collListHeight) {
+      this.setState({viewMoreLink: true});
+    } else {
+      this.setState({viewMoreLink: false});
+    }
+  }
+
+  collMoreClick() {
+    this.setState({viewMore: !this.state.viewMore});
+  }
+
   render () {
     var that=this;
     var filteredData = null;
@@ -147,21 +165,27 @@ class CollectionList extends React.Component {
           <div className={(this.props.visible ?(this.state.visible ? collectionListStyles.visible : this.props.alignment): this.props.alignment ) }>
              <SearchInput className={collectionListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
              <h5 className={collectionListStyles.menuTitle}><NewCollection queryType= {this.state.queryType} currentDb={this.props.selectedDB} currentItem={''} connectionId={this.props.propps.connectionId} addOrUpdate={'1'} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}/></h5>
-               <div className = {collectionListStyles.listBody}>{ this.state.collections != undefined ?
-                 (filteredData.map((item,idx) => {
-                   return(
-                     <CollectionItem
-                      key={item}
-                      name={item}
-                      dbName={this.state.selectedDB}
-                      onClick={this.clickHandler.bind(this,idx,item)}
-                      isSelected={this.state.selectedCollection==item}
-                      connectionId={this.state.connectionId}
-                      refreshCollectionList={this.refreshCollectionList.bind(this)}
-                      refreshCollectionListForDelete={this.refreshCollectionListForDelete.bind(this)}
-                     />)
-                })): null}
-                 </div>
+               <div className = {(this.state.viewMore ? collectionListStyles.listBody : collectionListStyles.listBodyExpanded) + ' collContainer'}>
+                <ReactHeight onHeightReady={this.setViewMore.bind(this)}>
+                  { this.state.collections != undefined ?
+                     (filteredData.map((item,idx) => {
+                       return(
+                         <CollectionItem
+                          key={item}
+                          name={item}
+                          dbName={this.state.selectedDB}
+                          onClick={this.clickHandler.bind(this,idx,item)}
+                          isSelected={this.state.selectedCollection==item}
+                          connectionId={this.state.connectionId}
+                          refreshCollectionList={this.refreshCollectionList.bind(this)}
+                          refreshCollectionListForDelete={this.refreshCollectionListForDelete.bind(this)}
+                         />)
+                    })): null}
+                  </ReactHeight>
+                </div>
+                <div className= {(this.state.viewMoreLink ? collectionListStyles.viewMoreContainer : collectionListStyles.displayNone)}>
+                  <a className = {collectionListStyles.viewMore} onClick={this.collMoreClick.bind(this)}>+ View More</a>
+                </div>
             </div>
         </div>
       );

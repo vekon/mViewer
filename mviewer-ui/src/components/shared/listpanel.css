@@ -157,12 +157,36 @@
 
 
 .listBody{
-  height: calc(100vh - 216px);
+  height: calc(100vh - 254px);
   overflow: auto
 }
 
+.listBodyExpanded{
+  height: calc(100vh - 254px);
+  overflow: hidden;
+}
+
+.viewMoreContainer {
+  text-align: center;
+  border-top: solid 1px #ccc;
+}
+
+.viewMore {
+  padding: 10px 0px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.displayNone {
+  display: none;
+}
 
 .gridListBody {
-  height: calc(100vh - 234px);
+  height: calc(100vh - 272px);
   overflow: auto
+}
+
+.gridListBodyExpanded {
+  height: calc(100vh - 272px);
+  overflow: hidden;
 }

@@ -5,6 +5,7 @@ import GridFSItem from './GridFSItemComponent.jsx'
 import NewBucket from '../newbucket/NewBucketComponent.jsx'
 import SearchInput, {createFilter} from 'react-search-input'
 import service from '../../gateway/service.js'
+import ReactHeight from 'react-height';
 
 class GridFSList extends React.Component {
 
@@ -19,7 +20,9 @@ class GridFSList extends React.Component {
       selectedItem: null,
       loading: 'Loading',
       selectedCollection:null,
-      searchTerm: ''
+      searchTerm: '',
+      viewMore: false,
+      viewMoreLink: false
     }
   }
 
@@ -88,6 +91,21 @@ class GridFSList extends React.Component {
     }
   }
 
+  setViewMore(height) {
+    var gridListHeight = $('.gridContainer').height();
+    var listContainerHeight = height;
+
+    if (listContainerHeight >= gridListHeight) {
+      this.setState({viewMoreLink: true});
+    } else {
+      this.setState({viewMoreLink: false});
+    }
+  }
+
+  gridMoreClick() {
+    this.setState({viewMore: !this.state.viewMore});
+  }
+
   render () {
     var that=this;
     var items=null;
@@ -112,7 +130,14 @@ class GridFSList extends React.Component {
           <div className={(this.props.visible ?(this.state.visible ? GridFSListStyles.visible   : this.props.alignment): this.props.alignment ) }>
             <SearchInput className={GridFSListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
             <h5 className={GridFSListStyles.menuTitle}><NewBucket gridList= {this.state.gridfs} currentDb={this.props.selectedDB} currentItem="fs" connectionId={this.state.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}></NewBucket></h5>
-            <div className = {GridFSListStyles.gridListBody}>{items}</div>
+            <div className = {(this.state.viewMore ? GridFSListStyles.gridListBody : GridFSListStyles.gridListBodyExpanded) + ' gridContainer'}>
+              <ReactHeight onHeightReady={this.setViewMore.bind(this)}>
+                {items}
+              </ReactHeight>
+            </div>
+            <div className= {(this.state.viewMoreLink ? GridFSListStyles.viewMoreContainer : GridFSListStyles.displayNone)}>
+              <a className = {GridFSListStyles.viewMore} onClick={this.gridMoreClick.bind(this)}>+ View More</a>
+            </div>
           </div>
         </div>
       );
