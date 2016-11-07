@@ -56,9 +56,7 @@ const LoginTextInput = React.createClass({
   // turn will validate it and the rest of the form
   changeValue(event) {
     this.setValue(event.currentTarget['value']);
-    // this.refs.great.great();
     this.props.onChange(event.currentTarget['value']);
-    // if(this.state.hoverClass == 'floating-label-hovered'){
       this.setState({hoverClass: 'floating-label-hovered'});
       if (event.currentTarget.value == ''){
         this.setState({pristine: true});
@@ -72,21 +70,34 @@ const LoginTextInput = React.createClass({
   getInitialState () {
     return {
       hoverClass: 'floating-label',
-      pristine : true
+      pristine : true,
+      hoverInput: 'input'
     }
   },
 
 
   focusValue(event){
-    // console.log(event);
     this.setState({hoverClass: 'floating-label-hovered'});
   },
 
+  clearCss(){
+    this.setState({hoverClass: 'floating-label'});;
+  },
+
   blurValue(event){
-    if(this.state.hoverClass == 'floating-label-hovered' && this.state.pristine == true){
+    if(this.state.hoverClass == 'floating-label-hovered' && this.state.pristine == true && !event.currentTarget['value']){
       this.setState({hoverClass: 'floating-label'});
     }
-    
+  },
+
+
+  componentDidMount (){
+    if(localStorage.getItem('loginData') != undefined && localStorage.getItem('loginData') != null){
+      this.setState({hoverClass: 'floating-label-hovered'});
+    }
+    else{
+      this.setState({hoverClass: 'floating-label'});
+    }
   },
 
 
@@ -95,8 +106,8 @@ const LoginTextInput = React.createClass({
     // or the server has returned an error message
     const errorMessage = this.getErrorMessage();
     return (
-        <div className={textCss.formGroup + (this.props.className || ' ') + (this.showRequired() ? textCss.required : this.showError() ? textCss.error : '')}>
-            <span className={this.state.hoverClass }>{this.props.name}</span>
+        <div className={textCss.formGroup + (this.props.className || ' ') + (this.showRequired() ? textCss.required : this.showError() ? textCss.error : '') + ' '  + this.state.hoverInput}>
+            <span className={this.state.hoverClass }>{this.props.placeholder.toUpperCase()}</span>
             <input type={this.props.type || 'text'} name={this.props.name} onFocus={this.focusValue} onBlur={this.blurValue} onChange={this.changeValue} value={this.getValue()} disabled ={this.props.shouldBeDisabled || false} className ={((this.props.shouldBeDisabled || false) ? textCss.disabled : '' )}  />
             <span className={ textCss.validationError }>{errorMessage}</span>
         </div>

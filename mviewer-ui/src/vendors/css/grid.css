@@ -14,15 +14,16 @@
 
 
 .floating-label-hovered{
-  top: 5px;
+  top: 6px;
   bottom: 10px;
   left: 10px;
-  font-size: 11px;
+  font-size: 9px;
   opacity: 1;
   position: absolute;
   pointer-events: none;
   transition: 0.2s ease all;
   color: #2494d0 !important; 
+  font-weight: 600;
 
 }
 
@@ -34,8 +35,10 @@
     left: 10px;
     top: 18px;
     transition: 0.2s ease all;
-    font-size: 17px;
+    font-size: 15px;
 }
+
+
 
 
 /*  SECTIONS  ============================================================================= */
