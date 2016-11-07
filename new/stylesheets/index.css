@@ -1,0 +1,65 @@
+.features {
+
+}
+
+.features span{
+	width: 240px;
+	display: inline-block;
+}
+
+.mtm {
+	margin-top: 50px;
+}
+
+.mts {
+	margin-top: 25px;
+}
+
+.padm {
+	padding: 50px;
+}
+
+.issue-tracker {
+	background: #777;
+	color: #fff;
+}
+
+.issue-tracker a {
+	padding: 12px;
+    background: #fff;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.footer {
+	background: #555;
+	color: #fff;
+}
+
+.footer .row a {
+	display: block;
+	color: #aaa;
+	cursor: pointer;
+	font-size: 13px;
+}
+
+.footer span{
+	display: inline-block;
+}
+
+.borderlm {
+	border-left: solid 1px #fff;
+}
+
+.copyright {
+    border-top: 1px dotted #555;
+    padding: 10px 0;
+}
+
+.copyright-notice{
+	text-align: center;
+    vertical-align: middle;
+    font-family: "PT Sans";
+    font-size: 11px;
+    color: #777;
+}
