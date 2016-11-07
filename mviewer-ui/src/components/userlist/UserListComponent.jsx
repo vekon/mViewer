@@ -122,6 +122,7 @@ class UserList extends React.Component {
 
   usersMoreClick() {
     this.setState({viewMore: !this.state.viewMore});
+    this.setState({viewMoreLink: false});
   }
 
   render () {
@@ -154,7 +155,7 @@ class UserList extends React.Component {
               </ReactHeight>
             </div>
             <div className= {(this.state.viewMoreLink ? UserListStyles.viewMoreContainer : UserListStyles.displayNone)}>
-              <a className = {UserListStyles.viewMore} onClick={this.usersMoreClick.bind(this)}>+ View More</a>
+              <a className = {UserListStyles.viewMore} onClick={this.usersMoreClick.bind(this)}>List All</a>
             </div>
           </div>
         </div>

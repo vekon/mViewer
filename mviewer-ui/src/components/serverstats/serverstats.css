@@ -2,7 +2,7 @@
   /*width: calc(100vw - 95px);
   height: 100%;*/
   width: calc(100% - 66px); 
-  height: calc(100vh - 70px);
+  height: calc(100vh - 60px);
   background-color: #fff;
   display: inline-block;
   overflow: auto;

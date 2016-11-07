@@ -161,6 +161,7 @@ class DbListComponent extends React.Component {
 
   moreClick() {
     this.setState({viewMore: !this.state.viewMore});
+    this.setState({viewMoreLink: false});
   }
 
   searchUpdated (term) {
@@ -290,7 +291,7 @@ class DbListComponent extends React.Component {
             </div>
           
           <div className= {(this.state.viewMoreLink ? dbListStyles.viewMoreContainer : dbListStyles.displayNone)}>
-            <a className = {dbListStyles.viewMore} onClick={this.moreClick.bind(this)}>+ View More</a>
+            <a className = {dbListStyles.viewMore} onClick={this.moreClick.bind(this)}>List All</a>
           </div>
         </div>
         <div className={this.state.visible ?dbListStyles.collapsedDiv: dbListStyles.openDiv} onClick={this.collapsedDivHandler.bind(this)} >

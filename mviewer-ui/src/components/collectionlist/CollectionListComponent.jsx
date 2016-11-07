@@ -150,6 +150,7 @@ class CollectionList extends React.Component {
 
   collMoreClick() {
     this.setState({viewMore: !this.state.viewMore});
+    this.setState({viewMoreLink: false});
   }
 
   render () {
@@ -184,7 +185,7 @@ class CollectionList extends React.Component {
                   </ReactHeight>
                 </div>
                 <div className= {(this.state.viewMoreLink ? collectionListStyles.viewMoreContainer : collectionListStyles.displayNone)}>
-                  <a className = {collectionListStyles.viewMore} onClick={this.collMoreClick.bind(this)}>+ View More</a>
+                  <a className = {collectionListStyles.viewMore} onClick={this.collMoreClick.bind(this)}> List All</a>
                 </div>
             </div>
         </div>

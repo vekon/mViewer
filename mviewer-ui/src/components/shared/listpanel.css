@@ -11,7 +11,7 @@
     top:0;
     /*width:15%;*/
     width: 100%;
-    height: calc(100vh - 130px);
+    height: calc(100vh - 120px);
     /*width: 170px;*/
     /*height:auto;*/
     /*min-height: 100%;*/
@@ -157,7 +157,7 @@
 
 
 .listBody{
-  height: calc(100vh - 254px);
+  height: calc(100vh - 205px);
   overflow: auto
 }
 
@@ -172,7 +172,7 @@
 }
 
 .viewMore {
-  padding: 10px 0px;
+  padding: 15px 0px;
   cursor: pointer;
   display: inline-block;
 }
@@ -182,7 +182,7 @@
 }
 
 .gridListBody {
-  height: calc(100vh - 272px);
+  height: calc(100vh - 222px);
   overflow: auto
 }
 

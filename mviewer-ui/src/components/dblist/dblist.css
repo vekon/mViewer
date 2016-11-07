@@ -52,7 +52,7 @@
 
 .dbListBody{
   width: 100%;
-  height: calc(100vh - 192px);
+  height: calc(100vh - 144px);
   overflow: auto;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .viewMore {
-  padding: 10px 0px;
+  padding: 15px 0px;
   cursor: pointer;
   display: inline-block;
 }

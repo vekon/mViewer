@@ -104,6 +104,7 @@ class GridFSList extends React.Component {
 
   gridMoreClick() {
     this.setState({viewMore: !this.state.viewMore});
+    this.setState({viewMoreLink: false});
   }
 
   render () {
@@ -136,7 +137,7 @@ class GridFSList extends React.Component {
               </ReactHeight>
             </div>
             <div className= {(this.state.viewMoreLink ? GridFSListStyles.viewMoreContainer : GridFSListStyles.displayNone)}>
-              <a className = {GridFSListStyles.viewMore} onClick={this.gridMoreClick.bind(this)}>+ View More</a>
+              <a className = {GridFSListStyles.viewMore} onClick={this.gridMoreClick.bind(this)}>List All</a>
             </div>
           </div>
         </div>
