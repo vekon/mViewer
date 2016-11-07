@@ -48,7 +48,7 @@ class NewUserComponent extends React.Component {
     this.setState({successMessage: false});
     this.setState({uniqueRetrievedRoles: []});
     this.setForm();
-    var ds = ["Please select a DataSource"];
+    var ds = ["Please select a DbSource"];
     var dbList = [];
     dbList = JSON.parse(localStorage.getItem('dbNames') || '{}');
     dbList.map(function(item){
@@ -167,7 +167,7 @@ class NewUserComponent extends React.Component {
     }
     if(this.props.modifyUser)
       obj['user_name'] = this.props.userName;
-    if(this.state.dbSource.length < 1 || this.state.dbSource == "Please select a DataSource"){
+    if(this.state.dbSource.length < 1 || this.state.dbSource == "Please select a DbSource"){
       this.setState({successMessage:false});
       this.setState({message:'Please select a DbSource'});
       this.setState({dbSource:""});

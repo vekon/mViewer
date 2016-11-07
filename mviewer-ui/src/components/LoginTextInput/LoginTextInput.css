@@ -3,7 +3,8 @@
 .formGroup.error input[type='number'],
 .formGroup.error input[type='password'],
 .formGroup.error select {
-    border-color: red;
+    border-color: red !important;
+    border: 1.5px solid !important;
     color: #FF9696;
 }
 
@@ -40,3 +41,5 @@
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
    color: #d1d3d4;
 }
+
+
