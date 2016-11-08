@@ -1,13 +1,15 @@
-
 <html>
 <head>
 	<title>mViewer by Imaginea @ GitHub</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="libs/slick/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="libs/slick/slick-theme.css"/>
 	<link rel="stylesheet" type="text/css" href="stylesheets/documentation.css">
 	<link rel="stylesheet" type="text/css" href="stylesheets/index.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script type="text/javascript" src="javascripts/index.js"></script>
+	<script type="text/javascript" src="libs/slick/slick.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  	<script type="text/javascript" src="javascripts/index.js"></script>
 </head>
 <body>
 	<header>
@@ -25,48 +27,81 @@
   </header>
 
   <div class="container"> 
+  	<div class="slider mtm">
+  		<div class="row">
+  			<div class="col-sm-6 text-center vcenter">
+  				<h3>Easy to login</h3>
+  				<h4>Simple to login with and with out auth mode along with users created.</h4>	
+  			</div>
+  			<div class="col-sm-6">
+  				<img src="images/slides/login.png">
+  			</div>
+  		</div>
+  		<div class="row">
+  			<div class="col-sm-6 text-center vcenter">
+  				<h3>Easy to navigate</h3>
+  				<h4>Easy to navigate betweeen databases and objects of database</h4>	
+  			</div>
+  			<div class="col-sm-6">
+  				<img src="images/slides/dbs.png">
+  			</div>
+  		</div>
+  		<div class="row">
+  			<div class="col-sm-6 text-center vcenter">
+  				<h3>Users creation & management</h3>
+  				<h4>Easy to manage users. Create users and manage them with specifig roles on selected database</h4>	
+  			</div>
+  			<div class="col-sm-6">
+  				<img src="images/slides/usercreation.png">
+  			</div>
+  		</div>
+  	</div>
+  	<div class="content text-center">
+  		<div class="header">A simple web-based Administration and Management Tool for MongoDB.</div>
+  		<p class="mts">mViewer(Micro/Mongo Viewer) is a light web-based GUI managin MongoDB without needing any installation. mViewer allows managing databases, collections, gridfs, users & indexes as an alternative to the MongoDB native shell in simpler and user friendly way</p>
+  	</div>
   	<div class="features mtm">
 	  	<div class="row mts">
-	  		<div class="col-sm-4 text-center">
-	  			<img src="">
+	  		<div class="col-xs-12 col-sm-4 text-center">
+	  			<img src="images/features/DATABASE.png">
 	  			<h5>MULTIPLE DATABASES</h5>
 	  			<span>Login & manage multiple mongo database instance hosted with different IP & Port.</span>
 	  		</div>
-	  		<div class="col-sm-4 text-center">
-	  			<img src="">
+	  		<div class="col-xs-12 col-sm-4 text-center">
+	  			<img src="images/features/SECURITY.png">
 	  			<h5>AUTHENTICATION</h5>
 	  			<span>Enhanced authentication. Works with and with-out auth mode.</span>
 	  		</div>
-	  		<div class="col-sm-4 text-center">
-	  			<img src="">
+	  		<div class="col-xs-12 col-sm-4 text-center">
+	  			<img src="images/features/USERS.png">
 	  			<h5>USERS, ROLES & PRIVILEGES</h5>
 	  			<span>Manage users by creating & assigning roles on different databases.</span>
 	  		</div>
 	  	</div>
 
 	  	<div class="row mts">
-	  		<div class="col-sm-4 text-center">
-	  			<img src="">
+	  		<div class="col-xs-12 col-sm-4 text-center">
+	  			<img src="images/features/LOOK-N-FEEL.png">
 	  			<h5>LOOK & FEEL</h5>
 	  			<span>Good user interface with enhanced ease of use.</span>
 	  		</div>
-	  		<div class="col-sm-4 text-center">
-	  			<img src="">
+	  		<div class="col-xs-12 col-sm-4 text-center">
+	  			<img src="images/features/NAVIGATION.png">
 	  			<h5>NAVIGATION</h5>
 	  			<span>Ease in navigation b/w databases, collections & users of a database.</span>
 	  		</div>
-	  		<div class="col-sm-4 text-center">
-	  			<img src="">
+	  		<div class="col-xs-12 col-sm-4 text-center">
+	  			<img src="images/features/SUPPORTS-MONGO-3.X.png">
 	  			<h5>SUPPORTS MONGO 3.X</h5>
 	  			<span>Supports latest mongodb driver 3.x.</span>
 	  		</div>
 	  	</div>
-
-	  	<div class="issue-tracker mtm text-center padm">
-	  		<p>Want a feature or found a bug, do raise a request/issue at</p>
-	  		<a class="mts" href="">Github Issue Tracker</a>
-	  	</div>
-	  </div>
+	</div>
+	</div>
+	<div class="issue-tracker mtm text-center padm">
+  		<p>Want a feature or found a bug, do raise a request/issue at</p>
+  		<a class="mts" href="">Github Issue Tracker</a>
+  	</div>
   	<footer class="footer padm">
   		<div class="row">
   			<div class="col-sm-8">
@@ -93,17 +128,20 @@
 		  		<h5>CONTACT US</h5>
 	  			<div><span>Email: </span> opensource@imaginea.com</div>
 	  			<div><span>Gtalk: </span> mviewer@imaginea.com</div>
-	  			<div><span>Social:</span></div>
+	  			<div>
+	  				<span>Social:</span>
+	  				<img src="images/features/Facebook.png">
+	  				<img src="images/features/Twitter.png">
+	  				<img src="images/features/Google-+.png">
+	  			</div>
 		  	</div>
   		</div>
   		<hr>
   		<div class="copyright mts">
-  			<div class="copyright-notice">
-					Copyright © 2013, <a href="http://www.pramati.com" style="text-decoration:none;">Pramati Technologies</a> Private Limited.
-				</div>
+			<div class="copyright-notice">
+				Copyright © 2013, <a href="http://www.pramati.com" style="text-decoration:none;">Pramati Technologies</a> Private Limited.
+			</div>
   		</div>
 	  </footer>
-	</div>
 </body>
-
 </html>

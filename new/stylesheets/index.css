@@ -1,10 +1,70 @@
+@font-face {
+	font-family: Brandon;
+	src: url("../fonts/Brandon_reg.otf") format("opentype");
+}
+
+@font-face {
+	font-family: Brandon-Light;
+	src: url("../fonts/Brandon_light.otf") format("opentype");
+}
+
+body{
+	font-family: Brandon-Light;
+}
+
+.slider {
+	width: 70%;
+	margin: auto;
+}
+.slider img{
+	height: 300px;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.slider .vcenter{
+	padding: 98px 10px;
+}
+
+.slider h3 {
+	color: #2494d0;
+}
+
+.slick-slide
+{
+    height: inherit;
+}
+
+.slick-prev, .slick-next {
+    background: #2494d0;
+    border-radius: 10px;
+    height: 19px;
+    width: 19px;
+}
+
+.slick-prev:hover, .slick-next:hover {
+    background: #2494d0;
+    border-radius: 10px;
+    height: 19px;
+    width: 19px;
+}
+
 .features {
 
 }
-
 .features span{
 	width: 240px;
 	display: inline-block;
+}
+.content {
+	margin: 70px auto;
+	width: 60%;
+}
+
+.content .header {
+	font-size: 20px;
+	font-weight: 300;
 }
 
 .mtm {
@@ -45,6 +105,10 @@
 
 .footer span{
 	display: inline-block;
+}
+
+.footer img{
+	height: 25px;
 }
 
 .borderlm {
