@@ -2,102 +2,164 @@
 <head>
   <link rel="stylesheet" type="text/css" href="stylesheets/documentation.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script type="text/javascript" src="javascripts/documentation.js"></script>
-
+  <script type="text/javascript" src="javascripts/iframeResizer.min.js"></script>
+  <script>iFrameResize({log:true})</script>
 </head>
 <body>
 <div class = 'mainContainer'>
-          <header>
-            <nav>
-              <div class = 'main-nav'>
-                <a href= "javascript:void(0);" class ='logo'><img src='./images/Logo.png'></img></a>
-	          
-                <ul class='mainNav clearfix' >
-                  <li class=''><a href="javascript:void(0);" ><span>FEATURES</span></a></li>
-                  <li class=''><a href="javascript:void(0);" ><span>DOCUMENTATION</span></a></li>
-                  <li class=''><a href="javascript:void(0);" ><span>DOWNLAOD</span></a></li>
-                </ul>
-               </div>
-             </nav>
-          </header>
-          <div class="row">
-          <nav class="col-xs-2 bs-docs-sidebar">
-          <ul id="sidebar" class="side-nav nav nav-stacked fixed">
-            <li><a target='mainFrame' href='pages/getting_started.html'>Getting Started</a></li>
-            <li>Managing Databases
-              <ul class ="nav nav-stacked">
-                <li><a target='mainFrame' href='pages/db_ops_addDB.html'>Add Database</a></li>
-                <li><a target='mainFrame' href='pages/db_ops_viewDB.html'>View Statistics</a></li>
-                <li><a target='mainFrame' href='pages/db_ops_deleteDB.html#deleteDB'>Delete Database</a></li>
-                <!-- <li><a target='mainFrame' href='pages/db_ops_executeQueryDB.html'>Executing Queries</a></li> -->
-              </ul>
-            </li>
-            <li>Managing Collections
-              <ul class ="nav nav-stacked">
-                <li><a target='mainFrame' href='pages/col_ops_addCollections.html'>Add Collection</a></li>    
-                <li><a target='mainFrame' href='pages/col_ops_viewCollectionStat.html'>View Statistics</a></li>
-                <li><a target='mainFrame' href='pages/col_ops_deleteCollections.html'>Delete Collection</a></li>
-                <li><a target='mainFrame' href='pages/col_ops_executeQueryCollections.html'>Executing Queries</a></li>        
-              </ul> 
-            </li>
-            <li>Managing Documents
-              <ul class ="nav nav-stacked">
-                  <li><a target='mainFrame' href='pages/doc_ops_addDoc.html'>Add Document</a></li>      
-                  <li><a target='mainFrame' href='pages/doc_ops_viewDoc.html'>View Documents</a></li>
-                  <li><a target='mainFrame' href='pages/doc_ops_editDoc.html'>Edit Documents</a></li>
-                  <li><a target='mainFrame' href='pages/doc_ops_delDoc.html'>Delete Document</a></li>
-              </ul>
-            </li>
-            <li>Managing GridFS
-              <ul class ="nav nav-stacked">
-                  <li><a target='mainFrame' href='pages/gfs_ops_addBucket.html'>Add Bucket</a></li>
-                  <!-- <li><a target='mainFrame' href='pages/gfs_ops_viewDBStatistics.html'>View Statistics</a></li> -->
-                  <li><a target='mainFrame' href='pages/gfs_ops_deleteBucket.html'>Drop Bucket</a></li>
-                  <li><a target='mainFrame' href='pages/gfs_ops_executeQueryBuckets.html'>Executing Queries</a></li>
-              </ul>
-            </li>
-            <li>Managing Files
-              <ul class ="nav nav-stacked">
-                      <li><a target='mainFrame' href='pages/file_ops_addFile.html'>Add File(s)</a></li>
-                  <li><a target='mainFrame' href='pages/file_ops_viewFile.html'>View File(s)</a></li>
-                  <li><a target='mainFrame' href='pages/file_ops_delFile.html'>Delete File</a></li>
-              </ul>
-            </li>
-            <li>Managing Users
-              <ul class ="nav nav-stacked">
-                  <li><a target='mainFrame' href='pages/user_ops_addUser.html'>Add User</a></li>
-                  <!-- <li><a target='mainFrame' href='pages/user_ops_editUser.html'>Edit User</a></li> -->
-                  <li><a target='mainFrame' href='pages/user_ops_delUser.html'>Delete User</a></li>
-                  <!-- <li><a target='mainFrame' href='pages/user_ops_dropUser.html'>Drop Users</a></li> -->
-              </ul>
-            </li>
-            <li>Managing Indexes
-              <ul class ="nav nav-stacked">
-                <li><a target='mainFrame' href='pages/indexes_ops_addIndex.html'>Add Index</a></li>
-                <li><a target='mainFrame' href='pages/indexes_ops_viewIndex.html'>View Index</a></li>
-                <li><a target='mainFrame' href='pages/indexes_ops_delIndex.html'>Delete Index</a></li>
-                <li><a target='mainFrame' href='pages/indexes_ops_dropIndex.html'>Drop Indexes</a></li>
-              </ul>
-            </li>
-            <li>Command Spotlight
-              <ul class ="nav nav-stacked">
-                <li><a target='mainFrame' href='pages/spotlight_search_searchCmd.html'>Search Command</a></li>
-                <li><a target='mainFrame' href='pages/spotlight_search_runDB.html'>Run Database</a></li>
-                <li><a target='mainFrame' href='pages/spotlight_search_mulElemsSearch.html'>Multiple Elements Search</a></li>
-              </ul>
-            </li>
-            <li>
-              <a target='mainFrame' href='pages/troubleshooting.html'>Troubleshooting</a>
-            </li>
-          </ul>
-            
-          </nav>
-          <div class="col-xs-10">
-          <iframe src="main.html" noresize="noresize" name="mainFrame" frameborder="0" height="100%" width="100%" ></iframe>
+    <header>
+      <nav class="navbar">
+        <div class = 'main-nav container-fluid'>
+          <div class="navbar-header">
+            <a href= "javascript:void(0);" class ='logo'><img src='./images/Logo.png'></img></a>
           </div>
+          <ul class='mainNav clearfix nav navbar-nav navbar-right' >
+            <li class=''><a href="javascript:void(0);" ><span>FEATURES</span></a></li>
+            <li class=''><a href="javascript:void(0);" ><span>DOCUMENTATION</span></a></li>
+            <li class=''><a href="javascript:void(0);" ><span>DOWNLOAD</span></a></li>
+          </ul>
+         </div>
+       </nav>
+    </header>
+    <div class="row" id = "navWrap">
+      <nav class="col-xs-3 bs-docs-sidebar">
+        <ul id="sidebar" class="side-nav nav nav-stacked fixed">
+          <li><a target='mainFrame' href='pages/getting_started.html'>Getting Started</a></li>
+          <li><a>Managing Databases</a>
+            <ul class ="nav nav-stacked">
+              <li><a target='mainFrame' href='pages/db_ops_addDB.html'>Add Database</a></li>
+              <li><a target='mainFrame' href='pages/db_ops_viewDB.html'>View Statistics</a></li>
+              <li><a target='mainFrame' href='pages/db_ops_deleteDB.html#deleteDB'>Delete Database</a></li>
+              <!-- <li><a target='mainFrame' href='pages/db_ops_executeQueryDB.html'>Executing Queries</a></li> -->
+            </ul>
+          </li>
+          <li><a>Managing Collections</a>
+            <ul class ="nav nav-stacked">
+              <li><a target='mainFrame' href='pages/col_ops_addCollections.html'>Add Collection</a></li>    
+              <li><a target='mainFrame' href='pages/col_ops_viewCollectionStat.html'>View Statistics</a></li>
+              <li><a target='mainFrame' href='pages/col_ops_deleteCollections.html'>Delete Collection</a></li>
+              <li><a target='mainFrame' href='pages/col_ops_executeQueryCollections.html'>Executing Queries</a></li>        
+            </ul> 
+          </li>
+          <li><a>Managing Documents</a>
+            <ul class ="nav nav-stacked">
+                <li><a target='mainFrame' href='pages/doc_ops_addDoc.html'>Add Document</a></li>      
+                <li><a target='mainFrame' href='pages/doc_ops_viewDoc.html'>View Documents</a></li>
+                <li><a target='mainFrame' href='pages/doc_ops_editDoc.html'>Edit Documents</a></li>
+                <li><a target='mainFrame' href='pages/doc_ops_delDoc.html'>Delete Document</a></li>
+            </ul>
+          </li>
+          <li><a>Managing GridFS</a>
+            <ul class ="nav nav-stacked">
+                <li><a target='mainFrame' href='pages/gfs_ops_addBucket.html'>Add Bucket</a></li>
+                <!-- <li><a target='mainFrame' href='pages/gfs_ops_viewDBStatistics.html'>View Statistics</a></li> -->
+                <li><a target='mainFrame' href='pages/gfs_ops_deleteBucket.html'>Drop Bucket</a></li>
+                <li><a target='mainFrame' href='pages/gfs_ops_executeQueryBuckets.html'>Executing Queries</a></li>
+            </ul>
+          </li>
+          <li><a>Managing Files</a>
+            <ul class ="nav nav-stacked">
+                    <li><a target='mainFrame' href='pages/file_ops_addFile.html'>Add File(s)</a></li>
+                <li><a target='mainFrame' href='pages/file_ops_viewFile.html'>View File(s)</a></li>
+                <li><a target='mainFrame' href='pages/file_ops_delFile.html'>Delete File</a></li>
+            </ul>
+          </li>
+          <li><a>Managing Users</a>
+            <ul class ="nav nav-stacked">
+                <li><a target='mainFrame' href='pages/user_ops_addUser.html'>Add User</a></li>
+                <li><a target='mainFrame' href='pages/user_ops_editUser.html'>Modify User</a></li>
+                <li><a target='mainFrame' href='pages/user_ops_delUser.html'>Delete User</a></li>
+                <!-- <li><a target='mainFrame' href='pages/user_ops_dropUser.html'>Drop Users</a></li> -->
+            </ul>
+          </li>
+          <li><a>Managing Indexes</a>
+            <ul class ="nav nav-stacked">
+              <li><a target='mainFrame' href='pages/indexes_ops_addIndex.html'>Add Indexes</a></li>
+              <li><a target='mainFrame' href='pages/indexes_ops_editdeleteIndex.html'>Edit/Delete Indexes</a></li>
+            </ul>
+          </li>
+          <li><a target='mainFrame' href='pages/search_filter.html'>Search Filter</a></li>
+          <li>
+            <a target='mainFrame' href='pages/graphs.html'>Mongo Graphs</a>
+          </li>
+          <li>
+            <a target='mainFrame' href='pages/server_stats.html'>Server Statistics</a>
+          </li>
+          <!--<li>-->
+            <!--<a target='mainFrame' href='pages/troubleshooting.html'>Troubleshooting</a>-->
+          <!--</li>-->
+        </ul>  
+      </nav>
+      <div class="col-xs-9 page-holder">
+        <iframe src="main.html" noresize="noresize" name="mainFrame" frameborder="0" scrolling= "no" class="iframe-full-height" ></iframe>
+      </div>
+    </div>
+    <div id="footer">
+      <div class="container" id="stopHere">
+        <div class="row footer-top-section">
+        
+          <div class="col-sm-3">
+            <div class="foot-header">
+              QUICK LINKS 
+            </div>
+            <div class="foot-links">
+              <a href="">Features</a>
+              <a href="">Charts</a>
+              <a href="">Documentation</a>
+              <a href="">Tutorial</a>
+              <a href="">License and Terms</a>
+            </div>
+          </div><!--/col-sm-3-->
+        <div class="col-sm-3">
+          <div class="foot-header"> GET INVOLVED </div>
+          <div class="foot-links">
+            <a href="">Github Repo</a>
+            <a href="">Developer Guide</a>
+            <a href="">Git Issue Tracker</a>
           </div>
         </div>
-        </body>
+        <div class="col-sm-3">
+          <div class="foot-header">
+            OTHER FOSS PROJECTS 
+          </div>
+          <div class="foot-links">
+            <a href="">SocialByWay</a>
+            <a href="">Matisse</a>
+            <a href="">Bot-Bot</a>
+            <a href="">UVCharts</a>
+            <a href="">WaveMaker</a>
+            
+          </div>
+        </div><!--/col-sm-3-->
+        <div class="col-sm-3 fourth-column">
+          <div class="foot-header">
+            CONTACT US 
+          </div>
+          <div class="foot-links">
+            <div><label>Email:</label> <a href="">opensource@imaginea.com</a></div>
+            <div><label>GTalk:</label> <a href="">mviewer@gmail.com</a></div>
+            <div class="social-icons">
+              <label>Social:</label> 
+              <a href="#" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a> 
+              <a href="#" class="icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></a>
+              <a href="#" class="icoGoogle" title="Google +"><i class="fa fa-google-plus"></i></a>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="row" id="final-footer">
+              <div class="col-sm-12 text-center">
+                Copyright © 2013, Pramati Technologies Private Limited.
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
 </html>

@@ -7,11 +7,13 @@
           content="This is the help page for mViewer- a MongoDB UI"/>
     <LINK rel="SHORTCUT ICON" href="../images/icon.png"/>
     <link href="../stylesheets/style.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="../javascripts/iframeResizer.contentWindow.min.js"></script>
 </head>
-<body width="100%"><center>
+<body width="100%">
+<!-- <center>
     <img src="../images/index_logo.png" alt="logo" align="center" id="logo">
     <br>
-</center>
+</center> -->
 <div class="wrapper">
 <div class="body-cont gen-float">
 <div class="gen-float">
@@ -19,30 +21,31 @@
 <div class="right-cont gen-float">    
 <div class="main-head list-head">
     <p>
-      <label>Users &gt; Edit User</label>
+      <label>Users &gt; Modify User</label>
     </p>
 </div>
 
 <div class="helpDescription">
-    <ol>
-      <li>In the JSON view, click <strong>edit </strong>at the respective user.</li>
-      </ol>
-    <p>&nbsp;</p>
-<p>The <em>Please enter user credentials </em>box appears. See figure below.</p>
-<p><img src="../images/help/edit_user.png" alt="edit user" width="299" height="157" class="helpDescriptionImg"></p>
+  <ol>
+    <li>Select a user which you want to modify and click <strong>Modify User</strong>.</li>
+  </ol>
+  <p><img src="../images/help/Drop_user.png" alt="edit_user1" name="edit_user1" border="0" class="helpDescriptionImg"></p>
+  <p>&nbsp;</p>
+<p>A <em>Modal</em> is opened. See figure below.</p>
+<p><img src="../images/help/edit_user.png" alt="edit user" class="helpDescriptionImg"></p>
     <p>&nbsp;</p>
     <ol start="2">
       <li>Perform the following:</li>
       </ol>
     <ul>
       <li>Password: You can reset your password.</li>
-      <li>Read only: Check this box, if you wish to deny write access permissions.</li>
+      <li>Privileges: You can modify the privileges by selecting/Unselecting any of the checkboxes.</li>
       </ul>
     <ol start="3">
       <li>Click <strong>Submit</strong></li>
     </ol>
 <p>&nbsp;</p>
-    <p>The <em>JSON view</em> is refreshed along with the new changes.</p>
+    <p>The <em>User</em> is refreshed along with the new changes.</p>
 
 <p>&nbsp;</p>
 <p style="width:100%"><a href="user_ops_addUser.html"  style="float:left; width:50%;">previous</a><a href="user_ops_delUser.html" style="float:right;">next</a></p>
