@@ -203,7 +203,7 @@ class newCollectionComponent extends React.Component {
         if(typeof(data.response) != 'undefined'){
           this.setState({cap:data.response.result.capped});
           this.setState({size:data.response.result.size != undefined ? data.response.result.size : ''});
-          this.setState({max:data.response.result.maxDocs != undefined ? data.response.result.maxDocs : ''});
+          this.setState({max:data.response.result.maxDocs != undefined && data.response.result.maxDocs != "-1" ? data.response.result.maxDocs : ''});
         }
       }
     }

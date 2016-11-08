@@ -223,7 +223,7 @@ class newFileComponent extends React.Component {
             </div>
             <Form method='POST'>
               <div>
-                <div>
+                <div className={selectedFiles.length > 0 ? newFileStyles.fileDiv: ''}>
                 { selectedFiles.length <= 0 ?
                   <span>
                     <img src={'./images/Add.png'} className={newBucketStyles.logo}></img>
@@ -239,6 +239,8 @@ class newFileComponent extends React.Component {
                  : <span>
                       { selectedFiles }
                    </span> }
+                </div>
+                <div>
                  { selectedFiles.length > 0 ?
                     <div className={newBucketStyles.addMoreFileDiv}>
                       <span className={newFileStyles.addMore}>ADD MORE FILES</span>
@@ -251,7 +253,7 @@ class newFileComponent extends React.Component {
                  { this.state.errorFile ?
                   <div className={newBucketStyles.errorFile}>Please select alteast one file.</div>
                   : null}
-                  </div>
+                </div>
               </div>
 
               <div className={newFileStyles.buttons}>

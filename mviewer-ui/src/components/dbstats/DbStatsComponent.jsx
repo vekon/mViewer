@@ -22,7 +22,20 @@ class DbStatsComponent extends React.Component {
   }
 
   success(data) {
-    this.setState({dbStats: data.response.result.documents});
+    var that = this;
+    var stats = [];
+    var oldStats = data.response.result.documents;
+    oldStats.length > 0 ? Object.keys(oldStats[0]).map(function(key) {
+      if(typeof(oldStats[0][key]) == "object") {
+        Object.keys(oldStats[0][key]).map(function(item){
+          var keyValue = key + '.' + item;
+          stats.push({key: keyValue, value: oldStats[0][key][item]});
+        })
+      } else {
+        stats.push({key: key, value: oldStats[0][key]});
+      }
+    }) : null
+    this.setState({dbStats: stats});
   }
 
   failure() {
@@ -40,8 +53,8 @@ class DbStatsComponent extends React.Component {
                   <th>Keys</th>
                   <th>Values</th>
                 </tr>
-                { that.state.dbStats.length > 0 ? Object.keys(that.state.dbStats[0]).map(function(key) {
-                  return <tr key={key}><td>{key}</td><td>{that.state.dbStats[0][key]}</td></tr>
+                { that.state.dbStats.length > 0 ? that.state.dbStats.map(function(item) {
+                    return <tr key={item.key}><td>{item.key}</td><td>{item.value}</td></tr>
                 }): null}
               </tbody>
             </table>

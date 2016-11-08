@@ -16,7 +16,7 @@ Formsy.addValidationRule('isRequired2', (values, value, otherField) => {
 });
 
 Formsy.addValidationRule('isNumeric1', (values, value, otherField) => {
-  return (value.match(/^[0-9]+$/) || (otherField==false && !value.match(/^[0-9]+$/)));
+  return (value != '' ? value.match(/^[0-9]+$/) || (otherField==false && !value.match(/^[0-9]+$/)) : true);
 });
 
 Formsy.addValidationRule('isAlpha1', (values, value, otherField) => {

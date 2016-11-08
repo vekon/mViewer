@@ -219,3 +219,8 @@ button:disabled{
   float: right;
   padding: 10px 20px;
 }
+
+.fileDiv{
+  height: 100px;
+  overflow: auto;
+}
