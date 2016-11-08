@@ -77,6 +77,7 @@ div#logo {
 a:link,a:visited,a:active {
 	color: #3399cc;
 	text-decoration: none;
+	padding-right: 25px;
 }
 
 a:hover {
@@ -87,6 +88,7 @@ a:hover {
 .wrapper {
 	margin: 0 auto;
 	/*width: 900px;*/
+	margin-bottom: 25px;
 }
 
 .header {
