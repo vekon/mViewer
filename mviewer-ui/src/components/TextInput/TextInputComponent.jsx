@@ -30,7 +30,7 @@ Formsy.addValidationRule('isAlpha1', (values, value, otherField) => {
 
 Formsy.addValidationRule('isAlpha2', (values, value, otherField) => {
   if (value !== null){
-    return (value.match(/^[a-zA-Z][a-zA-Z0-9\-\.]*$/));
+    return (value.match(/^[a-zA-Z][a-zA-Z0-9\-\.\_]*$/));
 
   }
   else {

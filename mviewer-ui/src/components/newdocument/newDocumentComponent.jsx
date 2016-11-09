@@ -112,14 +112,19 @@ class newDocumentComponent extends React.Component {
       setTimeout(function() { this.closeModal() }.bind(this), 2000);
     }
     if (data.response.error) {
-      if (data.response.error){
-        this.setState({successMessage:false});
-        this.setState({message: data.response.error.message});
-      }
+        if(data.response.error.code == 'DOCUMENT_UPDATE_EXCEPTION'){
+          this.setState({successMessage:false});
+          this.setState({message: 'Cannot change the size of a document in a capped collection'});
+        }
+        else
+        {
+          this.setState({successMessage:false});
+          this.setState({message: data.response.error.message});  
+        }
 
-      if (data.response.error.code == 'ANY_OTHER_EXCEPTION') {
-        this.setState({message : 'Invalid JSON Object'});
-      }
+        if (data.response.error.code == 'ANY_OTHER_EXCEPTION') {
+          this.setState({message : 'Invalid JSON Object'});
+        }
     }
   }
 
