@@ -49,8 +49,13 @@ header {
 }
 
 .download {
-    margin-top: 5px;
+    margin-top: 5px !important;
     background-color: #fcfcfc;
+}
+
+.download>a{
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
 }
 
 .active{

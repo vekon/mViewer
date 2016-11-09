@@ -757,6 +757,10 @@ fieldset.login legend {
 	height: auto;
 }
 
+.login-img {
+  height: 400px !important;
+}
+
 @media (max-width: 1000px){
   .helpDescriptionImg {
     margin-left: -10px !important;
