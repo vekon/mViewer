@@ -236,7 +236,7 @@ class newFileComponent extends React.Component {
                 <div className = {newBucketStyles.textDiv}>
                   <TextInput className={newBucketStyles.input} type="text" name="newBucket" id="newBucket" placeholder="Bucket Name" value={this.state.newBucket} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error+',maxLength:'+(95-this.props.currentDb.length)} onChange={this.handleChange.bind(that)} validationErrors={{isRequired2: 'Bucket name must not be empty', isAlpha1: 'Invalid Bucket name', maxLength: 'Bucket size cannot be more than '+(95-this.props.currentDb.length)+' characters for this Db' }} />
                 </div>
-                <div>
+                <div className={selectedFiles.length > 0 ? newFileStyles.fileDiv: ''}>
                 { selectedFiles.length <= 0 ?
                   <span>
                     <img src={'./images/Add.png'} className={newBucketStyles.logo}></img>
@@ -252,6 +252,8 @@ class newFileComponent extends React.Component {
                  : <span>
                       { selectedFiles }
                    </span> }
+                 </div>
+                 <div>
                  { selectedFiles.length > 0 ?
                     <div className={newBucketStyles.addMoreFileDiv}>
                       <span className={newBucketStyles.addMore}>ADD MORE FILES</span>
@@ -264,7 +266,7 @@ class newFileComponent extends React.Component {
                  { this.state.errorFile ?
                   <div className={newBucketStyles.errorFile}>Please select alteast one file.</div>
                   : null}
-                  </div>
+                </div>
               </div>
               <div className={newBucketStyles.buttons}>
                 <button onClick={this.addHandle.bind(that)} disabled= {this.state.disableSubmit} className={newBucketStyles.submit}>SUBMIT</button>
