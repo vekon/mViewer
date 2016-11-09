@@ -17,8 +17,6 @@ padding-right: 10px;
 }
 
 .two label {
-  /*margin-top: 5%;*/
-  /*margin-left: 4.7%;*/
   font-size: 16px;
   color: #484848;
   font-weight: 600;
@@ -73,7 +71,8 @@ padding-right: 10px;
 
 /*Buttons*/
 .submit,
-.cancel
+.cancel,
+.cancel1
  {
     border: none !important;
     width: 20%;
@@ -84,19 +83,20 @@ padding-right: 10px;
     padding: 10px;
 }
 
-.cancel {
+.cancel,
+.cancel1 {
   color: #484848;
-  /*margin-left: 175px;*/
   font-family: 'Brandon-Light';
   float: right;
 }
 
+.cancel1{
+  margin-bottom: 15px;
+}
+
 .submit {
   float: right;
-  /*margin-bottom: 4%;*/
-  /*margin-right: 8px;*/
   font-family: 'Brandon-Light';
-  /*margin-top: .01%;*/
 }
 
 .submit:enabled {
@@ -114,7 +114,9 @@ padding-right: 10px;
 }
 
 .cancel:hover,
-.cancel:active {
+.cancel:active,
+.cancel1:hover,
+.cancel1:active {
     color: #191717;
     cursor: pointer;
 }

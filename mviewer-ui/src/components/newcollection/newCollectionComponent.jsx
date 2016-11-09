@@ -256,10 +256,10 @@ class newCollectionComponent extends React.Component {
                   <div className={newCollectionStyles.checkLabel} onClick={this.handleCheck.bind(this)}><span>Capped</span></div>
                 </div>
                 <div className={newCollectionStyles.inputBox}>
-                  <TextInput type="text" name="capSize" id="capSize" placeholder="size (bytes)" value={this.state.size} onChange={this.handleChange.bind(this)} validations={'isRequired1:'+this.state.cap+',isNumeric1:'+this.state.cap} checkforOtherErrors ={this.state.submitted} validationErrors={{isNumeric1: 'Please enter the size in numeric', isRequired1: 'Please enter the size'}} shouldBeDisabled = {!this.state.cap}  />
+                  <TextInput type="text" name="capSize" id="capSize" placeholder="size (bytes)" value={this.state.size} onChange={this.handleChange.bind(this)} validations={'isRequired1:'+this.state.cap+',isNumeric1:'+this.state.cap + ',maxTextLength:' + this.state.cap} checkforOtherErrors ={this.state.submitted} validationErrors={{isNumeric1: 'Please enter the size in numeric', isRequired1: 'Please enter the size', maxTextLength: 'Only 19 digits allowed'}} shouldBeDisabled = {!this.state.cap}  />
                 </div>
                 <div className={newCollectionStyles.inputBox}>
-                  <TextInput type="text" name="maxDocs" id="maxDocs" placeholder="max Documents (optional)" value={this.state.max} onChange={this.handleChange.bind(this)} shouldBeDisabled = {!this.state.cap}  validationErrors={{isNumeric1: 'Please enter the size in numeric'}} checkforOtherErrors ={this.state.submitted} validations={'isNumeric1:' + this.state.cap}/>
+                  <TextInput type="text" name="maxDocs" id="maxDocs" placeholder="max Documents (optional)" value={this.state.max} onChange={this.handleChange.bind(this)} shouldBeDisabled = {!this.state.cap}  validationErrors={{isNumeric1: 'Please enter the size in numeric', maxTextLength: 'Only 19 digits allowed'}} checkforOtherErrors ={this.state.submitted} validations={'isNumeric1:' + this.state.cap + ',maxTextLength:' + this.state.cap}/>
                 </div>
                 <div className={newCollectionStyles.inputBox}>
                   <input type="checkbox" name="autoIndexId" id="autoIndexId"  className={newCollectionStyles.checkBox} checked={this.state.autoIndex} onChange={this.handleIndex.bind(this)} checked={this.state.autoIndex} disabled={!this.state.cap} />

@@ -19,6 +19,10 @@ Formsy.addValidationRule('isNumeric1', (values, value, otherField) => {
   return (value != '' ? value.match(/^[0-9]+$/) || (otherField==false && !value.match(/^[0-9]+$/)) : true);
 });
 
+Formsy.addValidationRule('maxTextLength', (values, value, otherField) => {
+  return (value != '' ? value.length <= 19: true);
+});
+
 Formsy.addValidationRule('isAlpha1', (values, value, otherField) => {
   if (value !== null){
     return (value.match(/^[\w\-]+$/));

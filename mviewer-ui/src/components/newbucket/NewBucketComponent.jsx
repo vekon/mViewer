@@ -96,6 +96,7 @@ class newFileComponent extends React.Component {
     if (data.response && data.response.error) {
       if (data.response.error.code === 'ANY_OTHER_EXCEPTION'){
         this.setState({successMessage:false});
+        this.setState({disableSubmit: false});
         this.setState({count : 0 })
         this.setState({message: "File cannot be added some error."});
       }
@@ -104,13 +105,13 @@ class newFileComponent extends React.Component {
     }
     if(this.state.count == this.state.newFile.length) {
       this.setState({successMessage:true});
-      this.setState({message: "New Bucket " +this.state.newBucket+" is successfully created"});
-      setTimeout(function() { this.closeModal() }.bind(this), 2000);
+      setTimeout(function() { this.setState({message: "New Bucket " +this.state.newBucket+" is successfully created"})}.bind(this), 2000);
+      setTimeout(function() { this.closeModal() }.bind(this), 3000);
     }
   }
 
   failure() {
-
+    this.setState({disableSubmit: false});
   }
 
   addHandle(){
@@ -132,6 +133,7 @@ class newFileComponent extends React.Component {
       });
       if(!isDuplicate) {
         this.setState({uploadClick: true});
+        this.setState({disableSubmit: true});
         this.state.newFile.map(function(item){
           item.percent = 0;
           that.fileUpload(item);

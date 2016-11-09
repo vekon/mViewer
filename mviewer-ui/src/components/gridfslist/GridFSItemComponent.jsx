@@ -16,7 +16,7 @@ class GridFSItemComponent extends React.Component {
         <span className={GridFSListStyles.collectionIcon}>
           <i className="fa fa-file" aria-hidden="true"></i>
         </span>
-        <span className = {GridFSListStyles.button}>{this.props.name}</span>
+        <span id="toolTip" className = {GridFSListStyles.button}>{this.props.name}</span>
       </div>
     );
   }

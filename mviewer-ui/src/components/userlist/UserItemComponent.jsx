@@ -16,7 +16,7 @@ class UserItemComponent extends React.Component {
         <span className = {UserListStyles.collectionIcon}>
           <i className="fa fa-user" aria-hidden="true"></i>
         </span>
-        <span className = {UserListStyles.button}>{this.props.name}</span>
+        <span id="toolTip" className = {UserListStyles.button}>{this.props.name}</span>
       </div>
     );
   }
