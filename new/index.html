@@ -2,14 +2,11 @@
 <head>
 	<title>mViewer by Imaginea @ GitHub</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="libs/slick/slick.css"/>
-	<link rel="stylesheet" type="text/css" href="libs/slick/slick-theme.css"/>
-  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="stylesheets/headerAndFooter.css">
 	<link rel="stylesheet" type="text/css" href="stylesheets/index.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script type="text/javascript" src="javascripts/index.js"></script>
-	<script type="text/javascript" src="libs/slick/slick.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -17,10 +14,10 @@
      <nav class="navbar">
         <div class = 'main-nav container-fluid'>
           <div class="navbar-header">
-            <a target='mainFrame' href='javascript:void(0);' class ='logo'><img src='./images/Logo.png'></img></a>
+            <a href='./' class ='logo'><img src='./images/Logo.png'></img></a>
           </div>
           <ul class='mainNav clearfix nav navbar-nav navbar-right' >
-            <li class=''><a href="./" ><span class="active">FEATURES</span></a></li>
+            <li class=''><a href="./#features" ><span class="active">FEATURES</span></a></li>
             <li class=''><a href="./documentation.html" ><span>DOCUMENTATION</span></a></li>
             <li class='download'><a href="javascript:void(0);" data-toggle="popover" data-placement="bottom" ><span>DOWNLOAD</span></a></li>
           </ul>
@@ -33,40 +30,57 @@
   </header>
 
   <div class="container"> 
-  	<div class="slider mtm">
-  		<div class="row">
-  			<div class="col-sm-6 text-center vcenter">
-  				<h3>Easy to login</h3>
-  				<h4>Simple to login with and with out auth mode along with users created.</h4>	
-  			</div>
-  			<div class="col-sm-6">
-  				<img src="images/slides/login.png">
-  			</div>
-  		</div>
-  		<div class="row">
-  			<div class="col-sm-6 text-center vcenter">
-  				<h3>Easy to navigate</h3>
-  				<h4>Easy to navigate betweeen databases and objects of database</h4>	
-  			</div>
-  			<div class="col-sm-6">
-  				<img src="images/slides/dbs.png">
-  			</div>
-  		</div>
-  		<div class="row">
-  			<div class="col-sm-6 text-center vcenter">
-  				<h3>Users creation & management</h3>
-  				<h4>Easy to manage users. Create users and manage them with specifig roles on selected database</h4>	
-  			</div>
-  			<div class="col-sm-6">
-  				<img src="images/slides/usercreation.png">
-  			</div>
-  		</div>
-  	</div>
+  	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+	  	<ol class="carousel-indicators">
+	      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+	      <li data-target="#myCarousel" data-slide-to="1"></li>
+	      <li data-target="#myCarousel" data-slide-to="2"></li>
+	    </ol>
+
+	    <div class="carousel-inner" role="listbox">
+	  		<div class="item active row">
+	  			<div class="col-sm-6 text-center vcenter">
+	  				<h3>Easy to login</h3>
+	  				<h4>Simple to login with and with out auth mode along with users created.</h4>	
+	  			</div>
+	  			<div class="col-sm-6">
+	  				<img src="images/slides/login.png">
+	  			</div>
+	  		</div>
+	  		<div class="item row">
+	  			<div class="col-sm-6 text-center vcenter">
+	  				<h3>Easy to navigate</h3>
+	  				<h4>Easy to navigate betweeen databases and objects of database</h4>	
+	  			</div>
+	  			<div class="col-sm-6">
+	  				<img src="images/slides/dbs.png">
+	  			</div>
+	  		</div>
+	  		<div class="item row">
+	  			<div class="col-sm-6 text-center vcenter">
+	  				<h3>Users creation & management</h3>
+	  				<h4>Easy to manage users. Create users and manage them with specifig roles on selected database</h4>	
+	  			</div>
+	  			<div class="col-sm-6">
+	  				<img src="images/slides/usercreation.png">
+	  			</div>
+	  		</div>
+	  	</div>
+	  	<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+	      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+	      <span class="sr-only">Previous</span>
+	    </a>
+	    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+	      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+	      <span class="sr-only">Next</span>
+	    </a>
+	</div>
   	<div class="content text-center">
   		<div class="header">A simple web-based Administration and Management Tool for MongoDB.</div>
   		<p class="mts">mViewer(Micro/Mongo Viewer) is a light web-based GUI managin MongoDB without needing any installation. mViewer allows managing databases, collections, gridfs, users & indexes as an alternative to the MongoDB native shell in simpler and user friendly way</p>
   	</div>
-  	<div class="features mtm">
+  	<div id="features" class="features mtm">
+  		<h2 class="header text-center">Features</h2>
 	  	<div class="row mts">
 	  		<div class="col-xs-12 col-sm-4 text-center">
 	  			<img src="images/features/DATABASE.png">
@@ -106,7 +120,7 @@
 	</div>
 	<div class="issue-tracker mtm text-center padm">
   		<p>Want a feature or found a bug, do raise a request/issue at</p>
-  		<a class="mts" href="">Github Issue Tracker</a>
+  		<a class="mts" href="https://github.com/Imaginea/mViewer/issues">Github Issue Tracker</a>
   	</div>
 	  <div id="footer">
       <div class="container" id="stopHere">
@@ -117,7 +131,7 @@
               QUICK LINKS 
             </div>
             <div class="foot-links">
-              <a href="">Features</a>
+              <a href="#features">Features</a>
               <a href="./documentation.html">Documentation</a>
               <a href="https://github.com/Imaginea/mViewer/blob/master/LICENSE.txt">License and Terms</a>
             </div>

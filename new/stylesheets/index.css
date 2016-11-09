@@ -12,46 +12,58 @@ body{
 	font-family: Brandon-Light;
 }
 
-.slider {
+#myCarousel {
 	width: 70%;
-	margin: auto;
+	margin: 40px auto;
 }
-.slider img{
+#myCarousel img{
 	height: 300px;
 	display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
-.slider .vcenter{
+#myCarousel .vcenter{
 	padding: 98px 10px;
 }
 
-.slider h3 {
+#myCarousel h3 {
 	color: #2494d0;
 }
 
-.slick-slide
-{
-    height: inherit;
+.carousel-control {
+	width: 0;
+	color: #2494d0;
+}
+.carousel-control.left {
+	left: -25px;
 }
 
-.slick-prev, .slick-next {
-    background: #2494d0;
-    border-radius: 10px;
-    height: 19px;
-    width: 19px;
+.carousel-control.right {
+	right: -25px;
 }
 
-.slick-prev:hover, .slick-next:hover {
-    background: #2494d0;
-    border-radius: 10px;
-    height: 19px;
-    width: 19px;
+.carousel-indicators {
+	bottom: -50px;
 }
 
-.features {
+.carousel-indicators li {
+	background: #2494d0;
+	color: #ddd;
+}
 
+.carousel-indicators .active {
+	background: #ddd;
+}
+
+.features .header{
+	color: #2494d0;
+    font-weight: bold;
+    border-top: solid 1px;
+    margin-top: 0;
+    padding-top: 20px;
+    width: 70%;
+    margin: auto;
 }
 .features span{
 	width: 240px;
