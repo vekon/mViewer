@@ -4,6 +4,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="libs/slick/slick.css"/>
 	<link rel="stylesheet" type="text/css" href="libs/slick/slick-theme.css"/>
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="stylesheets/headerAndFooter.css">
 	<link rel="stylesheet" type="text/css" href="stylesheets/index.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -16,15 +17,19 @@
      <nav class="navbar">
         <div class = 'main-nav container-fluid'>
           <div class="navbar-header">
-            <a href= "javascript:void(0);" class ='logo'><img src='./images/Logo.png'></img></a>
+            <a target='mainFrame' href='javascript:void(0);' class ='logo'><img src='./images/Logo.png'></img></a>
           </div>
           <ul class='mainNav clearfix nav navbar-nav navbar-right' >
-            <li class=''><a href="./" ><span>FEATURES</span></a></li>
+            <li class=''><a href="./" ><span class="active">FEATURES</span></a></li>
             <li class=''><a href="./documentation.html" ><span>DOCUMENTATION</span></a></li>
-            <li class='download'><a href="javascript:void(0);" ><span>DOWNLOAD</span></a></li>
+            <li class='download'><a href="javascript:void(0);" data-toggle="popover" data-placement="bottom" ><span>DOWNLOAD</span></a></li>
           </ul>
          </div>
        </nav>
+       <section id="downloads">
+          <a class="zip_download_link" href="https://github.com/Imaginea/mViewer/zipball/master"><i class="fa fa-folder-open" aria-hidden="true"></i>.zip</a>
+          <a class="tar_download_link" href="https://github.com/Imaginea/mViewer/tarball/master"><i class="fa fa-folder-open" aria-hidden="true"></i>tar.gz</a>
+        </section>
   </header>
 
   <div class="container"> 

@@ -49,8 +49,17 @@ header {
 }
 
 .download {
-    margin-top: 5px;
+    margin-top: 5px !important;
     background-color: #fcfcfc;
+}
+
+.download>a{
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+.active{
+    font-weight: 600;
 }
 
 .download > a > span {
@@ -61,9 +70,15 @@ header {
     background-color: #fcfcfc !important;
 }*/
 
+/*<<<<<<< HEAD
+.mainNav li span {
+  padding-left: 20px;
+  padding-right: 20px;
+=======*/
 .mainNav li {
   margin: 0 10px;
   font-weight: 300;
+/*>>>>>>> c01b3acf63cc16ae7f38720c03d9c692e35a0d60*/
 }
 
 .mainNav li span i {
@@ -150,6 +165,20 @@ header {
 }
 
 
+#downloads {display: none;}
+
+.popover-content > a {
+  color: #2494d0 !important;
+  display: inline-block;
+}
+
+.popover-content > a:hover {
+  color: #999 !important;
+}
+
+.popover-content {
+  padding: 9px 8px !important;
+}
 
 /*Media Queries*/
 

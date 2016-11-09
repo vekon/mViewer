@@ -14,7 +14,12 @@ $('iframe').iFrameResize({
 			}) ;
 
 
-
+$('[data-toggle=popover]').popover({
+    content: $('#downloads').html(),
+    html: true
+}).click(function() {
+    $(this).popover('show');
+});
 
 $(document).scroll(function () {
 	var navWrap = $('#navWrap'),

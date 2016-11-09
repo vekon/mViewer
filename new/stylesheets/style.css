@@ -258,7 +258,7 @@ ul.user-menu li label.logout {
 	padding: 0;
 	text-align: left;
 	/*width: 920px;*/
-	border: 1px solid #B2D4D3;
+	/*border: 1px solid #B2D4D3;*/
 	background: #fbfbfb;
 }
 
@@ -328,7 +328,7 @@ ul.user-menu li label.logout {
 
 .list-head {
 	background: #fff;
-	border: 1px solid #e3eaee;
+	/*border: 1px solid #e3eaee;*/
     border-left: 0;
 	border-right: 0;
 	padding: 10px;
@@ -352,7 +352,8 @@ ul.user-menu li label.logout {
 
 .main-head {
 	height: 16px;
-	color: #0e2137;
+	/*color: #0e2137;*/
+	color: #2494d0;
 	font-size: 18px;
 	font-weight: bold;
 }
@@ -386,7 +387,7 @@ textarea {
 
 .right-cont {	
 	background: #fff;
-	border-left: 1px solid #E3EAEE;
+	/*border-left: 1px solid #E3EAEE;*/
 	min-height: 500px;
 	/*width:860px;*/
 }
@@ -754,6 +755,10 @@ fieldset.login legend {
 	max-width: 100%;
 	display: block;
 	height: auto;
+}
+
+.login-img {
+  height: 400px !important;
 }
 
 @media (max-width: 1000px){
