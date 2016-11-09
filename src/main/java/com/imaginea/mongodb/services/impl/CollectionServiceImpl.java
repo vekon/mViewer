@@ -127,7 +127,7 @@ public class CollectionServiceImpl implements CollectionService {
    * @throws CollectionException throw super type of
    *         DuplicateCollectionException,InsertCollectionException
    */
-  public String insertCollection(String dbName, String newCollName, boolean capped, int size,
+  public String insertCollection(String dbName, String newCollName, boolean capped, long size,
       int maxDocs, boolean autoIndexId)
       throws DatabaseException, CollectionException, ValidationException {
 
@@ -183,7 +183,7 @@ public class CollectionServiceImpl implements CollectionService {
    *         DuplicateCollectionException,InsertCollectionException
    */
   public String updateCollection(String dbName, String selectedCollectionName, String newCollName,
-      boolean capped, int size, int maxDocs, boolean autoIndexId)
+      boolean capped, long size, int maxDocs, boolean autoIndexId)
       throws DatabaseException, CollectionException, ValidationException {
 
     if (dbName == null || dbName.equals("")) {

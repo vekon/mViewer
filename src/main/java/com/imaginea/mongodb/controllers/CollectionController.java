@@ -129,7 +129,7 @@ public class CollectionController extends BaseController {
   @Produces(MediaType.APPLICATION_JSON)
   public String postCollRequest(@PathParam("dbName") final String dbName,
       @FormParam("newCollName") final String newCollName,
-      @FormParam("isCapped") final String isCapped, @FormParam("capSize") final int capSize,
+      @FormParam("isCapped") final String isCapped, @FormParam("capSize") final long capSize,
       @FormParam("maxDocs") final int maxDocs, @FormParam("autoIndexId") final String autoIndexId,
       @QueryParam("connectionId") final String connectionId,
       @Context final HttpServletRequest request) {
@@ -154,7 +154,7 @@ public class CollectionController extends BaseController {
   public String updateCollRequest(@PathParam("dbName") final String dbName,
       @PathParam("collectionName") final String selectedCollection,
       @FormParam("newCollName") final String newCollName,
-      @FormParam("isCapped") final String isCapped, @FormParam("capSize") final int capSize,
+      @FormParam("isCapped") final String isCapped, @FormParam("capSize") final long capSize,
       @FormParam("maxDocs") final int maxDocs, @FormParam("autoIndexId") final String autoIndexId,
       @QueryParam("connectionId") final String connectionId,
       @Context final HttpServletRequest request) {
