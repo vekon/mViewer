@@ -7,4 +7,13 @@ $(document).ready(function(){
 	  adaptiveHeight: true,
 	  arrows:true
   });
+
+	$('[data-toggle=popover]').popover({
+		content: $('#downloads').html(),
+		html: true
+	}).click(function() {
+	    $(this).popover('show');
+	});
+
+
 });

@@ -220,15 +220,3 @@ body {
     padding-left: 0 !important;
   }
 }
-
-
-#downloads {display: none;}
-
-.popover-content > a {
-  color: #2494d0 !important;
-  display: inline-block;
-}
-
-.popover-content > a:hover {
-  color: #999 !important;
-}
