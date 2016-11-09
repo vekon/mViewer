@@ -4,7 +4,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="libs/slick/slick.css"/>
 	<link rel="stylesheet" type="text/css" href="libs/slick/slick-theme.css"/>
-	<link rel="stylesheet" type="text/css" href="stylesheets/documentation.css">
+	<link rel="stylesheet" type="text/css" href="stylesheets/headerAndFooter.css">
 	<link rel="stylesheet" type="text/css" href="stylesheets/index.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script type="text/javascript" src="javascripts/index.js"></script>
@@ -13,17 +13,18 @@
 </head>
 <body>
 	<header>
-		<nav>
-      <div class = 'main-nav'>
-        <a href= "javascript:void(0);" class ='logo'><img src='./images/Logo.png'></img></a>
-      
-        <ul class='mainNav clearfix' >
-          <li class=''><a href="/index.html" ><span>FEATURES</span></a></li>
-          <li class=''><a href="documentation.html" ><span>DOCUMENTATION</span></a></li>
-          <li class=''><a href="javascript:void(0);" ><span>DOWNLOAD</span></a></li>
-        </ul>
-       </div>
-     </nav>
+     <nav class="navbar">
+        <div class = 'main-nav container-fluid'>
+          <div class="navbar-header">
+            <a href= "javascript:void(0);" class ='logo'><img src='./images/Logo.png'></img></a>
+          </div>
+          <ul class='mainNav clearfix nav navbar-nav navbar-right' >
+            <li class=''><a href="javascript:void(0);" ><span>FEATURES</span></a></li>
+            <li class=''><a href="javascript:void(0);" ><span>DOCUMENTATION</span></a></li>
+            <li class='download'><a href="javascript:void(0);" ><span>DOWNLOAD</span></a></li>
+          </ul>
+         </div>
+       </nav>
   </header>
 
   <div class="container"> 
@@ -102,46 +103,67 @@
   		<p>Want a feature or found a bug, do raise a request/issue at</p>
   		<a class="mts" href="">Github Issue Tracker</a>
   	</div>
-  	<footer class="footer padm">
-  		<div class="row">
-  			<div class="col-sm-8">
-		  		<div class="col-sm-4">
-		  			<h5>QUICK LINKS</h5>
-		  			<a>Features</a>
-		  			<a>Documentation</a>
-		  			<a>Licence and terms</a>
-		  		</div>
-		  		<div class="col-sm-4">
-		  			<h5>GET INVOLVED</h5>
-		  			<a>Github Repo</a>
-		  			<a>Developer Guide</a>
-		  			<a>Git Issue Tracker</a>
-		  		</div>
-		  		<div class="col-sm-4">
-		  			<h5>OTHER FOSS PROJECTS</h5>
-		  			<a>SociealByWay</a>
-		  			<a>Matisse</a>
-		  			<a>Bot-Bot</a>
-		  		</div>
-		  	</div>
-		  	<div class="col-sm-4">
-		  		<h5>CONTACT US</h5>
-	  			<div><span>Email: </span> opensource@imaginea.com</div>
-	  			<div><span>Gtalk: </span> mviewer@imaginea.com</div>
-	  			<div>
-	  				<span>Social:</span>
-	  				<img src="images/features/Facebook.png">
-	  				<img src="images/features/Twitter.png">
-	  				<img src="images/features/Google-+.png">
-	  			</div>
-		  	</div>
-  		</div>
-  		<hr>
-  		<div class="copyright mts">
-			<div class="copyright-notice">
-				Copyright © 2013, <a href="http://www.pramati.com" style="text-decoration:none;">Pramati Technologies</a> Private Limited.
-			</div>
-  		</div>
-	  </footer>
+	  <div id="footer">
+      <div class="container" id="stopHere">
+        <div class="row footer-top-section">
+        
+          <div class="col-sm-3">
+            <div class="foot-header">
+              QUICK LINKS 
+            </div>
+            <div class="foot-links">
+              <a href="">Features</a>
+              <a href="">Charts</a>
+              <a href="">Documentation</a>
+              <a href="">Tutorial</a>
+              <a href="">License and Terms</a>
+            </div>
+          </div><!--/col-sm-3-->
+        <div class="col-sm-3">
+          <div class="foot-header"> GET INVOLVED </div>
+          <div class="foot-links">
+            <a href="">Github Repo</a>
+            <a href="">Developer Guide</a>
+            <a href="">Git Issue Tracker</a>
+          </div>
+        </div>
+        <div class="col-sm-3 third-column">
+          <div class="foot-header">
+            OTHER FOSS PROJECTS 
+          </div>
+          <div class="foot-links">
+            <a href="">SocialByWay</a>
+            <a href="">Matisse</a>
+            <a href="">Bot-Bot</a>
+            <a href="">UVCharts</a>
+            <a href="">WaveMaker</a>
+            
+          </div>
+        </div><!--/col-sm-3-->
+        <div class="col-sm-3 fourth-column">
+          <div class="foot-header">
+            CONTACT US 
+          </div>
+          <div class="foot-links">
+            <div><label>Email:</label> <a href="">opensource@imaginea.com</a></div>
+            <div><label>GTalk:</label> <a href="">mviewer@gmail.com</a></div>
+            <div class="social-icons">
+              <label>Social:</label> 
+              <a href="#" class="icoFacebook" title="Facebook"><!-- <i class="fa fa-facebook"></i> --><img src="images/features/Facebook.png"></a> 
+              <a href="#" class="icoTwitter" title="Twitter"><!-- <i class="fa fa-twitter"></i> --><img src="images/features/Twitter.png"></a>
+              <a href="#" class="icoGoogle" title="Google +"><!-- <i class="fa fa-google-plus"></i> --><img src="images/features/Google-+.png"></a>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="row" id="final-footer">
+              <div class="col-sm-12 text-center">
+                Copyright © 2013, Pramati Technologies Private Limited.
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
 </body>
 </html>
