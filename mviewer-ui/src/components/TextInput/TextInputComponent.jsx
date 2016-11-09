@@ -19,8 +19,12 @@ Formsy.addValidationRule('isNumeric1', (values, value, otherField) => {
   return (value != '' ? value.match(/^[0-9]+$/) || (otherField==false && !value.match(/^[0-9]+$/)) : true);
 });
 
-Formsy.addValidationRule('maxTextLength', (values, value, otherField) => {
-  return (value != '' ? value.length <= 19: true);
+Formsy.addValidationRule('maxSize', (values, value, otherField) => {
+  return (value != '' ? value <= "9223372036854774784" : true);
+});
+
+Formsy.addValidationRule('maxDocs', (values, value, otherField) => {
+  return (value != '' ? value <= "2147483647" : true);
 });
 
 Formsy.addValidationRule('isAlpha1', (values, value, otherField) => {
