@@ -119,6 +119,7 @@ class newFileComponent extends React.Component {
         this.setState({successMessage:false});
         this.setState({count : 0 })
         this.setState({message: "File cannot be added some error."});
+        this.setState({disableSubmit: false});
       }
     } else {
       this.setState({count : this.state.count +1 })
@@ -131,11 +132,12 @@ class newFileComponent extends React.Component {
   }
 
   failure() {
-
+    this.setState({disableSubmit: false});
   }
 
   uploadHandle(){
     this.setState({uploadClick: true});
+    this.setState({disableSubmit: true});
     var that = this;
     this.state.newFile.map(function(item){
       item.percent = 0;

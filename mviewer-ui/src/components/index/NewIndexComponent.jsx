@@ -294,14 +294,15 @@ class NewIndexComponent extends React.Component {
                       { this.state.fields.map(function(result) {
                         return <li key={result.value} className={indexStyles.attributesItems}>
                         <span className={indexStyles.checkboxSpan}><input type="checkbox" id={result.value} checked={result.attrSelected} onChange = {that.attributeHandler({result}).bind(that)} disabled={that.state.showAuth}></input></span>
-                              <div className={indexStyles.valueSpan}>{result.value}</div>
+                              <div id="toolTip" className={indexStyles.valueSpan}>{result.value}</div>
                         <span className={indexStyles.ascCheckboxSpan}><input type="checkbox" id={result.value} checked={result.asc} onChange = {that.orderHandler({result}).bind(that)}  disabled={that.state.showAuth}></input></span>
                         </li>;
                       }) }
                     </ol>
                   </div>
                 </div>
-                : <div className={indexStyles.empty}>This collection does not contain any documents. Please add a document and then try to Add/Edit Index</div> }
+                : <span><div className={indexStyles.empty}>This collection does not contain any documents. Please add a document and then try to Add/Edit Index</div>
+                  <span onClick={this.closeModal.bind(that)} value='CANCEL' className={indexStyles.cancel1}>CANCEL</span></span>}
               </div>
             </form>
             {!this.state.showAuth ?

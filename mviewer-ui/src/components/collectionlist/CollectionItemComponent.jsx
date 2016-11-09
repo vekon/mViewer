@@ -1,6 +1,7 @@
 import React from 'react'
 import collectionListStyles from '../shared/listpanel.css'
 import sharedStyles from '../shared/listpanel.css'
+import toolTip from '../shared/tooltip.js'
 import $ from 'jquery'
 import DeleteComponent from '../deletecomponent/DeleteComponent.jsx'
 import privilegesAPI from '../../gateway/privilegesAPI.js';
@@ -65,7 +66,7 @@ class CollectionItemComponent extends React.Component {
         <span className = {collectionListStyles.collectionIcon}>
           <i className="fa fa-files-o" aria-hidden="true"></i>
         </span>
-        <span className = {collectionListStyles.button}>{this.props.name}</span>
+        <span id="toolTip" className = {collectionListStyles.button}>{this.props.name}</span>
         <i className={"fa fa-trash "+ collectionListStyles.trash} aria-hidden="true" onClick = {this.openModal.bind(this)}></i>
         {this.state.modalIsOpen ? ( !this.state.showAuth ?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'collection' dbName = {this.props.dbName} collectionName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action = 'drop collection' ></AuthPopUp> ) : null}
       </div>
