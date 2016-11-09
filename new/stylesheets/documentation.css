@@ -33,6 +33,7 @@ body {
 
 #sidebar>li>a {
   font-size: 17px;
+  cursor: pointer;
 }
 
 /*Main Container*/
@@ -218,4 +219,16 @@ body {
   .side-nav {
     padding-left: 0 !important;
   }
+}
+
+
+#downloads {display: none;}
+
+.popover-content > a {
+  color: #2494d0 !important;
+  display: inline-block;
+}
+
+.popover-content > a:hover {
+  color: #999 !important;
 }
