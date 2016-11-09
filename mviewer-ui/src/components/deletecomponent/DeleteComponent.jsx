@@ -63,7 +63,11 @@ class DeleteComponent extends React.Component {
       this.setState({message:this.props.title+' has been deleted.'});
     }
     if (data.response.error) {
-      if (data.response.error){
+      if (data.response.error.code= "DELETING_FROM_CAPPED_COLLECTION"){
+        this.setState({successMessage:false});
+        this.setState({message: data.response.error.message});
+      }
+      else{
         this.setState({successMessage:false});
         this.setState({message:'Error in deleting the '+this.props.title});
       }
@@ -99,7 +103,7 @@ class DeleteComponent extends React.Component {
         <div className={deleteStyles.two}>
           <label>Are you sure to delete the {this.props.title} ?</label>
            <div className={!this.state.successMessage? (deleteStyles.errorMessage + ' ' + (this.state.message!='' ? deleteStyles.show : deleteStyles.hidden)) : (this.state.message != '' ? deleteStyles.successMessage : '')}>{this.state.message}</div>
-             <div className ={!this.state.successMessage ? (deleteStyles.choiceContainer + ' ' +deleteStyles.showChoice) : (deleteStyles.choiceContainer + ' ' +deleteStyles.hideChoice)}>
+             <div className ={this.state.message == ''  ? (deleteStyles.choiceContainer + ' ' +deleteStyles.showChoice) : (deleteStyles.choiceContainer + ' ' +deleteStyles.hideChoice)}>
                <button onClick={this.clickHandlerNo.bind(this)} value='NO' className={deleteStyles.cancel} >NO</button>
                <button onClick={this.clickHandlerYes.bind(this)} value='YES' className={deleteStyles.submit} >YES</button>
              </div>
