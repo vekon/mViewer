@@ -55,7 +55,7 @@ public interface CollectionService {
    * @throws CollectionException throw super type of
    *         DuplicateCollectionException,InsertCollectionException
    */
-  public String insertCollection(String dbName, String newCollName, boolean capped, int size,
+  public String insertCollection(String dbName, String newCollName, boolean capped, long size,
       int maxDocs, boolean autoIndexId)
       throws DatabaseException, CollectionException, ValidationException;
 
