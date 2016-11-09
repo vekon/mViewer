@@ -16,8 +16,8 @@ header {
 }
 
 .navbar {
-  padding-top: 20px;
-  padding-bottom: 20px; 
+  padding: 8px 0; 
+  height: inherit;
 }
 
 .navbar-header {
@@ -49,6 +49,7 @@ header {
 }
 
 .download {
+    margin-top: 5px;
     background-color: #fcfcfc;
 }
 
@@ -60,9 +61,8 @@ header {
     background-color: #fcfcfc !important;
 }*/
 
-.mainNav li span {
-  padding-left: 20px;
-  padding-right: 20px;
+.mainNav li {
+  margin: 0 10px;
   font-weight: 300;
 }
 
@@ -75,7 +75,7 @@ header {
 
 #footer {
   background: #484848;
-  font-family: 'Brandon';
+  font-family: 'Brandon-Light';
   padding-top: 25px;
 }
 
@@ -128,22 +128,23 @@ header {
 .foot-links a{
   display: inherit;
   color: #fcfcfc;
-  padding: 6px;
+  padding: 4px 0;
   font-size: 15px
 
 }
 
 .foot-header {
-  color: #fcfcfc;
+  color: #2494d0;
   font-family: 'Brandon';
   font-weight: 600;
-  font-size: 17px;
+  font-size: 15px;
+  margin-bottom: 5px;
 }
 
-#final-footer>div {
+#final-footer {
   color: #fcfcfc;
   font-family: 'Brandon';
-  font-size: 15px;
+  font-size: 14px;
   padding-bottom: 25px;
   padding-top: 25px;
 }
