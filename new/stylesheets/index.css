@@ -95,15 +95,20 @@ body{
 .features span{
 	width: 240px;
 	display: inline-block;
+	font-size: 16px;
 }
 .content {
 	margin: 70px auto;
-	width: 60%;
+	width: 80%;
 }
 
 .content .header {
-	font-size: 20px;
+	font-size: 26px;
 	font-weight: 300;
+}
+
+.content p {
+	font-size: 18px;
 }
 
 .mtm {
@@ -121,6 +126,7 @@ body{
 .issue-tracker {
 	background: #777;
 	color: #fff;
+	font-size: 16px;
 }
 
 .issue-tracker a {

@@ -16,9 +16,9 @@ $(document).ready(function(){
     }
     else {
         $('header').css({
-                'box-shadow': '0px 4px 6px #888888',
-                '-moz-box-shadow' : '0px 4px 6px #888888',
-                '-webkit-box-shadow' : '0px 4px 6px #888888' });
+                'box-shadow': '2px 2px 2px #888888',
+                '-moz-box-shadow' : '2px 2px 2px #888888',
+                '-webkit-box-shadow' : '2px 2px 2px #888888' });
     	}
 	});
 
