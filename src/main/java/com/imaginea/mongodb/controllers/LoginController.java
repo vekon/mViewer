@@ -61,161 +61,160 @@ import java.util.List;
 @Api(value = "/login", description = "login base uri")
 public class LoginController extends BaseController {
 
-  private static Logger logger = Logger.getLogger(LoginController.class);
+    private static Logger logger = Logger.getLogger(LoginController.class);
 
-  @POST
-  @Produces(MediaType.APPLICATION_JSON)
-  @Consumes(MediaType.APPLICATION_JSON)
-  @ApiOperation(value = "for login to mongodb", notes = "In order to login you must pass atleast host and port", position = 1)
-  public String authenticateUser(
-      @ApiParam(value = "user login data in json format", required = true) final UserLoginData userLoginData,
-      @Context final HttpServletRequest request) {
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "for login to mongodb", notes = "In order to login you must pass atleast host and port", position = 1)
+    public String authenticateUser(
+            @ApiParam(value = "user login data in json format", required = true) final UserLoginData userLoginData,
+            @Context final HttpServletRequest request) {
 
-    String response = ErrorTemplate.execute(logger, new ResponseCallback() {
-      public Object execute() throws Exception {
-        if ("".equals(userLoginData.getHost()) || "".equals(userLoginData.getPort())) {
-          ApplicationException e =
-              new ApplicationException(ErrorCodes.MISSING_LOGIN_FIELDS, "Missing Login Fields");
-          return formErrorResponse(logger, e);
-        }
+        String response = ErrorTemplate.execute(logger, new ResponseCallback() {
+            public Object execute() throws Exception {
+                if ("".equals(userLoginData.getHost()) || "".equals(userLoginData.getPort())) {
+                    ApplicationException e =
+                            new ApplicationException(ErrorCodes.MISSING_LOGIN_FIELDS, "Missing Login Fields");
+                    return formErrorResponse(logger, e);
+                }
 
-        int port = 0;
-        try {
-          port = Integer.parseInt(userLoginData.getPort());
-        } catch (NumberFormatException e) {
-          throw new MongoConnectionException(ErrorCodes.INVALID_PORT,
-              "You have entered an invalid port number !");
-        }
-        ConnectionDetails connectionDetails = new ConnectionDetails(userLoginData.getHost(), port,
-            userLoginData.getUserName(), userLoginData.getPassword(), userLoginData.getDatabases());
-        String connectionId = null;
-        try {
-          connectionId = authService.authenticate(connectionDetails);
-        } catch (IllegalArgumentException m) {
-          throw new MongoConnectionException(ErrorCodes.INVALID_ARGUMENT,
-              "You have entered an invalid data !");
-        } catch (MongoInternalException m) {
-          // Throws when cannot connect to localhost.com
-          throw new MongoConnectionException(ErrorCodes.HOST_UNKNOWN, m.getMessage());
-        } catch (MongoException m) {
-          throw new MongoConnectionException(ErrorCodes.MONGO_CONNECTION_EXCEPTION,
-              "Connection Failed. Check if MongoDB is running at the given host and port.");
-        }
-        JSONObject response = new JSONObject();
-        try {
-          response.put("success", true);
-          response.put("connectionId", connectionId);
-        } catch (JSONException e) {
-          logger.error(e);
-        }
-        return response;
-      }
-    }, true);
-    return response;
-  }
-
-
-  /**
-   * Authenticates User by verifying Mongo config details against admin database and authenticating
-   * user to that Db. A facility for guest login is also allowed when both fields username and
-   * password are empty.
-   * <p/>
-   * Also stores a mongo instance based on database configuration.
-   *
-   * @param request Request made by user for authentication
-   * @param user Name of user as in admin database in mongo
-   * @param password password of user as in admin database in mongo
-   * @param host mongo host to connect to
-   * @param mongoPort mongo Port to connect to
-   */
-
-  @POST
-  @Produces(MediaType.APPLICATION_JSON)
-  public String authenticateUser(final @FormParam("username") String user,
-      @FormParam("password") final String password, final @FormParam("host") String host,
-      @FormParam("port") final String mongoPort, @FormParam("databases") final String databases,
-      @Context final HttpServletRequest request) {
-
-
-
-    String response = ErrorTemplate.execute(logger, new ResponseCallback() {
-      public Object execute() throws Exception {
-        if ("".equals(host) || "".equals(mongoPort)) {
-          ApplicationException e =
-              new ApplicationException(ErrorCodes.MISSING_LOGIN_FIELDS, "Missing Login Fields");
-          return formErrorResponse(logger, e);
-        }
-
-
-        int port = 0;
-        try {
-          port = Integer.parseInt(mongoPort);
-        } catch (NumberFormatException e) {
-          throw new MongoConnectionException(ErrorCodes.INVALID_PORT,
-              "You have entered an invalid port number !");
-        }
-        ConnectionDetails connectionDetails =
-            new ConnectionDetails(host, port, user, password, databases);
-        String connectionId = null;
-        try {
-          connectionId = authService.authenticate(connectionDetails);
-        } catch (IllegalArgumentException m) {
-          throw new MongoConnectionException(ErrorCodes.INVALID_ARGUMENT,
-              "You have entered an invalid data !");
-        } catch (MongoInternalException m) {
-          // Throws when cannot connect to localhost.com
-          throw new MongoConnectionException(ErrorCodes.HOST_UNKNOWN, m.getMessage());
-        } catch (MongoException m) {
-          throw new MongoConnectionException(ErrorCodes.MONGO_CONNECTION_EXCEPTION,
-              "Connection Failed. Check if MongoDB is running at the given host and port.");
-        } catch (ApplicationException m) {
-          throw new ApplicationException(ErrorCodes.NEED_AUTHORISATION,m.getMessage());
-        }
-
-        JSONObject response = new JSONObject();
-        try {
-          response.put("success", true);
-          response.put("connectionId", connectionId);
-        } catch (JSONException e) {
-          logger.error(e);
-        }
-        return response;
-      }
-    }, true);
-    return response;
-  }
-
-  @Path("/details")
-  @GET
-  @Produces(MediaType.APPLICATION_JSON)
-  public String getConnectionDetails(@QueryParam("connectionId") final String connectionId,
-      @Context final HttpServletRequest request) {
-    String response =
-        new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
-          public Object execute() throws Exception {
-            MongoConnectionDetails mongoConnectionDetails =
-                authService.getMongoConnectionDetails(connectionId);
-            ConnectionDetails connectionDetails = mongoConnectionDetails.getConnectionDetails();
-            boolean privileges=(connectionDetails.getUsername()==null || connectionDetails.getDbName()==null)?false:true;
-
-            List dbList = authService.listDatabases(connectionId, connectionDetails.getDbName());
-
-            JSONObject jsonResponse = new JSONObject();
-            try {
-              jsonResponse.put("username", connectionDetails.getUsername());
-              jsonResponse.put("host", connectionDetails.getHostIp());
-              jsonResponse.put("port", connectionDetails.getHostPort());
-              jsonResponse.put("dbNames", dbList);
-              jsonResponse.put("authMode", connectionDetails.isAuthMode());
-              jsonResponse.put("hasAdminLoggedIn", connectionDetails.isAdminLogin());
-              if(privileges)
-                jsonResponse.put("rolesAndPrivileges", new SystemCollectionServiceImpl(connectionId).getUsersPrivileges(connectionDetails.getDbName(),connectionDetails.getUsername()));
-            } catch (JSONException e) {
-              logger.error(e);
+                int port = 0;
+                try {
+                    port = Integer.parseInt(userLoginData.getPort());
+                } catch (NumberFormatException e) {
+                    throw new MongoConnectionException(ErrorCodes.INVALID_PORT,
+                            "You have entered an invalid port number !");
+                }
+                ConnectionDetails connectionDetails = new ConnectionDetails(userLoginData.getHost(), port,
+                        userLoginData.getUserName(), userLoginData.getPassword(), userLoginData.getDatabases());
+                String connectionId = null;
+                try {
+                    connectionId = authService.authenticate(connectionDetails);
+                } catch (IllegalArgumentException m) {
+                    throw new MongoConnectionException(ErrorCodes.INVALID_ARGUMENT,
+                            "You have entered an invalid data !");
+                } catch (MongoInternalException m) {
+                    // Throws when cannot connect to localhost.com
+                    throw new MongoConnectionException(ErrorCodes.HOST_UNKNOWN, m.getMessage());
+                } catch (MongoException m) {
+                    throw new MongoConnectionException(ErrorCodes.MONGO_CONNECTION_EXCEPTION,
+                            "Connection Failed. Check if MongoDB is running at the given host and port.");
+                }
+                JSONObject response = new JSONObject();
+                try {
+                    response.put("success", true);
+                    response.put("connectionId", connectionId);
+                } catch (JSONException e) {
+                    logger.error(e);
+                }
+                return response;
             }
-            return jsonResponse;
-          }
-        });
-    return response;
-  }
+        }, true);
+        return response;
+    }
+
+
+    /**
+     * Authenticates User by verifying Mongo config details against admin database and authenticating
+     * user to that Db. A facility for guest login is also allowed when both fields username and
+     * password are empty.
+     * <p/>
+     * Also stores a mongo instance based on database configuration.
+     *
+     * @param request   Request made by user for authentication
+     * @param user      Name of user as in admin database in mongo
+     * @param password  password of user as in admin database in mongo
+     * @param host      mongo host to connect to
+     * @param mongoPort mongo Port to connect to
+     */
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public String authenticateUser(final @FormParam("username") String user,
+                                   @FormParam("password") final String password, final @FormParam("host") String host,
+                                   @FormParam("port") final String mongoPort, @FormParam("databases") final String databases,
+                                   @Context final HttpServletRequest request) {
+
+
+        String response = ErrorTemplate.execute(logger, new ResponseCallback() {
+            public Object execute() throws Exception {
+                if ("".equals(host) || "".equals(mongoPort)) {
+                    ApplicationException e = new ApplicationException(ErrorCodes.MISSING_LOGIN_FIELDS, "Missing Login Fields");
+                    return formErrorResponse(logger, e);
+                }
+                int port = 0;
+                try {
+                    port = Integer.parseInt(mongoPort);
+                } catch (NumberFormatException e) {
+                    throw new MongoConnectionException(ErrorCodes.INVALID_PORT,"You have entered an invalid port number !");
+                }
+                ConnectionDetails connectionDetails = new ConnectionDetails(host, port, user, password, databases);
+                String connectionId = null;
+                try {
+                    connectionId = authService.authenticate(connectionDetails);
+                } catch (IllegalArgumentException m) {
+                    throw new MongoConnectionException(ErrorCodes.INVALID_ARGUMENT,"You have entered an invalid data !");
+                } catch (MongoInternalException m) {
+                    // Throws when cannot connect to localhost.com
+                    throw new MongoConnectionException(ErrorCodes.HOST_UNKNOWN, m.getMessage());
+                } catch (MongoException m) {
+                    throw new MongoConnectionException(ErrorCodes.MONGO_CONNECTION_EXCEPTION,"Connection Failed. Check if MongoDB is running at the given host and port.");
+                } catch (ApplicationException m) {
+                    throw new ApplicationException(ErrorCodes.NEED_AUTHORISATION, m.getMessage());
+                }
+
+                JSONObject response = new JSONObject();
+                try {
+                    String clientMongoVersion = new SystemCollectionServiceImpl(connectionId).getMongoClientVersion(connectionDetails.getDbName());
+                    if (clientMongoVersion.contains("2.4")) {
+                        logger.info("User is currently using " + clientMongoVersion + "  which has compatability issues..!");
+                        throw new ApplicationException(ErrorCodes.LEGACY_MONGO_DB_EXCEPTION, "You are using outdated version of mongodb. Please upgrade to mongo 2.6 or higher");
+                    }
+                    else {
+                        response.put("success", true);
+                        response.put("connectionId", connectionId);
+                    }
+                } catch (JSONException e) {
+                    logger.error(e);
+                }
+                return response;
+            }
+        }, true);
+        return response;
+    }
+
+    @Path("/details")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getConnectionDetails(@QueryParam("connectionId") final String connectionId,
+                                       @Context final HttpServletRequest request) {
+        String response =
+                new ResponseTemplate().execute(logger, connectionId, request, new ResponseCallback() {
+                    public Object execute() throws Exception {
+                        MongoConnectionDetails mongoConnectionDetails =
+                                authService.getMongoConnectionDetails(connectionId);
+                        ConnectionDetails connectionDetails = mongoConnectionDetails.getConnectionDetails();
+                        boolean privileges = (connectionDetails.getUsername() == null || connectionDetails.getDbName() == null) ? false : true;
+
+                        List dbList = authService.listDatabases(connectionId, connectionDetails.getDbName());
+
+                        JSONObject jsonResponse = new JSONObject();
+                        try {
+                            jsonResponse.put("username", connectionDetails.getUsername());
+                            jsonResponse.put("host", connectionDetails.getHostIp());
+                            jsonResponse.put("port", connectionDetails.getHostPort());
+                            jsonResponse.put("dbNames", dbList);
+                            jsonResponse.put("authMode", connectionDetails.isAuthMode());
+                            jsonResponse.put("hasAdminLoggedIn", connectionDetails.isAdminLogin());
+                            if (privileges)
+                                jsonResponse.put("rolesAndPrivileges", new SystemCollectionServiceImpl(connectionId).getUsersPrivileges(connectionDetails.getDbName(), connectionDetails.getUsername()));
+                        } catch (JSONException e) {
+                            logger.error(e);
+                        }
+                        return jsonResponse;
+                    }
+                });
+        return response;
+    }
 }
