@@ -12,10 +12,37 @@ body{
 	font-family: Brandon-Light;
 }
 
+.page-container {
+	position: relative;
+    top: 60px;
+}
+
 #myCarousel {
 	width: 70%;
 	margin: 40px auto;
+	
 }
+
+.main-carousel-container{
+	background-image: url('../images/features/Banner-BG.png');
+}
+
+.image-container {
+	padding: 40px 0
+}
+.image-container img {
+	width: 50%;
+    margin-left: 25%;
+    margin: 0 auto;
+    padding: 40px 0;
+    display: block;
+}
+
+.image-container{
+	/*width: 50%;
+	margin: 40px auto;*/
+}
+
 #myCarousel img{
 	height: 300px;
 	display: block;
