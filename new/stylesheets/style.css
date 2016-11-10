@@ -22,7 +22,7 @@ body {
 	background: #fff none repeat scroll 0 0;
 	font-family: Brandon, Arial, Helvetica, sans-serif;
 	color: #0e2137;
-	font-size: 12px;
+	font-size: 16px;
 }
 
 div#logo {
@@ -745,7 +745,11 @@ fieldset.login legend {
 .helpDescription {
 	padding: 10px 5px 10px 30px;
 	font-family: Brandon, sans-serif;
-	font-size: 14px;
+	font-size: 16px;
+}
+
+.helpDescription  a {
+	padding-right: 0 !important;
 }
 
 .helpDescriptionImg {

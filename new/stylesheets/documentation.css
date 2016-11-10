@@ -29,6 +29,9 @@ body {
 .side-nav {
   padding-left: 45px !important;
   font-family: 'Brandon';
+  margin-top: 70px;
+  transition-timing-function: ease;
+  transition: margin-top .35s;
 }
 
 #sidebar>li>a {
@@ -45,6 +48,8 @@ body {
 
 
 
+
+
 .seperator {
   width: 1px;
   height: 47%;
@@ -54,10 +59,12 @@ body {
 
 
 .page-holder {
-  margin-top: 20px;
+  margin-top: 90px;
   border-style: none none none dashed;
   border-color: #97979a;
   border-width: 1px;
+  transition-timing-function: ease;
+  transition: margin-top .35s;
 }
 
 .page-holder iframe {
@@ -75,8 +82,7 @@ body {
     text-decoration: none;
 }
 
-.logo img {
-}
+
 
 .span1{
   font-family: 'Brandon-Light' ;
@@ -220,3 +226,6 @@ body {
     padding-left: 0 !important;
   }
 }
+
+
+
