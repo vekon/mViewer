@@ -169,10 +169,6 @@ public class LoginController extends BaseController {
                     String clientMongoVersion = new SystemCollectionServiceImpl(connectionId).getMongoClientVersion(connectionDetails.getDbName());
                     if (clientMongoVersion.contains("2.4")) {
                         logger.info("User is currently using " + clientMongoVersion + "  which has compatability issues..!");
-                        /*JSONObject errorResponse = new JSONObject();
-                        errorResponse.put("code", ErrorCodes.LEGACY_MONGO_DB_EXCEPTION);
-                        errorResponse.put("message", "You are using outdated version of mongodb. Please upgrade to mongo 2.6 or higher");
-                        response.put("error", errorResponse);*/
                         throw new ApplicationException(ErrorCodes.LEGACY_MONGO_DB_EXCEPTION, "You are using outdated version of mongodb. Please upgrade to mongo 2.6 or higher");
                     }
                     else {
