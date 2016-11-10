@@ -16,12 +16,19 @@
         <div class = 'main-nav container-fluid'>
           <div class="navbar-header">
             <a href='./documentation.html' class ='logo'><img src='./images/Logo.png'></img></a>
+            <button id= "toggle-buttom" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span> 
+            </button>
           </div>
-          <ul class='mainNav clearfix nav navbar-nav navbar-right' >
-            <li class=''><a href="./#features" ><span>FEATURES</span></a></li>
-            <li class=''><a href="./documentation.html" ><span class="active">DOCUMENTATION</span></a></li>
-            <li class='download'><a href="javascript:void(0);" data-toggle="popover" data-placement="bottom" ><span>DOWNLOAD</span></a></li>
-          </ul>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class='mainNav clearfix nav navbar-nav navbar-right' >
+              <li class=''><a href="./#features" ><span>FEATURES</span></a></li>
+              <li class=''><a href="./documentation.html" ><span class="active">DOCUMENTATION</span></a></li>
+              <li class='download'><a href="javascript:void(0);" data-toggle="popover" data-placement="bottom" ><span>DOWNLOAD</span></a></li>
+            </ul>
+          </div>
          </div>
        </nav>
         <section id="downloads">
@@ -33,7 +40,7 @@
       <nav class="col-xs-3 bs-docs-sidebar">
         <ul id="sidebar" class="side-nav nav nav-stacked fixed">
           <li><a target='mainFrame' href='pages/getting_started.html'>Getting Started</a></li>
-          <li><a>Managing Databases</a>
+          <li><a target='mainFrame' href='pages/db_ops_addDB.html' >Managing Databases</a>
             <ul class ="nav nav-stacked">
               <li><a target='mainFrame' href='pages/db_ops_addDB.html'>Add Database</a></li>
               <li><a target='mainFrame' href='pages/db_ops_viewDB.html'>View Statistics</a></li>
@@ -41,7 +48,7 @@
               <!-- <li><a target='mainFrame' href='pages/db_ops_executeQueryDB.html'>Executing Queries</a></li> -->
             </ul>
           </li>
-          <li><a>Managing Collections</a>
+          <li><a target='mainFrame' href='pages/col_ops_addCollections.html'>Managing Collections</a>
             <ul class ="nav nav-stacked">
               <li><a target='mainFrame' href='pages/col_ops_addCollections.html'>Add Collection</a></li>    
               <li><a target='mainFrame' href='pages/col_ops_viewCollectionStat.html'>View Statistics</a></li>
@@ -49,7 +56,7 @@
               <li><a target='mainFrame' href='pages/col_ops_executeQueryCollections.html'>Executing Queries</a></li>        
             </ul> 
           </li>
-          <li><a>Managing Documents</a>
+          <li><a target='mainFrame' href='pages/doc_ops_addDoc.html'>Managing Documents</a>
             <ul class ="nav nav-stacked">
                 <li><a target='mainFrame' href='pages/doc_ops_addDoc.html'>Add Document</a></li>      
                 <li><a target='mainFrame' href='pages/doc_ops_viewDoc.html'>View Documents</a></li>
@@ -57,7 +64,7 @@
                 <li><a target='mainFrame' href='pages/doc_ops_delDoc.html'>Delete Document</a></li>
             </ul>
           </li>
-          <li><a>Managing GridFS</a>
+          <li><a target='mainFrame' href='pages/gfs_ops_addBucket.html'>Managing GridFS</a>
             <ul class ="nav nav-stacked">
                 <li><a target='mainFrame' href='pages/gfs_ops_addBucket.html'>Add Bucket</a></li>
                 <!-- <li><a target='mainFrame' href='pages/gfs_ops_viewDBStatistics.html'>View Statistics</a></li> -->
@@ -65,14 +72,14 @@
                 <li><a target='mainFrame' href='pages/gfs_ops_executeQueryBuckets.html'>Executing Queries</a></li>
             </ul>
           </li>
-          <li><a>Managing Files</a>
+          <li><a target='mainFrame' href='pages/file_ops_addFile.html'>Managing Files</a>
             <ul class ="nav nav-stacked">
                     <li><a target='mainFrame' href='pages/file_ops_addFile.html'>Add File(s)</a></li>
                 <li><a target='mainFrame' href='pages/file_ops_viewFile.html'>View File(s)</a></li>
                 <li><a target='mainFrame' href='pages/file_ops_delFile.html'>Delete File</a></li>
             </ul>
           </li>
-          <li><a>Managing Users</a>
+          <li><a target='mainFrame' href='pages/user_ops_addUser.html'>Managing Users</a>
             <ul class ="nav nav-stacked">
                 <li><a target='mainFrame' href='pages/user_ops_addUser.html'>Add User</a></li>
                 <li><a target='mainFrame' href='pages/user_ops_editUser.html'>Modify User</a></li>
@@ -80,7 +87,7 @@
                 <!-- <li><a target='mainFrame' href='pages/user_ops_dropUser.html'>Drop Users</a></li> -->
             </ul>
           </li>
-          <li><a>Managing Indexes</a>
+          <li><a target='mainFrame' href='pages/indexes_ops_addIndex.html'>Managing Indexes</a>
             <ul class ="nav nav-stacked">
               <li><a target='mainFrame' href='pages/indexes_ops_addIndex.html'>Add Indexes</a></li>
               <li><a target='mainFrame' href='pages/indexes_ops_editdeleteIndex.html'>Edit/Delete Indexes</a></li>

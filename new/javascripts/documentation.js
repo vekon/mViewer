@@ -8,10 +8,14 @@ $('#sidebar li').on('click',function(){
 });
 
 
-$('iframe').iFrameResize({
-				log                     : false,                  // Enable console logging
-				inPageLinks             : true
-			}) ;
+$('#toggle-buttom').on('click',function(){
+  $('.page-holder').toggleClass('pull-down');
+  $('.side-nav').toggleClass('pull-down');
+});
+
+
+
+$('iframe').iFrameResize({ log : false, inPageLinks : true}) ;
 
 
 $('[data-toggle=popover]').popover({
