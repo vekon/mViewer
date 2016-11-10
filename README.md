@@ -2,7 +2,12 @@ mViewer(Micro/Mongo Viewer) is a light web-based GUI for managing MongoDB withou
 mViewer allows managing databases, collections, gridfs, users & indexes as an alternative to the mongoDB native shell
 in a simpler and user-friendly way.
 
-## mViewer-v0.9.2 - Beta 
+### Whats new in mViewer-v1.0 ?
+   1. Redesigned complete user interface with enhananced ease.
+   2. Full support of roles and privileges.
+   3. User creation with roles with specific set actions.
+   4. Supports latest MongoDB v3.x
+   5. Integrated all API's with swagger
   
 ### Whats new in mViewer-v0.9.2 ?
    1. Enhanced Query Executor with support for executing queries on databases & collections including Map Reduce & aggregation queries.
@@ -55,7 +60,9 @@ Unzip/Untar the downloaded package and simply run start_mViewer.bat/start_mViewe
 
 'port' is optional, if not provided default port (8080) set in properties file will be used.
 
-Start using mViewer at http://localhost:<port>/index.html
+Start using new mViewer at http://localhost:\<port\>/react/index.html
+
+Start using mViewer at http://localhost:\<port\>/index.html
 
 
 ### Documentation
