@@ -12,18 +12,21 @@ header {
     font-size: 27px;
     margin-bottom: 0;
     /*margin-top: 0;*/
-    padding-right: 25px;
+    padding-right: 111px;
 }
 
+.navbar-toggle {
+  margin-right: 136px !important;
 
+}
 .navbar-toggle .icon-bar {
   background: #fff !important;
 }
 
-.mainContainer  header{
+header{
   position: fixed;
   width: 100%;
-  z-index: 1;
+  z-index: 30;
 }
 
 header>nav {
@@ -221,13 +224,6 @@ header>nav {
   border-right: none;
 }
 }
-
-
-
-.pull-down {
-  margin-top: 230px !important;
-}
-
 
 
 @media (max-width: 767px){
