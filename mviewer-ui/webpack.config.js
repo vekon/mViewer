@@ -63,10 +63,6 @@ var config = {
         ]),
         new CopyWebpackPlugin([
             { from: APP_DIR + '/assets', to: BUILD_DIR  + '/'}
-        ]),
-
-        new CopyWebpackPlugin([
-            { from: APP_DIR + '/vendors/css/bootstrap', to: BUILD_DIR  + '/bootstrap'}
         ])
     ]
 };
