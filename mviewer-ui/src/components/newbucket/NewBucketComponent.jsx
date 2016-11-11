@@ -43,7 +43,7 @@ class newFileComponent extends React.Component {
     this.setState({message: ''});
     this.setState({disableSubmit: true});
     this.setState({newBucket: null});
-    var hasPriv = privilegesAPI.hasPrivilege('createCollection','', this.props.currentDb);
+    var hasPriv = privilegesAPI.hasPrivilege('insert','', this.props.currentDb);
       if(hasPriv){
         this.setState({showAuth : false});    }
       else{

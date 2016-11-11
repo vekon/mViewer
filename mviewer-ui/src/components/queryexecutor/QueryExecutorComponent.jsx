@@ -403,7 +403,7 @@ class QueryExecutorComponent extends React.Component {
       this.clickHandler();
     }
     else{
-      this.paginationHandler();
+      this.paginationHandler(buttonValue);
     }
     if(this.props.queryType == 'collection'){
       this.getAttributes(this.props.currentDb, this.props.currentItem, this.props.connectionId);
@@ -487,7 +487,9 @@ class QueryExecutorComponent extends React.Component {
 
   }
 
-  paginationHandler(e){
+  paginationHandler(buttonValue, e){
+    console.log(buttonValue);
+    console.log(e);
     var attributes = [];
     var allSelected = true;
     this.state.fields.map(function(e) {
@@ -518,7 +520,10 @@ class QueryExecutorComponent extends React.Component {
     } else if (position === "") {
         countValue = countValue - 1;
         if (countValue != 0 && skipValue == countValue) {
-          skipValue= skipValue - limitValue;
+          if(buttonValue == 'delete'){
+            skipValue= skipValue - limitValue;      
+          }
+          
         }
     }
     var currentDb = this.props.currentDb;
@@ -642,12 +647,12 @@ class QueryExecutorComponent extends React.Component {
         <div className={queryExecutorStyles.resultContainer} key={this.props.currentItem}>
           <div className={queryExecutorStyles.errorContainer}>{this.state.errorMessage}</div>
           <div id='paginator' className={queryExecutorStyles.paginator}>
-          <a id='first' className = {(this.state.skipValue == 0 || this.state.skipValue >= this.state.totalCount)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='First'><i className="fa fa-angle-double-left" aria-hidden="true"></i> First</a>
-          <a id='prev'  className = {(this.state.skipValue >= this.state.totalCount || this.state.skipValue + this.state.limitValue <= this.state.limitValue)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)}  href='javascript:void(0)' data-search_name='Previous'><i className="fa fa-angle-left" aria-hidden="true"></i> Previous</a>
+          <a id='first' className = {(this.state.skipValue == 0 || this.state.skipValue >= this.state.totalCount)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this, '')} href='javascript:void(0)' data-search_name='First'><i className="fa fa-angle-double-left" aria-hidden="true"></i> First</a>
+          <a id='prev'  className = {(this.state.skipValue >= this.state.totalCount || this.state.skipValue + this.state.limitValue <= this.state.limitValue)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this, '')}  href='javascript:void(0)' data-search_name='Previous'><i className="fa fa-angle-left" aria-hidden="true"></i> Previous</a>
           <label>Showing</label><label id='startLabel'></label>{this.state.startLabel}<label> - </label>
           <label id='endLabel'>{this.state.endLabel}</label><label> of </label><label id='countLabel'>{this.state.totalCount}</label>
-          <a id='next' className = {(this.state.skipValue >= this.state.totalCount - this.state.limitValue)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='Next'>Next <i className="fa fa-angle-right" aria-hidden="true"></i></a>
-          <a id='last' className = {(this.state.skipValue + this.state.limitValue >= this.state.totalCount )? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this)} href='javascript:void(0)' data-search_name='Last'>Last <i className="fa fa-angle-double-right" aria-hidden="true"></i></a>
+          <a id='next' className = {(this.state.skipValue >= this.state.totalCount - this.state.limitValue)? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this, '')} href='javascript:void(0)' data-search_name='Next'>Next <i className="fa fa-angle-right" aria-hidden="true"></i></a>
+          <a id='last' className = {(this.state.skipValue + this.state.limitValue >= this.state.totalCount )? queryExecutorStyles.disabled : ''} onClick = {this.paginationHandler.bind(this, '')} href='javascript:void(0)' data-search_name='Last'>Last <i className="fa fa-angle-double-right" aria-hidden="true"></i></a>
           </div>
           <Tabs selectedIndex={this.state.selectedTab} onSelect={this.handleSelect.bind(this)}>
             <TabList className={queryExecutorStyles.treeTab + ' documentNav'}>

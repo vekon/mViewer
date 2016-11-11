@@ -60,7 +60,12 @@ class newDocumentComponent extends React.Component {
     this.setState({newDocument: "{}"});
     if(this.state.successMessage==true)
     {
-      this.props.refresh();
+      if(this.props.addOrEdit == 'Edit'){
+        this.props.refresh('edit');
+      }
+      else{
+        this.props.refresh('new');
+      }
     }
   }
 
