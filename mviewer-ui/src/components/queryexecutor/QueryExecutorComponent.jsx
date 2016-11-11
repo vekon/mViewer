@@ -127,6 +127,11 @@ class QueryExecutorComponent extends React.Component {
      if(parentData.response.result.count == 0 ){
         actualTotalCount = 0;
      }
+
+    // if(parentData.response.result.count <= 10 ){
+    //     actualTotalCount = parentData.response.result.count ;
+    //  }     
+
      this.setState({totalCount:actualTotalCount});
      if (this.state.skipValue < this.state.totalCount) {
        var size = this.state.skipValue + this.state.limitValue;
@@ -349,12 +354,6 @@ class QueryExecutorComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    // $.fn.equalizeHeights = function(){
-    //   console.log('maxHeight ' + $('.collectionsContainer').height());
-    //   return this.height( $('.collectionsContainer').height() );
-    // }
-
-   // $('.sideContainer').equalizeHeights();
     if((this.props.currentDb == nextProps.currentDb && this.props.currentItem !== nextProps.currentItem) || (this.props.currentDb !== nextProps.currentDb)){
       this.setState({selectedTab:0});
       this.setState({query:this.props.queryType == "collection" ? 'db.'+this.props.currentItem+'.find({})' :
@@ -488,8 +487,6 @@ class QueryExecutorComponent extends React.Component {
   }
 
   paginationHandler(buttonValue, e){
-    console.log(buttonValue);
-    console.log(e);
     var attributes = [];
     var allSelected = true;
     this.state.fields.map(function(e) {
