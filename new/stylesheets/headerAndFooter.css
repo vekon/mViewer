@@ -12,11 +12,11 @@ header {
     font-size: 27px;
     margin-bottom: 0;
     /*margin-top: 0;*/
-    padding-right: 111px;
+    padding-right: 150px;
 }
 
 .navbar-toggle {
-  margin-right: 136px !important;
+  margin-right: 175px !important;
 
 }
 .navbar-toggle .icon-bar {
@@ -44,7 +44,7 @@ header>nav {
 }
 
 .navbar-header {
-  padding-left: 20px;
+  padding-left: 55px;
 }
 
 .mainNav li {
@@ -239,5 +239,22 @@ header>nav {
   .download>a:hover,
   .download>a:focus{
     border-left: none !important;
+  }
+}
+
+
+
+@media (max-width: 1069px){
+
+.navbar-header {
+  padding-left: 30px !important;
+}
+
+}
+
+
+@media (max-width: 870px){
+  .navbar-header{
+    padding-left: 20px !important;
   }
 }
