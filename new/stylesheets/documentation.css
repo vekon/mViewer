@@ -29,7 +29,7 @@ body {
 .side-nav {
   padding-left: 45px !important;
   font-family: 'Brandon';
-  margin-top: 70px;
+  /*margin-top: 70px;*/
   transition-timing-function: ease;
   transition: margin-top .35s;
 }
@@ -59,7 +59,8 @@ body {
 
 
 .page-holder {
-  margin-top: 90px;
+  top: 90px;
+  position: relative;
   border-style: none none none dashed;
   border-color: #97979a;
   border-width: 1px;
@@ -153,7 +154,8 @@ body {
 
 /* sidebar */
 .bs-docs-sidebar {
-    margin-top: 20px;
+    top: 90px;
+    position: relative;
     margin-bottom: 20px;
     height: auto;
 }
