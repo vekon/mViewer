@@ -16,6 +16,11 @@ body {
   font-family: 'Brandon-Light';
 }
 
+.main-container {
+  position: relative;
+  top: 90px;
+}
+
 .row {
   margin-left: 0 !important;
   margin-right: 0 !important;
@@ -27,7 +32,7 @@ body {
 
 
 .side-nav {
-  padding-left: 45px !important;
+  /*padding-left: 45px !important;*/
   font-family: 'Brandon';
   /*margin-top: 70px;*/
   transition-timing-function: ease;
@@ -59,8 +64,8 @@ body {
 
 
 .page-holder {
-  top: 90px;
-  position: relative;
+  /*top: 90px;*/
+  /*position: relative;*/
   border-style: none none none dashed;
   border-color: #97979a;
   border-width: 1px;
@@ -154,8 +159,8 @@ body {
 
 /* sidebar */
 .bs-docs-sidebar {
-    top: 90px;
-    position: relative;
+    /*top: 90px;*/
+    /*position: relative;*/
     margin-bottom: 20px;
     height: auto;
 }
@@ -219,13 +224,13 @@ body {
 
 @media (max-width: 1069px){
   .side-nav {
-    padding-left: 25px !important;
+    /*padding-left: 25px !important;*/
   }
 }
 
 @media (max-width: 870px){
   .side-nav {
-    padding-left: 0 !important;
+    /*padding-left: 0 !important;*/
   }
 }
 
