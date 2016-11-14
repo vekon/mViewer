@@ -90,6 +90,7 @@ class DeleteComponent extends React.Component {
         right                 : 'auto',
         bottom                : 'auto',
         transform             : 'translate(-50%, -50%)',
+        minWidth              : '332px',
         zIndex                :  '4',
         borderRadius          :  '2px'
       }
@@ -101,7 +102,7 @@ class DeleteComponent extends React.Component {
         onRequestClose={this.closeModal.bind(this)}
         style = {customStyles}>
         <div className={deleteStyles.two}>
-          <label>Are you sure to delete the {this.props.title} ?</label>
+          {this.state.message == '' ? <label>Are you sure to delete the {this.props.title} ?</label> : <label></label>}
            <div className={!this.state.successMessage? (deleteStyles.errorMessage + ' ' + (this.state.message!='' ? deleteStyles.show : deleteStyles.hidden)) : (this.state.message != '' ? deleteStyles.successMessage : '')}>{this.state.message}</div>
              <div className ={this.state.message == ''  ? (deleteStyles.choiceContainer + ' ' +deleteStyles.showChoice) : (deleteStyles.choiceContainer + ' ' +deleteStyles.hideChoice)}>
                <button onClick={this.clickHandlerNo.bind(this)} value='NO' className={deleteStyles.cancel} >NO</button>
