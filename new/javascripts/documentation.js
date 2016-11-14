@@ -37,17 +37,15 @@ $(document).ready(function () {
   $(document).scroll(function () {
   	var navWrap = $('#navWrap'),
     nav = $('.bs-docs-sidebar>ul'),
-    startPosition = navWrap.offset().top,
+    startPosition = navWrap.offset().top - 70,
     stopPosition = $('#stopHere').offset().top - nav.outerHeight();
     var y = $(this).scrollTop()
-
-    
     if (y > startPosition) {
         nav.addClass('sticky');
-  	if (y > (stopPosition - 125)) {
-            nav.css('top', stopPosition -125 - y);
+  	if (y > (stopPosition - 125 )) {
+            nav.css('top', stopPosition  - 125 - y);
         } else {
-            nav.css('top', 20);
+            nav.css('top', 70);
         }
 
     } else {
