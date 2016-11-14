@@ -268,11 +268,13 @@ class QueryExecutorComponent extends React.Component {
     // var queryExecutorInnerCall3 = service('GET', partialUrl, '');
     if(data.response.result!=undefined)
     {
+      if(Object.getOwnPropertyNames(data.response.result.documents[0]).length == 0) {
+        data.response.result.documents = [] ;
+      }
       var array = data.response.result.documents;
       this.setState({collectionObjects:array});
-      // this.props.queryType == "collection" ? this.getAttributes(currentDb,currentItem, connectionId) : null;
+      this.props.queryType == "collection" ? this.getAttributes(currentDb,currentItem, connectionId) : null;
       this.props.queryType == "fs" ?
-      // queryExecutorInnerCall3
       service('GET', partialUrl, '').then(this.success.bind(this , 'innerCall3' , data), this.failure.bind(this, 'innerCall3', data))
       : this.setState({totalCount:data.response.result.count});
         if (this.state.skipValue < this.state.totalCount) {
@@ -302,6 +304,10 @@ class QueryExecutorComponent extends React.Component {
         if(data.response.error.message.indexOf("not authorized") >= 0) {
             this.setState({errorMessage:'User is not authorized to perform this query'});
           } 
+
+          if(data.response.error.message.indexOf("cannot remove from a capped collection") >= 0){
+            this.setState({errorMessage:'cannot remove from a capped collection'});
+          }
       }
 
       setTimeout(function(){
@@ -397,9 +403,43 @@ class QueryExecutorComponent extends React.Component {
    queryExecutorCall3.then(this.success3.bind(this , currentDb, currentItem, connectionId), this.failure3.bind(this));
   }
 
+
+  refreshDocuments(){
+    var that = this;
+    that.setState({limitValue:parseInt(that.state.limit)});
+    that.setState({skipValue:parseInt(that.state.skip)});
+    var attributes = [];
+    var allSelected = true;
+    var currentDb = this.props.currentDb;
+    var currentItem = this.props.currentItem;
+    var connectionId = this.props.connectionId;
+    this.state.fields.map(function(e) {
+      if(e.selected){
+        attributes.push(e.value);
+      } else {
+        allSelected = false;
+      }
+    });
+
+   var query = ''
+
+   if (this.props.queryType == "collection"){
+    query = 'db.'+currentItem+'.find({})';
+   }
+   else{
+    query = 'db.'+currentItem+'.files.find({})';
+   }
+    
+   this.setState({query : query });  
+   var partialUrl = this.props.queryType == "collection" ? currentDb+'/'+currentItem+'/document?query=' + this.state.query + '&connectionId='+connectionId+'&fields=' + attributes +'&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&allKeys=' + allSelected :
+              currentDb+'/gridfs/'+currentItem+'/getfiles?query='+ this.state.query +'&fields=""&limit='+this.state.limit+'&skip='+this.state.skip+'&sortBy={'+this.state.sort+'}&connectionId='+connectionId;
+   var queryExecutorCall3 = service('GET', partialUrl, '');
+   queryExecutorCall3.then(this.success3.bind(this , currentDb, currentItem, connectionId), this.failure3.bind(this));
+  }
+
   refresh(buttonValue){
     if( buttonValue == 'new'){
-      this.clickHandler();
+      this.refreshDocuments();
     }
     else{
       this.paginationHandler(buttonValue);
