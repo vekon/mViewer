@@ -115,8 +115,9 @@ class newCollectionComponent extends React.Component {
     this.setState({error:true});
     var methodType = 'POST';
     var that =this;
-    var data = $("form").serialize().split("&");
+    var data = $('form[name="collectionForm"]').serialize().split("&");
     var obj={};
+    console.log(data);
     this.setState({error : true});
     for(var key in data)
     {
@@ -245,7 +246,7 @@ class newCollectionComponent extends React.Component {
             <div className={newCollectionStyles.header}>
               <span className={newCollectionStyles.text}>{this.state.title}</span>
             </div>
-            <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
+            <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} name="collectionForm" >
               <div className={ newCollectionStyles.formContainer}>
                 <div className={newCollectionStyles.inputBox}>
 

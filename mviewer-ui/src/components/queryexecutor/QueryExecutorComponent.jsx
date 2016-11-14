@@ -302,6 +302,10 @@ class QueryExecutorComponent extends React.Component {
         if(data.response.error.message.indexOf("not authorized") >= 0) {
             this.setState({errorMessage:'User is not authorized to perform this query'});
           } 
+
+          if(data.response.error.message.indexOf("cannot remove from a capped collection") >= 0){
+            this.setState({errorMessage:'cannot remove from a capped collection'});
+          }
       }
 
       setTimeout(function(){
