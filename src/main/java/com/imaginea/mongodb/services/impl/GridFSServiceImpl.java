@@ -216,10 +216,7 @@ public class GridFSServiceImpl implements GridFSService {
         JSONArray fileList = new JSONArray();
         while (it.hasNext()) {
             GridFSFile fsFile = it.next();
-
-
             JSONObject file = new JSONObject();
-
 
             file.put("_id", fsFile.getId().asObjectId().getValue());
             file.put("fileName", fsFile.getFilename());
@@ -230,18 +227,12 @@ public class GridFSServiceImpl implements GridFSService {
             if (fsFile.getMetadata() != null) {
                 file.put("metadata", fsFile.getMetadata());
             }
-
-
             fileList.put(file);
-
         }
-        if(query.equals("{}")){
-            for (GridFSFile gridFSFile : gridFS.find(queryObj)) {
-                count++;
-            }
+        // count of documents must not depend on limit size.
+        for (GridFSFile gridFSFile : gridFS.find(queryObj).sort(sortObj).skip(filesSkip)) {
+            count++;
         }
-        else
-            count = fileList.length();
         JSONObject result = new JSONObject();
         result.put("documents", fileList);
         result.put("editable", true);
