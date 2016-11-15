@@ -45,7 +45,6 @@ class NewIndexComponent extends React.Component {
   success(calledFrom,data){
 
     if(typeof(data.response.result) != 'undefined'){
-      console.log(data);
       if (calledFrom == 'getAttributes'){
         var arr = data.response.result.keys;
         var newArr = [];
@@ -79,14 +78,8 @@ class NewIndexComponent extends React.Component {
     if(typeof(data.response.error) != 'undefined'){
       if (data.response.error.message.indexOf('not authorized on') != -1){
         this.setState({customErrorMessage : 'not authorized to perform this action'});
-        // var hasdbAdminRole = privilegesAPI.hasRole('dbAdmin', this.props.currentDb);
-        // var hasdbAdminAnyDbRole = privilegesAPI.hasRole('dbAdminAnyDatabase', this.props.currentDb);  
         var hasDropColPriv = privilegesAPI.hasPrivilege('dropCollection',this.props.currentItem, this.props.currentDb); 
         var hasFindPriv = privilegesAPI.hasPrivilege('find',this.props.currentItem, this.props.currentDb);
-        console.log(this.props.currentDb);
-        console.log(this.props.currentItem);
-        console.log(hasDropColPriv);
-        console.log(hasFindPriv);
         if (hasDropColPriv  && !hasFindPriv){
           this.setState({customErrorMessage : 'dbAdmin cannot view the documents and does not have the privilieges to view indexes'});
         }
