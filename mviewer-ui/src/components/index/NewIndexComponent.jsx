@@ -23,7 +23,8 @@ class NewIndexComponent extends React.Component {
       attrCreated : false,
       showAuth: false,
       showAuth1: false,
-      hasPriv: false
+      hasPriv: false,
+      customErrorMessage: ''
     }
   }
 
@@ -42,33 +43,47 @@ class NewIndexComponent extends React.Component {
   }
 
   success(calledFrom,data){
-    if (calledFrom == 'getAttributes'){
-      var arr = data.response.result.keys;
-      var newArr = [];
-      for(var i=0; i < arr.length; i++) {
-        newArr.push({"value": arr[i], "attrSelected" :false,"asc": false});
+
+    if(typeof(data.response.result) != 'undefined'){
+      if (calledFrom == 'getAttributes'){
+        var arr = data.response.result.keys;
+        var newArr = [];
+        for(var i=0; i < arr.length; i++) {
+          newArr.push({"value": arr[i], "attrSelected" :false,"asc": false});
+        }
+        this.setState({fields:newArr});
+        if(!this.state.attrCreated && this.state.indexes && this.state.indexes.length > 0) {
+          this.setAttributes();
+        }
       }
-      this.setState({fields:newArr});
-      if(!this.state.attrCreated && this.state.indexes && this.state.indexes.length > 0) {
-        this.setAttributes();
+      if(calledFrom == 'clickHandler') {
+        if(data.response.result) {
+          var successResult = data.response.result.replace(/[\[\]']/g,'' );
+          this.setState({message:successResult});
+          this.setState({successMessage:true});
+          setTimeout(function() { this.closeModal() }.bind(this), 2000);
+        }
+        if (data.response.error) {
+          this.setState({message:"Server error, Index cannot be added"});
+        }
+      }
+      if (calledFrom == 'getIndexes'){
+        this.setState({indexes: data.response.result.documents});
+        if(!this.state.attrCreated && this.state.fields && this.state.fields.length > 0) {
+          this.setAttributes();
+        }
       }
     }
-    if(calledFrom == 'clickHandler') {
-      if(data.response.result) {
-        var successResult = data.response.result.replace(/[\[\]']/g,'' );
-        this.setState({message:successResult});
-        this.setState({successMessage:true});
-        setTimeout(function() { this.closeModal() }.bind(this), 2000);
-      }
-      if (data.response.error) {
-        this.setState({message:"Server error, Index cannot be added"});
-      }
-    }
-    if (calledFrom == 'getIndexes'){
-      this.setState({indexes: data.response.result.documents});
-      if(!this.state.attrCreated && this.state.fields && this.state.fields.length > 0) {
-        this.setAttributes();
-      }
+
+    if(typeof(data.response.error) != 'undefined'){
+      if (data.response.error.message.indexOf('not authorized on') != -1){
+        this.setState({customErrorMessage : 'not authorized to perform this action'});
+        var hasDropColPriv = privilegesAPI.hasPrivilege('dropCollection',this.props.currentItem, this.props.currentDb); 
+        var hasFindPriv = privilegesAPI.hasPrivilege('find',this.props.currentItem, this.props.currentDb);
+        if (hasDropColPriv  && !hasFindPriv){
+          this.setState({customErrorMessage : 'dbAdmin cannot view the documents and does not have the privilieges to view indexes'});
+        }
+      } 
     }
   }
 
@@ -96,7 +111,8 @@ class NewIndexComponent extends React.Component {
   }
 
   openModal() {
-    var hasPriv = privilegesAPI.hasPrivilege('listIndexes','', this.props.currentDb);
+    this.setState({customErrorMessage: ''});
+    var hasPriv = privilegesAPI.hasPrivilege('listIndexes',this.props.currentItem, this.props.currentDb);
     if(hasPriv){
       this.setState({showAuth1 : false});   
       this.getAttributes();
@@ -218,14 +234,14 @@ class NewIndexComponent extends React.Component {
   }
 
   componentDidMount(){
-    var hasPriv = privilegesAPI.hasPrivilege('listIndexes','system.indexes', this.props.currentDb);
+    var hasPriv = privilegesAPI.hasPrivilege('listIndexes',this.props.currentItem, this.props.currentDb);
     if(hasPriv){
       this.setState({showAuth : true});    }
     else{
       this.setState({showAuth : false});
     }
 
-    var hasPriv = privilegesAPI.hasPrivilege('createIndex','', this.props.currentDb);
+    var hasPriv = privilegesAPI.hasPrivilege('createIndex',this.props.currentItem, this.props.currentDb);
     if(hasPriv){
       this.setState({showAuth : false});    }
     else{
@@ -235,14 +251,14 @@ class NewIndexComponent extends React.Component {
   }
 
   componentWillReceiveProps (){
-    var hasPriv = privilegesAPI.hasPrivilege('listIndexes','', this.props.currentDb);
+    var hasPriv = privilegesAPI.hasPrivilege('listIndexes',this.props.currentItem, this.props.currentDb);
     if(hasPriv){
       this.setState({showAuth : true});    }
     else{
       this.setState({showAuth : false});
     }
 
-    var hasPriv = privilegesAPI.hasPrivilege('createIndex','', this.props.currentDb);
+    var hasPriv = privilegesAPI.hasPrivilege('createIndex',this.props.currentItem, this.props.currentDb);
     if(hasPriv){
       this.setState({showAuth : false});    }
     else{
@@ -285,7 +301,7 @@ class NewIndexComponent extends React.Component {
            </div>
             <form>
               <div className = {indexStyles.attrDiv}>
-                { this.state.fields && this.state.fields.length > 0 ?
+                { this.state.fields && this.state.fields.length  > 0 ?
                 <div>
                   <label className={indexStyles.attributesLabel}>Attributes</label>
                   <label className={indexStyles.orderLabel}>Asc Index</label>
@@ -301,8 +317,11 @@ class NewIndexComponent extends React.Component {
                     </ol>
                   </div>
                 </div>
-                : <span><div className={indexStyles.empty}>This collection does not contain any documents. Please add a document and then try to Add/Edit Index</div>
-                  <span onClick={this.closeModal.bind(that)} value='CANCEL' className={indexStyles.cancel1}>CANCEL</span></span>}
+                :this.state.customErrorMessage == '' ?<span>
+                    <div className={indexStyles.empty}>This collection does not contain any documents. Please add a document and then try to Add/Edit Index</div>
+                    <span onClick={this.closeModal.bind(that)} value='CANCEL' className={indexStyles.cancel1}>CANCEL</span>
+                  </span> : <div className={indexStyles.customErrorMessage}>{this.state.customErrorMessage}</div>
+                }
               </div>
             </form>
             {!this.state.showAuth ?
@@ -315,7 +334,7 @@ class NewIndexComponent extends React.Component {
             <div className = {indexStyles.clear}></div>
             <div className={!this.state.successMessage? (indexStyles.errorMessage + ' ' + (this.state.message!='' ? indexStyles.show : indexStyles.hidden)) : (this.state.message != '' ? indexStyles.successMessage : '')}>{this.state.message}</div>
          </div>
-         {this.state.showAuth ? <div className={indexStyles.errorMessage} >You are not allowed to Add/Edit indexes</div> : ''}
+         {this.state.showAuth ?  (this.state.fields && this.state.fields.length > 0 ? <div className={indexStyles.errorMessage} >You are not allowed to Add/Edit indexes</div> : '') : ''}
        </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth1}  authClose = {this.authClose.bind(this)} action = 'View Indexes' ></AuthPopUp> }
      </div>
     );

@@ -51,13 +51,6 @@ class CollectionsComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-   //  $.fn.equalizeHeights = function(){
-   //    console.log('maxHeight ' + $('.collectionsContainer').height());
-   //    return this.height( $('.collectionsContainer').height() );
-   //  }
-
-   // $('.sideContainer').equalizeHeights();
-   // this.setState({navMessage:'Click to expand'});
 
     Tabs.setUseDefaultStyles(false);
     this.setState({selectedTab:0});
@@ -110,11 +103,6 @@ class CollectionsComponent extends React.Component {
 
   refreshRespectiveData(updatedcollectionName){
     this.refs.left.refreshRespectiveData(updatedcollectionName);
-  }
-
-  _onResize(height, width){
-    console.log('height: '+height + ' , width: '+width);
-    $('.body').height(height);
   }
 
   toggleMessage(){

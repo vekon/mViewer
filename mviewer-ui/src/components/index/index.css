@@ -172,6 +172,22 @@ padding-right: 10px;
 }
 
 
+
+.customErrorMessage {
+  color: red;
+  text-align: center;
+  border: 1px solid red;
+  width: 90%;
+  height: auto;
+  min-height: 40px;
+  padding: 10px;
+  margin: 15px auto;
+  font-size: 15px;
+  word-wrap: break-word;
+
+}
+
+
 .buttonContainer{
   text-align: center;
   margin-bottom: 3%;

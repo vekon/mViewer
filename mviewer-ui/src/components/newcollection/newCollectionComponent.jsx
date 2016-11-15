@@ -117,7 +117,6 @@ class newCollectionComponent extends React.Component {
     var that =this;
     var data = $('form[name="collectionForm"]').serialize().split("&");
     var obj={};
-    console.log(data);
     this.setState({error : true});
     for(var key in data)
     {
