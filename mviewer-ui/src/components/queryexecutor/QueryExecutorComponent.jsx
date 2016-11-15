@@ -179,21 +179,23 @@ class QueryExecutorComponent extends React.Component {
 
   success1(data){
     if(typeof(data.response.result) != 'undefined'){
+      this.setState({errorMessage:''});
       var array = data.response.result.documents;
       var partialUrl = this.props.currentDb+'/gridfs/'+this.props.currentItem+'/count?connectionId='+this.props.connectionId;
       // var queryExecutorInnerCall1 = service('GET', partialUrl, '');
       if(this.state._isMounted == true){
       this.setState({collectionObjects:array});
       this.props.queryType == "collection" ? this.getAttributes(this.props.currentDb,this.props.currentItem, this.props.connectionId) : null;
-      this.props.queryType == "fs" ?
-      ( //queryExecutorInnerCall1
-        service('GET', partialUrl, '').then(this.success.bind(this, 'innerCall1' , data), this.failure1.bind(this , 'innerCall1', data)))
-      : this.setState({totalCount:data.response.result.count});
+      // this.props.queryType == "fs" ?
+      // ( //queryExecutorInnerCall1
+        // service('GET', partialUrl, '').then(this.success.bind(this, 'innerCall1' , data), this.failure1.bind(this , 'innerCall1', data)))
+      // :
+       this.setState({totalCount:data.response.result.count});
         if (this.state.skipValue < this.state.totalCount) {
           var size = this.state.skipValue + this.state.limitValue;
           this.setState({startLabel:(this.state.totalCount != 0 ? this.state.skipValue + 1 : 0)})
           this.setState({endLabel:(this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)})
-        };
+        }
     }
   }
   if(data.response.error) {
@@ -202,9 +204,9 @@ class QueryExecutorComponent extends React.Component {
       this.setState({errorMessage:'User is not authorized to perform this query'});
     }
 
-    setTimeout(function(){
-        this.setState({errorMessage: ''});
-      }.bind(this), 2000);
+    // setTimeout(function(){
+    //     this.setState({errorMessage: ''});
+    //   }.bind(this), 2000);
   }
 }
 
@@ -217,14 +219,15 @@ class QueryExecutorComponent extends React.Component {
     var partialUrl = currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId;
     // var queryExecutorInnerCall2 = service('GET', partialUrl, '');
     if(data.response.result!=undefined && this.state._isMounted == true)
-    {
-      var array = data.response.result.documents;
+    { 
+       this.setState({errorMessage:''});
+       var array = data.response.result.documents;
         this.setState({collectionObjects:array});
         this.props.queryType == "collection" ? this.getAttributes(currentDb,currentItem, connectionId) : null;
-        this.props.queryType == "fs" ?
+        // this.props.queryType == "fs" ?
         // queryExecutorInnerCall2
-        service('GET', partialUrl, '').then(this.success.bind(this , 'innerCall2', data), this.failure.bind(this, 'innerCall2', data))
-      :
+        // service('GET', partialUrl, '').then(this.success.bind(this , 'innerCall2', data), this.failure.bind(this, 'innerCall2', data))
+      // :
         this.setState({totalCount:data.response.result.count});
         if (data.response.result.count < 10)
         {
@@ -253,9 +256,9 @@ class QueryExecutorComponent extends React.Component {
               this.setState({errorMessage:'User is not authorized to perform this query'});
            }
 
-           setTimeout(function(){
-              this.setState({errorMessage: ''});
-            }.bind(this), 2000);
+           // setTimeout(function(){
+           //    this.setState({errorMessage: ''});
+           //  }.bind(this), 2000);
         }
   }
 
@@ -268,24 +271,31 @@ class QueryExecutorComponent extends React.Component {
     // var queryExecutorInnerCall3 = service('GET', partialUrl, '');
     if(data.response.result!=undefined)
     {
-      if(Object.getOwnPropertyNames(data.response.result.documents[0]).length == 0) {
-        data.response.result.documents = [] ;
+      if (data.response.result.documents[0] != undefined){
+        if(Object.getOwnPropertyNames(data.response.result.documents[0]).length == 0) {
+          data.response.result.documents = [] ;
+        }
       }
+      
+      this.setState({errorMessage:''});
       var array = data.response.result.documents;
       this.setState({collectionObjects:array});
       this.props.queryType == "collection" ? this.getAttributes(currentDb,currentItem, connectionId) : null;
-      this.props.queryType == "fs" ?
-      service('GET', partialUrl, '').then(this.success.bind(this , 'innerCall3' , data), this.failure.bind(this, 'innerCall3', data))
-      : this.setState({totalCount:data.response.result.count});
+      // this.props.queryType == "fs" ?
+      // service('GET', partialUrl, '').then(this.success.bind(this , 'innerCall3' , data), this.failure.bind(this, 'innerCall3', data))
+      // : 
+      this.setState({totalCount:data.response.result.count});
         if (this.state.skipValue < this.state.totalCount) {
           var size = this.state.skipValue + this.state.limitValue;
           this.setState({startLabel:(this.state.totalCount != 0 ? this.state.skipValue + 1 : 0)})
           this.setState({endLabel:(this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)})
         }
+
         if(data.response.result.count==0 || data.response.result.documents.length == 0){
           this.setState({startLabel: 0});
           this.setState({endLabel: 0});
           this.setState({totalCount: 0});
+
         }
     }
 
@@ -310,9 +320,9 @@ class QueryExecutorComponent extends React.Component {
           }
       }
 
-      setTimeout(function(){
-        this.setState({errorMessage: ''});
-      }.bind(this), 2000);
+      // setTimeout(function(){
+      //   this.setState({errorMessage: ''});
+      // }.bind(this), 2000);
       this.setState({startLabel: 0});
       this.setState({endLabel: 0});
       this.setState({totalCount: 0});
@@ -332,10 +342,11 @@ class QueryExecutorComponent extends React.Component {
       var array = data.response.result.documents;
       this.setState({collectionObjects:array});
       // this.props.queryType == "collection" ? this.getAttributes(currentDb,currentItem, connectionId) : null;
-      this.props.queryType == "fs" ?
+      // this.props.queryType == "fs" ?
       // queryExecutorInnerCall4
-      service('GET', partialUrl, '').then(this.success.bind(this , 'innerCall4', data), this.failure.bind(this, 'innerCall4', data))
-      : this.setState({totalCount:data.response.result.count});
+      // service('GET', partialUrl, '').then(this.success.bind(this , 'innerCall4', data), this.failure.bind(this, 'innerCall4', data))
+      // : 
+        this.setState({totalCount:data.response.result.count});
         if (this.state.skipValue < this.state.totalCount) {
           var size = this.state.skipValue + this.state.limitValue;
           this.setState({startLabel:(this.state.totalCount != 0 ? this.state.skipValue + 1 : 0)})

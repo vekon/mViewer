@@ -230,7 +230,7 @@ public class GridFSServiceImpl implements GridFSService {
             fileList.put(file);
         }
         // count of documents must not depend on limit size.
-        for (GridFSFile gridFSFile : gridFS.find(queryObj).sort(sortObj).skip(filesSkip)) {
+        for (GridFSFile gridFSFile : gridFS.find(queryObj)) {
             count++;
         }
         JSONObject result = new JSONObject();
