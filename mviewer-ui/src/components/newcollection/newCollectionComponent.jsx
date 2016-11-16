@@ -15,6 +15,7 @@ class newCollectionComponent extends React.Component {
     this.state = {
       modalIsOpen: false,
       cap: false,
+      previousCap : false,
       autoIndex: true,
       name: null,
       size: '',
@@ -28,7 +29,8 @@ class newCollectionComponent extends React.Component {
       _isMounted: false,
       error:false,
       newCollection: this.props.currentItem,
-      showAuth: false
+      showAuth: false,
+      isAdmin: false
     }
   }
 
@@ -50,6 +52,8 @@ class newCollectionComponent extends React.Component {
       }
 
     }
+    if(privilegesAPI.hasRole('dbAdmin', this.props.currentDb) || privilegesAPI.hasRole('dbAdminAnyDatabase', this.props.currentDb))
+      this.setState({isAdmin:true});
 
     if (!this.state.showAuth){
       if (this.props.addOrUpdate == '2'){
@@ -133,8 +137,20 @@ class newCollectionComponent extends React.Component {
     else {
       this.setState({ newCollection: obj['newCollName']});
     }
+    if(this.state.previousCap == true && this.state.cap == false) {
+      if(!privilegesAPI.hasPrivilege('emptycapped',this.props.name, this.props.currentDb)) {
+        this.setState({successMessage:false});
+        this.setState({message:'User does not have privilege to convert capped collection to uncapped'});
+        return;
+      }
+    }
     if(obj['newCollName'] !=  '') {
-      var partialUrl = this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId;
+      var partialUrl = "";
+      if(this.state.isAdmin) {
+        partialUrl = this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId + '&isDbAdmin=true';
+      } else {
+        partialUrl = this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId + '&isDbAdmin=false';
+      }
       var updateCollectionCall = service(methodType, partialUrl, obj);
       updateCollectionCall.then(this.success.bind(this, 'clickHandler', obj), this.failure.bind(this, 'clickHandler', obj));
     }
@@ -159,7 +175,6 @@ class newCollectionComponent extends React.Component {
     this.setState({error:false});
     if(nextProps.addOrUpdate == 2 ){
       this.setState({name :nextProps.currentItem});
-      // this.getCappedData.call(this);
       this.setState({title:'Update Collection'});
       this.setState({successMessage:false});
     }
@@ -203,6 +218,7 @@ class newCollectionComponent extends React.Component {
       if(this.state._isMounted == true){
         if(typeof(data.response) != 'undefined'){
           this.setState({cap:data.response.result.capped});
+          this.setState({previousCap: data.response.result.capped});
           this.setState({size:data.response.result.size != undefined ? data.response.result.size : ''});
           this.setState({max:data.response.result.maxDocs != undefined && data.response.result.maxDocs != "-1" ? data.response.result.maxDocs : ''});
         }
@@ -260,7 +276,7 @@ class newCollectionComponent extends React.Component {
                   <TextInput type="text" name="capSize" id="capSize" placeholder="size (bytes)" value={this.state.size} onChange={this.handleChange.bind(this)} validations={'isRequired1:'+this.state.cap+',isNumeric1:'+this.state.cap + ',maxSize:' + this.state.cap} checkforOtherErrors ={this.state.submitted} validationErrors={{isNumeric1: 'Please enter the size in numeric', isRequired1: 'Please enter the size', maxSize: 'Entered value exceeds allowed Size limit.'}} shouldBeDisabled = {!this.state.cap}  />
                 </div>
                 <div className={newCollectionStyles.inputBox}>
-                  <TextInput type="text" name="maxDocs" id="maxDocs" placeholder="max Documents (optional)" value={this.state.max} onChange={this.handleChange.bind(this)} shouldBeDisabled = {!this.state.cap}  validationErrors={{isNumeric1: 'Please enter the size in numeric', maxDocs: 'Entered value exceeds allowed Max Docs limit.'}} checkforOtherErrors ={this.state.submitted} validations={'isNumeric1:' + this.state.cap + ',maxDocs:' + this.state.cap}/>
+                  <TextInput type="text" name="maxDocs" id="maxDocs" placeholder="max Documents (optional)" value={this.state.max} onChange={this.handleChange.bind(this)} shouldBeDisabled = {this.state.isAdmin ? true : !this.state.cap}  validationErrors={{isNumeric1: 'Please enter the size in numeric', maxDocs: 'Entered value exceeds allowed Max Docs limit.'}} checkforOtherErrors ={this.state.submitted} validations={'isNumeric1:' + this.state.cap + ',maxDocs:' + this.state.cap}/>
                 </div>
                 <div className={newCollectionStyles.inputBox}>
                   <input type="checkbox" name="autoIndexId" id="autoIndexId"  className={newCollectionStyles.checkBox} checked={this.state.autoIndex} onChange={this.handleIndex.bind(this)} checked={this.state.autoIndex} disabled={!this.state.cap} />

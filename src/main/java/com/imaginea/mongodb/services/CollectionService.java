@@ -76,7 +76,7 @@ public interface CollectionService {
    *         DuplicateCollectionException,InsertCollectionException
    */
   public String updateCollection(String dbName, String selectedCollection, String newCollName,
-      boolean capped, long size, int maxDocs, boolean autoIndexId)
+      boolean capped, long size, int maxDocs, boolean isDbAdmin, boolean autoIndexId)
       throws DatabaseException, CollectionException, ValidationException;
 
   /**
