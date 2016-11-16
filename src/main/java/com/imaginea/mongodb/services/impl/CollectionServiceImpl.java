@@ -183,7 +183,7 @@ public class CollectionServiceImpl implements CollectionService {
    *         DuplicateCollectionException,InsertCollectionException
    */
   public String updateCollection(String dbName, String selectedCollectionName, String newCollName,
-      boolean capped, long size, int maxDocs, boolean autoIndexId)
+      boolean capped, long size, int maxDocs, boolean isDbAdmin, boolean autoIndexId)
       throws DatabaseException, CollectionException, ValidationException {
 
     if (dbName == null || dbName.equals("")) {
@@ -205,23 +205,45 @@ public class CollectionServiceImpl implements CollectionService {
       //       "Db with name [" + dbName + "] doesn't exist.");
       // }
 
-      boolean convertedToCapped = false, convertedToNormal = false, renamed = false;
-
+      boolean convertedToCapped = false, convertedToNormal = false, renamed = false, updated = false;
+      boolean isCapped =(boolean)isCappedCollection(dbName, selectedCollectionName).get("capped");
       MongoDatabase db = mongoInstance.getDatabase(dbName);
       MongoCollection<Document> selectedCollection = db.getCollection(selectedCollectionName);
       CreateCollectionOptions options = new CreateCollectionOptions();
       options.capped(capped);
-      if (capped){
-        options.maxDocuments(maxDocs);
-        options.autoIndex(autoIndexId);
-        options.sizeInBytes(size);
-        createCollection(options,selectedCollection,selectedCollectionName, db);
-        convertedToCapped = true;
-      } else {
-        createCollection(options, selectedCollection, selectedCollectionName, db);
-        convertedToNormal = true;
-      }
+      if(isDbAdmin) {
+        Document option = new Document();
+        option.put("convertToCapped", selectedCollectionName);
+        option.put("size", size);
+        option.put("max", maxDocs);
+        option.put("autoIndexId", autoIndexId);
+        Document commandResult = db.runCommand(option);
 
+        String errMsg = (String) commandResult.get("errmsg");
+        if (errMsg != null) {
+          return "Failed to convert [" + selectedCollectionName + "] to capped Collection! "
+                  + errMsg;
+        }
+        if((isCapped && capped) || (!isCapped && !capped))
+          updated = true;
+        else if(!isCapped && capped)
+          convertedToCapped = true;
+      } else {
+        if (capped) {
+          options.maxDocuments(maxDocs);
+          options.autoIndex(autoIndexId);
+          options.sizeInBytes(size);
+          createCollection(options, selectedCollection, selectedCollectionName, db);
+        } else {
+          createCollection(options, selectedCollection, selectedCollectionName, db);
+        }
+        if((isCapped && capped) || (!isCapped && !capped))
+          updated = true;
+        else if(!isCapped && capped)
+          convertedToCapped = true;
+        else if(isCapped && !capped)
+          convertedToNormal = true;
+      }
       if (!selectedCollectionName.equals(newCollName)) {
         if (getCollList(dbName).contains(newCollName)) {
           throw new CollectionException(ErrorCodes.COLLECTION_ALREADY_EXISTS,
@@ -234,7 +256,7 @@ public class CollectionServiceImpl implements CollectionService {
         selectedCollection.renameCollection(mongoNamespace);
         renamed = true;
       }
-      if ((convertedToNormal || convertedToCapped) && renamed) {
+      if (((convertedToNormal || convertedToCapped || updated) && renamed) || updated)  {
         result = "Collection [" + selectedCollectionName + "] was successfully updated.";
       } else if (convertedToCapped) {
         result = "Collection [" + selectedCollectionName
@@ -252,19 +274,6 @@ public class CollectionServiceImpl implements CollectionService {
     return result;
   }
 
-  /**
-   * Deletes a collection inside a database in mongo to which user is connected to.
-   *
-   * @param dbName Name of Database in which to insert a collection
-   * @param collectionName Name of Collection to be inserted
-   * @return Success if deletion is successful else throw exception
-   * @throws DatabaseException throw super type of UndefinedDatabaseException
-   * @throws ValidationException throw super type of
-   *         EmptyDatabaseNameException,EmptyCollectionNameException
-   * @throws CollectionException throw super type of
-   *         UndefinedCollectionException,DeleteCollectionException
-   */
-
   private void createCollection(CreateCollectionOptions options, MongoCollection<Document> selectedCollection, String selectedCollectionName,MongoDatabase db) {
     db.createCollection(selectedCollectionName + "_temp", options);
     MongoCollection<Document> tempCollection =
@@ -279,6 +288,20 @@ public class CollectionServiceImpl implements CollectionService {
     selectedCollection.drop();
     tempCollection.renameCollection(namespace);
   }
+
+
+  /**
+   * Deletes a collection inside a database in mongo to which user is connected to.
+   *
+   * @param dbName Name of Database in which to insert a collection
+   * @param collectionName Name of Collection to be inserted
+   * @return Success if deletion is successful else throw exception
+   * @throws DatabaseException throw super type of UndefinedDatabaseException
+   * @throws ValidationException throw super type of
+   *         EmptyDatabaseNameException,EmptyCollectionNameException
+   * @throws CollectionException throw super type of
+   *         UndefinedCollectionException,DeleteCollectionException
+   */
 
   public String deleteCollection(String dbName, String collectionName)
       throws DatabaseException, CollectionException, ValidationException {

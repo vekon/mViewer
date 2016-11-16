@@ -157,6 +157,7 @@ public class CollectionController extends BaseController {
       @FormParam("isCapped") final String isCapped, @FormParam("capSize") final long capSize,
       @FormParam("maxDocs") final int maxDocs, @FormParam("autoIndexId") final String autoIndexId,
       @QueryParam("connectionId") final String connectionId,
+      @QueryParam("isDbAdmin") final boolean isDbAdmin,
       @Context final HttpServletRequest request) {
 
     String response =
@@ -166,7 +167,7 @@ public class CollectionController extends BaseController {
             String status = null;
 
             status = collectionService.updateCollection(dbName, selectedCollection, newCollName,
-                (isCapped != null && isCapped.equals("on")), capSize, maxDocs,
+                (isCapped != null && isCapped.equals("on")), capSize, maxDocs, isDbAdmin,
                 (autoIndexId != null && autoIndexId.equals("on")));
 
             return status;
