@@ -17,6 +17,7 @@ header {
 
 .navbar-toggle {
   margin-right: 175px !important;
+  margin-top: 14px !important;
 
 }
 .navbar-toggle .icon-bar {
@@ -44,7 +45,7 @@ header>nav {
 }
 
 .navbar-header {
-  padding-left: 20px;
+  padding-left: 30px;
 }
 
 .mainNav li {
@@ -54,7 +55,7 @@ header>nav {
 
 .mainNav li a:link,
 .mainNav li a:visited {
-    padding: 18px 10px 10px 10px;
+    padding: 22px 10px 10px 10px;
     color : #fff;
     text-decoration: none;
     text-transform: uppercase;
@@ -69,12 +70,12 @@ header>nav {
 .mainNav li a:focus {
     /*color: #6f7576;*/
     border-top: 3px solid #fff;
-    padding-top: 15px;
+    padding-top: 19px;
     background-color: inherit !important;
 }
 
 .download {
-    margin-top: 13px !important;
+    margin-top: 16px !important;
     background-color: #fcfcfc;
 }
 
