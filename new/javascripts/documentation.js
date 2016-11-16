@@ -39,7 +39,7 @@ $(document).ready(function () {
     nav = $('.bs-docs-sidebar>ul'),
     startPosition = navWrap.offset().top - 70,
     stopPosition = $('#stopHere').offset().top - nav.outerHeight();
-    var y = $(this).scrollTop()
+    var y = $(this).scrollTop();
     if (y > startPosition) {
         nav.addClass('sticky');
   	if (y > (stopPosition - 125 )) {
