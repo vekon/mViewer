@@ -22,7 +22,7 @@ body {
 	background: #fff none repeat scroll 0 0;
 	font-family: Brandon, Arial, Helvetica, sans-serif;
 	color: #0e2137;
-	font-size: 12px;
+	font-size: 16px;
 }
 
 div#logo {
@@ -66,7 +66,7 @@ div#logo {
 }
 
 .gen-float {
-	float: left;
+	/*float: left;*/
 }
 
 .clear {
@@ -77,6 +77,7 @@ div#logo {
 a:link,a:visited,a:active {
 	color: #3399cc;
 	text-decoration: none;
+	padding-right: 25px;
 }
 
 a:hover {
@@ -86,7 +87,9 @@ a:hover {
 
 .wrapper {
 	margin: 0 auto;
-	width: 900px;
+	/*width: 900px;*/
+	margin-bottom: 25px;
+	padding-right: 20px;
 }
 
 .header {
@@ -255,8 +258,8 @@ ul.user-menu li label.logout {
 .body-cont {
 	padding: 0;
 	text-align: left;
-	width: 920px;
-	border: 1px solid #B2D4D3;
+	/*width: 920px;*/
+	/*border: 1px solid #B2D4D3;*/
 	background: #fbfbfb;
 }
 
@@ -318,7 +321,7 @@ ul.user-menu li label.logout {
 }
 
 .left-cont {
-	width: 220px;
+	/*width: 220px;*/
 	padding: 0px;
     /*Left panel needs to be removed and an index needs to be added at page top if necessary.
     Hence hiding it for now. */    
@@ -326,7 +329,7 @@ ul.user-menu li label.logout {
 
 .list-head {
 	background: #fff;
-	border: 1px solid #e3eaee;
+	/*border: 1px solid #e3eaee;*/
     border-left: 0;
 	border-right: 0;
 	padding: 10px;
@@ -350,7 +353,8 @@ ul.user-menu li label.logout {
 
 .main-head {
 	height: 16px;
-	color: #0e2137;
+	/*color: #0e2137;*/
+	color: #2494d0;
 	font-size: 18px;
 	font-weight: bold;
 }
@@ -384,9 +388,9 @@ textarea {
 
 .right-cont {	
 	background: #fff;
-	border-left: 1px solid #E3EAEE;
+	/*border-left: 1px solid #E3EAEE;*/
 	min-height: 500px;
-	width:860px;
+	/*width:860px;*/
 }
 
 .form-cont {
@@ -742,14 +746,33 @@ fieldset.login legend {
 .helpDescription {
 	padding: 10px 5px 10px 30px;
 	font-family: Brandon, sans-serif;
-	font-size: 14px;
+	font-size: 16px;
+}
+
+.helpDescription  a {
+	padding-right: 0 !important;
 }
 
 .helpDescriptionImg {
 	margin: 18px;
 	padding: 4px;
 	border:1px solid #ccc;
+	max-width: 100%;
+	display: block;
+	height: auto;
 }
+
+.login-img {
+  height: 400px !important;
+}
+
+@media (max-width: 1000px){
+  .helpDescriptionImg {
+    margin-left: -10px !important;
+    padding-left: 0 !important;
+  }
+}
+
 
 .loginHelp {
     text-align: right;
