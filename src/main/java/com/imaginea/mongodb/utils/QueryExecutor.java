@@ -427,14 +427,20 @@ public class QueryExecutor {
         Document updateByValuesMap = (Document) queryParams.get(1);
         UpdateOptions options = new UpdateOptions();
         boolean upsert = false;
+        boolean multi = false;
         if (queryParams.size() > 2) {
-            upsert = (Boolean) queryParams.get(2);
-
+            for (Object queryParam : queryParams) {
+                Document document = (Document) queryParam;
+                if (document.containsKey("upsert")) {
+                    upsert = document.getBoolean("upsert");
+                }
+                if (document.containsKey("multi")) {
+                    multi = document.getBoolean("multi");
+                }
+            }
             options.upsert(upsert);
         }
-
-        UpdateResult updateResult = mongoCollection.updateMany(criteria, updateByValuesMap, options);
-
+        UpdateResult updateResult = multi ? mongoCollection.updateMany(criteria, updateByValuesMap, options) : mongoCollection.updateOne(criteria, updateByValuesMap, options);
         long count = updateResult.getModifiedCount();
 
         // need to change
