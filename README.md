@@ -1,5 +1,5 @@
 
-[![Build](https://travis-ci.org/venkoux/mViewer.svg?branch=autobuild)](https://travis-ci.org/venkoux/mViewer/builds)
+[![Build](https://travis-ci.org/Imaginea/mViewer.svg?branch=master)](https://travis-ci.org/Imaginea/mViewer/builds)
 
 mViewer(Micro/Mongo Viewer) is a light web-based GUI for managing MongoDB without needing any installation.
 mViewer allows managing databases, collections, gridfs, users & indexes as an alternative to the mongoDB native shell
