@@ -29,6 +29,7 @@ class DashBoardComponent extends React.Component {
       sessionStorage.setItem('connectionId', JSON.stringify(" "));
       sessionStorage.setItem('username', JSON.stringify(" "));
       sessionStorage.setItem('host', JSON.stringify(" "));
+      sessionStorage.setItem('db', JSON.stringify(" "));
       sessionStorage.setItem('queryType', JSON.stringify(" "));
     }
   }
