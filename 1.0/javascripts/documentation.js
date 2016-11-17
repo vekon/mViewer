@@ -1,10 +1,15 @@
 $(document).ready(function () {
 
-  $('#sidebar li').on('click',function(){
-    $('#sidebar li').removeClass('active');
+  $('#sidebar > li').on('click',function(){
+    $('#sidebar > li').removeClass('active');
     $(this).addClass('active');
     $("html, body").animate({ scrollTop: 0 }, "slow");
 
+  });
+
+  $('#sidebar > li > ul > li').on('click',function(){
+    $('#sidebar > li > ul > li').removeClass('active');
+    $(this).addClass('active');
   });
 
 
