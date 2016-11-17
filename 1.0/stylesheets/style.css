@@ -65,9 +65,6 @@ div#logo {
 	text-align: left;
 }
 
-.gen-float {
-	/*float: left;*/
-}
 
 .clear {
 	clear: both;
@@ -87,7 +84,6 @@ a:hover {
 
 .wrapper {
 	margin: 0 auto;
-	/*width: 900px;*/
 	margin-bottom: 25px;
 	padding-right: 20px;
 }
@@ -258,8 +254,6 @@ ul.user-menu li label.logout {
 .body-cont {
 	padding: 0;
 	text-align: left;
-	/*width: 920px;*/
-	/*border: 1px solid #B2D4D3;*/
 	background: #fbfbfb;
 }
 
@@ -321,7 +315,6 @@ ul.user-menu li label.logout {
 }
 
 .left-cont {
-	/*width: 220px;*/
 	padding: 0px;
     /*Left panel needs to be removed and an index needs to be added at page top if necessary.
     Hence hiding it for now. */    
@@ -329,7 +322,6 @@ ul.user-menu li label.logout {
 
 .list-head {
 	background: #fff;
-	/*border: 1px solid #e3eaee;*/
     border-left: 0;
 	border-right: 0;
 	padding: 10px;
@@ -388,19 +380,13 @@ textarea {
 
 .right-cont {	
 	background: #fff;
-	/*border-left: 1px solid #E3EAEE;*/
 	min-height: 500px;
-	/*width:860px;*/
 }
 
 .form-cont {
 	padding: 10px 10px;
 }
 
-/*.form-cont textarea,.form-cont select {
-	border: 1px solid #B7DCEA;
-	border-top: 1px solid #93BAC7;
-}*/
 
 .bttn {
 	background: #3472ab;
@@ -453,11 +439,39 @@ textarea {
 
 table {
 	width: 100%;
+	border-spacing: 0;
+	border: 1px solid #bababa;
 }
 
 table tr td {
 	padding: 10px 5px;
-	border-bottom: 3px solid #E4F6FD;
+}
+
+table tr td:first-child,
+table tr th:first-child {
+  border-left: 0;
+}
+table tr td:last-child,
+table tr th:last-child {
+  border-right: 0;
+  border-left: 1px solid #bababa;
+}
+
+table th {
+	color: #fff;
+    background: #2494d0;
+    height: 40px;
+    padding-left: 5px;
+}
+
+
+table tr:nth-child(odd) td{
+	background: #ebebeb;
+	color: #737373;
+}
+table tr:nth-child(even) td{
+	background: #fff;
+	color: #737373;
 }
 
 .table-striped tbody.files {
@@ -684,7 +698,7 @@ fieldset.login legend {
 
 #fileInfo {
     font-size: 10pt;
-    font-style: italic;
+    /*font-style: italic;*/
     color: #aaa;
     margin-top: 10px;
 }
