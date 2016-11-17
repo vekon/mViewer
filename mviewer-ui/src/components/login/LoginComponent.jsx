@@ -214,7 +214,7 @@ class LoginComponent extends React.Component {
                 <div className={styles.footerLink}>
                   <input type="checkbox" className={styles.rememberClass} name="rememberMe" id="rememberMe"  onChange={this.rememberMeCheck.bind(this)} checked={this.state.rememberMe}/>
                   <div className={styles.rememberLabel} onClick ={this.rememberMeCheck.bind(this)} ><span>Remember Me</span></div>
-                  <a href='http://venkoux.github.io/mViewer'>Need Help?</a>
+                  <a target = "_blank" href='http://Imaginea.github.io/mViewer'>Need Help?</a>
                 </div>
                 <div className={styles.errorMessage + ' ' + (this.state.message != undefined && this.state.message!='' && this.state.message !='Login Success' ? styles.show : styles.hidden)}>{this.state.message}</div>
               </div>

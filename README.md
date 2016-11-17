@@ -5,9 +5,9 @@ mViewer(Micro/Mongo Viewer) is a light web-based GUI for managing MongoDB withou
 mViewer allows managing databases, collections, gridfs, users & indexes as an alternative to the mongoDB native shell
 in a simpler and user-friendly way.
 
-### Whats new in mViewer-v1.0 ?
+### Whats new in mViewer-v1.0 Beta?
    1. Redesigned complete user interface with enhananced ease.
-   2. New login supporting mongodb started with/without auth mode.
+   2. New login interface which supports mongodb started with/without auth mode.
    3. Full support of roles and privileges.
    4. User creation with roles with specific set actions.
    5. Supports latest MongoDB v3.x
@@ -21,7 +21,7 @@ in a simpler and user-friendly way.
    5. Enhanced authentication & security with support for --auth mode
    6. Better Look-n-Feel
    
-### Working with mViewer-0.9.2-beta:
+### Working with mViewer-0.9.2 Beta:
    You can checkout the code or download the zip and make a release build using maven/ant as described below.
 Extract the generated mViewer-0.9.2-release.zip & mViewer-0.9.2-release.tar.gz and run start_mViewer.bat/start_mViewer.sh.
  
@@ -42,11 +42,11 @@ Extract the generated mViewer-0.9.2-release.zip & mViewer-0.9.2-release.tar.gz a
    7. Viewing stats of databases, collections and gridFS
    8. Opening multiple connections from same browser to different MongoDB servers
 
-### Download mViewer-v0.9.1
+### Download mViewer-v1.0 Beta
 
-Windows :- https://github.com/downloads/Imaginea/mViewer/mViewer-v0.9.1.zip
+Windows :- https://github.com/downloads/Imaginea/mViewer/mViewer-v1.0.zip
 
-Mac/Linux :- https://github.com/downloads/Imaginea/mViewer/mViewer-v0.9.1.tar.gz
+Mac/Linux :- https://github.com/downloads/Imaginea/mViewer/mViewer-v1.0.tar.gz
 
 Download previous versions from https://github.com/Imaginea/mViewer/downloads
     
@@ -63,8 +63,6 @@ Unzip/Untar the downloaded package and simply run start_mViewer.bat/start_mViewe
 >
 
 'port' is optional, if not provided default port (8080) set in properties file will be used.
-
-Start using new mViewer at http://localhost:\<port\>/react/index.html
 
 Start using mViewer at http://localhost:\<port\>/index.html
 

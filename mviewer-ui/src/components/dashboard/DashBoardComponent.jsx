@@ -68,7 +68,7 @@ class DashBoardComponent extends React.Component {
                 <ul className={dashStyles.mainNav + ' ' + dashStyles.clearfix} >
                   <li><div className={dashStyles.details}>{this.state.host}</div>  
                     <div className={dashStyles.details}>{this.state.username}</div></li>
-                  <li><a target = "_blank" href="https://venkoux.github.io/mViewer/"><span><i className="fa fa-question-circle-o"></i></span></a></li>
+                  <li><a target = "_blank" href="https://Imaginea.github.io/mViewer/"><span><i className="fa fa-question-circle-o"></i></span></a></li>
                   <li className={dashStyles.seperator}><span></span></li>
                   <li className={dashStyles.disconnect}><a href="javascript:void(0);" onClick={this.disconnect.bind(this)}><span><i className="fa fa-sign-out" aria-hidden="true"></i></span></a></li>
                 </ul>
