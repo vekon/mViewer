@@ -19,13 +19,6 @@ class AuthPopUpComponent extends React.Component {
     this.props.authClose();
   }
 
-  componentWillReceiveProps(){
-    // if(this.props.db == next.props.db && this.props.collection !=nextprops.collection)
-     // this.setState({modalIsOpen: this.props.modalIsOpen});
-  }
-
-
-
   render () {
     const customStyles = {
       content : {
@@ -54,7 +47,7 @@ class AuthPopUpComponent extends React.Component {
             <span className={authPopUpStyles.text}>Info</span>
           </div>
           <div className = {authPopUpStyles.popupBody}>
-            <label>You don't have previleges to {this.props.action}</label>
+            <label>You don't have privileges to {this.props.action}</label>
             <div className={authPopUpStyles.buttons}>
               <span onClick={this.closeModal.bind(this)} className={authPopUpStyles.close}>CLOSE</span>
             </div>

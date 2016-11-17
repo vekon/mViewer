@@ -209,8 +209,6 @@ public class CollectionServiceImpl implements CollectionService {
       boolean isCapped =(boolean)isCappedCollection(dbName, selectedCollectionName).get("capped");
       MongoDatabase db = mongoInstance.getDatabase(dbName);
       MongoCollection<Document> selectedCollection = db.getCollection(selectedCollectionName);
-      CreateCollectionOptions options = new CreateCollectionOptions();
-      options.capped(capped);
       if(isDbAdmin) {
         Document option = new Document();
         option.put("convertToCapped", selectedCollectionName);
@@ -230,11 +228,15 @@ public class CollectionServiceImpl implements CollectionService {
           convertedToCapped = true;
       } else {
         if (capped) {
+          CreateCollectionOptions options = new CreateCollectionOptions();
+          options.capped(capped);
           options.maxDocuments(maxDocs);
           options.autoIndex(autoIndexId);
           options.sizeInBytes(size);
           createCollection(options, selectedCollection, selectedCollectionName, db);
         } else {
+          CreateCollectionOptions options = new CreateCollectionOptions();
+          options.capped(capped);
           createCollection(options, selectedCollection, selectedCollectionName, db);
         }
         if((isCapped && capped) || (!isCapped && !capped))

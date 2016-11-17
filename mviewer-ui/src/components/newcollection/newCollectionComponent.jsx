@@ -52,9 +52,10 @@ class newCollectionComponent extends React.Component {
       }
 
     }
-    if(privilegesAPI.hasRole('dbAdmin', this.props.currentDb) || privilegesAPI.hasRole('dbAdminAnyDatabase', this.props.currentDb))
+    if((privilegesAPI.hasRole('dbAdmin', JSON.parse(sessionStorage.getItem('db') || '{}')) || privilegesAPI.hasRole('dbAdminAnyDatabase', JSON.parse(sessionStorage.getItem('db') || '{}')))
+        && !(privilegesAPI.hasRole('readWrite', JSON.parse(sessionStorage.getItem('db') || '{}')) || privilegesAPI.hasRole('readWriteAnyDatabase', JSON.parse(sessionStorage.getItem('db') || '{}')))) {
       this.setState({isAdmin:true});
-
+    }
     if (!this.state.showAuth){
       if (this.props.addOrUpdate == '2'){
         this.getCappedData.call(this);
@@ -78,6 +79,7 @@ class newCollectionComponent extends React.Component {
     this.setState({modalIsOpen: false});
     this.setState({cap: false});
     this.setState({size:''});
+    this.setState({isAdmin:false});
     this.setState({max:''});
     this.setState({error: false});
     if(this.state.successMessage==true)
@@ -215,7 +217,7 @@ class newCollectionComponent extends React.Component {
 
     if (calledFrom == 'getCappedData'){
       if(this.state._isMounted == true){
-        if(typeof(data.response) != 'undefined'){
+        if(typeof(data.response) != 'undefined' && typeof(data.response.result) != 'undefined'){
           this.setState({cap:data.response.result.capped});
           this.setState({previousCap: data.response.result.capped});
           this.setState({size:data.response.result.size != undefined ? data.response.result.size : ''});
