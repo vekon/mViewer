@@ -87,7 +87,6 @@ Detailed documentation on mViewer features & usage can be found at http://imagin
        c) Configure a Tomcat Server locally in intellij to run/debug mViewer.
     4) You can send a pull request to mViewer master branch with your features/enhancements/fixes.
           
-
 ### Making a Release build
 
  Using maven:-
@@ -113,6 +112,14 @@ It will create mViewer.war and run it using the winstone server.
 Once started, the application can be accessed at http://localhost:port. 
 Default port is 8080 which can be updated in mViewer.properties file.
 
+### Working on UI
+
+> Do $mvn -Pserver to run server standalone.
+
+> Go to mviewer-ui and do npm install and npm start to run ui on web-pack dev server.
+
+> Launch at http:localhost:3000
+ 
 ### Running Unit Tests
 
 Use the following command to run the unit tests. surefire-reports will be generated in target folder.
