@@ -53,7 +53,7 @@
 					<webResources>
 						<resource>
 						  <directory>mviewer-ui/build</directory>
-						  <targetPath>/</targetPath>
+						  <targetPath>react</targetPath>
 						</resource>
 					</webResources>
 				</configuration>
@@ -73,8 +73,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 
