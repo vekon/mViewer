@@ -375,24 +375,27 @@ public class DocumentServiceImpl implements DocumentService {
         return result;
     }
 
-    private void processComplexQuery(String dbName, String queryStr, MongoDatabase db, JSONObject jsonObject) throws DatabaseException, CollectionException {
+    private void processComplexQuery(String dbName, String queryStr, MongoDatabase db, JSONObject jsonObject) throws DatabaseException, CollectionException, DocumentException {
         // if the query string contains complex query like : forEach( function(x){db.targetTest.insert(x)} ); get the function part of the string
         if (queryStr.contains("forEach")) {
-            String postQueryString = queryStr.substring(queryStr.indexOf("function("));
-            int functionStartIndex = postQueryString.indexOf('{') + 1; // +1 to discard { in the string
-            int functionLastIndex = postQueryString.lastIndexOf('}');
-            String functionString = postQueryString.substring(functionStartIndex, functionLastIndex);
-            // function string looks like : db.targetTest.insert(x)
-            if (functionString.contains("insert") && functionString.contains(".")) {
-                String newCollectionName = functionString.split("\\.")[1];
-                // If collection doesn't exist, create new one .. else insert into existing collection
-                if (!collectionService.getCollList(dbName).contains(newCollectionName)) {
-                    db.createCollection(newCollectionName);
-                    insertIntoTargetCollection(db, jsonObject, newCollectionName);
-                } else
-                    insertIntoTargetCollection(db, jsonObject, newCollectionName);
-                //jsonObject.put("complexQueryMessage", "Successfully copied the documents to "+newCollectionName+" collection");
-            }
+            if (queryStr.contains("function")) {
+                String postQueryString = queryStr.substring(queryStr.indexOf("function("));
+                int functionStartIndex = postQueryString.indexOf('{') + 1; // +1 to discard { in the string
+                int functionLastIndex = postQueryString.lastIndexOf('}');
+                String functionString = postQueryString.substring(functionStartIndex, functionLastIndex);
+                // function string looks like : db.targetTest.insert(x)
+                if (functionString.contains("insert") && functionString.contains(".")) {
+                    String newCollectionName = functionString.split("\\.")[1];
+                    // If collection doesn't exist, create new one .. else insert into existing collection
+                    if (!collectionService.getCollList(dbName).contains(newCollectionName)) {
+                        db.createCollection(newCollectionName);
+                        insertIntoTargetCollection(db, jsonObject, newCollectionName);
+                    } else
+                        insertIntoTargetCollection(db, jsonObject, newCollectionName);
+                    //jsonObject.put("complexQueryMessage", "Successfully copied the documents to "+newCollectionName+" collection");
+                }
+            } else
+                throw new DocumentException(ErrorCodes.INVALID_QUERY, "Invalid Query specified. Please verify the syntax");
         }
     }
 
