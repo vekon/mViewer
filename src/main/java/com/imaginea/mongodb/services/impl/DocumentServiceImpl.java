@@ -387,7 +387,10 @@ public class DocumentServiceImpl implements DocumentService {
                 String functionString = postQueryString.substring(functionStartIndex, functionLastIndex);
                 // function string looks like : db.targetTest.insert(x)
                 if (functionString.contains("insert") && functionString.contains(".")) {
-                    String newCollectionName = functionString.split("\\.")[1];
+                    int firstDotIndex = functionString.indexOf(".") + 1;
+                    int lastDotIndex = functionString.lastIndexOf(".");
+                    String newCollectionName = functionString.substring(firstDotIndex, lastDotIndex);
+                    //functionString.split("\\.")[1];
                     // If collection doesn't exist, create new one .. else insert into existing collection
                     if (!collectionService.getCollList(dbName).contains(newCollectionName)) {
                         db.createCollection(newCollectionName);
