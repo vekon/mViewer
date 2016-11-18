@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.mongodb.MongoWriteException;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.json.JSONArray;
@@ -127,7 +128,7 @@ public class DocumentServiceImpl implements DocumentService {
             MongoCollection<Document> collection = db.getCollection(collectionName);
             JSONObject jsonObject = QueryExecutor.executeQuery(db, collection, collectionName, command, queryStr, keys,
                     sortBy, limit, skip, allKeys);
-            processComplexQuery(dbName, queryStr, db, jsonObject);
+            processComplexQuery(dbName, queryStr, db, jsonObject, collection);
             return jsonObject;
         } catch (MongoException e) {
             throw new DocumentException(ErrorCodes.QUERY_EXECUTION_EXCEPTION, e.getMessage());
@@ -375,10 +376,11 @@ public class DocumentServiceImpl implements DocumentService {
         return result;
     }
 
-    private void processComplexQuery(String dbName, String queryStr, MongoDatabase db, JSONObject jsonObject) throws DatabaseException, CollectionException, DocumentException {
+    private void processComplexQuery(String dbName, String queryStr, MongoDatabase db, JSONObject jsonObject, MongoCollection<Document> sourceCollection) throws DatabaseException, CollectionException, DocumentException {
         // if the query string contains complex query like : forEach( function(x){db.targetTest.insert(x)} ); get the function part of the string
         if (queryStr.contains("forEach")) {
             if (queryStr.contains("function")) {
+                boolean hasError = false;
                 String postQueryString = queryStr.substring(queryStr.indexOf("function("));
                 int functionStartIndex = postQueryString.indexOf('{') + 1; // +1 to discard { in the string
                 int functionLastIndex = postQueryString.lastIndexOf('}');
@@ -389,24 +391,29 @@ public class DocumentServiceImpl implements DocumentService {
                     // If collection doesn't exist, create new one .. else insert into existing collection
                     if (!collectionService.getCollList(dbName).contains(newCollectionName)) {
                         db.createCollection(newCollectionName);
-                        insertIntoTargetCollection(db, jsonObject, newCollectionName);
-                    } else
-                        insertIntoTargetCollection(db, jsonObject, newCollectionName);
-                    //jsonObject.put("complexQueryMessage", "Successfully copied the documents to "+newCollectionName+" collection");
+                        hasError = insertIntoTargetCollection(db, sourceCollection, newCollectionName, queryStr);
+                    } else {
+                        hasError = insertIntoTargetCollection(db, sourceCollection, newCollectionName, queryStr);
+                    }
+                    if (hasError)
+                        jsonObject.put("errorMessage", "Only unique documents were copied to the collection : " + newCollectionName);
                 }
             } else
                 throw new DocumentException(ErrorCodes.INVALID_QUERY, "Invalid Query specified. Please verify the syntax");
         }
     }
 
-    private void insertIntoTargetCollection(MongoDatabase db, JSONObject jsonObject, String newCollectionName) {
+    private boolean insertIntoTargetCollection(MongoDatabase db, MongoCollection<Document> sourceCollection, String newCollectionName, String queryString) {
+        boolean hasErrorWhileCopying = false;
         MongoCollection<Document> targetCollection = db.getCollection(newCollectionName);
-        if (jsonObject.has("documents")) {
-            JSONArray jsonArray = (JSONArray) jsonObject.get("documents");
-            jsonArray.forEach(obj -> {
-                JSONObject eachDocument = (JSONObject) obj;
-                targetCollection.insertOne(Document.parse(eachDocument.toString()));
-            });
+        // apply any filters and iterate over the documents of source collection to copy to the target collection
+        for (Document document : sourceCollection.find(Document.parse(queryString))) {
+            try {
+                targetCollection.insertOne(document);
+            } catch (MongoWriteException mongoWriteException) {
+                hasErrorWhileCopying = true;
+            }
         }
+        return hasErrorWhileCopying;
     }
 }
