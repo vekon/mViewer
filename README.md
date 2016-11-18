@@ -44,9 +44,9 @@ Extract the generated mViewer-0.9.2-release.zip & mViewer-0.9.2-release.tar.gz a
 
 ### Download mViewer-1.0.0 beta
 
-Windows :- https://github.com/Imaginea/mViewer/releases/download/v1.0.0-beta/mViewer-1.0-release.zip
+Windows :- https://github.com/Imaginea/mViewer/releases/download/1.0.0-beta/mViewer-1.0-release.zip
 
-Mac/Linux :- https://github.com/Imaginea/mViewer/releases/download/v1.0.0-beta/mViewer-1.0-release.tar.gz
+Mac/Linux :- https://github.com/Imaginea/mViewer/releases/download/1.0.0-beta/mViewer-1.0-release.tar.gz
 
 Download previous versions from https://github.com/Imaginea/mViewer/downloads
     
