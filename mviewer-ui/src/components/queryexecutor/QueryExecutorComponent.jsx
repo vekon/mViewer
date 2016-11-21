@@ -297,6 +297,12 @@ class QueryExecutorComponent extends React.Component {
           this.setState({totalCount: 0});
 
         }
+
+        if(typeof (data.response.result.errorMessage) != 'undefined'){
+          if(data.response.result.errorMessage.indexOf("Only unique documents were copied to the collection") >= 0){
+            this.setState({errorMessage:'There are some duplicate documents in the target collection, only unique documents will be copied.'});
+          }
+        }
     }
 
     if(data.response.error) {
@@ -317,10 +323,6 @@ class QueryExecutorComponent extends React.Component {
 
         if(data.response.error.message.indexOf("cannot remove from a capped collection") >= 0){
           this.setState({errorMessage:'cannot remove from a capped collection'});
-        }
-
-        if(data.response.error.message.indexOf("duplicate key error collection") >= 0){
-          this.setState({errorMessage:'There are some duplicate documents in the target collection, only unique documents will be copied.'});
         }
       }
 
