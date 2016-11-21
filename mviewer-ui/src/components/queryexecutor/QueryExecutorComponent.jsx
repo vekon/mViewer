@@ -618,7 +618,7 @@ class QueryExecutorComponent extends React.Component {
     var that = this;
     var items =null;
     var items = this.state.collectionObjects.map(function (collection ,i) {
-      return <Document  key={collection._id } uId={collection._id} key1={collection._id} value={JSON.stringify(collection,null,4)} onChange={this.hand.bind(this)} currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this)} queryType = {this.props.queryType} ></Document>
+      return <Document  key={collection._id + i } uId={collection._id} key1={collection._id} value={JSON.stringify(collection,null,4)} onChange={this.hand.bind(this)} currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this)} queryType = {this.props.queryType} ></Document>
     }.bind(this));
 
     return(
