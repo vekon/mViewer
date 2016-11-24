@@ -143,13 +143,21 @@ var getDefaultThemeStyling = function getDefaultThemeStyling(theme) {
     },
 
     arrowSign: {
-      color: colors.ARROW_COLOR
+      color: colors.ARROW_COLOR,
+      backgroundImage: "url('./images/right-arrow.png')",
+      backgroundSize: 'contain',
+      width: '10px',
+      height: '10px'
     },
 
     arrowSignInner: {
       position: 'absolute',
       top: 0,
-      left: '-0.4em'
+      left: '-0.4em',
+      backgroundImage: "url('./images/right-arrow.png')",
+      backgroundSize: 'contain',
+      width: '10px',
+      height: '10px'
     },
 
     nestedNode: function nestedNode(_ref6, keyPath, nodeType, expanded, expandable) {

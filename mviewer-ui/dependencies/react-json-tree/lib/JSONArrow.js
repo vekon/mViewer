@@ -26,11 +26,11 @@ var JSONArrow = function JSONArrow(_ref) {
     _react2['default'].createElement(
       'div',
       styling(['arrow', 'arrowSign'], nodeType, expanded, arrowStyle),
-      '>>',
+      '',
       arrowStyle === 'double' && _react2['default'].createElement(
         'div',
         styling(['arrowSign', 'arrowSignInner']),
-        '>>'
+        ''
       )
     )
   );
