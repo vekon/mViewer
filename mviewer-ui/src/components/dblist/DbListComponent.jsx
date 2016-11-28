@@ -187,7 +187,7 @@ class DbListComponent extends React.Component {
         {
           var result = data.response.result;
           this.setState({dbNames: result.dbNames});
-          localStorage.setItem('dbNames', JSON.stringify(this.state.dbNames));
+          sessionStorage.setItem('dbNames', JSON.stringify(this.state.dbNames));
           if (result.rolesAndPrivileges) {
             privilegesAPI.setRoles(result.rolesAndPrivileges.documents[0].users[0]);
           }
@@ -207,6 +207,7 @@ class DbListComponent extends React.Component {
       if (typeof(data.response.result) != 'undefined')
         {
           this.setState({dbNames: data.response.result.dbNames});
+          sessionStorage.setItem('dbNames', JSON.stringify(data.response.result.dbNames));
         }
       else {
         window.location.hash='#?code=INVALID_CONNECTION';
