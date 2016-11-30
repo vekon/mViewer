@@ -1,12 +1,8 @@
 .mainContainer {
     background-color: #fff;
     display: inline-block;
-    /*width: 85%;*/
     overflow: auto;
-    /*width: 80%;*/
-    /*width: calc(100vw - 277px);*/
     height: calc(100vh - 60px);
-    /*height: 100%;*/
     padding-right: 0;
     padding-left: 0;
 }
@@ -29,11 +25,6 @@
     border-radius: 1px;
     font-size: 15px;
     font-family: 'Brandon';
-}
-
-.collapsedContainer {
-  /*width: 90% !important;*/
-  /*width: calc(100vw - 147px) !important;*/
 }
 
 .breadCrumb {
@@ -80,9 +71,7 @@
 }
 
 .tabs li {
-  /*display: inline-block;*/
   cursor: pointer;
-  /*width: 10%;*/
   min-width: 100px;
   text-align: center;
   font-family: 'Brandon';
@@ -97,11 +86,6 @@
 .tabs li span {
   display: inline-block;
   width: 100%;
-  /*font-size: 120%;
-  height: 100%;
-  text-align: center;
-  font-family: 'Brandon-Light';
-  cursor: pointer;*/
 }
 
 .activeTab {
@@ -120,7 +104,6 @@
     color: red;
 }
 
-
 .loading {
   text-align: center;
 }
@@ -130,11 +113,6 @@
   font-size: 17px;
   font-family: 'Brandon-Light';
 }
-
-.holder {
-
-}
-
 
 .toggleButton {
   background: blue;

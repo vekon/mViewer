@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './login.css';
 import classNames from 'classnames/bind';
 import { Form } from 'formsy-react';
-import TextInput from '../LoginTextInput/LoginTextInputComponent.jsx';
+import TextInput from '../login-text-input/LoginTextInputComponent.jsx';
 import $ from 'jquery';
 import service from '../../gateway/service.js';
 import { browserHistory, hashHistory } from 'react-router';
@@ -53,7 +53,7 @@ class LoginComponent extends React.Component {
   }
 
   getRequest() {
-    var that = this;
+    const that = this;
     if(this.state.host == null || this.state.host == ''){
         this.state.hostError = true;
       } else {
@@ -85,9 +85,9 @@ class LoginComponent extends React.Component {
     if(this.state.hostError || this.state.portError || this.state.userNameError || this.state.passwordError || this.state.dbError)
       return false;
 
-    var data = $("form").serialize().split("&");
-    var obj={};
-    for(var key in data){
+    const data = $("form").serialize().split("&");
+    let obj={};
+    for(let key in data){
       obj[data[key].split("=")[0]] = data[key].split("=")[1];
     }
     return obj;
@@ -95,7 +95,7 @@ class LoginComponent extends React.Component {
 
   loadLoginData() {
     if(localStorage.getItem('loginData') != undefined && localStorage.getItem('loginData') != null){
-      var loginObject = JSON.parse(localStorage.getItem('loginData'));
+      const loginObject = JSON.parse(localStorage.getItem('loginData'));
       this.setState({host : loginObject.host});
       this.setState({port: loginObject.port});
       this.setState({username : loginObject.username});
@@ -107,18 +107,18 @@ class LoginComponent extends React.Component {
   }
 
   onSubmit() {
-    var obj = this.getRequest();
+    const obj = this.getRequest();
     this.setState({loading : true});
     this.setState({message: ''});
     if(this.state.rememberMe){
-      var loginData = { 'host': this.state.host, 'port': this.state.port, 'username': this.state.username,
+      let loginData = { 'host': this.state.host, 'port': this.state.port, 'username': this.state.username,
                         'password': this.state.password, 'databases': this.state.databases,'authEnabled': this.state.authEnabled};
       localStorage.setItem('loginData', JSON.stringify(loginData));
     } else {
       localStorage.removeItem('loginData');
     }
 
-    var loginCall = service('POST', 'login',  obj);
+    const loginCall = service('POST', 'login',  obj);
     loginCall.then(this.success, this.failure);
     return loginCall;
   }
@@ -163,7 +163,7 @@ class LoginComponent extends React.Component {
 
   handleChange(key) {
     return function(e) {
-      var state = {};
+      let state = {};
       state[key] = e;
       this.setState(state);
     }.bind(this);
@@ -179,13 +179,12 @@ class LoginComponent extends React.Component {
   }
 
   render() {
-    var rowClass = 'row inputLabel';
     return (
       <section className={styles.loginForm}>
         <div className={styles.parentDiv + ' ' + styles.clearfix}>
 
            <div className={styles.two}>
-             <div className ={styles.one}> <img src={'./images/Logo.png'} className={styles.logo}></img></div>
+             <div className ={styles.one}> <img src={'./images/logo.png'} className={styles.logo}></img></div>
             <Form method='POST' onValid={this.enableButton()} onSubmit={this.onSubmit} onInvalid={this.disableButton()} >
               <div className={ styles.formContainer}>
                 <div className={styles.inputBoxLogin}>

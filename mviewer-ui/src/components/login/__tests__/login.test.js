@@ -1,15 +1,14 @@
 jest.mock('../../../gateway/service');
 import LoginComponent from '../LoginComponent.jsx';
 import ReactDOM from 'react-dom'
-//import renderer from 'react-test-renderer';
 import TestUtils from 'react-addons-test-utils';
 import React from 'react';
 import $ from 'jquery';
 
 describe('LoginComponent => ', function() {
-	var loginComponent, loginNode;
+	let loginComponent, loginNode;
 	beforeAll(function(){
-		var obj = {
+		let obj = {
 			query:{
 				code:''
 			}
@@ -24,7 +23,7 @@ describe('LoginComponent => ', function() {
 		const component = renderer.create(
 		    <LoginComponent></LoginComponent>
 		    );
-		var tree = component.toJSON();
+		const tree = component.toJSON();
 		expect(tree).toMatchSnapshot();
 	});
 

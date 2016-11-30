@@ -1,7 +1,7 @@
 import React from 'react'
-import dashStyles from './dashBoard.css'
+import dashStyles from './dashboard.css'
 import $ from 'jquery'
-import SideNav from '../sidenav/SideNavComponent.jsx';
+import SideNav from '../side-nav/SideNavComponent.jsx';
 import service from '../../gateway/service.js';
 
 class DashBoardComponent extends React.Component {
@@ -17,8 +17,8 @@ class DashBoardComponent extends React.Component {
   }
 
   disconnect(){
-    var partialUrl = 'disconnect?connectionId=' + this.state.connectionId;
-    var disconnectCall = service('GET', partialUrl, '');
+    const partialUrl = 'disconnect?connectionId=' + this.state.connectionId;
+    const disconnectCall = service('GET', partialUrl, '');
     disconnectCall.then(this.success.bind(this), this.failure.bind(this));
   }
 
@@ -63,7 +63,7 @@ class DashBoardComponent extends React.Component {
           <header>
             <nav>
               <div className={"row " + dashStyles.row}>
-                <a href= {"#/dashboard/home"} className={dashStyles.logo} onClick={this.clearActiveClass.bind(this)}><img src={'./images/Logo.png'}></img></a>
+                <a href= {"#/dashboard/home"} className={dashStyles.logo} onClick={this.clearActiveClass.bind(this)}><img src={'./images/logo.png'}></img></a>
 	          
                 <ul className={dashStyles.mainNav + ' ' + dashStyles.clearfix} >
                   <li><div className={dashStyles.details}>{this.state.host}</div>  
