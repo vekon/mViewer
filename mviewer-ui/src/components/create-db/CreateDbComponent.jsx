@@ -7,6 +7,7 @@ import TextInput from '../text-input/TextInputComponent.jsx';
 import service from '../../gateway/service.js';
 import privilegesAPI from '../../gateway/privileges-api.js';
 import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx'
+import { browserHistory, hashHistory } from 'react-router';
 
 class CreateDbComponent extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class CreateDbComponent extends React.Component {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
     this.setState({error:false});
-    const hasPriv = privilegesAPI.hasPrivilege('createCollection','', this.state.selectedItem);
+    var hasPriv = privilegesAPI.hasPrivilege('createCollection','', this.state.selectedItem);
     if(hasPriv){
       this.setState({showAuth : false});    }
     else{
@@ -44,7 +45,7 @@ class CreateDbComponent extends React.Component {
     this.setState({modalIsOpen: false});
     if(this.state.successMessage==true)
     {
-      window.location.hash = '#/dashboard/home';
+      browserHistory.push({ pathname: '/dashboard/home'});
     }
   }
 
@@ -71,16 +72,16 @@ class CreateDbComponent extends React.Component {
 
 
   clickHandler(){
-    const that =this;
-    const data = $("form").serialize().split("&");
-    let obj={};
-    for(let key in data)
+    var that =this;
+    var data = $("form").serialize().split("&");
+    var obj={};
+    for(var key in data)
     {
       obj[data[key].split("=")[0]] = data[key].split("=")[1];
     }
     if (obj['name']!=''){
-      const partialUrl = 'db/'+obj['name']+'?connectionId='+this.props.fromHome.connectionId;
-      const createDbCall = service('POST', partialUrl, obj);
+      var partialUrl = 'db/'+obj['name']+'?connectionId='+this.props.fromHome.connectionId;
+      var createDbCall = service('POST', partialUrl, obj);
       createDbCall.then(this.success.bind(this, obj), this.failure.bind(this, obj));
     }
     else{
@@ -142,7 +143,7 @@ class CreateDbComponent extends React.Component {
           <button className={createDbStyles.createButton} onClick={this.openModal.bind(this)}>CREATE NEW DATABASE</button>
           <section className = {createDbStyles.logoSection}>
             <span>POWERED BY</span>
-            <img src={'./images/pramati-logo.png'} className={createDbStyles.logo}></img>
+            <img src={'/images/Pramati_Logo.png'} className={createDbStyles.logo}></img>
           </section>
         </div>
         { !this.state.showAuth ? <Modal

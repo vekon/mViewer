@@ -162,7 +162,7 @@ class GraphsComponent extends React.Component {
               <Brush dataKey="TimeStamp" height={30} />
             </LineChart>
          </ResponsiveContainer>
-         </div> : (this.state.hasRole ==null ? <div className={graphStyles.loading}><img src={'./images/loading.gif'} ></img><label>Checking for Privileges</label></div> : <div className = {graphStyles.errorHolder}>You are not authorised to view Graphs</div> ) }
+         </div> : (this.state.hasRole ==null ? <div className={graphStyles.loading}><img src={'/images/loading.gif'} ></img><label>Checking for Privileges</label></div> : <div className = {graphStyles.errorHolder}>You are not authorised to view Graphs</div> ) }
         </TabPanel>
         <TabPanel className={graphStyles.tabPanel}>
         {this.state.hasRole ? <div> 

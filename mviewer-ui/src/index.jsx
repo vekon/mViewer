@@ -14,8 +14,8 @@ import ServerStatsComponent from  './components/server-stats/ServerStatsComponen
 // import Bootstrap from './vendors/css/bootstrap/dist/css/bootstrap.css';
 
 render((
-  <Router history={hashHistory}>
-    <Route path="/" component={LoginComponent}/>
+  <Router history={browserHistory}>
+    <Route path="/index.html" component={LoginComponent}/>
       <Route path="/dashboard" component={DashBoardComponent} >
         <Route path="/dashboard/home" component={HomeComponent} />
         <Route path="/dashboard/databases" component={DbStatsComponent} />
@@ -26,3 +26,4 @@ render((
       <Route path="*" component = {PageNotFoundComponent}/>
     </Router>
 ), document.getElementById('app'));
+

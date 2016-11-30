@@ -4,6 +4,7 @@ import $ from 'jquery'
 import CollectionItem from './CollectionItemComponent.jsx'
 import NewCollection from '../new-collection/NewCollectionComponent.jsx'
 import SearchInput, {createFilter} from 'react-search-input'
+import { browserHistory, hashHistory } from 'react-router'
 import service from '../../gateway/service.js'
 import ReactHeight from 'react-height';
 
@@ -41,14 +42,14 @@ class CollectionList extends React.Component {
   }
 
   refreshCollectionList(db){
-    const partialUrl = db +'/collection?connectionId=' + this.state.connectionId;
-    const collectionListCall = service('GET', partialUrl, '');
+    var partialUrl = db +'/collection?connectionId=' + this.state.connectionId;
+    var collectionListCall = service('GET', partialUrl, '');
     collectionListCall.then(this.success.bind(this , 'refreshCollectionList'), this.failure.bind(this , 'refreshCollectionList'));
   }
 
   refreshCollectionListForDelete(db){
-    const partialUrl = db +'/collection?connectionId=' + this.state.connectionId;
-    const collectionListCall = service('GET', partialUrl, '');
+    var partialUrl = db +'/collection?connectionId=' + this.state.connectionId;
+    var collectionListCall = service('GET', partialUrl, '');
     collectionListCall.then(this.success.bind(this , 'refreshCollectionListForDelete'), this.failure.bind(this , 'refreshCollectionList'));
   }
 
@@ -70,7 +71,7 @@ class CollectionList extends React.Component {
         }
         else{
           this.props.refreshDb();
-          window.location.hash = '#dashboard/home?collapsed=false'
+          browserHistory.push({ pathname: '/dashboard/home', query: { collapsed: false} });
         }
       }
       if(typeof(data.response.error) !== 'undefined'){
@@ -88,14 +89,14 @@ class CollectionList extends React.Component {
         }
         else{
           this.props.refreshDb();
-          window.location.hash = '#dashboard/home?collapsed=false'
+          browserHistory.push({ pathname: '/dashboard/home', query: { collapsed: false} });
         }
         
       }
       if(typeof(data.response.error) !== 'undefined'){
         if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){
             this.props.refreshDb();
-            window.location.hash = '#dashboard/home?collapsed=false'
+            browserHistory.push({ pathname: '/dashboard/home', query: { collapsed: false} });
         }
       }
 
@@ -114,8 +115,8 @@ class CollectionList extends React.Component {
     this.state._isMounted == true;
     this.setState({_isMounted : true});
     this.setState({selectedDB: this.props.selectedDB});
-    const partialUrl = this.props.selectedDB +'/collection?connectionId=' + this.state.connectionId;
-    const collectionListCall = service('GET', partialUrl, '');
+    var partialUrl = this.props.selectedDB +'/collection?connectionId=' + this.state.connectionId;
+    var collectionListCall = service('GET', partialUrl, '');
     collectionListCall.then(this.success.bind(this , 'componentDidMount'), this.failure.bind(this , 'componentDidMount'));
   }
 
@@ -124,6 +125,9 @@ class CollectionList extends React.Component {
       this.setState({selectedCollection : null});
     }
     this.setState({selectedDB: nextProps.selectedDB});
+    // var partialUrl = nextProps.selectedDB +'/collection?connectionId=' + this.state.connectionId;
+    // var collectionListCall = service('GET', partialUrl, '');
+    // collectionListCall.then(this.success.bind(this , 'componentWillReceiveProps'), this.failure.bind(this , 'componentWillReceiveProps'));
   }
 
   componentWillUnmount(){
@@ -135,8 +139,8 @@ class CollectionList extends React.Component {
   }
 
   setViewMore(height) {
-    const collListHeight = $('.collContainer').height();
-    const listContainerHeight = height;
+    var collListHeight = $('.collContainer').height();
+    var listContainerHeight = height;
 
     if (listContainerHeight > collListHeight) {
       this.setState({viewMoreLink: true});
@@ -151,8 +155,8 @@ class CollectionList extends React.Component {
   }
 
   render () {
-    const that=this;
-    let filteredData = null;
+    var that=this;
+    var filteredData = null;
     if (this.state.collections != undefined){
       filteredData = this.state.collections.filter(createFilter(this.state.searchTerm));
     }

@@ -136,7 +136,7 @@ class CollectionsComponent extends React.Component {
               <div className={collectionsStyles.holder + ' row'}>
                 <CollectionList ref="left"  visible={true} propps = {this.props} showQueryExecutor = {this.showQueryExecutor.bind(this)} hideQueryExecutor = {this.hideQueryExecutor.bind(this)} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></CollectionList>
                 {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "collection" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
-              </div> : ( this.state.hasListColPriv ==null ? <div className={collectionsStyles.loading}><img src={'./images/loading.gif'} ></img><label>Checking for Privileges</label></div>:<div className = {collectionsStyles.errorHolder}>You are not authorised to view Collections</div>)
+              </div> : ( this.state.hasListColPriv ==null ? <div className={collectionsStyles.loading}><img src={'/images/loading.gif'} ></img><label>Checking for Privileges</label></div>:<div className = {collectionsStyles.errorHolder}>You are not authorised to view Collections</div>)
             }
           </TabPanel>
           <TabPanel className ='mainTabPanel'>

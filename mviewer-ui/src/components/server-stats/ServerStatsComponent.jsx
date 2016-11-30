@@ -59,7 +59,7 @@ class ServerStatsComponent extends React.Component {
           </span>
           <TreeView data={this.state.serverStats} shouldExpandNode={() => true } keyPath = {['Statistics']} key = {this.state.serverStats['host']} getItemString={getItemString}/>
         </div>
-        : (this.state.hasRole ==null ? <div className={serverStatsStyles.loading}><img src={'./images/loading.gif'} ></img><label>Checking for Privileges</label></div> : <div className = {serverStatsStyles.errorHolder}>You are not authorised to view Server Statiscs</div> ) }
+        : (this.state.hasRole ==null ? <div className={serverStatsStyles.loading}><img src={'/images/loading.gif'} ></img><label>Checking for Privileges</label></div> : <div className = {serverStatsStyles.errorHolder}>You are not authorised to view Server Statiscs</div> ) }
       </div> : <p className = {serverStatsStyles.errorHolder}>Not Connected To Mongodb</p> }
       </div>
     );

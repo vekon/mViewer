@@ -14,6 +14,7 @@ import SearchInput, {createFilter} from 'react-search-input'
 import privilegesAPI from '../../gateway/privileges-api.js';
 import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx';
 import ReactHeight from 'react-height';
+import { browserHistory, hashHistory } from 'react-router';
 class DbListComponent extends React.Component {
 
   constructor(props) {
@@ -41,7 +42,7 @@ class DbListComponent extends React.Component {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
     this.setState({error:false});
-    const hasPriv = privilegesAPI.hasPrivilege('createCollection','', '');
+    var hasPriv = privilegesAPI.hasPrivilege('createCollection','', '');
     if(hasPriv){
       this.setState({showAuth : false});    }
     else{
@@ -79,31 +80,33 @@ class DbListComponent extends React.Component {
   }
 
   clickHandler (idx, db) {
-    const that = this;
+    var that = this;
     this.setState({ visible: !this.state.visible });
     this.setState({selectedItem: db});
     this.props.selectedDB(db);
     this.setState({selectedDb : db});
     sessionStorage.setItem('queryType', JSON.stringify("collection"));
-    window.location.hash = '#/dashboard/database?db='+db + '&collapsed='+this.state.visible;
+
+    browserHistory.push({ pathname: '/dashboard/database', query: { collapsed: this.state.visible, db: db} });
+    // window.location = '/dashboard/database?db='+db + '&collapsed='+this.state.visible;
   }
 
   componentDidMount(){
-    const that = this;
-    const url = window.location.href;
-    const params = url.split('?');
-    const n = params[1].search("&collapsed=true");
+    var that = this;
+    var url = window.location.href;
+    var params = url.split('?');
+    var n = params[1].search("collapsed=true");
     if (n!= -1) {
       this.setState({visible:false});
     }
-    const partialUrl = 'login/details?connectionId='+ this.state.connectionId;
-    const refreshDbCall = service('GET', partialUrl, '');
+    var partialUrl = 'login/details?connectionId='+ this.state.connectionId;
+    var refreshDbCall = service('GET', partialUrl, '');
     refreshDbCall.then(this.success.bind(this , 'componentDidMount' , ''), this.failure.bind(this , 'componentDidMount', ''));
   }
 
   setViewMore(height) {
-    const dbListHeight = $('.dbContainer').height();
-    const listContainerHeight = height;
+    var dbListHeight = $('.dbContainer').height();
+    var listContainerHeight = height;
 
     if (listContainerHeight > dbListHeight) {
       this.setState({viewMoreLink: true});
@@ -114,15 +117,16 @@ class DbListComponent extends React.Component {
 
   refreshDbList(dbName){
 
-    const partialUrl = 'login/details?connectionId='+ this.state.connectionId;
-    const refreshDbCall = service('GET', partialUrl, '');
+    var partialUrl = 'login/details?connectionId='+ this.state.connectionId;
+    var refreshDbCall = service('GET', partialUrl, '');
     refreshDbCall.then(this.success.bind(this , 'refreshDbList' , ''), this.failure.bind(this , 'refreshDbList', ''));
     if(dbName != null){
-      window.location.hash = '#/dashboard/database?db='+dbName + '&collapsed=false';
+      browserHistory.push({ pathname: '/dashboard/database', query: { db: dbName, collapsed: false} });
+
     }
 
     if (dbName == 'undefined') {
-      window.location.hash = '#/dashboard/home?collapsed=false';
+      browserHistory.push({ pathname: '/dashboard/home', query: {collapsed: false} });
     }
   }
 
@@ -131,24 +135,24 @@ class DbListComponent extends React.Component {
   }
 
   collapsedDivHandler(){
-    const that =this;
+    var that =this;
     this.setState({visible: !this.state.visible}, function(){
-      window.location.hash = '#/dashboard/database?db='+that.state.selectedDb + '&collapsed='+false;
+      browserHistory.push({ pathname: '/dashboard/database', query: { db: that.state.selectedDb, collapsed: false} });
     });
 
   }
 
   clickHandlerModal(){
-    const that =this;
-    const data = $("form").serialize().split("&");
-    let obj={};
-    for(let key in data)
+    var that =this;
+    var data = $("form").serialize().split("&");
+    var obj={};
+    for(var key in data)
     {
       obj[data[key].split("=")[0]] = data[key].split("=")[1];
     }
     if (obj['name']!=''){
-      const partialUrl = 'db/'+obj['name']+'?connectionId='+this.props.propps.connectionId;
-      const createDbCall = service('POST', partialUrl, obj);
+      var partialUrl = 'db/'+obj['name']+'?connectionId='+this.props.propps.connectionId;
+      var createDbCall = service('POST', partialUrl, obj);
       createDbCall.then(this.success.bind(this , 'clickHandlerModal' , obj), this.failure.bind(this , 'clickHandlerModal', obj));
     }
     else{
@@ -166,10 +170,10 @@ class DbListComponent extends React.Component {
   }
 
   componentWillReceiveProps(){
-    const url = window.location.href;
-    const params = url.split('?');
-    const shouldCollapse = params[1].search("&collapsed=true");
-    const queryType = JSON.parse(sessionStorage.getItem('queryType'));
+    var url = window.location.href;
+    var params = url.split('?');
+    var shouldCollapse = params[1].search("collapsed=true");
+    var queryType = JSON.parse(sessionStorage.getItem('queryType'));
     if (shouldCollapse!= -1) {
       this.setState({visible:false});
     }
@@ -185,7 +189,7 @@ class DbListComponent extends React.Component {
     if(calledFrom == 'componentDidMount'){
       if (typeof(data.response.result) != 'undefined')
         {
-          const result = data.response.result;
+          var result = data.response.result;
           this.setState({dbNames: result.dbNames});
           sessionStorage.setItem('dbNames', JSON.stringify(this.state.dbNames));
           if (result.rolesAndPrivileges) {
@@ -194,11 +198,11 @@ class DbListComponent extends React.Component {
           else{
             privilegesAPI.setRoles(undefined);
           }
-          const test = privilegesAPI.hasPrivilege('collStats','',this.props.propps.loggedInDatabase);
+          var test = privilegesAPI.hasPrivilege('collStats','',this.props.propps.loggedInDatabase);
         }
       else {
         {
-          window.location.hash='#?code=INVALID_CONNECTION';
+          browserHistory.push({ pathname: '/index.html', query: { code: 'INVALID_CONNECTION'} });
         }
       }
     }
@@ -210,7 +214,7 @@ class DbListComponent extends React.Component {
           sessionStorage.setItem('dbNames', JSON.stringify(data.response.result.dbNames));
         }
       else {
-        window.location.hash='#?code=INVALID_CONNECTION';
+        browserHistory.push({ pathname: '/index.html', query: { code: 'INVALID_CONNECTION'} });
       }
     }
 
@@ -261,7 +265,7 @@ class DbListComponent extends React.Component {
       }
     };
 
-    const that = this;
+    var that = this;
     const filteredData = this.state.dbNames.filter(createFilter(this.state.searchTerm));
     return(
      <div className = {this.state.visible ? dbListStyles.mainMenu : dbListStyles.mainMenuCollapsed}>
