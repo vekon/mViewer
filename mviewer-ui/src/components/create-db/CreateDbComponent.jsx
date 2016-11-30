@@ -143,7 +143,7 @@ class CreateDbComponent extends React.Component {
           <button className={createDbStyles.createButton} onClick={this.openModal.bind(this)}>CREATE NEW DATABASE</button>
           <section className = {createDbStyles.logoSection}>
             <span>POWERED BY</span>
-            <img src={'/images/Pramati_Logo.png'} className={createDbStyles.logo}></img>
+            <img src={'/images/pramati-logo.png'} className={createDbStyles.logo}></img>
           </section>
         </div>
         { !this.state.showAuth ? <Modal
