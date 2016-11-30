@@ -5,7 +5,7 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, ReferenceLine,
   ReferenceDot, Tooltip, CartesianGrid, Legend, Brush } from 'recharts';
 import service from '../../gateway/service.js'
 import graphStyles from './graphs.css'
-import privilegesAPI from '../../gateway/privilegesAPI.js';
+import privilegesAPI from '../../gateway/privileges-api.js';
 
 class GraphsComponent extends React.Component {
   constructor(props) {
@@ -41,15 +41,15 @@ class GraphsComponent extends React.Component {
 
   componentDidMount(){
 
-    var requestTime = new Date().getTime().toString();
-    var partialUrl1 = 'graphs/initiate?connectionId='+this.state.connectionId+'&ts='+requestTime+'&pollingTime=5000';
-    var graphsInitialCall = service('GET', partialUrl1, '');
+    let requestTime = new Date().getTime().toString();
+    const partialUrl1 = 'graphs/initiate?connectionId='+this.state.connectionId+'&ts='+requestTime+'&pollingTime=5000';
+    const graphsInitialCall = service('GET', partialUrl1, '');
     graphsInitialCall.then(this.success1.bind(this), this.failure1.bind(this));
 
     requestTime = new Date().getTime().toString();
-    var partialUrl = 'graphs/query?connectionId='+this.state.connectionId+'&ts='+requestTime;
-    var interval = setInterval (function () {
-      var graphsCall = service('GET', partialUrl, '');
+    const partialUrl = 'graphs/query?connectionId='+this.state.connectionId+'&ts='+requestTime;
+    const interval = setInterval (function () {
+      const graphsCall = service('GET', partialUrl, '');
       graphsCall.then(this.success.bind(this), this.failure.bind(this))
     }.bind(this), 5000);
 
