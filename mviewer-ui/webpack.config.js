@@ -1,27 +1,27 @@
-const webpack = require('webpack');
-const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const DefinePlugin = require('webpack/lib/DefinePlugin');
+var webpack = require('webpack');
+var path = require('path');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+var DefinePlugin = require('webpack/lib/DefinePlugin');
 
-const BUILD_DIR = path.resolve(__dirname + '/build');
-const APP_DIR = path.resolve(__dirname + '/src');
+var BUILD_DIR = path.resolve(__dirname + '/build');
+var APP_DIR = path.resolve(__dirname + '/src');
 
-const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
+var HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
   template: __dirname + '/src/index.html',
   filename: 'index.html',
   inject: 'body'
 });
 
-const npmEvent = process.env.npm_lifecycle_event;
-let ENV;
+var npmEvent = process.env.npm_lifecycle_event;
+var ENV;
 if (npmEvent == 'start') {
   ENV =  'development';
 }
 
-const config = {
+var config = {
     entry: APP_DIR + '/index.jsx',
     output: {
         path: BUILD_DIR,
@@ -63,6 +63,10 @@ const config = {
         ]),
         new CopyWebpackPlugin([
             { from: APP_DIR + '/assets', to: BUILD_DIR  + '/'}
+        ]),
+
+        new CopyWebpackPlugin([
+            { from: APP_DIR + '/vendors/css/bootstrap', to: BUILD_DIR  + '/bootstrap'}
         ])
     ]
 };
