@@ -1,12 +1,12 @@
-import React from 'react'
-import newUserStyles from './new-user.css'
-import Dropdown from 'react-drop-down'
-import $ from 'jquery'
-import Modal from 'react-modal'
-import { Form } from 'formsy-react'
-import TextInput from '../text-input/TextInputComponent.jsx'
-import service from '../../gateway/service.js'
-import update from 'react-addons-update'
+import React from 'react';
+import newUserStyles from './new-user.css';
+import Dropdown from 'react-drop-down';
+import $ from 'jquery';
+import Modal from 'react-modal';
+import { Form } from 'formsy-react';
+import TextInput from '../text-input/TextInputComponent.jsx';
+import service from '../../gateway/service.js';
+import update from 'react-addons-update';
 
 class NewUserComponent extends React.Component {
 
@@ -17,7 +17,7 @@ class NewUserComponent extends React.Component {
       autoIndex: true,
       password: null,
       user_name: null,
-      roles: "",
+      roles: '',
       canSubmit:false,
       title:'',
       submitted:false,
@@ -26,60 +26,60 @@ class NewUserComponent extends React.Component {
       _isMounted: false,
       newUser: null,
       error: false,
-      role: "",
-      selectedRoles: "",
+      role: '',
+      selectedRoles: '',
       addedRoles:[],
       removedRoles:[],
       retrievedRoles:[],
       uniqueRetrievedRoles:[],
       finalRoles:[],
-      dbSource: "",
+      dbSource: '',
       dbSourceList: [],      
-      roles: [{key:"read","selected": false},{key:"userAdmin","selected":false},{key:"userAdminAnyDatabase","selected": false},
-              {key:"readWrite","selected": false},{key:"dbAdmin","selected":false},{key:"readWriteAnyDatabase","selected":false},
-              {key:"clusterAdmin","selected": false},{key:"readAnyDatabase","selected": false},{key:"dbAdminAnyDatabase","selected":false}]
-    }
+      roles: [{key:'read','selected': false},{key:'userAdmin','selected':false},{key:'userAdminAnyDatabase','selected': false},
+              {key:'readWrite','selected': false},{key:'dbAdmin','selected':false},{key:'readWriteAnyDatabase','selected':false},
+              {key:'clusterAdmin','selected': false},{key:'readAnyDatabase','selected': false},{key:'dbAdminAnyDatabase','selected':false}]
+    };
   }
 
-  openModal() {
+  openModal = () => {
     const that = this;
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
     this.setState({successMessage: false});
     this.setState({uniqueRetrievedRoles: []});
     this.setForm();
-    let ds = ["Please select a DbSource"];
+    let ds = ['Please select a DbSource'];
     let dbList = [];
     dbList = JSON.parse(sessionStorage.getItem('dbNames') || '{}');
-    dbList.map(function(item){
+    dbList.map((item) => {
       ds.push(item);
     });
     if(this.props.modifyUser) {
       this.setState({dbSource : this.props.currentDb});
       ds=[];
-      ds.push(this.props.currentDb)
+      ds.push(this.props.currentDb);
     }
     this.setState({dbSourceList: ds});
-    const unique = this.state.retrievedRoles.filter(function(item, pos) {
+    const unique = this.state.retrievedRoles.filter((item, pos) => {
       return this.state.retrievedRoles.indexOf(item) == pos;
-    }.bind(this));
+    });
 
     this.setState({uniqueRetrievedRoles : unique});
   }
 
-  setRoles(){
+  setRoles = () => {
     const that = this;
     let userDetail = [];
     let retrievedRoles = [];
     this.setState({retrievedRoles : []});
 
     if(this.props.modifyUser) {
-      this.props.users.roles.map(function(key) {
+      this.props.users.roles.map((key) => {
         userDetail.push({'key': key.role, 'selected': true});
       });
-      userDetail.map(function(result){
+      userDetail.map((result) => {
         let index = 0;
-        that.state.roles.map(function(item){
+        that.state.roles.map((item) => {
           if(item.key == result.key){
             item.selected = result.selected;
             that.setState(update(that.state.roles[index], {selected: {$set: result.selected}}));
@@ -92,14 +92,14 @@ class NewUserComponent extends React.Component {
       this.state.retrievedRoles = retrievedRoles;
     }
   }
-  closeModal() {
+  closeModal = () => {
     this.setState({modalIsOpen: false});
     this.setState({error: false});
-    this.setState({selectedRoles:""});
+    this.setState({selectedRoles:''});
     
-    this.setState({roles: [{key:"read","selected": false},{key:"userAdmin","selected":false},{key:"userAdminAnyDatabase","selected": false},
-              {key:"readWrite","selected": false},{key:"dbAdmin","selected":false},{key:"readWriteAnyDatabase","selected":false},
-              {key:"clusterAdmin","selected": false},{key:"readAnyDatabase","selected": false},{key:"dbAdminAnyDatabase","selected":false}]});
+    this.setState({roles: [{key:'read','selected': false},{key:'userAdmin','selected':false},{key:'userAdminAnyDatabase','selected': false},
+              {key:'readWrite','selected': false},{key:'dbAdmin','selected':false},{key:'readWriteAnyDatabase','selected':false},
+              {key:'clusterAdmin','selected': false},{key:'readAnyDatabase','selected': false},{key:'dbAdminAnyDatabase','selected':false}]});
     
     if(this.state.successMessage==true)
     {
@@ -112,7 +112,7 @@ class NewUserComponent extends React.Component {
       this.props.refreshRespectiveData(this.state.newUser);
       }
     }
-    this.setState({dbSource:""});
+    this.setState({dbSource:''});
   }
 
   enableButton() {
@@ -131,7 +131,7 @@ class NewUserComponent extends React.Component {
     }.bind(this);
   }
 
-  handleChange(key){
+  handleChange = (key) => {
     return true;
   }
 
@@ -139,7 +139,7 @@ class NewUserComponent extends React.Component {
     const that = this;
     let index = 0;
     let selectedCount = 0;
-    this.state.roles.map(function(item){
+    this.state.roles.map((item) => {
       if(item.key == r.key){
         r.selected = !r.selected;
         that.setState(update(that.state.roles[index], {selected: {$set: r.selected}}));
@@ -152,36 +152,36 @@ class NewUserComponent extends React.Component {
     }
   }
 
-  clickHandler(){
+  clickHandler = () => {
     this.setState({finalRoles:[]});
     const that =this;
-    const data = $("form").serialize().split("&");
+    const data = $('form').serialize().split('&');
     let obj={};
     for(let key in data)
     {
-      obj[data[key].split("=")[0]] = data[key].split("=")[1];
+      obj[data[key].split('=')[0]] = data[key].split('=')[1];
     }
     if(this.props.modifyUser)
       obj['user_name'] = this.props.userName;
-    if(this.state.dbSource.length < 1 || this.state.dbSource == "Please select a DbSource"){
+    if(this.state.dbSource.length < 1 || this.state.dbSource == 'Please select a DbSource'){
       this.setState({successMessage:false});
       this.setState({message:'Please select a DbSource'});
-      this.setState({dbSource:""});
+      this.setState({dbSource:''});
       return;
     }
     obj['dbSource'] = this.state.dbSource;
     let selectedCount = 0;
-    this.state.roles.map(function(item){
+    this.state.roles.map((item) => {
       if(item.selected){
         ++selectedCount;
         that.state.finalRoles.push(item.key);
-        that.state.selectedRoles = that.state.selectedRoles.length > 0 ? that.state.selectedRoles + "," + item.key : item.key;
+        that.state.selectedRoles = that.state.selectedRoles.length > 0 ? that.state.selectedRoles + ',' + item.key : item.key;
       }
     });
     if(selectedCount < 1) {
       this.setState({successMessage:false});
       this.setState({message:'Please select atleast one role'});
-      this.setState({selectedRoles:""});
+      this.setState({selectedRoles:''});
       return;
     }
     obj['roles'] = this.state.selectedRoles;
@@ -193,16 +193,16 @@ class NewUserComponent extends React.Component {
     }
 
     if (this.props.modifyUser){
-      const addedRoles = this.state.finalRoles.filter( function( el ) {
+      const addedRoles = this.state.finalRoles.filter(( el ) => {
         return this.state.uniqueRetrievedRoles.indexOf( el ) < 0;
-      }.bind(this));
+      });
       
-      let removedRoles = this.state.uniqueRetrievedRoles.filter( function( el ) {
+      let removedRoles = this.state.uniqueRetrievedRoles.filter( ( el ) => {
         return this.state.finalRoles.indexOf( el ) < 0;
-      }.bind(this));
+      });
 
 
-      removedRoles = removedRoles.filter(function(item, pos) {
+      removedRoles = removedRoles.filter((item, pos) => {
         return removedRoles.indexOf(item) == pos;
       });
 
@@ -220,7 +220,7 @@ class NewUserComponent extends React.Component {
     const that = this;
     let userDetail= [];
     if(this.props.modifyUser) {
-      this.setState({password:""});
+      this.setState({password:''});
       this.setState({user_name: this.props.userName});
       this.setState({title:'Modify User'});
       this.setRoles();
@@ -251,18 +251,18 @@ class NewUserComponent extends React.Component {
           this.setState({message:'User '+obj['user_name']+ ' was successfully added to database ' + this.state.dbSource});
         this.state.newUser = obj['user_name'];
         this.setState({successMessage:true});
-        setTimeout(() => { this.closeModal() }, 2000);
+        setTimeout(() => { this.closeModal(); }, 2000);
       }
       if (data.response.error) {
         if (data.response.error.code === 'USER_CREATION_EXCEPTION'){
           this.setState({successMessage:false});
-          if(data.response.error.message.indexOf("not authorized") >= 0) {
+          if(data.response.error.message.indexOf('not authorized') >= 0) {
             this.setState({message:'Not Authorized to create user with role ' + this.state.selectedRoles});
-          } else if (data.response.error.message.indexOf("No role") >= 0) {
-            const db = data.response.error.message.match("errmsg(.*)@")[1].match("named(.*)")[1];
+          } else if (data.response.error.message.indexOf('No role') >= 0) {
+            const db = data.response.error.message.match('errmsg(.*)@')[1].match('named(.*)')[1];
             this.setState({message:'Not Authorized to create user with role ' + db});
           }
-          else if (data.response.error.message.indexOf("Cannot create users in the") >= 0){
+          else if (data.response.error.message.indexOf('Cannot create users in the') >= 0){
             this.setState({message:'Cannot create users in ' + this.state.dbSource + ' database'});
           }
           
@@ -270,14 +270,14 @@ class NewUserComponent extends React.Component {
             this.setState({message:'User '+obj['user_name']+ ' already exists in database ' + this.state.dbSource});
           }
         }
-        this.setState({selectedRoles:""});
+        this.setState({selectedRoles:''});
       }
     }
   }
 
-  DDhandleChange(e) {
+  DDhandleChange = (e) => {
     this.state.dbSource = e;
-    if(e != "Please select a DbSource") {
+    if(e != 'Please select a DbSource') {
       this.setState({successMessage:false});
       this.setState({message:''});
     }
@@ -311,11 +311,11 @@ class NewUserComponent extends React.Component {
 
     return(
       <div className={this.props.modifyUser ? newUserStyles.modifyUser : newUserStyles.modalContainer}>
-        {this.props.modifyUser ? <span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Modify User</span>
-                               : <span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add User</span> }
+        {this.props.modifyUser ? <span onClick= {this.openModal} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Modify User</span>
+                               : <span onClick= {this.openModal} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add User</span> }
        <Modal
          isOpen={this.state.modalIsOpen}
-         onRequestClose={this.closeModal.bind(this)}
+         onRequestClose={this.closeModal}
          style = {customStyles}>
          <div className={newUserStyles.two}>
            <div className={newUserStyles.header}>
@@ -324,16 +324,16 @@ class NewUserComponent extends React.Component {
            <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
              <div className={ newUserStyles.formContainer}>
                <div className={newUserStyles.name}>
-                 <TextInput type="text" name="user_name" id="user_name" placeholder="User Name" value={this.state.user_name} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'User name must not be empty'}} validations={'isRequired2:'+this.state.error} shouldBeDisabled={this.props.modifyUser}/>
+                 <TextInput type="text" name="user_name" id="user_name" placeholder="User Name" value={this.state.user_name} onChange={this.handleChange} validationErrors={{isRequired2: 'User name must not be empty'}} validations={'isRequired2:'+this.state.error} shouldBeDisabled={this.props.modifyUser}/>
                </div>
                <div className={newUserStyles.userPassword}>
-                 <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.name} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Password must not be empty'}} validations={'isRequired2:'+this.state.error}/>
+                 <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.name} onChange={this.handleChange} validationErrors={{isRequired2: 'Password must not be empty'}} validations={'isRequired2:'+this.state.error}/>
                </div>
                <div className={newUserStyles.dataSource}>
-                 <Dropdown value={this.state.dbSource} onChange={this.DDhandleChange.bind(this)} options={this.state.dbSourceList} disabled={true} />
+                 <Dropdown value={this.state.dbSource} onChange={this.DDhandleChange} options={this.state.dbSourceList} disabled={true} />
                </div>
                <div className={newUserStyles.rolesDiv +' '+newUserStyles.clearfix}>
-                 {this.state.roles.map(function(item){
+                 {this.state.roles.map((item) => {
                     return (
                      <div className={newUserStyles.roleInputBox} key={item.key}>
                        <input type="checkbox" className={newUserStyles.checkboxClass} name="{item.key}" id="{item.key}"  onChange={that.handleCheck.bind(that,item)} checked={item.selected}  />
@@ -342,8 +342,8 @@ class NewUserComponent extends React.Component {
                  })}
                </div>
                <div className={newUserStyles.buttonContainer}>
-                 <span onClick={this.closeModal.bind(this)} className={ newUserStyles.cancel }>CANCEL</span>
-                 <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={newUserStyles.submit} disabled={!this.state.canSubmit}>SUBMIT</button>
+                 <span onClick={this.closeModal} className={ newUserStyles.cancel }>CANCEL</span>
+                 <button onClick={this.clickHandler} value='SUBMIT' className={newUserStyles.submit} disabled={!this.state.canSubmit}>SUBMIT</button>
                </div>
              </div>
            </Form>

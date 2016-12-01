@@ -1,7 +1,7 @@
-import React from 'react'
-import serverStatsStyles from './server-stats.css'
-import $ from 'jquery'
-import TreeView from '../../../dependencies/react-json-tree'
+import React from 'react';
+import serverStatsStyles from './server-stats.css';
+import $ from 'jquery';
+import TreeView from '../../../dependencies/react-json-tree';
 import service from '../../gateway/service.js';
 
 class ServerStatsComponent extends React.Component {
@@ -13,7 +13,7 @@ class ServerStatsComponent extends React.Component {
       hasRole: null,
       connectionId: JSON.parse(sessionStorage.getItem('connectionId') || '{}'),
       error:false
-    }
+    };
   }
 
   componentDidMount(){

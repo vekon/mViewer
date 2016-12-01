@@ -1,11 +1,11 @@
-import React from 'react'
-import userDetailsStyles from './user-details.css'
-import $ from 'jquery'
+import React from 'react';
+import userDetailsStyles from './user-details.css';
+import $ from 'jquery';
 import service from '../../gateway/service.js';
-import DeleteComponent from '../delete-component/DeleteComponent.jsx'
-import ModifyUser from '../new-user/NewUserComponent.jsx'
+import DeleteComponent from '../delete-component/DeleteComponent.jsx';
+import ModifyUser from '../new-user/NewUserComponent.jsx';
 import privilegesAPI from '../../gateway/privileges-api.js';
-import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx'
+import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx';
 
 class UserDetailsComponent extends React.Component {
 
@@ -18,13 +18,17 @@ class UserDetailsComponent extends React.Component {
       sidebarOpen: false,
       currentUser: null,
       _isMounted: false,
-      roles: "",
+      roles: '',
       showAuth: false,
       hasPriv: false
-    }
+    };
+    this.closeModal = this.closeModal.bind(this);
+    this.refreshRespectiveData = this.refreshRespectiveData.bind(this);
+    this.refreshCollectionList = this.refreshCollectionList.bind(this);
+    this.createUserDetails     = this.createUserDetails.bind(this);
   }
 
-  openModal() {
+  openModal = () => {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
     const hasPriv = privilegesAPI.hasPrivilege('dropRole','', this.props.currentDb);
@@ -35,7 +39,7 @@ class UserDetailsComponent extends React.Component {
     }
   }
 
-  authClose(){
+  authClose = () => {
     this.setState({showAuth:false});
     this.setState({modalIsOpen:false});
   }
@@ -67,16 +71,16 @@ class UserDetailsComponent extends React.Component {
      } else {
        sortItem = this.props.users;
      }
-    let roles = "";
-    let Db = "";
+    let roles = '';
+    let Db = '';
     sortItem.roles != undefined ? sortItem.roles.map(function(item) {
-      roles = roles.length > 0 ? roles + ", " +  item.role : item.role;
+      roles = roles.length > 0 ? roles + ', ' +  item.role : item.role;
       Db = item.db;
-    }) : null
+    }) : null;
     userDetail.push({'key': 'role', 'value': roles});
     userDetail.push({'key': 'DbSource', 'value': Db});
     Object.keys(sortItem).map(function(key) {
-      if(key != "roles")
+      if(key != 'roles')
         userDetail.push({'key': key, 'value': sortItem[key]});
     });
     this.setState({userDetails: userDetail});
@@ -102,9 +106,9 @@ class UserDetailsComponent extends React.Component {
 
   render () {
     const that = this;
-    let roles = "";
+    let roles = '';
     this.state.userDetail ? this.state.userDetail.map(function(item){
-      if(item.key == "role")
+      if(item.key == 'role')
         roles = item.value;
     }) : null;
     roles = this.state.userDetail ? this.state.userDetail[0].key : null;
@@ -120,9 +124,9 @@ class UserDetailsComponent extends React.Component {
       </div>
       <div className="collapse navbar-collapse" id="userNavbar">
         <ul className = { userDetailsStyles.navBar + ' navbar navbar-nav navbar-right'}>
-          <li className={userDetailsStyles.deleteButtonGridfs} onClick={this.openModal.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete User</span></li>
-          { this.state.modalIsOpen?(!this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'User' dbName = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action = 'drop user' ></AuthPopUp>) : '' }
-          <li><ModifyUser className={userDetailsStyles.modifyUser} users={this.props.users} modifyUser="true" currentDb = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}></ModifyUser></li>
+          <li className={userDetailsStyles.deleteButtonGridfs} onClick={this.openModal}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete User</span></li>
+          { this.state.modalIsOpen?(!this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal} title = 'User' dbName = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose} action = 'drop user' ></AuthPopUp>) : '' }
+          <li><ModifyUser className={userDetailsStyles.modifyUser} users={this.props.users} modifyUser="true" currentDb = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList} refreshRespectiveData={this.refreshRespectiveData}></ModifyUser></li>
         </ul>
       </div>
       </div>
@@ -136,7 +140,7 @@ class UserDetailsComponent extends React.Component {
             </tr>
             { this.state.userDetails.length > 0 ?
               that.state.userDetails.map(function(item) {
-              return <tr key={item.key}><td>{item.key}</td><td>{item.value}</td></tr>
+              return <tr key={item.key}><td>{item.key}</td><td>{item.value}</td></tr>;
             }) : null }
           </tbody>
         </table>

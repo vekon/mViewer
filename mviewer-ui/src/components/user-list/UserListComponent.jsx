@@ -1,11 +1,11 @@
-import React from 'react'
-import UserListStyles from '../shared/list-panel.css'
-import $ from 'jquery'
-import UserItem from './UserItemComponent.jsx'
-import NewUser from '../new-user/NewUserComponent.jsx'
-import SearchInput, {createFilter} from 'react-search-input'
-import service from '../../gateway/service.js'
-import ReactHeight from 'react-height'
+import React from 'react';
+import UserListStyles from '../shared/list-panel.css';
+import $ from 'jquery';
+import UserItem from './UserItemComponent.jsx';
+import NewUser from '../new-user/NewUserComponent.jsx';
+import SearchInput, {createFilter} from 'react-search-input';
+import service from '../../gateway/service.js';
+import ReactHeight from 'react-height';
 
 class UserList extends React.Component {
 
@@ -23,7 +23,13 @@ class UserList extends React.Component {
       searchTerm: '',
       viewMore: false,
       viewMoreLink: false
-    }
+    };
+    this.setViewMore = this.setViewMore.bind(this);
+    this.searchUpdated = this.searchUpdated.bind(this);
+    this.fillData = this.fillData.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
+    this.refreshRespectiveData = this.refreshRespectiveData.bind(this);
+    this.refreshCollectionList = this.refreshCollectionList.bind(this);
   }
 
   fillData(data){
@@ -73,7 +79,7 @@ class UserList extends React.Component {
       }
     });
     if(itemDetails != null){
-      this.props.setStates(itemDetails.user,itemDetails, "user");
+      this.props.setStates(itemDetails.user,itemDetails, 'user');
       this.setState({selectedCollection : itemDetails.user}, function(){
       });
     }
@@ -86,7 +92,7 @@ class UserList extends React.Component {
   }
 
   searchUpdated (term) {
-    this.setState({searchTerm: term})
+    this.setState({searchTerm: term});
   }
 
   refreshCollectionList(db){
@@ -120,7 +126,7 @@ class UserList extends React.Component {
     }
   }
 
-  usersMoreClick() {
+  usersMoreClick = () => {
     this.setState({viewMore: !this.state.viewMore});
     this.setState({viewMoreLink: false});
   }
@@ -131,31 +137,32 @@ class UserList extends React.Component {
     let filteredData = null;
     if (this.state.user != undefined){
       filteredData = this.state.user.filter(createFilter(this.state.searchTerm));
-      items = filteredData.map(function (item, idx) {
+      items = filteredData.map((item, idx) => {
         const is_selected = that.state.selectedCollection == idx;
         return <UserItem
                 key={item}
                 name={item}
+                idx={idx}
                 dbName={this.state.selectedDB}
-                onClick={this.clickHandler.bind(this,idx,item)}
+                onClick={this.clickHandler}
                 isSelected={that.state.selectedCollection==item}
                 connectionId={this.state.connectionId}
-                refreshCollectionList={this.refreshCollectionList.bind(this)}
+                refreshCollectionList={this.refreshCollectionList}
                 />;
-        }.bind(this));
+        });
     }
       return (
         <div className={UserListStyles.menu + ' col-md-2 col-xs-5 col-sm-3'} key = {this.props.visible}>
           <div className={(this.props.visible ?(this.state.visible ? UserListStyles.visible   : this.props.alignment): this.props.alignment ) }>
-            <SearchInput className={UserListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
-            <h5 className={UserListStyles.menuTitle}><NewUser currentDb={this.props.selectedDB} currentItem="fs" connectionId={this.state.connectionId} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}></NewUser></h5>
+            <SearchInput className={UserListStyles.searchInput} onChange={this.searchUpdated} />
+            <h5 className={UserListStyles.menuTitle}><NewUser currentDb={this.props.selectedDB} currentItem="fs" connectionId={this.state.connectionId} refreshCollectionList={this.refreshCollectionList} refreshRespectiveData={this.refreshRespectiveData}></NewUser></h5>
             <div className = {(this.state.viewMore ? UserListStyles.listBody : UserListStyles.listBodyExpanded) + ' usersContainer'}>
-              <ReactHeight onHeightReady={this.setViewMore.bind(this)}>
+              <ReactHeight onHeightReady={this.setViewMore}>
                 {items}
               </ReactHeight>
             </div>
             <div className= {(this.state.viewMoreLink ? UserListStyles.viewMoreContainer : UserListStyles.displayNone)}>
-              <a className = {UserListStyles.viewMore} onClick={this.usersMoreClick.bind(this)}>List All</a>
+              <a className = {UserListStyles.viewMore} onClick={this.usersMoreClick}>List All</a>
             </div>
           </div>
         </div>

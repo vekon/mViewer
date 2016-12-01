@@ -17,7 +17,7 @@ function service(typex, serviceName, req , component, data) {
       url: path + serviceName,
       dataType: 'json',
       headers: {
-        Accept: "application/json"
+        Accept: 'application/json'
       },
       data: req,
       processData: false,
