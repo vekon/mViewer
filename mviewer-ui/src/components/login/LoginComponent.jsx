@@ -35,7 +35,7 @@ class LoginComponent extends React.Component {
     this.getRequest = this.getRequest.bind(this);
   }
 
-  handleCheck(e){
+  handleCheck = (e) => {
     this.setState({authEnabled:!this.state.authEnabled});
     this.setState({username: ''});
     this.setState({password: ''});
@@ -48,7 +48,7 @@ class LoginComponent extends React.Component {
     this.refs.database.clearCss();
   }
 
-  rememberMeCheck(){
+  rememberMeCheck = () => {
     this.setState({rememberMe:!this.state.rememberMe});
   }
 
@@ -195,8 +195,8 @@ class LoginComponent extends React.Component {
                   <TextInput type="text" name="port" id="port" placeholder="port" value={this.state.port} onChange={this.handleChange( 'port')} validations={{isRequired1:this.state.portError , isNumeric:true}} validationErrors={{isRequired1 : "Port must not be empty", isNumeric : "Inavlid Port number" }} shouldBeDisabled ={this.state.loading} checked={this.state.rememberMe} />
                 </div>
                 <div className={styles.inputBoxLogin+' '+ styles.checkBox}>
-                  <span className={styles.checkLabel} onClick ={this.handleCheck.bind(this)}>Perform Authentication</span>
-                  <input type="checkbox" className={styles.checkboxClass} name="auth" id="auth"  onChange={this.handleCheck.bind(this)} checked={this.state.authEnabled} disabled ={this.state.loading} />
+                  <span className={styles.checkLabel} onClick ={this.handleCheck}>Perform Authentication</span>
+                  <input type="checkbox" className={styles.checkboxClass} name="auth" id="auth"  onChange={this.handleCheck} checked={this.state.authEnabled} disabled ={this.state.loading} />
                 </div>
                 <div className={styles.inputBoxLogin}>
                   <TextInput ref="username" type="text" name="username" id="username" placeholder="username" value={this.state.username} onChange={this.handleChange( 'username')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.userNameError} validationErrors={{isRequired1: 'User name must not be empty' }} checked={this.state.rememberMe}/>
@@ -212,8 +212,8 @@ class LoginComponent extends React.Component {
                   <input type="submit" value={this.state.loading == true ? "Connecting.." : "CONNECT" } disabled={!this.state.canSubmit || this.state.loading} className={ styles.gobutton} />
                 </div>
                 <div className={styles.footerLink}>
-                  <input type="checkbox" className={styles.rememberClass} name="rememberMe" id="rememberMe"  onChange={this.rememberMeCheck.bind(this)} checked={this.state.rememberMe}/>
-                  <div className={styles.rememberLabel} onClick ={this.rememberMeCheck.bind(this)} ><span>Remember Me</span></div>
+                  <input type="checkbox" className={styles.rememberClass} name="rememberMe" id="rememberMe"  onChange={this.rememberMeCheck} checked={this.state.rememberMe}/>
+                  <div className={styles.rememberLabel} onClick ={this.rememberMeCheck} ><span>Remember Me</span></div>
                   <a target = "_blank" href='http://Imaginea.github.io/mViewer'>Need Help?</a>
                 </div>
                 <div className={styles.errorMessage + ' ' + (this.state.message != undefined && this.state.message!='' && this.state.message !='Login Success' ? styles.show : styles.hidden)}>{this.state.message}</div>

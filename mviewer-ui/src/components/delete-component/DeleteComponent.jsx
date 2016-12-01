@@ -16,11 +16,11 @@ class DeleteComponent extends React.Component {
     }
   }
 
-  closeModal() {
+  closeModal = () => {
     this.props.closeModal(this.state.successMessage,'delete');
   }
 
-  clickHandlerYes(){
+  clickHandlerYes = () => {
     const that = this;
     const type = this.props.title;
     let obj={};
@@ -73,13 +73,13 @@ class DeleteComponent extends React.Component {
         this.setState({message:'Error in deleting the '+this.props.title});
       }
     }
-    setTimeout(function() { this.closeModal() }.bind(this), 2000);
+    setTimeout(() => { this.closeModal() }, 2000);
   }
 
   failure() {
   }
 
-  clickHandlerNo(){
+  clickHandlerNo = () => {
     this.props.closeModal();
   }
 
@@ -100,14 +100,14 @@ class DeleteComponent extends React.Component {
     return(
       <Modal
         isOpen={this.props.modalIsOpen}
-        onRequestClose={this.closeModal.bind(this)}
+        onRequestClose={this.closeModal}
         style = {customStyles}>
         <div className={deleteStyles.two}>
           {this.state.message == '' ? <label>Are you sure to delete the {this.props.title} ?</label> : <label></label>}
            <div className={!this.state.successMessage? (deleteStyles.errorMessage + ' ' + (this.state.message!='' ? deleteStyles.show : deleteStyles.hidden)) : (this.state.message != '' ? deleteStyles.successMessage : '')}>{this.state.message}</div>
              <div className ={this.state.message == ''  ? (deleteStyles.choiceContainer + ' ' +deleteStyles.showChoice) : (deleteStyles.choiceContainer + ' ' +deleteStyles.hideChoice)}>
-               <button onClick={this.clickHandlerNo.bind(this)} value='NO' className={deleteStyles.cancel} >NO</button>
-               <button onClick={this.clickHandlerYes.bind(this)} value='YES' className={deleteStyles.submit} >YES</button>
+               <button onClick={this.clickHandlerNo} value='NO' className={deleteStyles.cancel} >NO</button>
+               <button onClick={this.clickHandlerYes} value='YES' className={deleteStyles.submit} >YES</button>
              </div>
         </div>
       </Modal>

@@ -17,9 +17,10 @@ class DbItemComponent extends React.Component {
       showAuth: false,
       hasPriv: false
     }
+    this.closeModal = this.closeModal.bind(this);
   }
 
-  openModal(e) {
+  openModal = (e) => {
     e.stopPropagation();
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
@@ -32,7 +33,7 @@ class DbItemComponent extends React.Component {
 
   }
 
-  authClose(){
+  authClose = () => {
       this.setState({showAuth:false});
       this.setState({modalIsOpen:false});
   }
@@ -54,16 +55,19 @@ class DbItemComponent extends React.Component {
     this.state._isMounted = false;
   }
 
+  onClick = () => {
+    this.props.onClick(this.props.idx, this.props.name);
+  }
 
   render () {
     return (
-      <div onClick={this.props.onClick} value={this.props.name} className={(this.props.isSelected ? dbListStyles.menuItem +' ' +dbListStyles.highlight :dbListStyles.menuItem)} key={this.props.name} >
+      <div onClick={this.onClick} value={this.props.name} className={(this.props.isSelected ? dbListStyles.menuItem +' ' +dbListStyles.highlight :dbListStyles.menuItem)} key={this.props.name} >
           <span className={dbListStyles.dbIcon}>
             <i className="fa fa-database" aria-hidden="true"></i>
           </span>
           <span id="toolTipDb" className={dbListStyles.content} title = {this.props.name}>{this.props.name}</span>
-          <i className={"fa fa-trash " +  dbListStyles.removeIcon} aria-hidden="true" onClick={this.openModal.bind(this)}></i>
-        {this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'database' dbName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent>  : <AuthPopUp modalIsOpen = {this.state.showAuth}  authClose = {this.authClose.bind(this)} action = 'drop database' ></AuthPopUp>) : ''}        
+          <i className={"fa fa-trash " +  dbListStyles.removeIcon} aria-hidden="true" onClick={this.openModal}></i>
+        {this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal} title = 'database' dbName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent>  : <AuthPopUp modalIsOpen = {this.state.showAuth}  authClose = {this.authClose} action = 'drop database' ></AuthPopUp>) : ''}        
       </div>
     );
   }

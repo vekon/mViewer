@@ -36,9 +36,13 @@ class DbListComponent extends React.Component {
       viewMore: false,
       viewMoreLink: false
     }
+    this.refreshDbList = this.refreshDbList.bind(this);
+    this.setViewMore   = this.setViewMore.bind(this);
+    this.searchUpdated = this.searchUpdated.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
-  openModal() {
+  openModal = () => {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
     this.setState({error:false});
@@ -50,12 +54,12 @@ class DbListComponent extends React.Component {
     }
   }
 
-  authClose(){
+  authClose = () => {
       this.setState({showAuth:false});
       this.setState({modalIsOpen:false});
   }
 
-  closeModal() {
+  closeModal = () => {
     this.setState({modalIsOpen: false});
   }
   enableButton() {
@@ -74,7 +78,7 @@ class DbListComponent extends React.Component {
     }.bind(this);
   }
 
-  handleChange(key){
+  handleChange = (key) => {
    this.setState({successMessage:false});
    this.setState({message:''});
   }
@@ -116,7 +120,6 @@ class DbListComponent extends React.Component {
   }
 
   refreshDbList(dbName){
-
     var partialUrl = 'login/details?connectionId='+ this.state.connectionId;
     var refreshDbCall = service('GET', partialUrl, '');
     refreshDbCall.then(this.success.bind(this , 'refreshDbList' , ''), this.failure.bind(this , 'refreshDbList', ''));
@@ -130,11 +133,11 @@ class DbListComponent extends React.Component {
     }
   }
 
-  changeHandler(){
+  changeHandler = () => {
     this.setState({visible:false});
   }
 
-  collapsedDivHandler(){
+  collapsedDivHandler = () => {
     var that =this;
     this.setState({visible: !this.state.visible}, function(){
       browserHistory.push({ pathname: '/dashboard/database', query: { db: that.state.selectedDb, collapsed: false} });
@@ -142,7 +145,7 @@ class DbListComponent extends React.Component {
 
   }
 
-  clickHandlerModal(){
+  clickHandlerModal = () => {
     var that =this;
     var data = $("form").serialize().split("&");
     var obj={};
@@ -160,7 +163,7 @@ class DbListComponent extends React.Component {
     }
   }
 
-  moreClick() {
+  moreClick = () => {
     this.setState({viewMore: !this.state.viewMore});
     this.setState({viewMoreLink: false});
   }
@@ -223,7 +226,7 @@ class DbListComponent extends React.Component {
         this.setState({message:'Database '+obj['name']+ ' was successfully created'});
         this.setState({successMessage:true});
         this.refreshDbList(this.state.selectedDb);
-        setTimeout(function() { this.closeModal() }.bind(this), 2000);
+        setTimeout(() => { this.closeModal() }, 2000);
       }
       if (data.response.error) {
         this.setState({successMessage:false});
@@ -272,31 +275,32 @@ class DbListComponent extends React.Component {
        <div className={dbListStyles.menu}>
          <div className={(this.state.visible ? dbListStyles.visible   : dbListStyles.collapsed)  }>
           <div className = {dbListStyles.dbListHeader}>
-             <SearchInput className={dbListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
-             <h5 className={dbListStyles.menuTitle}><span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Database</span></h5>
+             <SearchInput className={dbListStyles.searchInput} onChange={this.searchUpdated} />
+             <h5 className={dbListStyles.menuTitle}><span onClick= {this.openModal} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Database</span></h5>
           </div>
           
             <div className = {(this.state.viewMore ? dbListStyles.dbListBody : dbListStyles.dbListBodyExpanded) + ' dbContainer'}>
-              <ReactHeight onHeightReady={this.setViewMore.bind(this)}>
+              <ReactHeight onHeightReady={this.setViewMore}>
                   {filteredData.map((item,idx) => {
                      return(
                        <DbItem
                        key={item}
+                       idx={idx}
                        name={item}
-                       onClick={this.clickHandler.bind(this,idx, item)}
+                       onClick={this.clickHandler}
                        isSelected={this.state.selectedDb==item}
                        connectionId = {this.state.connectionId}
-                       refreshDbList={this.refreshDbList.bind(this)}
+                       refreshDbList={this.refreshDbList}
                        />)
                    })}
               </ReactHeight>
             </div>
           
           <div className= {(this.state.viewMoreLink ? dbListStyles.viewMoreContainer : dbListStyles.displayNone)}>
-            <a className = {dbListStyles.viewMore} onClick={this.moreClick.bind(this)}>List All</a>
+            <a className = {dbListStyles.viewMore} onClick={this.moreClick}>List All</a>
           </div>
         </div>
-        <div className={this.state.visible ?dbListStyles.collapsedDiv: dbListStyles.openDiv} onClick={this.collapsedDivHandler.bind(this)} >
+        <div className={this.state.visible ?dbListStyles.collapsedDiv: dbListStyles.openDiv} onClick={this.collapsedDivHandler} >
           <span className={dbListStyles.arrow}>
             <i className="fa fa-chevron-right" aria-hidden="true" ></i>
           </span>
@@ -305,7 +309,7 @@ class DbListComponent extends React.Component {
      </div>
     { !this.state.showAuth ? <Modal
        isOpen={this.state.modalIsOpen}
-       onRequestClose={this.closeModal.bind(this)}
+       onRequestClose={this.closeModal}
        style = {customStyles}>
        <div className={dbListStyles.two}>
          <div className={dbListStyles.header}>
@@ -314,12 +318,12 @@ class DbListComponent extends React.Component {
          <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
            <div className={ dbListStyles.formContainer}>
              <div className={dbListStyles.inputBox}>
-               <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error+',maxLength:63'} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name', maxLength: 'Db name exceeds maximum limit' }}  />
+               <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error+',maxLength:63'} onChange={this.handleChange} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name', maxLength: 'Db name exceeds maximum limit' }}  />
              </div>
              <div className={dbListStyles.buttons}>
               <div className={dbListStyles.right}>
-               <span onClick={this.closeModal.bind(this)} value='CANCEL' className={dbListStyles.cancel} >CANCEL</span>
-               <button onClick={this.clickHandlerModal.bind(this)} value='SUBMIT' className={dbListStyles.submit} disabled={!this.state.canSubmit}>CREATE</button>
+               <span onClick={this.closeModal} value='CANCEL' className={dbListStyles.cancel} >CANCEL</span>
+               <button onClick={this.clickHandlerModal} value='SUBMIT' className={dbListStyles.submit} disabled={!this.state.canSubmit}>CREATE</button>
               </div>
              </div>
              <div className={dbListStyles.clear}></div>
@@ -327,7 +331,7 @@ class DbListComponent extends React.Component {
            </div>
          </Form>
        </div>
-     </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =   'create Database' ></AuthPopUp> }
+     </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose} action =   'create Database' ></AuthPopUp> }
     </div>
     );
   }

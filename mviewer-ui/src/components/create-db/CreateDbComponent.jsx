@@ -24,7 +24,7 @@ class CreateDbComponent extends React.Component {
     }
   }
 
-  openModal() {
+  openModal = () => {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
     this.setState({error:false});
@@ -36,12 +36,12 @@ class CreateDbComponent extends React.Component {
     }
   }
 
-  authClose(){
+  authClose = () => {
       this.setState({showAuth:false});
       this.setState({modalIsOpen:false});
   }
 
-  closeModal() {
+  closeModal = () => {
     this.setState({modalIsOpen: false});
     if(this.state.successMessage==true)
     {
@@ -65,13 +65,13 @@ class CreateDbComponent extends React.Component {
     }.bind(this);
   }
 
-  handleChange(key){
+  handleChange = (key) => {
    this.setState({successMessage:false});
    this.setState({message:''});
   }
 
 
-  clickHandler(){
+  clickHandler = () => {
     var that =this;
     var data = $("form").serialize().split("&");
     var obj={};
@@ -94,7 +94,7 @@ class CreateDbComponent extends React.Component {
       this.setState({message:'Database '+obj['name']+ ' was successfully created'});
       this.setState({successMessage:true});
       this.props.refreshDb();
-      setTimeout(function() { this.closeModal() }.bind(this), 2000);
+      setTimeout(() => { this.closeModal() }, 2000);
     }
     if (data.response.error) {
       this.setState({successMessage:false});
@@ -140,7 +140,7 @@ class CreateDbComponent extends React.Component {
           <section className={createDbStyles.bottomSection}>LET'S GET STARTED</section>
         </div>
         <div className = {createDbStyles.bottomContainer}>
-          <button className={createDbStyles.createButton} onClick={this.openModal.bind(this)}>CREATE NEW DATABASE</button>
+          <button className={createDbStyles.createButton} onClick={this.openModal}>CREATE NEW DATABASE</button>
           <section className = {createDbStyles.logoSection}>
             <span>POWERED BY</span>
             <img src={'/images/pramati-logo.png'} className={createDbStyles.logo}></img>
@@ -148,7 +148,7 @@ class CreateDbComponent extends React.Component {
         </div>
         { !this.state.showAuth ? <Modal
           isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal.bind(this)}
+          onRequestClose={this.closeModal}
           style = {customStyles}>
           <div className={createDbStyles.two}>
             <div className={createDbStyles.header}>
@@ -157,12 +157,12 @@ class CreateDbComponent extends React.Component {
             <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
               <div className={ createDbStyles.formContainer}>
                 <div className={createDbStyles.inputBox}>
-                  <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error+',maxLength:63'} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name', maxLength: 'Db name exceeds maximum limit' }}  />
+                  <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error+',maxLength:63'} onChange={this.handleChange} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name', maxLength: 'Db name exceeds maximum limit' }}  />
                 </div>
                 <div className={createDbStyles.buttons}>
                   <div className={createDbStyles.right}>
-                    <span onClick={this.closeModal.bind(this)} value='CANCEL' className={createDbStyles.cancel} >CANCEL</span>
-                    <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={createDbStyles.submit} disabled={!this.state.canSubmit}>CREATE</button>
+                    <span onClick={this.closeModal} value='CANCEL' className={createDbStyles.cancel} >CANCEL</span>
+                    <button onClick={this.clickHandler} value='SUBMIT' className={createDbStyles.submit} disabled={!this.state.canSubmit}>CREATE</button>
                   </div>
               </div>
               </div>
@@ -170,7 +170,7 @@ class CreateDbComponent extends React.Component {
              <div className={createDbStyles.clear}></div>
              <div className={!this.state.successMessage? (createDbStyles.errorMessage + ' ' + (this.state.message!='' ? createDbStyles.show : createDbStyles.hidden)) : (this.state.message != '' ? createDbStyles.successMessage : '')}>{this.state.message}</div>
           </div>
-        </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =   'create Database' ></AuthPopUp> }
+        </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose} action =   'create Database' ></AuthPopUp> }
       </div>
     );
   }

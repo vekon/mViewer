@@ -18,9 +18,10 @@ class CollectionItemComponent extends React.Component {
      showAuth: false,
      hasPriv: false
    }
+   this.closeModal = this.closeModal.bind(this);
  }
 
- openModal() {
+ openModal = () => {
    this.setState({modalIsOpen: true});
    this.setState({message: ''});
    const hasPriv = privilegesAPI.hasPrivilege('dropCollection',this.props.name, this.props.dbName);
@@ -31,7 +32,7 @@ class CollectionItemComponent extends React.Component {
     }
  }
 
- authClose(){
+ authClose = () => {
       this.setState({showAuth:false});
       this.setState({modalIsOpen:false});
   }
@@ -60,15 +61,19 @@ class CollectionItemComponent extends React.Component {
    this.state._isMounted = false;
  }
 
+ onClick = () => {
+  this.props.onClick(this.props.idx, this.props.name);
+ }
+
   render () {
     return (
-      <div className={(this.props.isSelected ? collectionListStyles.menuItem +' ' +collectionListStyles.highlight :collectionListStyles.menuItem)} key={this.props.name} onClick={this.props.onClick} value={this.props.name} >
+      <div className={(this.props.isSelected ? collectionListStyles.menuItem +' ' +collectionListStyles.highlight :collectionListStyles.menuItem)} key={this.props.name} onClick={this.onClick} value={this.props.name} >
         <span className = {collectionListStyles.collectionIcon}>
           <i className="fa fa-files-o" aria-hidden="true"></i>
         </span>
         <span id="toolTip" className = {collectionListStyles.button}>{this.props.name}</span>
-        <i className={"fa fa-trash "+ collectionListStyles.trash} aria-hidden="true" onClick = {this.openModal.bind(this)}></i>
-        {this.state.modalIsOpen ? ( !this.state.showAuth ?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = 'collection' dbName = {this.props.dbName} collectionName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action = 'drop collection' ></AuthPopUp> ) : null}
+        <i className={"fa fa-trash "+ collectionListStyles.trash} aria-hidden="true" onClick = {this.openModal}></i>
+        {this.state.modalIsOpen ? ( !this.state.showAuth ?<DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal} title = 'collection' dbName = {this.props.dbName} collectionName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose} action = 'drop collection' ></AuthPopUp> ) : null}
       </div>
     );
   }

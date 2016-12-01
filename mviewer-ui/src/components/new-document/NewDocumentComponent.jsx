@@ -114,7 +114,7 @@ class NewDocumentComponent extends React.Component {
         this.setState({message:'Document was successfully Updated'}, function(){
         });
       }
-      setTimeout(function() { this.closeModal() }.bind(this), 2000);
+      setTimeout(() => { this.closeModal() }, 2000);
     }
     if (data.response.error) {
         if(data.response.error.code == 'DOCUMENT_UPDATE_EXCEPTION'){

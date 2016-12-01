@@ -22,7 +22,7 @@ class CollectionStatsComponent extends React.Component {
     }
   }
 
-  openModal() {
+  openModal = () => {
     const that = this;
     const partialUrl = 'stats/db/' + this.props.selectedDB + '/collection/'+this.props.selectedCollection+'?connectionId=' + this.props.connectionId;
     
@@ -31,7 +31,7 @@ class CollectionStatsComponent extends React.Component {
       collectionStatsCall.then(this.success.bind(this), this.failure.bind(this));
   }
 
-  authClose(){
+  authClose = () => {
       this.setState({showAuth:false});
       this.setState({modalIsOpen:false});
   }
@@ -53,7 +53,7 @@ class CollectionStatsComponent extends React.Component {
     this.setState({ message: 'Unexpected Error Occurred' })
   }
 
-  closeModal() {
+  closeModal = () => {
     this.setState({modalIsOpen: false});
   }
 
@@ -62,10 +62,10 @@ class CollectionStatsComponent extends React.Component {
     return(
 
       <div className={collectionStatsStyles.mainContainer}>
-        <span className={collectionStatsStyles.statsButton} onClick={this.openModal.bind(this)}><i className="fa fa-area-chart" aria-hidden="true"></i>Stats</span>
+        <span className={collectionStatsStyles.statsButton} onClick={this.openModal}><i className="fa fa-area-chart" aria-hidden="true"></i>Stats</span>
         { !this.state.showAuth ?<Modal
           isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal.bind(this)}
+          onRequestClose={this.closeModal}
           className={collectionStatsStyles.modal}>
           <div className={collectionStatsStyles.collectionStats}>
             <div className={collectionStatsStyles.header}>
@@ -79,7 +79,7 @@ class CollectionStatsComponent extends React.Component {
                 <th>Values</th>
               </tr>
               {
-                 this.state.collectionStats.map(function(db) {
+                 this.state.collectionStats.map((db) => {
                    return (<tr key={db.Key}><td>{db.Key}</td><td>{db.Value}</td></tr>)
                 })
             }
@@ -87,7 +87,7 @@ class CollectionStatsComponent extends React.Component {
           </table>
           </div>
           </div>
-    </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth}  authClose = {this.authClose.bind(this)} action = 'view collection stats' ></AuthPopUp> }
+    </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth}  authClose = {this.authClose} action = 'view collection stats' ></AuthPopUp> }
   </div>
     );
   }
