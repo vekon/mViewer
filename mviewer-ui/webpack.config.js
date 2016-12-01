@@ -26,11 +26,13 @@ var config = {
     output: {
         path: BUILD_DIR,
         filename: 'site.js',
-        libraryTarget: 'umd'
+        libraryTarget: 'umd',
+        publicPath: '/'
     },
     devServer: {
       inline:true,
-      port: 3000
+      port: 3000,
+      historyApiFallback: true
     },
 
     module: {
@@ -63,6 +65,10 @@ var config = {
         ]),
         new CopyWebpackPlugin([
             { from: APP_DIR + '/assets', to: BUILD_DIR  + '/'}
+        ]),
+
+        new CopyWebpackPlugin([
+            { from: APP_DIR + '/vendors/css/bootstrap', to: BUILD_DIR  + '/bootstrap'}
         ])
     ]
 };

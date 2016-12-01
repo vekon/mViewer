@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-var path = '../services/';
+let path = '../services/';
 
 function setupServicePath() {
   if (ENV && ENV != 'prod') {

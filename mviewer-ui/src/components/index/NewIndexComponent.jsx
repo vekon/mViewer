@@ -4,10 +4,10 @@ import $ from 'jquery'
 import Modal from 'react-modal'
 import update from 'react-addons-update'
 import { Form } from 'formsy-react';
-import TextInput from '../TextInput/TextInputComponent.jsx';
+import TextInput from '../text-input/TextInputComponent.jsx';
 import service from '../../gateway/service.js'
-import privilegesAPI from '../../gateway/privilegesAPI.js';
-import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
+import privilegesAPI from '../../gateway/privileges-api.js';
+import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx'
 
 class NewIndexComponent extends React.Component {
 
@@ -29,16 +29,16 @@ class NewIndexComponent extends React.Component {
   }
 
   getAttributes() {
-    var that = this;
-    var partialUrl = this.props.currentDb+'/'+this.props.currentItem+'/document/keys?connectionId='+this.props.connectionId+'&allKeys=true';
-    var getAttributesCall = service('GET', partialUrl, '');
+    const that = this;
+    const partialUrl = this.props.currentDb+'/'+this.props.currentItem+'/document/keys?connectionId='+this.props.connectionId+'&allKeys=true';
+    const getAttributesCall = service('GET', partialUrl, '');
     getAttributesCall.then(this.success.bind(this, 'getAttributes'), this.failure.bind(this, 'getAttributes'));
   }
 
   getIndexes() {
-    var that = this;
-    var partialUrl = this.props.currentDb+'/usersIndexes/getIndex?index_colname=' + this.props.currentItem+'&connectionId='+this.props.connectionId;
-    var getIndexesCall = service('GET', partialUrl, '');
+    const that = this;
+    const partialUrl = this.props.currentDb+'/usersIndexes/getIndex?index_colname=' + this.props.currentItem+'&connectionId='+this.props.connectionId;
+    const getIndexesCall = service('GET', partialUrl, '');
     getIndexesCall.then(this.success.bind(this, 'getIndexes'), this.failure.bind(this, 'getIndexes'));
   }
 
@@ -46,9 +46,9 @@ class NewIndexComponent extends React.Component {
 
     if(typeof(data.response.result) != 'undefined'){
       if (calledFrom == 'getAttributes'){
-        var arr = data.response.result.keys;
-        var newArr = [];
-        for(var i=0; i < arr.length; i++) {
+        const arr = data.response.result.keys;
+        let newArr = [];
+        for(let i=0; i < arr.length; i++) {
           newArr.push({"value": arr[i], "attrSelected" :false,"asc": false});
         }
         this.setState({fields:newArr});
@@ -58,7 +58,7 @@ class NewIndexComponent extends React.Component {
       }
       if(calledFrom == 'clickHandler') {
         if(data.response.result) {
-          var successResult = data.response.result.replace(/[\[\]']/g,'' );
+          const successResult = data.response.result.replace(/[\[\]']/g,'' );
           this.setState({message:successResult});
           this.setState({successMessage:true});
           setTimeout(function() { this.closeModal() }.bind(this), 2000);
@@ -78,8 +78,8 @@ class NewIndexComponent extends React.Component {
     if(typeof(data.response.error) != 'undefined'){
       if (data.response.error.message.indexOf('not authorized on') != -1){
         this.setState({customErrorMessage : 'not authorized to perform this action'});
-        var hasDropColPriv = privilegesAPI.hasPrivilege('dropCollection',this.props.currentItem, this.props.currentDb); 
-        var hasFindPriv = privilegesAPI.hasPrivilege('find',this.props.currentItem, this.props.currentDb);
+        const hasDropColPriv = privilegesAPI.hasPrivilege('dropCollection',this.props.currentItem, this.props.currentDb);
+        const hasFindPriv = privilegesAPI.hasPrivilege('find',this.props.currentItem, this.props.currentDb);
         if (hasDropColPriv  && !hasFindPriv){
           this.setState({customErrorMessage : 'dbAdmin cannot view the documents and does not have the privilieges to view indexes'});
         }
@@ -92,7 +92,7 @@ class NewIndexComponent extends React.Component {
   }
 
   setAttributes() {
-    var that = this;
+    const that = this;
     this.state.fields.map(function(items){
       that.state.indexes.map(function(item){
         Object.keys(item).map(function(key){
@@ -112,7 +112,7 @@ class NewIndexComponent extends React.Component {
 
   openModal() {
     this.setState({customErrorMessage: ''});
-    var hasPriv = privilegesAPI.hasPrivilege('listIndexes',this.props.currentItem, this.props.currentDb);
+    const hasPriv = privilegesAPI.hasPrivilege('listIndexes',this.props.currentItem, this.props.currentDb);
     if(hasPriv){
       this.setState({showAuth1 : false});   
       this.getAttributes();
@@ -148,7 +148,7 @@ class NewIndexComponent extends React.Component {
 
   handleChange(key){
     return function(e) {
-      var state = {};
+      let state = {};
       state[key] = e.target.value;
       this.setState(state);
       if (e.target.value == '') {
@@ -163,9 +163,9 @@ class NewIndexComponent extends React.Component {
   }
 
   clickHandler(){
-    var that =this;
-    var dataObj = {};
-    var obj = {};
+    const that =this;
+    let dataObj = {};
+    let obj = {};
     obj['index_colname'] = this.props.currentItem;
     this.state.fields.map(function(item){
       if(item.attrSelected){
@@ -177,16 +177,16 @@ class NewIndexComponent extends React.Component {
       }
     });
     obj['index_keys'] = JSON.stringify(dataObj);
-    var partialUrl = this.props.currentDb+'/usersIndexes/updateIndex?connectionId='+this.props.connectionId;
-    var newDocumentCall = service((this.props.addOrEdit != 'Edit'? 'POST' : 'PUT'), partialUrl, obj);
+    const partialUrl = this.props.currentDb+'/usersIndexes/updateIndex?connectionId='+this.props.connectionId;
+    const newDocumentCall = service((this.props.addOrEdit != 'Edit'? 'POST' : 'PUT'), partialUrl, obj);
     newDocumentCall.then(this.success.bind(this, 'clickHandler'), this.failure.bind(this, 'clickHandler'));
 
   }
 
   attributeHandler(r) {
-    var that = this;
-    var index = 0;
-    var checkUncheck = function(value) {
+    const that = this;
+    let index = 0;
+    const checkUncheck = function(value) {
       that.state.fields.map(function(e) {
         if(e.value == r.result.value) {
           that.setState(update(that.state.fields[index], {attrSelected: {$set: value}}));
@@ -208,9 +208,9 @@ class NewIndexComponent extends React.Component {
   }
 
   orderHandler(r){
-    var that = this;
-    var index = 0;
-    var checkUncheck = function(value) {
+    const that = this;
+    let index = 0;
+    const checkUncheck = function(value) {
       that.state.fields.map(function(e) {
         if(e.value == r.result.value) {
           that.setState(update(that.state.fields[index], {asc: {$set: value}}));
@@ -234,15 +234,15 @@ class NewIndexComponent extends React.Component {
   }
 
   componentDidMount(){
-    var hasPriv = privilegesAPI.hasPrivilege('listIndexes',this.props.currentItem, this.props.currentDb);
+    const hasPriv = privilegesAPI.hasPrivilege('listIndexes',this.props.currentItem, this.props.currentDb);
     if(hasPriv){
       this.setState({showAuth : true});    }
     else{
       this.setState({showAuth : false});
     }
 
-    var hasPriv = privilegesAPI.hasPrivilege('createIndex',this.props.currentItem, this.props.currentDb);
-    if(hasPriv){
+    const hasPriv1 = privilegesAPI.hasPrivilege('createIndex',this.props.currentItem, this.props.currentDb);
+    if(hasPriv1){
       this.setState({showAuth : false});    }
     else{
       this.setState({showAuth : true});
@@ -251,15 +251,15 @@ class NewIndexComponent extends React.Component {
   }
 
   componentWillReceiveProps (){
-    var hasPriv = privilegesAPI.hasPrivilege('listIndexes',this.props.currentItem, this.props.currentDb);
+    const hasPriv = privilegesAPI.hasPrivilege('listIndexes',this.props.currentItem, this.props.currentDb);
     if(hasPriv){
       this.setState({showAuth : true});    }
     else{
       this.setState({showAuth : false});
     }
 
-    var hasPriv = privilegesAPI.hasPrivilege('createIndex',this.props.currentItem, this.props.currentDb);
-    if(hasPriv){
+    const hasPriv1 = privilegesAPI.hasPrivilege('createIndex',this.props.currentItem, this.props.currentDb);
+    if(hasPriv1){
       this.setState({showAuth : false});    }
     else{
       this.setState({showAuth : true});
@@ -267,7 +267,7 @@ class NewIndexComponent extends React.Component {
   }
 
   render () {
-    var that = this;
+    const that = this;
     const customStyles = {
       content : {
         top                   : '50%',

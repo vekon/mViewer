@@ -1,7 +1,7 @@
 import React from 'react'
 import homeStyles from './home.css'
 import $ from 'jquery'
-import CreateDb from '../createdb/CreateDbComponent.jsx'
+import CreateDb from '../create-db/CreateDbComponent.jsx'
 
 class HomeComponent extends React.Component {
   render () {

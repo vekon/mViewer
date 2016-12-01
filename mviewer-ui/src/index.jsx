@@ -5,17 +5,17 @@ import { Provider } from 'react-redux'
 import { Router, Route, hashHistory, browserHistory } from 'react-router'
 import LoginComponent from './components/login/LoginComponent.jsx';
 import DashBoardComponent from './components/dashboard/DashBoardComponent.jsx';
-import PageNotFoundComponent from './components/pagenotfound/PageNotFoundComponent.jsx';
+import PageNotFoundComponent from './components/page-not-found/PageNotFoundComponent.jsx';
 import HomeComponent from './components/home/HomeComponent.jsx';
-import DbStatsComponent from './components/dbstats/DbStatsComponent.jsx';
+import DbStatsComponent from './components/db-stats/DbStatsComponent.jsx';
 import CollectionsComponent from  './components/collections/CollectionsComponent.jsx';
 import GraphsComponent from  './components/graphs/GraphsComponent.jsx';
-import ServerStatsComponent from  './components/serverstats/ServerStatsComponent.jsx';
+import ServerStatsComponent from  './components/server-stats/ServerStatsComponent.jsx';
 // import Bootstrap from './vendors/css/bootstrap/dist/css/bootstrap.css';
 
 render((
-  <Router history={hashHistory}>
-    <Route path="/" component={LoginComponent}/>
+  <Router history={browserHistory}>
+    <Route path="/index.html" component={LoginComponent}/>
       <Route path="/dashboard" component={DashBoardComponent} >
         <Route path="/dashboard/home" component={HomeComponent} />
         <Route path="/dashboard/databases" component={DbStatsComponent} />
@@ -26,3 +26,4 @@ render((
       <Route path="*" component = {PageNotFoundComponent}/>
     </Router>
 ), document.getElementById('app'));
+

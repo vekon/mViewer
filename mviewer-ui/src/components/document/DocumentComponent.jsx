@@ -2,11 +2,11 @@ import React from 'react'
 import documentStyles from './document.css'
 import $ from 'jquery'
 import Modal from 'react-modal'
-import DeleteComponent from '../deletecomponent/DeleteComponent.jsx'
-import NewDocument from '../newdocument/newDocumentComponent.jsx'
+import DeleteComponent from '../delete-component/DeleteComponent.jsx'
+import NewDocument from '../new-document/NewDocumentComponent.jsx'
 import autosize from 'autosize'
-import privilegesAPI from '../../gateway/privilegesAPI.js';
-import AuthPopUp from '../authpopup/AuthPopUpComponent.jsx'
+import privilegesAPI from '../../gateway/privileges-api.js';
+import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx'
 
 class DocumentComponent extends React.Component {
 
@@ -27,7 +27,7 @@ class DocumentComponent extends React.Component {
   openModal() {
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
-    var hasPriv = privilegesAPI.hasPrivilege('remove',this.props.currentItem, this.props.currentDb);
+    const hasPriv = privilegesAPI.hasPrivilege('remove',this.props.currentItem, this.props.currentDb);
     if(hasPriv){
       this.setState({showAuth : false});    }
     else{
