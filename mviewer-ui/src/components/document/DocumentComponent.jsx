@@ -1,12 +1,12 @@
-import React from 'react'
-import documentStyles from './document.css'
-import $ from 'jquery'
-import Modal from 'react-modal'
-import DeleteComponent from '../delete-component/DeleteComponent.jsx'
-import NewDocument from '../new-document/NewDocumentComponent.jsx'
-import autosize from 'autosize'
+import React from 'react';
+import documentStyles from './document.css';
+import $ from 'jquery';
+import Modal from 'react-modal';
+import DeleteComponent from '../delete-component/DeleteComponent.jsx';
+import NewDocument from '../new-document/NewDocumentComponent.jsx';
+import autosize from 'autosize';
 import privilegesAPI from '../../gateway/privileges-api.js';
-import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx'
+import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx';
 
 class DocumentComponent extends React.Component {
 
@@ -21,7 +21,7 @@ class DocumentComponent extends React.Component {
       _isMounted: false,
       showAuth: false,
       hasPriv: false
-    }
+    };
   }
 
   openModal() {
@@ -76,13 +76,13 @@ class DocumentComponent extends React.Component {
     autosize.update($('.textArea'));
     return(
       <div className={documentStyles.results+' '+ documentStyles.clearfix}>
-        { this.props.queryType == "collection" ?
+        { this.props.queryType == 'collection' ?
           <NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} addOrEdit='Edit' connectionId={this.props.connectionId} documentValue = {this.state.value} uId = {this.props.uId} refresh = {this.props.refresh}></NewDocument>
           : null }
         <form>
           <span className={documentStyles.deleteButton} ><i className="fa fa-trash" aria-hidden="true" onClick={this.openModal.bind(this)}></i></span>
           <textarea key={this.props.key1} className ='textArea' value={this.state.value} onChange={this.changeHandler()} disabled={this.state.disabled}></textarea>
-          {this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = {this.props.queryType == "collection" ? 'document' : 'file'} dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} uId= {this.props.uId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =  {this.props.queryType == "collection" ? 'drop document' : 'drop file'} ></AuthPopUp> ) : ''}
+          {this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal.bind(this)} title = {this.props.queryType == 'collection' ? 'document' : 'file'} dbName = {this.props.currentDb} collectionName = {this.props.currentItem} connectionId={this.props.connectionId} uId= {this.props.uId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose.bind(this)} action =  {this.props.queryType == 'collection' ? 'drop document' : 'drop file'} ></AuthPopUp> ) : ''}
         </form>
       </div>
     );

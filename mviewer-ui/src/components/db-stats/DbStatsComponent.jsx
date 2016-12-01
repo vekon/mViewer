@@ -1,6 +1,6 @@
-import React from 'react'
-import dbStatsStyles from './db-stats.css'
-import $ from 'jquery'
+import React from 'react';
+import dbStatsStyles from './db-stats.css';
+import $ from 'jquery';
 import service from '../../gateway/service.js';
 
 class DbStatsComponent extends React.Component {
@@ -11,14 +11,14 @@ class DbStatsComponent extends React.Component {
       dbStats: {},
       selectedDB: null,
       sidebarOpen: false
-    }
+    };
   }
 
   componentDidMount(){
     const that = this;
     let queryData = {};
-    queryData['query'] = "db.runCommand({dbStats:1})";
-    queryData['fields'] = "";
+    queryData['query'] = 'db.runCommand({dbStats:1})';
+    queryData['fields'] = '';
     queryData['limit'] = 10;
     queryData['skip'] = 0;
     queryData['sortBy'] =  "{'_id':-1}";
@@ -32,15 +32,15 @@ class DbStatsComponent extends React.Component {
     let stats = [];
     const oldStats = data.response.result.documents;
     oldStats.length > 0 ? Object.keys(oldStats[0]).map(function(key) {
-      if(typeof(oldStats[0][key]) == "object") {
+      if(typeof(oldStats[0][key]) == 'object') {
         Object.keys(oldStats[0][key]).map(function(item){
           const keyValue = key + '.' + item;
           stats.push({key: keyValue, value: oldStats[0][key][item]});
-        })
+        });
       } else {
         stats.push({key: key, value: oldStats[0][key]});
       }
-    }) : null
+    }) : null;
     this.setState({dbStats: stats});
   }
 
@@ -60,7 +60,7 @@ class DbStatsComponent extends React.Component {
                   <th>Values</th>
                 </tr>
                 { that.state.dbStats.length > 0 ? that.state.dbStats.map((item) => {
-                    return <tr key={item.key}><td>{item.key}</td><td>{item.value}</td></tr>
+                    return <tr key={item.key}><td>{item.key}</td><td>{item.value}</td></tr>;
                 }): null}
               </tbody>
             </table>

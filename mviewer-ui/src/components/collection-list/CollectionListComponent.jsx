@@ -1,11 +1,11 @@
-import React from 'react'
-import collectionListStyles from '../shared/list-panel.css'
-import $ from 'jquery'
-import CollectionItem from './CollectionItemComponent.jsx'
-import NewCollection from '../new-collection/NewCollectionComponent.jsx'
-import SearchInput, {createFilter} from 'react-search-input'
-import { browserHistory, hashHistory } from 'react-router'
-import service from '../../gateway/service.js'
+import React from 'react';
+import collectionListStyles from '../shared/list-panel.css';
+import $ from 'jquery';
+import CollectionItem from './CollectionItemComponent.jsx';
+import NewCollection from '../new-collection/NewCollectionComponent.jsx';
+import SearchInput, {createFilter} from 'react-search-input';
+import { browserHistory, hashHistory } from 'react-router';
+import service from '../../gateway/service.js';
 import ReactHeight from 'react-height';
 
 class CollectionList extends React.Component {
@@ -25,7 +25,7 @@ class CollectionList extends React.Component {
       selectedCollection:null,
       viewMore: false,
       viewMoreLink: false
-    }
+    };
     this.searchUpdated = this.searchUpdated.bind(this);
     this.refreshCollectionList = this.refreshCollectionList.bind(this);
     this.refreshRespectiveData = this.refreshRespectiveData.bind(this);
@@ -142,7 +142,7 @@ class CollectionList extends React.Component {
   }
 
   searchUpdated (term) {
-    this.setState({searchTerm: term})
+    this.setState({searchTerm: term});
   }
 
   setViewMore(height) {
@@ -189,7 +189,7 @@ class CollectionList extends React.Component {
                           connectionId={this.state.connectionId}
                           refreshCollectionList={this.refreshCollectionList}
                           refreshCollectionListForDelete={this.refreshCollectionListForDelete}
-                         />)
+                         />);
                     })): null}
                   </ReactHeight>
                 </div>

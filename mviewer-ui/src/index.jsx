@@ -1,8 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
-import { Router, Route, hashHistory, browserHistory } from 'react-router'
+import { Router, Route, browserHistory } from 'react-router';
 import LoginComponent from './components/login/LoginComponent.jsx';
 import DashBoardComponent from './components/dashboard/DashBoardComponent.jsx';
 import PageNotFoundComponent from './components/page-not-found/PageNotFoundComponent.jsx';
