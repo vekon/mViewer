@@ -1,16 +1,16 @@
 import React from 'react'
 import collectionsStyles from './collections.css'
-import NewCollection from '../newcollection/newCollectionComponent.jsx'
-import NewDocument from '../newdocument/newDocumentComponent.jsx'
-import QueryExecutor from '../queryexecutor/QueryExecutorComponent.jsx'
-import CollectionList from '../collectionlist/CollectionListComponent.jsx'
-import GridFSList from '../gridfslist/GridFSListComponent.jsx'
-import DbStats from '../dbstats/DbStatsComponent.jsx'
-import UserList from '../userlist/UserListComponent.jsx'
+import NewCollection from '../new-collection/NewCollectionComponent.jsx'
+import NewDocument from '../new-document/NewDocumentComponent.jsx'
+import QueryExecutor from '../query-executor/QueryExecutorComponent.jsx'
+import CollectionList from '../collection-list/CollectionListComponent.jsx'
+import GridFSList from '../gridfs-list/GridFSListComponent.jsx'
+import DbStats from '../db-stats/DbStatsComponent.jsx'
+import UserList from '../user-list/UserListComponent.jsx'
 import $ from 'jquery'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import UserDetails from '../userdetails/UserDetailsComponent.jsx'
-import privilegesAPI from '../../gateway/privilegesAPI.js';
+import UserDetails from '../user-details/UserDetailsComponent.jsx'
+import privilegesAPI from '../../gateway/privileges-api.js';
 import ReactResizeDetector from 'react-resize-detector';
 
 class CollectionsComponent extends React.Component {
@@ -112,11 +112,11 @@ class CollectionsComponent extends React.Component {
   render () {
 
     Tabs.setUseDefaultStyles(false);
-    var hasUserAdminPriv = privilegesAPI.hasPrivilege('viewUser', '',this.props.location.query.db ); 
-    var hasUserAdminAnyDatabasePriv = privilegesAPI.hasPrivilege('viewUser','',this.props.location.query.db );
-    var hasDbStatsPriv   = privilegesAPI.hasPrivilege('dbStats' , '' , this.props.location.query.db);
+    const hasUserAdminPriv = privilegesAPI.hasPrivilege('viewUser', '',this.props.location.query.db );
+    const hasUserAdminAnyDatabasePriv = privilegesAPI.hasPrivilege('viewUser','',this.props.location.query.db );
+    const hasDbStatsPriv   = privilegesAPI.hasPrivilege('dbStats' , '' , this.props.location.query.db);
 
-    var hasListColPriv   = privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db);
+    const hasListColPriv   = privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db);
     return(
       <div className = {this.props.location.query.collapsed == 'false' ? collectionsStyles.mainContainer+ ' collectionsContainer col-lg-10  col-sm-9 col-xs-8 col-md-9' : collectionsStyles.mainContainer+' collectionsContainer col-lg-11  col-sm-11 col-xs-10 col-md-11 ' +collectionsStyles.collapsedContainer}>
         <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#mainNavbar" aria-expanded="false" onClick={this.toggleMessage.bind(this)}><span className={collectionsStyles.collapseSpan}>{this.state.navMessage}</span></button>
@@ -136,7 +136,7 @@ class CollectionsComponent extends React.Component {
               <div className={collectionsStyles.holder + ' row'}>
                 <CollectionList ref="left"  visible={true} propps = {this.props} showQueryExecutor = {this.showQueryExecutor.bind(this)} hideQueryExecutor = {this.hideQueryExecutor.bind(this)} selectedDB={this.props.location.query.db} setStates = {this.setStates.bind(this)} refreshDb = {this.props.refreshDb.bind(this)} ></CollectionList>
                 {this.state.showQueryExecutor ? <QueryExecutor ref='right' refreshRespectiveData={this.refreshRespectiveData.bind(this)} refreshCollectionList={this.refreshCollectionList.bind(this)} queryType= "collection" currentDb={this.props.location.query.db} currentItem={this.state.selectedCollection} connectionId={this.props.connectionId}></QueryExecutor> : null}
-              </div> : ( this.state.hasListColPriv ==null ? <div className={collectionsStyles.loading}><img src={'./images/loading.gif'} ></img><label>Checking for Privileges</label></div>:<div className = {collectionsStyles.errorHolder}>You are not authorised to view Collections</div>)
+              </div> : ( this.state.hasListColPriv ==null ? <div className={collectionsStyles.loading}><img src={'/images/loading.gif'} ></img><label>Checking for Privileges</label></div>:<div className = {collectionsStyles.errorHolder}>You are not authorised to view Collections</div>)
             }
           </TabPanel>
           <TabPanel className ='mainTabPanel'>

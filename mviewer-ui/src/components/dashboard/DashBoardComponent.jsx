@@ -1,8 +1,9 @@
 import React from 'react'
-import dashStyles from './dashBoard.css'
+import dashStyles from './dashboard.css'
 import $ from 'jquery'
-import SideNav from '../sidenav/SideNavComponent.jsx';
+import SideNav from '../side-nav/SideNavComponent.jsx';
 import service from '../../gateway/service.js';
+import { browserHistory, hashHistory } from 'react-router';
 
 class DashBoardComponent extends React.Component {
 
@@ -10,7 +11,7 @@ class DashBoardComponent extends React.Component {
     super(props);
     this.state = {
       connectionId: JSON.parse(sessionStorage.getItem('connectionId') || '{}'),
-      loggedInDatabase: this.props.location.query.database,
+      loggedInDatabase:JSON.parse(sessionStorage.getItem('db') || '{}') ,
       host: JSON.parse(sessionStorage.getItem('host') || '{}'),
       username: JSON.parse(sessionStorage.getItem('username') || '{}')
     }
@@ -25,7 +26,8 @@ class DashBoardComponent extends React.Component {
   success(data) {
     if(data.response.result==='User Logged Out')
     {
-      window.location.hash = '#';
+      // window.location = '/';
+      browserHistory.push({ pathname: '/index.html' });
       sessionStorage.setItem('connectionId', JSON.stringify(" "));
       sessionStorage.setItem('username', JSON.stringify(" "));
       sessionStorage.setItem('host', JSON.stringify(" "));
@@ -44,6 +46,7 @@ class DashBoardComponent extends React.Component {
 
   clearActiveClass(){
     this.refs.sideNav.clearActiveClass();
+    browserHistory.push({ pathname: '/dashboard/home', query: { db: this.state.loggedInDatabase} });
   }
 
   render() {
@@ -63,8 +66,8 @@ class DashBoardComponent extends React.Component {
           <header>
             <nav>
               <div className={"row " + dashStyles.row}>
-                <a href= {"#/dashboard/home"} className={dashStyles.logo} onClick={this.clearActiveClass.bind(this)}><img src={'./images/Logo.png'}></img></a>
-	          
+                <a href= {"#"} className={dashStyles.logo} onClick={this.clearActiveClass.bind(this)}><img src={'/images/logo.png'}></img></a>
+            
                 <ul className={dashStyles.mainNav + ' ' + dashStyles.clearfix} >
                   <li><div className={dashStyles.details}>{this.state.host}</div>  
                     <div className={dashStyles.details}>{this.state.username}</div></li>

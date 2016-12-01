@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './login.css';
 import classNames from 'classnames/bind';
 import { Form } from 'formsy-react';
-import TextInput from '../LoginTextInput/LoginTextInputComponent.jsx';
+import TextInput from '../login-text-input/LoginTextInputComponent.jsx';
 import $ from 'jquery';
 import service from '../../gateway/service.js';
 import { browserHistory, hashHistory } from 'react-router';
@@ -131,7 +131,7 @@ class LoginComponent extends React.Component {
       sessionStorage.setItem('db', JSON.stringify(this.state.databases));
       this.setState({message: data.response.result['success']});
       this.setState({loading: false});
-      hashHistory.push({ pathname: '/dashboard/home', query: { database: this.state.databases} });
+      browserHistory.push({ pathname: '/dashboard/home', query: { database: this.state.databases} });
     }
     if (data.response.error) {
       this.setState({message: data.response.error.message});
@@ -185,7 +185,7 @@ class LoginComponent extends React.Component {
         <div className={styles.parentDiv + ' ' + styles.clearfix}>
 
            <div className={styles.two}>
-             <div className ={styles.one}> <img src={'./images/Logo.png'} className={styles.logo}></img></div>
+             <div className ={styles.one}> <img src={'/images/logo.png'} className={styles.logo}></img></div>
             <Form method='POST' onValid={this.enableButton()} onSubmit={this.onSubmit} onInvalid={this.disableButton()} >
               <div className={ styles.formContainer}>
                 <div className={styles.inputBoxLogin}>

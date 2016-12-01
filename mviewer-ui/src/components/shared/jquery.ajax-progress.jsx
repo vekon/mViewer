@@ -1,7 +1,7 @@
 import $ from 'jquery'
 (function($, window, undefined) {
     //is onprogress supported by browser?
-    var hasOnProgress = ("onprogress" in $.ajaxSettings.xhr());
+    const hasOnProgress = ("onprogress" in $.ajaxSettings.xhr());
 
     //If not supported, do nothing
     if (!hasOnProgress) {
@@ -9,9 +9,9 @@ import $ from 'jquery'
     }
 
     //patch ajax settings to call a progress callback
-    var oldXHR = $.ajaxSettings.xhr;
+    const oldXHR = $.ajaxSettings.xhr;
     $.ajaxSettings.xhr = function() {
-        var xhr = oldXHR();
+        let xhr = oldXHR();
         if(xhr instanceof window.XMLHttpRequest) {
             xhr.addEventListener('progress', this.progress, false);
         }
