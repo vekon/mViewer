@@ -61,7 +61,7 @@ class NewIndexComponent extends React.Component {
           const successResult = data.response.result.replace(/[\[\]']/g,'' );
           this.setState({message:successResult});
           this.setState({successMessage:true});
-          setTimeout(function() { this.closeModal() }.bind(this), 2000);
+          setTimeout(() => { this.closeModal() }, 2000);
         }
         if (data.response.error) {
           this.setState({message:"Server error, Index cannot be added"});

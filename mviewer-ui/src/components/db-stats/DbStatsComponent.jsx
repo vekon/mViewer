@@ -59,7 +59,7 @@ class DbStatsComponent extends React.Component {
                   <th>Keys</th>
                   <th>Values</th>
                 </tr>
-                { that.state.dbStats.length > 0 ? that.state.dbStats.map(function(item) {
+                { that.state.dbStats.length > 0 ? that.state.dbStats.map((item) => {
                     return <tr key={item.key}><td>{item.key}</td><td>{item.value}</td></tr>
                 }): null}
               </tbody>

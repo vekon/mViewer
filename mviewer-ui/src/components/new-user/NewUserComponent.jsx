@@ -251,7 +251,7 @@ class NewUserComponent extends React.Component {
           this.setState({message:'User '+obj['user_name']+ ' was successfully added to database ' + this.state.dbSource});
         this.state.newUser = obj['user_name'];
         this.setState({successMessage:true});
-        setTimeout(function() { this.closeModal() }.bind(this), 2000);
+        setTimeout(() => { this.closeModal() }, 2000);
       }
       if (data.response.error) {
         if (data.response.error.code === 'USER_CREATION_EXCEPTION'){

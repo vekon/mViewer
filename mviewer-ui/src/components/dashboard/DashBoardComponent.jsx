@@ -17,7 +17,7 @@ class DashBoardComponent extends React.Component {
     }
   }
 
-  disconnect(){
+  disconnect = () => {
     var partialUrl = 'disconnect?connectionId=' + this.state.connectionId;
     var disconnectCall = service('GET', partialUrl, '');
     disconnectCall.then(this.success.bind(this), this.failure.bind(this));
@@ -40,11 +40,11 @@ class DashBoardComponent extends React.Component {
 
   }
 
-  refreshDb(){
+  refreshDb = () => {
     this.refs.sideNav.refreshDb();
   }
 
-  clearActiveClass(){
+  clearActiveClass = () => {
     this.refs.sideNav.clearActiveClass();
     browserHistory.push({ pathname: '/dashboard/home', query: { db: this.state.loggedInDatabase} });
   }
@@ -66,14 +66,14 @@ class DashBoardComponent extends React.Component {
           <header>
             <nav>
               <div className={"row " + dashStyles.row}>
-                <a href= {"#"} className={dashStyles.logo} onClick={this.clearActiveClass.bind(this)}><img src={'/images/logo.png'}></img></a>
+                <a href= {"#"} className={dashStyles.logo} onClick={this.clearActiveClass}><img src={'/images/logo.png'}></img></a>
             
                 <ul className={dashStyles.mainNav + ' ' + dashStyles.clearfix} >
                   <li><div className={dashStyles.details}>{this.state.host}</div>  
                     <div className={dashStyles.details}>{this.state.username}</div></li>
                   <li><a target = "_blank" href="https://Imaginea.github.io/mViewer/"><span><i className="fa fa-question-circle-o"></i></span></a></li>
                   <li className={dashStyles.seperator}><span></span></li>
-                  <li className={dashStyles.disconnect}><a href="javascript:void(0);" onClick={this.disconnect.bind(this)}><span><i className="fa fa-sign-out" aria-hidden="true"></i></span></a></li>
+                  <li className={dashStyles.disconnect}><a href="javascript:void(0);" onClick={this.disconnect}><span><i className="fa fa-sign-out" aria-hidden="true"></i></span></a></li>
                 </ul>
                </div>
              </nav>

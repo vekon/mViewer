@@ -26,6 +26,13 @@ class CollectionList extends React.Component {
       viewMore: false,
       viewMoreLink: false
     }
+    this.searchUpdated = this.searchUpdated.bind(this);
+    this.refreshCollectionList = this.refreshCollectionList.bind(this);
+    this.refreshRespectiveData = this.refreshRespectiveData.bind(this);
+    this.setViewMore = this.setViewMore.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
+    this.refreshCollectionListForDelete = this.refreshCollectionListForDelete.bind(this);
+    this.collMoreClick = this.collMoreClick.bind(this);
   }
 
   clickHandler (idx,collection) {
@@ -165,28 +172,29 @@ class CollectionList extends React.Component {
        return (
          <div  id ="collectionNav-1" className={collectionListStyles.menu + ' innerList col-md-2 col-xs-5 col-sm-3'} key = {this.props.visible}>
           <div className={(this.props.visible ?(this.state.visible ? collectionListStyles.visible : this.props.alignment): this.props.alignment ) }>
-             <SearchInput className={collectionListStyles.searchInput} onChange={this.searchUpdated.bind(this)} />
-             <h5 className={collectionListStyles.menuTitle}><NewCollection queryType= {this.state.queryType} currentDb={this.props.selectedDB} currentItem={''} connectionId={this.props.propps.connectionId} addOrUpdate={'1'} refreshCollectionList={this.refreshCollectionList.bind(this)} refreshRespectiveData={this.refreshRespectiveData.bind(this)}/></h5>
+             <SearchInput className={collectionListStyles.searchInput} onChange={this.searchUpdated} />
+             <h5 className={collectionListStyles.menuTitle}><NewCollection queryType= {this.state.queryType} currentDb={this.props.selectedDB} currentItem={''} connectionId={this.props.propps.connectionId} addOrUpdate={'1'} refreshCollectionList={this.refreshCollectionList} refreshRespectiveData={this.refreshRespectiveData}/></h5>
                <div className = {(this.state.viewMore ? collectionListStyles.listBody : collectionListStyles.listBodyExpanded) + ' collContainer'}>
-                <ReactHeight onHeightReady={this.setViewMore.bind(this)}>
+                <ReactHeight onHeightReady={this.setViewMore}>
                   { this.state.collections != undefined ?
                      (filteredData.map((item,idx) => {
                        return(
                          <CollectionItem
                           key={item}
                           name={item}
+                          idx={idx}
                           dbName={this.state.selectedDB}
-                          onClick={this.clickHandler.bind(this,idx,item)}
+                          onClick={this.clickHandler}
                           isSelected={this.state.selectedCollection==item}
                           connectionId={this.state.connectionId}
-                          refreshCollectionList={this.refreshCollectionList.bind(this)}
-                          refreshCollectionListForDelete={this.refreshCollectionListForDelete.bind(this)}
+                          refreshCollectionList={this.refreshCollectionList}
+                          refreshCollectionListForDelete={this.refreshCollectionListForDelete}
                          />)
                     })): null}
                   </ReactHeight>
                 </div>
                 <div className= {(this.state.viewMoreLink ? collectionListStyles.viewMoreContainer : collectionListStyles.displayNone)}>
-                  <a className = {collectionListStyles.viewMore} onClick={this.collMoreClick.bind(this)}> List All</a>
+                  <a className = {collectionListStyles.viewMore} onClick={this.collMoreClick}> List All</a>
                 </div>
             </div>
         </div>
