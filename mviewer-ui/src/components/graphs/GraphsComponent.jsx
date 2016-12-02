@@ -1,11 +1,9 @@
-import React from 'react'
-import $ from 'jquery'
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, ReferenceLine,
-  ReferenceDot, Tooltip, CartesianGrid, Legend, Brush } from 'recharts';
-import service from '../../gateway/service.js'
-import graphStyles from './graphs.css'
-import privilegesAPI from '../../gateway/privileges-api.js';
+import React from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis,
+   Tooltip, CartesianGrid, Legend, Brush } from 'recharts';
+import service from '../../gateway/service.js';
+import graphStyles from './graphs.css';
 
 class GraphsComponent extends React.Component {
   constructor(props) {
@@ -18,7 +16,7 @@ class GraphsComponent extends React.Component {
       connectionId: JSON.parse(sessionStorage.getItem('connectionId') || '{}'),
       hasRole: null,
       navMessage:'Combined View'
-    }
+    };
   }
 
   toggleMessage(){
@@ -50,7 +48,7 @@ class GraphsComponent extends React.Component {
     const partialUrl = 'graphs/query?connectionId='+this.state.connectionId+'&ts='+requestTime;
     const interval = setInterval (function () {
       const graphsCall = service('GET', partialUrl, '');
-      graphsCall.then(this.success.bind(this), this.failure.bind(this))
+      graphsCall.then(this.success.bind(this), this.failure.bind(this));
     }.bind(this), 5000);
 
     this.setState({interval:interval});
@@ -82,15 +80,15 @@ class GraphsComponent extends React.Component {
 
   }
 
-  success1(data){
+  success1(){
 
   }
 
-  failure(data){
+  failure(){
 
   }
 
-  failure1(data){
+  failure1(){
 
   }
 
@@ -129,7 +127,7 @@ class GraphsComponent extends React.Component {
     const renderLabel = (props) => {
       const { x, y, textAnchor, key, value } = props;
       if (x === +x && y === +y) {
-        return <text x={x} y={y} dy={-10} textAnchor={textAnchor} key={key}>{value}</text>
+        return <text x={x} y={y} dy={-10} textAnchor={textAnchor} key={key}>{value}</text>;
       }
       return null;
     };
@@ -233,5 +231,18 @@ class GraphsComponent extends React.Component {
     );
   }
 }
+
+GraphsComponent.propTypes = {
+  cx: React.PropTypes.string.isRequired,
+  cy: React.PropTypes.string.isRequired,
+  stroke: React.PropTypes.string.isRequired,
+  key: React.PropTypes.string.isRequired,
+  x: React.PropTypes.func.isRequired,
+  y: React.PropTypes.string.isRequired,
+  textAnchor: React.PropTypes.string.isRequired,
+  width: React.PropTypes.string.isRequired,
+  height: React.PropTypes.string.isRequired,
+  value: React.PropTypes.string.isRequired
+};
 
 export default GraphsComponent;

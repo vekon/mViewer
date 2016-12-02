@@ -1,6 +1,5 @@
 import React from 'react';
 import Formsy from 'formsy-react';
-import classNames from 'classnames/bind';
 import textCss from './login-text-input.css';
 
 Formsy.addValidationRule('isRequired', (values, value) => {
@@ -19,7 +18,7 @@ Formsy.addValidationRule('isNumeric1', (values, value, otherField) => {
   return (value.match(/^[0-9]+$/) || (otherField==false && !value.match(/^[0-9]+$/)));
 });
 
-Formsy.addValidationRule('isAlpha1', (values, value, otherField) => {
+Formsy.addValidationRule('isAlpha1', (values, value) => {
   if (value !== null){
     return (value.match(/^[\w\-]+$/));
   }
@@ -28,7 +27,7 @@ Formsy.addValidationRule('isAlpha1', (values, value, otherField) => {
   }
 });
 
-Formsy.addValidationRule('isAlpha2', (values, value, otherField) => {
+Formsy.addValidationRule('isAlpha2', (values, value) => {
   if (value !== null){
     return (value.match(/^[a-zA-Z][a-zA-Z0-9\-\.]*$/));
 
@@ -39,7 +38,7 @@ Formsy.addValidationRule('isAlpha2', (values, value, otherField) => {
 });
 
 
-Formsy.addValidationRule('checkSystemCol', (values, value, otherField) => {
+Formsy.addValidationRule('checkSystemCol', (values, value) => {
   if (value !== null){
     return (!value.startsWith('system.'));
 
@@ -50,6 +49,17 @@ Formsy.addValidationRule('checkSystemCol', (values, value, otherField) => {
 });
 
 const LoginTextInput = React.createClass({
+
+  propTypes: {
+      onChange: React.PropTypes.func.isRequired,
+      className: React.PropTypes.string.isRequired,
+      placeholder: React.PropTypes.string.isRequired,
+      toUpperCase: React.PropTypes.string.isRequired,
+      type: React.PropTypes.string.isRequired,
+      name: React.PropTypes.string.isRequired,
+      shouldBeDisabled: React.PropTypes.string.isRequired
+  },
+
   // Add the Formsy Mixin
   mixins: [Formsy.Mixin],
   // setValue() will set the value of the component, which in
@@ -72,16 +82,16 @@ const LoginTextInput = React.createClass({
       hoverClass: 'floating-label',
       pristine : true,
       hoverInput: 'input'
-    }
+    };
   },
 
 
-  focusValue(event){
+  focusValue(){
     this.setState({hoverClass: 'floating-label-hovered'});
   },
 
   clearCss(){
-    this.setState({hoverClass: 'floating-label'});;
+    this.setState({hoverClass: 'floating-label'});
   },
 
   blurValue(event){

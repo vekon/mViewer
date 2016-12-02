@@ -1,13 +1,10 @@
-import React from 'react'
-import indexStyles from './index.css'
-import $ from 'jquery'
-import Modal from 'react-modal'
-import update from 'react-addons-update'
-import { Form } from 'formsy-react';
-import TextInput from '../text-input/TextInputComponent.jsx';
-import service from '../../gateway/service.js'
+import React from 'react';
+import indexStyles from './index.css';
+import Modal from 'react-modal';
+import update from 'react-addons-update';
+import service from '../../gateway/service.js';
 import privilegesAPI from '../../gateway/privileges-api.js';
-import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx'
+import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx';
 
 class NewIndexComponent extends React.Component {
 
@@ -25,18 +22,16 @@ class NewIndexComponent extends React.Component {
       showAuth1: false,
       hasPriv: false,
       customErrorMessage: ''
-    }
+    };
   }
 
   getAttributes() {
-    const that = this;
     const partialUrl = this.props.currentDb+'/'+this.props.currentItem+'/document/keys?connectionId='+this.props.connectionId+'&allKeys=true';
     const getAttributesCall = service('GET', partialUrl, '');
     getAttributesCall.then(this.success.bind(this, 'getAttributes'), this.failure.bind(this, 'getAttributes'));
   }
 
   getIndexes() {
-    const that = this;
     const partialUrl = this.props.currentDb+'/usersIndexes/getIndex?index_colname=' + this.props.currentItem+'&connectionId='+this.props.connectionId;
     const getIndexesCall = service('GET', partialUrl, '');
     getIndexesCall.then(this.success.bind(this, 'getIndexes'), this.failure.bind(this, 'getIndexes'));
@@ -49,7 +44,7 @@ class NewIndexComponent extends React.Component {
         const arr = data.response.result.keys;
         let newArr = [];
         for(let i=0; i < arr.length; i++) {
-          newArr.push({"value": arr[i], "attrSelected" :false,"asc": false});
+          newArr.push({'value': arr[i], 'attrSelected' :false,'asc': false});
         }
         this.setState({fields:newArr});
         if(!this.state.attrCreated && this.state.indexes && this.state.indexes.length > 0) {
@@ -61,10 +56,10 @@ class NewIndexComponent extends React.Component {
           const successResult = data.response.result.replace(/[\[\]']/g,'' );
           this.setState({message:successResult});
           this.setState({successMessage:true});
-          setTimeout(() => { this.closeModal() }, 2000);
+          setTimeout(() => { this.closeModal(); }, 2000);
         }
         if (data.response.error) {
-          this.setState({message:"Server error, Index cannot be added"});
+          this.setState({message:'Server error, Index cannot be added'});
         }
       }
       if (calledFrom == 'getIndexes'){
@@ -163,7 +158,6 @@ class NewIndexComponent extends React.Component {
   }
 
   clickHandler(){
-    const that =this;
     let dataObj = {};
     let obj = {};
     obj['index_colname'] = this.props.currentItem;
@@ -193,8 +187,8 @@ class NewIndexComponent extends React.Component {
           ++index;
         }
       });
-    }
-    return function(e) {
+    };
+    return function() {
       if(r.result.attrSelected == true){
         r.result.attrSelected = false;
         r.result.asc = false;
@@ -217,9 +211,9 @@ class NewIndexComponent extends React.Component {
           ++index;
         }
       });
-    }
+    };
 
-    return function(e) {
+    return function() {
       if(r.result.attrSelected){
         if(r.result.asc == true){
           r.result.asc = false;
@@ -340,5 +334,14 @@ class NewIndexComponent extends React.Component {
     );
   }
 }
+
+NewIndexComponent.propTypes = {
+  currentItem: React.PropTypes.string.isRequired,
+  addOrEdit: React.PropTypes.string.isRequired,
+  refresh: React.PropTypes.func.isRequired,
+  currentDb: React.PropTypes.string.isRequired,
+  connectionId: React.PropTypes.string.isRequired,
+  length: React.PropTypes.string.isRequired
+};
 
 export default NewIndexComponent;
