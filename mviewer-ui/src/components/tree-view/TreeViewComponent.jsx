@@ -1,6 +1,5 @@
 import React from 'react';
 import treeViewStyles from './tree-view.css';
-import $ from 'jquery';
 import TreeView from '../../../dependencies/react-json-tree';
 import DeleteComponent from '../delete-component/DeleteComponent.jsx';
 import privilegesAPI from '../../gateway/privileges-api.js';
@@ -51,7 +50,7 @@ class TreeViewComponent extends React.Component {
 
  render () {
    const items = this.props.collectionObjects.map(function (collection, i) {
-     const getItemString = (type, data, itemType, itemString) => (<span></span>);
+     const getItemString = () => (<span></span>);
      return(
      <div className={treeViewStyles.innerContainer +' '+ treeViewStyles.clearfix} key={collection._id}>
        <span className={treeViewStyles.deleteButton}>
@@ -76,5 +75,14 @@ class TreeViewComponent extends React.Component {
    );
  }
 }
+
+TreeViewComponent.propTypes = {
+  queryType: React.PropTypes.string,
+  currentItem: React.PropTypes.string,
+  currentDb: React.PropTypes.string,
+  connectionId: React.PropTypes.string,
+  collectionObjects: React.PropTypes.array,
+  refresh: React.PropTypes.func.isRequired
+};
 
 export default TreeViewComponent;

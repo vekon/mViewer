@@ -1,6 +1,6 @@
 import React from 'react';
 import UserListStyles from '../shared/list-panel.css';
-import $ from 'jquery';
+
 class UserItemComponent extends React.Component {
 
  constructor(props) {
@@ -31,6 +31,10 @@ UserItemComponent.getDefaultProps = {
 UserItemComponent.propTypes = {
   onClick: React.PropTypes.func.isRequired,
   isSelected: React.PropTypes.bool
+};
+UserItemComponent.propTypes = {
+  idx: React.PropTypes.number,
+  name: React.PropTypes.string,
 };
 
 export default UserItemComponent;

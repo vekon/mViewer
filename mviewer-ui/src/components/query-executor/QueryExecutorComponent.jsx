@@ -94,15 +94,14 @@ class QueryExecutorComponent extends React.Component {
   }
 
   getAttributes (currentDb,currentItem, connectionId) {
-    var that = this;
     var partialUrl = currentDb+'/'+currentItem+'/document/keys?connectionId='+connectionId+'&allKeys=true';
     var newDocumentCall = service('GET', partialUrl, '');
     newDocumentCall.then(this.success.bind(this, 'getAttributes', ''), this.failure.bind(this, 'getAttributes', ''));
   }
 
   componentDidMount (){
-    this.state._isMounted = true;
-    var that = this;
+    // this.state._isMounted = true; //eslint fix
+    this.setState({_isMounted : true});
     var currentDb = this.props.currentDb;
     var currentItem = this.props.currentItem;
     var connectionId = this.props.connectionId;
@@ -111,7 +110,7 @@ class QueryExecutorComponent extends React.Component {
     queryData['fields'] = '';
     queryData['limit'] = 10;
     queryData['skip'] = 0;
-    queryData['sortBy'] = "{'_id':-1}";
+    queryData['sortBy'] = '{\'_id\':-1}';
     queryData['allKeys'] = true;
     var partialUrl = this.props.queryType == 'collection' ? currentDb+'/'+currentItem+'/document/query?connectionId='+connectionId :
               currentDb+'/gridfs/'+currentItem+'/getfiles?connectionId='+connectionId;
@@ -123,7 +122,6 @@ class QueryExecutorComponent extends React.Component {
     if(typeof(data.response.result) != 'undefined'){
       this.setState({errorMessage:''});
       var array = data.response.result.documents;
-      var partialUrl = this.props.currentDb+'/gridfs/'+this.props.currentItem+'/count?connectionId='+this.props.connectionId;
       if(this.state._isMounted == true){
       this.setState({collectionObjects:array});
       this.props.queryType == 'collection' ? this.getAttributes(this.props.currentDb,this.props.currentItem, this.props.connectionId) : null;
@@ -149,7 +147,6 @@ class QueryExecutorComponent extends React.Component {
   }
 
   success2(currentDb, currentItem, connectionId,  data){
-    var partialUrl = currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId;
     if(data.response.result!=undefined && this.state._isMounted == true)
     { 
        this.setState({errorMessage:''});
@@ -170,8 +167,7 @@ class QueryExecutorComponent extends React.Component {
           var size = this.state.skipValue + this.state.limitValue;
           this.setState({startLabel:(this.state.totalCount != 0 ? this.state.skipValue + 1 : 0)});
           this.setState({endLabel:(this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)});
-        } else {
-        }
+        } 
         if(data.response.result.count==0){
           this.setState({startLabel: 0});
           this.setState({endLabel: 0});
@@ -191,7 +187,6 @@ class QueryExecutorComponent extends React.Component {
   }
 
   success3(currentDb, currentItem, connectionId, refresh, data){
-    var partialUrl = currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId;
     if(data.response.result!=undefined)
     {
       if (data.response.result.documents[0] != undefined){
@@ -259,7 +254,6 @@ class QueryExecutorComponent extends React.Component {
 
 
   success4(currentDb, currentItem, connectionId, data){
-    var partialUrl = currentDb+'/gridfs/'+currentItem+'/count?connectionId='+connectionId;
     if(data.response.result!=undefined)
     {
       var array = data.response.result.documents;
@@ -285,7 +279,8 @@ class QueryExecutorComponent extends React.Component {
   }
 
   componentWillUnmount(){
-    this.state._isMounted = false;
+    // this.state._isMounted = false; //eslint fix
+    this.setState({_isMounted : false});
   }
 
   componentWillReceiveProps(nextProps){
@@ -294,25 +289,29 @@ class QueryExecutorComponent extends React.Component {
       var currentDb = nextProps.currentDb;
       var currentItem = nextProps.currentItem;
       var connectionId = this.props.connectionId;
-      this.state.query = nextProps.queryType == 'collection' ? 'db.'+currentItem+'.find({})' : 'db.'+currentItem+'.files.find({})';
+      var queryData = {};
+      var query = (nextProps.queryType == 'collection' ? 'db.'+currentItem+'.find({})' : 'db.'+currentItem+'.files.find({})');
+      // this.state.query = query;
       this.setState({collectionObjects:[]});
       this.setState({skip:0});
       this.setState({limit:10});
       this.setState({sort:'_id:-1'});
-
-      var queryData = {};
-      queryData['query'] = this.state.query ;
+  
       queryData['fields'] = '';
       queryData['limit'] = 10;
       queryData['skip'] = 0;
-      queryData['sortBy'] = "{'_id':-1}";
-      queryData['allKeys'] = true;
-      var partialUrl = this.props.queryType == 'collection' ? currentDb+'/'+currentItem+'/document/query?connectionId='+connectionId:
+      queryData['sortBy'] = '{\'_id\':-1}';
+      queryData['allKeys'] = true;     
+
+      this.setState({query : query}, function(){
+        queryData['query'] = this.state.query;
+        var partialUrl = this.props.queryType == 'collection' ? currentDb+'/'+currentItem+'/document/query?connectionId='+connectionId:
                 currentDb+'/gridfs/'+currentItem+'/getfiles?connectionId='+connectionId;
 
 
-      var queryExecutorCall2 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
-      queryExecutorCall2.then(this.success2.bind(this , currentDb, currentItem, connectionId), this.failure2.bind(this));
+        var queryExecutorCall2 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
+        queryExecutorCall2.then(this.success2.bind(this , currentDb, currentItem, connectionId), this.failure2.bind(this));
+      });      
     }
 
 
@@ -339,7 +338,7 @@ class QueryExecutorComponent extends React.Component {
     queryData['fields'] = this.props.queryType == 'collection' ? attributes : '';
     queryData['limit'] = this.state.limit;
     queryData['skip'] = this.state.skip;
-    queryData['sortBy'] =  "{" + "'" + this.state.sort.split(':')[0] + "'" + ':' + parseInt(this.state.sort.split(':')[1]) + "}";
+    queryData['sortBy'] =  '{' + '\'' + this.state.sort.split(':')[0] + '\'' + ':' + parseInt(this.state.sort.split(':')[1]) + '}';
     queryData['allKeys'] = allSelected;
    var partialUrl = this.props.queryType == 'collection' ? currentDb+'/'+currentItem+'/document/query?connectionId='+connectionId :
               currentDb+'/gridfs/'+currentItem+'/getfiles?connectionId='+connectionId;
@@ -384,7 +383,7 @@ class QueryExecutorComponent extends React.Component {
    queryData['fields'] = this.props.queryType == 'collection' ? attributes : '';
    queryData['limit'] = this.state.limit;
    queryData['skip'] = this.state.skip;
-   queryData['sortBy'] =  "{" + "'" + this.state.sort.split(':')[0] + "'" + ':' + parseInt(this.state.sort.split(':')[1]) + "}";
+   queryData['sortBy'] =  '{' + '\'' + this.state.sort.split(':')[0] + '\'' + ':' + parseInt(this.state.sort.split(':')[1]) + '}';
    queryData['allKeys'] = allSelected;
    var partialUrl = this.props.queryType == 'collection' ? currentDb+'/'+currentItem+'/document/query?connectionId='+connectionId :
               currentDb+'/gridfs/'+currentItem+'/getfiles?connectionId='+connectionId;
@@ -415,7 +414,7 @@ class QueryExecutorComponent extends React.Component {
         }
       });
     };
-    return function(e) {
+    return function() {
       if(r.result.selected == true){
         r.result.selected = false;
         checkUncheck(false);
@@ -428,8 +427,6 @@ class QueryExecutorComponent extends React.Component {
   }
 
   selectAllHandler () {
-    var index = 0;
-    var that = this;
     return function() {
       var state = this.state.fields.map(function(d) {
         return {
@@ -532,9 +529,8 @@ class QueryExecutorComponent extends React.Component {
     queryData['fields'] = this.props.queryType == 'collection' ? attributes : '';
     queryData['limit'] = this.state.limit;
     queryData['skip'] = skipValue;
-    queryData['sortBy'] =  "{" + "'" + this.state.sort.split(':')[0] + "'" + ':' + parseInt(this.state.sort.split(':')[1]) + "}";
+    queryData['sortBy'] =  '{' + '\'' + this.state.sort.split(':')[0] + '\'' + ':' + parseInt(this.state.sort.split(':')[1]) + '}';
     queryData['allKeys'] = allSelected;
-    var that = this;
     var queryExecutorCall4 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
     queryExecutorCall4.then(this.success4.bind(this , currentDb, currentItem, connectionId), this.failure4.bind(this));
   }
@@ -569,7 +565,7 @@ class QueryExecutorComponent extends React.Component {
     var i =0;
     var that = this;
     var items =null;
-    var items = this.state.collectionObjects.map((collection ,i) => {
+    items = this.state.collectionObjects.map((collection ,i) => {
       return <Document  key={collection._id + i } uId={collection._id} key1={collection._id} value={JSON.stringify(collection,null,4)} onChange={this.hand} currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this)} queryType = {this.props.queryType} ></Document>;
     });
 
@@ -672,5 +668,15 @@ class QueryExecutorComponent extends React.Component {
     );
   }
 }
+
+
+QueryExecutorComponent.propTypes = {
+  queryType: React.PropTypes.string,
+  currentItem: React.PropTypes.string,
+  currentDb: React.PropTypes.string,
+  connectionId: React.PropTypes.string,
+  refreshCollectionList: React.PropTypes.func.isRequired,
+  refreshRespectiveData: React.PropTypes.func.isRequired
+};
 
 export default QueryExecutorComponent;

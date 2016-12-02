@@ -1,7 +1,5 @@
 import React from 'react';
 import userDetailsStyles from './user-details.css';
-import $ from 'jquery';
-import service from '../../gateway/service.js';
 import DeleteComponent from '../delete-component/DeleteComponent.jsx';
 import ModifyUser from '../new-user/NewUserComponent.jsx';
 import privilegesAPI from '../../gateway/privileges-api.js';
@@ -65,7 +63,6 @@ class UserDetailsComponent extends React.Component {
   createUserDetails(nextProps){
     let userDetail = [];
     let sortItem = {};
-    const that = this;
      if(nextProps != null && nextProps != undefined){
        sortItem = nextProps.users;
      } else {
@@ -93,7 +90,8 @@ class UserDetailsComponent extends React.Component {
   }
 
   componentWillUnmount(){
-    this.state._isMounted = false;
+    // this.state._isMounted = false; //eslint fix
+    this.setState({_isMounted: false});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -105,13 +103,13 @@ class UserDetailsComponent extends React.Component {
   }
 
   render () {
-    const that = this;
-    let roles = '';
-    this.state.userDetail ? this.state.userDetail.map(function(item){
-      if(item.key == 'role')
-        roles = item.value;
-    }) : null;
-    roles = this.state.userDetail ? this.state.userDetail[0].key : null;
+    // var roles = '';          //eslint fix
+    // this.state.userDetail ? this.state.userDetail.map(function(item){
+    //   if(item.key == 'role')
+    //     roles = item.value;
+    // }) : null;
+    // roles = this.state.userDetail ? this.state.userDetail[0].key : null;
+    // console.log(roles);
     return(
       <div className={userDetailsStyles.mainContainer + ' col-md-10 col-xs-7 col-sm-9'}>
       <div id="userDetails" className={userDetailsStyles.userContainer + ' navbar navbar-default'}>
@@ -126,7 +124,7 @@ class UserDetailsComponent extends React.Component {
         <ul className = { userDetailsStyles.navBar + ' navbar navbar-nav navbar-right'}>
           <li className={userDetailsStyles.deleteButtonGridfs} onClick={this.openModal}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete User</span></li>
           { this.state.modalIsOpen?(!this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal} title = 'User' dbName = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose} action = 'drop user' ></AuthPopUp>) : '' }
-          <li><ModifyUser className={userDetailsStyles.modifyUser} users={this.props.users} modifyUser="true" currentDb = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList} refreshRespectiveData={this.refreshRespectiveData}></ModifyUser></li>
+          <li><ModifyUser className={userDetailsStyles.modifyUser} users={this.props.users} modifyUser={true} currentDb = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList} refreshRespectiveData={this.refreshRespectiveData}></ModifyUser></li>
         </ul>
       </div>
       </div>
@@ -139,7 +137,7 @@ class UserDetailsComponent extends React.Component {
               <th>Values</th>
             </tr>
             { this.state.userDetails.length > 0 ?
-              that.state.userDetails.map(function(item) {
+              this.state.userDetails.map((item) => {
               return <tr key={item.key}><td>{item.key}</td><td>{item.value}</td></tr>;
             }) : null }
           </tbody>
@@ -149,5 +147,13 @@ class UserDetailsComponent extends React.Component {
   );
  }
 }
+
+UserDetailsComponent.propTypes = {
+  users : React.PropTypes.object,
+  currentDb: React.PropTypes.string,
+  connectionId: React.PropTypes.string,
+  refreshCollectionList: React.PropTypes.func.isRequired,
+  refreshData: React.PropTypes.func.isRequired
+};
 
 export default UserDetailsComponent;

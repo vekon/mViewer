@@ -102,14 +102,12 @@ class UserList extends React.Component {
   }
 
   componentWillMount(){
-    const that = this;
     const partialUrl = this.props.selectedDB +'/usersIndexes/users?connectionId=' + this.state.connectionId;
     const userListCall = service('GET', partialUrl, '');
     userListCall.then(this.success.bind(this, 'componentWillMount'), this.failure.bind(this, 'componentWillMount'));
   }
 
   componentWillReceiveProps(nextProps) {
-    const that = this;
     const partialUrl = nextProps.selectedDB +'/usersIndexes/users?connectionId=' + this.state.connectionId;
     const userListCall = service('GET', partialUrl, '');
     userListCall.then(this.success.bind(this, 'componentWillReceiveProps'), this.failure.bind(this, 'componentWillReceiveProps'));
@@ -138,7 +136,6 @@ class UserList extends React.Component {
     if (this.state.user != undefined){
       filteredData = this.state.user.filter(createFilter(this.state.searchTerm));
       items = filteredData.map((item, idx) => {
-        const is_selected = that.state.selectedCollection == idx;
         return <UserItem
                 key={item}
                 name={item}
@@ -169,5 +166,16 @@ class UserList extends React.Component {
       );
   }
 }
+
+UserList.propTypes = {
+  propps: React.PropTypes.object,
+  connectionId: React.PropTypes.string,
+  selectedDB: React.PropTypes.string,
+  visible: React.PropTypes.bool,
+  alignment: React.PropTypes.string,
+  setStates: React.PropTypes.func.isRequired,
+  refreshDb: React.PropTypes.func.isRequired
+};
+
 
 export default UserList;

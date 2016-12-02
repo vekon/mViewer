@@ -17,7 +17,6 @@ class NewUserComponent extends React.Component {
       autoIndex: true,
       password: null,
       user_name: null,
-      roles: '',
       canSubmit:false,
       title:'',
       submitted:false,
@@ -42,29 +41,30 @@ class NewUserComponent extends React.Component {
   }
 
   openModal = () => {
-    const that = this;
     this.setState({modalIsOpen: true});
     this.setState({message: ''});
     this.setState({successMessage: false});
     this.setState({uniqueRetrievedRoles: []});
     this.setForm();
-    let ds = ['Please select a DbSource'];
-    let dbList = [];
-    dbList = JSON.parse(sessionStorage.getItem('dbNames') || '{}');
-    dbList.map((item) => {
-      ds.push(item);
-    });
-    if(this.props.modifyUser) {
-      this.setState({dbSource : this.props.currentDb});
-      ds=[];
-      ds.push(this.props.currentDb);
-    }
-    this.setState({dbSourceList: ds});
-    const unique = this.state.retrievedRoles.filter((item, pos) => {
-      return this.state.retrievedRoles.indexOf(item) == pos;
-    });
+    // let ds = ['Please select a DbSource'];   //eslint fix
+    // let dbList = [];
+    // dbList = JSON.parse(sessionStorage.getItem('dbNames') || '{}');
+    // dbList.map((item) => {
+    //   ds.push(item);
+    // });
+    // if(this.props.modifyUser) {
+    //   this.setState({dbSource : this.props.currentDb});
+    //   ds=[];
+    //   ds.push(this.props.currentDb);
+    // }
+    // this.setState({dbSourceList: ds});
+    // console.log('sate changed check');
+    // console.log(this.state.retrievedRoles);
+    // const unique = this.state.retrievedRoles.filter((item, pos) => {
+    //   return this.state.retrievedRoles.indexOf(item) == pos;
+    // });
 
-    this.setState({uniqueRetrievedRoles : unique});
+    // this.setState({uniqueRetrievedRoles : unique});
   }
 
   setRoles = () => {
@@ -88,9 +88,30 @@ class NewUserComponent extends React.Component {
           ++index;
         });
       });
-      // this.setState({retrievedRoles : retrievedRoles});
-      this.state.retrievedRoles = retrievedRoles;
+      
+      //this.state.retrievedRoles = retrievedRoles; //eslint fix
     }
+
+    this.setState({retrievedRoles : retrievedRoles}, function(){
+        let ds = ['Please select a DbSource'];
+        let dbList = [];
+        dbList = JSON.parse(sessionStorage.getItem('dbNames') || '{}');
+        dbList.map((item) => {
+          ds.push(item);
+        });
+        if(this.props.modifyUser) {
+          this.setState({dbSource : this.props.currentDb});
+          ds=[];
+          ds.push(this.props.currentDb);
+        }
+        this.setState({dbSourceList: ds});
+        const unique = this.state.retrievedRoles.filter((item, pos) => {
+          return this.state.retrievedRoles.indexOf(item) == pos;
+        });
+
+        this.setState({uniqueRetrievedRoles : unique});
+      });
+
   }
   closeModal = () => {
     this.setState({modalIsOpen: false});
@@ -102,7 +123,7 @@ class NewUserComponent extends React.Component {
               {key:'clusterAdmin','selected': false},{key:'readAnyDatabase','selected': false},{key:'dbAdminAnyDatabase','selected':false}]});
     
     if(this.state.successMessage==true)
-    {
+    { 
       if(this.props.currentDb != this.state.dbSource){
        // this.props.refreshCollectionList(this.state.dbSource);
       }
@@ -131,7 +152,7 @@ class NewUserComponent extends React.Component {
     }.bind(this);
   }
 
-  handleChange = (key) => {
+  handleChange = () => {
     return true;
   }
 
@@ -217,24 +238,25 @@ class NewUserComponent extends React.Component {
   }
 
   setForm() {
-    const that = this;
-    let userDetail= [];
     if(this.props.modifyUser) {
       this.setState({password:''});
       this.setState({user_name: this.props.userName});
       this.setState({title:'Modify User'});
-      this.setRoles();
     }
-    else
+    else{
       this.setState({title:'Add User'});
+    }
+    this.setRoles();
   }
 
   componentDidMount(){
-    this.state._isMounted =  true;
+    // this.state._isMounted =  true;  //eslint fix
+    this.setState({_isMounted : true});
   }
 
   componentWillUnmount(){
-    this.state._isMounted =  false;
+    // this.state._isMounted =  false;
+    this.setState({_isMounted : false});
   }
 
   componentWillReceiveProps(nextProps){
@@ -249,7 +271,8 @@ class NewUserComponent extends React.Component {
           this.setState({message:'User '+obj['user_name']+ ' was successfully modified for database ' + this.state.dbSource});
         else
           this.setState({message:'User '+obj['user_name']+ ' was successfully added to database ' + this.state.dbSource});
-        this.state.newUser = obj['user_name'];
+        // this.state.newUser = obj['user_name'];  //eslint fix
+        this.setState({newUser: obj['user_name']});
         this.setState({successMessage:true});
         setTimeout(() => { this.closeModal(); }, 2000);
       }
@@ -276,7 +299,8 @@ class NewUserComponent extends React.Component {
   }
 
   DDhandleChange = (e) => {
-    this.state.dbSource = e;
+    // this.state.dbSource = e; //eslint fix
+    this.setState({dbSource : e});
     if(e != 'Please select a DbSource') {
       this.setState({successMessage:false});
       this.setState({message:''});
@@ -354,5 +378,15 @@ class NewUserComponent extends React.Component {
     );
   }
 }
+
+NewUserComponent.propTypes = {
+  modifyUser: React.PropTypes.bool,
+  userName: React.PropTypes.string,
+  currentDb: React.PropTypes.string,
+  connectionId: React.PropTypes.string,
+  refreshCollectionList: React.PropTypes.func.isRequired,
+  refreshRespectiveData: React.PropTypes.func.isRequired,
+  users: React.PropTypes.object
+};
 
 export default NewUserComponent;

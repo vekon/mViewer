@@ -1,6 +1,5 @@
 import React from 'react';
 import Formsy from 'formsy-react';
-import classNames from 'classnames/bind';
 import textCss from './text-input.css';
 
 Formsy.addValidationRule('isRequired', (values, value) => {
@@ -19,19 +18,19 @@ Formsy.addValidationRule('isNumeric1', (values, value, otherField) => {
   return (value != '' ? value.match(/^[0-9]+$/) || (otherField==false && !value.match(/^[0-9]+$/)) : true);
 });
 
-Formsy.addValidationRule('maxSize', (values, value, otherField) => {
-  return (value != '' ? parseInt(value) <= parseInt("9223372036854774784") : true);
+Formsy.addValidationRule('maxSize', (values, value) => {
+  return (value != '' ? parseInt(value) <= parseInt('9223372036854774784') : true);
 });
 
-Formsy.addValidationRule('checkZero', (values, value, otherField) => {
+Formsy.addValidationRule('checkZero', (values, value) => {
   return (value != '' ? parseInt(value) > 0 : true);
 });
 
-Formsy.addValidationRule('maxDocs', (values, value, otherField) => {
-  return (value != '' ? parseInt(value) <= parseInt("2147483647") : true);
+Formsy.addValidationRule('maxDocs', (values, value) => {
+  return (value != '' ? parseInt(value) <= parseInt('2147483647') : true);
 });
 
-Formsy.addValidationRule('isAlpha1', (values, value, otherField) => {
+Formsy.addValidationRule('isAlpha1', (values, value) => {
   if (value !== null){
     return (value.match(/^[\w\-]+$/));
   }
@@ -40,7 +39,7 @@ Formsy.addValidationRule('isAlpha1', (values, value, otherField) => {
   }
 });
 
-Formsy.addValidationRule('isAlpha2', (values, value, otherField) => {
+Formsy.addValidationRule('isAlpha2', (values, value) => {
   if (value !== null){
     return (value.match(/^[a-zA-Z][a-zA-Z0-9\-\.\_]*$/));
 
@@ -51,7 +50,7 @@ Formsy.addValidationRule('isAlpha2', (values, value, otherField) => {
 });
 
 
-Formsy.addValidationRule('checkSystemCol', (values, value, otherField) => {
+Formsy.addValidationRule('checkSystemCol', (values, value) => {
   if (value !== null){
     return (!value.startsWith('system.'));
 
@@ -70,6 +69,17 @@ const TextInput = React.createClass({
     this.setValue(event.currentTarget['value']);
     // this.refs.great.great();
     this.props.onChange(event.currentTarget['value']);
+  },
+
+
+  propTypes : {
+    name: React.PropTypes.string,
+    title: React.PropTypes.string,
+    type: React.PropTypes.string,
+    className: React.PropTypes.string,
+    placeholder: React.PropTypes.string,
+    onChange: React.PropTypes.func.isRequired,
+    shouldBeDisabled: React.PropTypes.bool
   },
 
   render() {

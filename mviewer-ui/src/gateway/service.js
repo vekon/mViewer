@@ -30,10 +30,10 @@ function service(typex, serviceName, req , component, data) {
     });
   }
   else if(component == 'download') {
-  	window.open(path + serviceName);
+    window.open(path + serviceName);
   }
   else if(component == 'query'){
-  	return $.ajax({
+    return $.ajax({
       type: typex,
       cache: false,
       dataType: 'json',
@@ -46,7 +46,7 @@ function service(typex, serviceName, req , component, data) {
     });
   }
   else{
-  	return $.ajax({
+    return $.ajax({
       type: typex,
       cache: false,
       dataType: 'json',

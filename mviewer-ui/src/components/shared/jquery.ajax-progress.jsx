@@ -1,5 +1,5 @@
 import $ from 'jquery';
-(function($, window, undefined) {
+(function($, window) {
     //is onprogress supported by browser?
     const hasOnProgress = ('onprogress' in $.ajaxSettings.xhr());
 
