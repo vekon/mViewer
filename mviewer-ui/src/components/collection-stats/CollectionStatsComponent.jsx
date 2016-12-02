@@ -1,10 +1,8 @@
-import React from 'react'
-import collectionStatsStyles from './collection-stats.css'
-import $ from 'jquery'
-import Modal from 'react-modal'
+import React from 'react';
+import collectionStatsStyles from './collection-stats.css';
+import Modal from 'react-modal';
 import service from '../../gateway/service.js';
-import privilegesAPI from '../../gateway/privileges-api.js';
-import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx'
+import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx';
 
 class CollectionStatsComponent extends React.Component {
 
@@ -19,11 +17,10 @@ class CollectionStatsComponent extends React.Component {
       modalIsOpen: false,
       showAuth: false,
       hasPriv: false
-    }
+    };
   }
 
   openModal = () => {
-    const that = this;
     const partialUrl = 'stats/db/' + this.props.selectedDB + '/collection/'+this.props.selectedCollection+'?connectionId=' + this.props.connectionId;
     
     this.setState({modalIsOpen: true});
@@ -50,7 +47,7 @@ class CollectionStatsComponent extends React.Component {
   }
 
   failure() {
-    this.setState({ message: 'Unexpected Error Occurred' })
+    this.setState({ message: 'Unexpected Error Occurred' });
   }
 
   closeModal = () => {
@@ -58,7 +55,6 @@ class CollectionStatsComponent extends React.Component {
   }
 
   render () {
-    const that = this;
     return(
 
       <div className={collectionStatsStyles.mainContainer}>
@@ -80,7 +76,7 @@ class CollectionStatsComponent extends React.Component {
               </tr>
               {
                  this.state.collectionStats.map((db) => {
-                   return (<tr key={db.Key}><td>{db.Key}</td><td>{db.Value}</td></tr>)
+                   return (<tr key={db.Key}><td>{db.Key}</td><td>{db.Value}</td></tr>);
                 })
             }
             </tbody>
@@ -92,5 +88,11 @@ class CollectionStatsComponent extends React.Component {
     );
   }
 }
+
+CollectionStatsComponent.propTypes = {
+  connectionId: React.PropTypes.string,
+  selectedDB: React.PropTypes.string,
+  selectedCollection: React.PropTypes.string
+};
 
 export default CollectionStatsComponent;

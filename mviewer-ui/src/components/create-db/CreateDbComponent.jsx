@@ -1,13 +1,13 @@
-import React from 'react'
-import createDbStyles from './create-db.css'
-import $ from 'jquery'
-import Modal from 'react-modal'
+import React from 'react';
+import createDbStyles from './create-db.css';
+import $ from 'jquery';
+import Modal from 'react-modal';
 import { Form } from 'formsy-react';
 import TextInput from '../text-input/TextInputComponent.jsx';
 import service from '../../gateway/service.js';
 import privilegesAPI from '../../gateway/privileges-api.js';
-import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx'
-import { browserHistory, hashHistory } from 'react-router';
+import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx';
+import { browserHistory } from 'react-router';
 
 class CreateDbComponent extends React.Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class CreateDbComponent extends React.Component {
       error:false,
       showAuth: false,
       hasPriv: false
-    }
+    };
   }
 
   openModal = () => {
@@ -65,19 +65,18 @@ class CreateDbComponent extends React.Component {
     }.bind(this);
   }
 
-  handleChange = (key) => {
+  handleChange = () => {
    this.setState({successMessage:false});
    this.setState({message:''});
   }
 
 
   clickHandler = () => {
-    var that =this;
-    var data = $("form").serialize().split("&");
+    var data = $('form').serialize().split('&');
     var obj={};
     for(var key in data)
     {
-      obj[data[key].split("=")[0]] = data[key].split("=")[1];
+      obj[data[key].split('=')[0]] = data[key].split('=')[1];
     }
     if (obj['name']!=''){
       var partialUrl = 'db/'+obj['name']+'?connectionId='+this.props.fromHome.connectionId;
@@ -85,7 +84,7 @@ class CreateDbComponent extends React.Component {
       createDbCall.then(this.success.bind(this, obj), this.failure.bind(this, obj));
     }
     else{
-      this.setState({error : true})
+      this.setState({error : true});
     }
   }
 
@@ -94,7 +93,7 @@ class CreateDbComponent extends React.Component {
       this.setState({message:'Database '+obj['name']+ ' was successfully created'});
       this.setState({successMessage:true});
       this.props.refreshDb();
-      setTimeout(() => { this.closeModal() }, 2000);
+      setTimeout(() => { this.closeModal(); }, 2000);
     }
     if (data.response.error) {
       this.setState({successMessage:false});
@@ -157,7 +156,7 @@ class CreateDbComponent extends React.Component {
             <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
               <div className={ createDbStyles.formContainer}>
                 <div className={createDbStyles.inputBox}>
-                  <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error+',maxLength:63'} onChange={this.handleChange} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name', maxLength: 'Db name exceeds maximum limit' }}  />
+                  <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error+',maxLength:63'} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name', maxLength: 'Db name exceeds maximum limit' }}  />
                 </div>
                 <div className={createDbStyles.buttons}>
                   <div className={createDbStyles.right}>
@@ -175,5 +174,10 @@ class CreateDbComponent extends React.Component {
     );
   }
 }
+
+CreateDbComponent.propTypes = {
+  fromHome: React.PropTypes.object,
+  refreshDb:  React.PropTypes.func
+};
 
 export default CreateDbComponent;

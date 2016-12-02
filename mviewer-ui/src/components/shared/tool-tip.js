@@ -1,3 +1,4 @@
+/*eslint-disable */
 $(document).on('mouseenter', '#toolTip', function () {
      const $this = $(this);
      if (this.offsetWidth < this.scrollWidth && !$this.attr('title')) {
@@ -20,3 +21,4 @@ $(document).on('mouseenter', '#toolTipDb', function () {
          $this.tooltip('show');
      }
  });
+/*eslint-enable */

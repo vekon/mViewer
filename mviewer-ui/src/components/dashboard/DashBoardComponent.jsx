@@ -1,9 +1,8 @@
-import React from 'react'
-import dashStyles from './dashboard.css'
-import $ from 'jquery'
+import React from 'react';
+import dashStyles from './dashboard.css';
 import SideNav from '../side-nav/SideNavComponent.jsx';
 import service from '../../gateway/service.js';
-import { browserHistory, hashHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 class DashBoardComponent extends React.Component {
 
@@ -14,7 +13,7 @@ class DashBoardComponent extends React.Component {
       loggedInDatabase:JSON.parse(sessionStorage.getItem('db') || '{}') ,
       host: JSON.parse(sessionStorage.getItem('host') || '{}'),
       username: JSON.parse(sessionStorage.getItem('username') || '{}')
-    }
+    };
   }
 
   disconnect = () => {
@@ -28,11 +27,11 @@ class DashBoardComponent extends React.Component {
     {
       // window.location = '/';
       browserHistory.push({ pathname: '/index.html' });
-      sessionStorage.setItem('connectionId', JSON.stringify(" "));
-      sessionStorage.setItem('username', JSON.stringify(" "));
-      sessionStorage.setItem('host', JSON.stringify(" "));
-      sessionStorage.setItem('db', JSON.stringify(" "));
-      sessionStorage.setItem('queryType', JSON.stringify(" "));
+      sessionStorage.setItem('connectionId', JSON.stringify(' '));
+      sessionStorage.setItem('username', JSON.stringify(' '));
+      sessionStorage.setItem('host', JSON.stringify(' '));
+      sessionStorage.setItem('db', JSON.stringify(' '));
+      sessionStorage.setItem('queryType', JSON.stringify(' '));
     }
   }
 
@@ -65,15 +64,15 @@ class DashBoardComponent extends React.Component {
         <div className = {dashStyles.mainContainer}>
           <header>
             <nav>
-              <div className={"row " + dashStyles.row}>
-                <a href= {"#"} className={dashStyles.logo} onClick={this.clearActiveClass}><img src={'/images/logo.png'}></img></a>
+              <div className={'row ' + dashStyles.row}>
+                <a href= {'#'} className={dashStyles.logo} onClick={this.clearActiveClass}><img src={'/images/logo.png'}></img></a>
             
                 <ul className={dashStyles.mainNav + ' ' + dashStyles.clearfix} >
                   <li><div className={dashStyles.details}>{this.state.host}</div>  
                     <div className={dashStyles.details}>{this.state.username}</div></li>
-                  <li><a target = "_blank" href="https://Imaginea.github.io/mViewer/"><span><i className="fa fa-question-circle-o"></i></span></a></li>
+                  <li><a target = '_blank' href='https://Imaginea.github.io/mViewer/'><span><i className='fa fa-question-circle-o'></i></span></a></li>
                   <li className={dashStyles.seperator}><span></span></li>
-                  <li className={dashStyles.disconnect}><a href="javascript:void(0);" onClick={this.disconnect}><span><i className="fa fa-sign-out" aria-hidden="true"></i></span></a></li>
+                  <li className={dashStyles.disconnect}><a href='javascript:void(0);' onClick={this.disconnect}><span><i className='fa fa-sign-out' aria-hidden='true'></i></span></a></li>
                 </ul>
                </div>
              </nav>
@@ -88,4 +87,7 @@ class DashBoardComponent extends React.Component {
   }
 }
 
+DashBoardComponent.propTypes = {
+  children: React.PropTypes.object
+};
 export default DashBoardComponent;

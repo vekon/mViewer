@@ -3,7 +3,9 @@ import $ from 'jquery';
 let path = '../services/';
 
 function setupServicePath() {
+  /* eslint-disable */
   if (ENV && ENV != 'prod') {
+  /* eslint-enable */
     path = 'http://localhost:8080/mViewer-1.0/services/';
   }
 }

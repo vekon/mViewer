@@ -1,7 +1,6 @@
-import React from 'react'
-import deleteStyles from './delete.css'
-import $ from 'jquery'
-import Modal from 'react-modal'
+import React from 'react';
+import deleteStyles from './delete.css';
+import Modal from 'react-modal';
 import service from '../../gateway/service.js';
 
 class DeleteComponent extends React.Component {
@@ -13,7 +12,7 @@ class DeleteComponent extends React.Component {
       message:'',
       successMessage: false,
       showAuth: false
-    }
+    };
   }
 
   closeModal = () => {
@@ -21,7 +20,6 @@ class DeleteComponent extends React.Component {
   }
 
   clickHandlerYes = () => {
-    const that = this;
     const type = this.props.title;
     let obj={};
     let deleteUrl ='';
@@ -34,7 +32,7 @@ class DeleteComponent extends React.Component {
     }
     if(type== 'document'){
       deleteUrl = this.props.dbName+'/'+this.props.collectionName+'/document?connectionId='+this.props.connectionId;
-        obj["_id"] = this.props.uId;
+        obj['_id'] = this.props.uId;
     }
     if(type === 'GridFS Bucket'){
       deleteUrl = this.props.dbName+'/gridfs/'+this.props.gridFSName+'/dropbucket?connectionId='+this.props.connectionId;
@@ -45,7 +43,7 @@ class DeleteComponent extends React.Component {
 
     if(type === 'User'){
       deleteUrl = this.props.dbName+'/usersIndexes/removeUser?connectionId='+this.props.connectionId;
-      obj["username"] = this.props.userName;
+      obj['username'] = this.props.userName;
     }
 
     let deleteCall = null;
@@ -64,7 +62,7 @@ class DeleteComponent extends React.Component {
       this.setState({message:this.props.title+' has been deleted.'});
     }
     if (data.response.error) {
-      if (data.response.error.code= "DELETING_FROM_CAPPED_COLLECTION"){
+      if (data.response.error.code == 'DELETING_FROM_CAPPED_COLLECTION'){
         this.setState({successMessage:false});
         this.setState({message: data.response.error.message});
       }
@@ -73,7 +71,7 @@ class DeleteComponent extends React.Component {
         this.setState({message:'Error in deleting the '+this.props.title});
       }
     }
-    setTimeout(() => { this.closeModal() }, 2000);
+    setTimeout(() => { this.closeModal(); }, 2000);
   }
 
   failure() {
@@ -115,5 +113,17 @@ class DeleteComponent extends React.Component {
     );
   }
 }
+
+DeleteComponent.propTypes = {
+  closeModal: React.PropTypes.func,
+  title: React.PropTypes.string,
+  dbName: React.PropTypes.string,
+  connectionId: React.PropTypes.string,
+  collectionName: React.PropTypes.string,
+  uId: React.PropTypes.string,
+  gridFSName: React.PropTypes.string,
+  userName: React.PropTypes.string,
+  modalIsOpen: React.PropTypes.bool
+};
 
 export default DeleteComponent;

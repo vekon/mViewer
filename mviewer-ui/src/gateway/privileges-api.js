@@ -53,7 +53,6 @@ function hasRole(role,db){
   }); 
   
   return (rols && rols.length > 0);
-  
   }
   else
   {

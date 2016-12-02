@@ -1,12 +1,10 @@
-import React from 'react'
-import newDocumentStyles from './new-document.css'
-import $ from 'jquery'
-import Modal from 'react-modal'
-import { Form } from 'formsy-react'
-import TextInput from '../text-input/TextInputComponent.jsx'
-import service from '../../gateway/service.js'
+import React from 'react';
+import newDocumentStyles from './new-document.css';
+import $ from 'jquery';
+import Modal from 'react-modal';
+import service from '../../gateway/service.js';
 import privilegesAPI from '../../gateway/privileges-api.js';
-import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx'
+import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx';
 
 class NewDocumentComponent extends React.Component {
 
@@ -20,7 +18,7 @@ class NewDocumentComponent extends React.Component {
       errorMessage: false,
       showAuth: false,
       hasPriv: false
-    }
+    };
   }
 
   openModal() {
@@ -57,7 +55,7 @@ class NewDocumentComponent extends React.Component {
 
   closeModal() {
     this.setState({modalIsOpen: false});
-    this.setState({newDocument: "{}"});
+    this.setState({newDocument: '{}'});
     if(this.state.successMessage==true)
     {
       if(this.props.addOrEdit == 'Edit'){
@@ -86,15 +84,14 @@ class NewDocumentComponent extends React.Component {
   }
 
   clickHandler(){
-    const that =this;
-    const data = $("form").serialize().split("&");
+    const data = $('form').serialize().split('&');
     let obj={};
     if(this.props.addOrEdit == 'Edit'){
       obj['_id'] = this.props.uId;
     }
     for(let key in data)
     {
-      obj[data[key].split("=")[0]] = unescape(data[key].split("=")[1]);
+      obj[data[key].split('=')[0]] = unescape(data[key].split('=')[1]);
     }
 
     const partialUrl = this.props.currentDb+'/'+this.props.currentItem+'/document?connectionId='+this.props.connectionId;
@@ -114,7 +111,7 @@ class NewDocumentComponent extends React.Component {
         this.setState({message:'Document was successfully Updated'}, function(){
         });
       }
-      setTimeout(() => { this.closeModal() }, 2000);
+      setTimeout(() => { this.closeModal(); }, 2000);
     }
     if (data.response.error) {
         if(data.response.error.code == 'DOCUMENT_UPDATE_EXCEPTION'){
@@ -128,7 +125,7 @@ class NewDocumentComponent extends React.Component {
         }
 
         if (data.response.error.code == 'DOCUMENT_CREATION_EXCEPTION'){
-          if(data.response.error.message.indexOf("duplicate key error collection") >= 0) {
+          if(data.response.error.message.indexOf('duplicate key error collection') >= 0) {
             this.setState({message : 'A document with same _id already exists'});
           }
         }
@@ -140,7 +137,7 @@ class NewDocumentComponent extends React.Component {
     }
   }
 
-  failure(data){
+  failure(){
 
   }
 
@@ -191,5 +188,21 @@ class NewDocumentComponent extends React.Component {
     );
   }
 }
+
+
+NewDocumentComponent.propTypes = {
+  currentItem: React.PropTypes.string.isRequired,
+  addOrUpdate: React.PropTypes.string.isRequired,
+  addOrEdit: React.PropTypes.string.isRequired,
+  currentDb: React.PropTypes.string.isRequired,
+  refreshCollectionList: React.PropTypes.string.isRequired,
+  documentValue: React.PropTypes.string.isRequired,
+  uId: React.PropTypes.string.isRequired,
+  refresh: React.PropTypes.string.isRequired,
+  refreshRespectiveData: React.PropTypes.string.isRequired,
+  connectionId: React.PropTypes.string.isRequired,
+  startsWith: React.PropTypes.string.isRequired,
+  length: React.PropTypes.string.isRequired
+};
 
 export default NewDocumentComponent;

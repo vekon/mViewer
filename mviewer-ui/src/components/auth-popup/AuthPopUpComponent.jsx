@@ -1,8 +1,6 @@
-import React from 'react'
-import authPopUpStyles from './auth-popup.css'
-import $ from 'jquery'
-import Modal from 'react-modal'
-import service from '../../gateway/service.js';
+import React from 'react';
+import authPopUpStyles from './auth-popup.css';
+import Modal from 'react-modal';
 
 class AuthPopUpComponent extends React.Component {
 
@@ -11,7 +9,7 @@ class AuthPopUpComponent extends React.Component {
     this.state = {
       modalIsOpen: this.props.modalIsOpen,
       message:'',
-    }
+    };
   }
 
   closeModal = () => {
@@ -57,5 +55,11 @@ class AuthPopUpComponent extends React.Component {
     );
   }
 }
+
+AuthPopUpComponent.propTypes = {
+  modalIsOpen: React.PropTypes.bool,
+  authClose:  React.PropTypes.func,
+  action: React.PropTypes.string
+};
 
 export default AuthPopUpComponent;

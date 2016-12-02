@@ -1,19 +1,22 @@
-import React from 'react'
-import newBucketStyles from './new-bucket.css'
-import $ from 'jquery'
-import Modal from 'react-modal'
+import React from 'react';
+import newBucketStyles from './new-bucket.css';
+import sharedStyles from '../shared/list-panel.css';
+import $ from 'jquery';
+import Modal from 'react-modal';
 import { Form } from 'formsy-react';
+/*eslint-disable */
+import progress from '../shared/jquery.ajax-progress.jsx';
+/*eslint-enable */
 import TextInput from '../text-input/TextInputComponent.jsx';
-import progress from '../shared/jquery.ajax-progress.jsx'
-import Line from 'rc-progress/lib/Line.js'
-import newFileStyles from '../new-file/new-file.css'
-import 'rc-progress/assets/index.less'
-import FileInput from 'react-file-input'
-import service from '../../gateway/service.js'
+import Line from 'rc-progress/lib/Line.js';
+import newFileStyles from '../new-file/new-file.css';
+import 'rc-progress/assets/index.less';
+import FileInput from 'react-file-input';
+import service from '../../gateway/service.js';
 import privilegesAPI from '../../gateway/privileges-api.js';
-import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx'
+import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx';
 
-class newFileComponent extends React.Component {
+class NewBucketComponent extends React.Component {
 
   constructor(props) {
     super(props);
@@ -35,7 +38,7 @@ class newFileComponent extends React.Component {
       newFile: [],
       errorFile: false,
       showAuth: false
-    }
+    };
   }
 
   openModal() {
@@ -79,7 +82,7 @@ class newFileComponent extends React.Component {
     event.target.value = null;
   }
 
-  handleChange(e){
+  handleChange = () => {
     this.setState({successMessage:false});
     this.setState({message:''});
   }
@@ -98,16 +101,16 @@ class newFileComponent extends React.Component {
       if (data.response.error.code === 'ANY_OTHER_EXCEPTION'){
         this.setState({successMessage:false});
         this.setState({disableSubmit: false});
-        this.setState({count : 0 })
-        this.setState({message: "File cannot be added some error."});
+        this.setState({count : 0 });
+        this.setState({message: 'File cannot be added some error.'});
       }
     } else {
-      this.setState({count : this.state.count +1 })
+      this.setState({count : this.state.count +1 });
     }
     if(this.state.count == this.state.newFile.length) {
       this.setState({successMessage:true});
-      setTimeout(() => { this.setState({message: "New Bucket " +this.state.newBucket+" is successfully created"})}, 2000);
-      setTimeout(() => { this.closeModal() }, 3000);
+      setTimeout(() => { this.setState({message: 'New Bucket ' +this.state.newBucket+' is successfully created'});}, 2000);
+      setTimeout(() => { this.closeModal(); }, 3000);
     }
   }
 
@@ -117,14 +120,14 @@ class newFileComponent extends React.Component {
 
   addHandle(){
     const that = this;
-    const data = $("form").serialize().split("&");
+    const data = $('form').serialize().split('&');
     let obj={};
     for(let key in data)
     {
-      obj[data[key].split("=")[0]] = data[key].split("=")[1];
+      obj[data[key].split('=')[0]] = data[key].split('=')[1];
     }
     if ((obj['newBucket']!='' && obj['newBucket']!=null) && this.state.newFile.length > 0){
-      this.state.newBucket = obj['newBucket'];
+      this.setState({newBucket: obj['newBucket']});
       let isDuplicate = false;
       this.props.gridList.map(function(item){
         if(item == obj['newBucket']) {
@@ -141,8 +144,8 @@ class newFileComponent extends React.Component {
       }
       else {
         this.setState({successMessage:false});
-        this.setState({count : 0 })
-        this.setState({message: "Bucket " +this.state.newBucket+" already exists"});
+        this.setState({count : 0 });
+        this.setState({message: 'Bucket ' +this.state.newBucket+' already exists'});
       }
     }
     if(obj['newBucket']!='' || obj['newBucket']!=null) {
@@ -177,9 +180,7 @@ class newFileComponent extends React.Component {
 
   render () {
     const that = this;
-    let count = 0;
     let selectedFiles = Object.keys(that.state.newFile).map(function (item, idx) {
-      ++count
       let sizeKB = Math.round((that.state.newFile[item].size / 1024) * 100 ) / 100 ;
       return <div key={item} className={newBucketStyles.selectedFiles}>
               <div key={item} className={newFileStyles.eachFile}>
@@ -195,10 +196,10 @@ class newFileComponent extends React.Component {
 
                 <span>{item.success}</span>
                 { item.added ?
-                  <span><i className={"fa fa-remove " +  sharedStyles.removeIcon} aria-hidden="true"></i></span>
+                  <span><i className={'fa fa-remove ' +  sharedStyles.removeIcon} aria-hidden="true"></i></span>
                 : null}
               </div>
-             </div>
+             </div>;
       }.bind(this));
 
     const customStyles = {
@@ -284,4 +285,15 @@ class newFileComponent extends React.Component {
   }
 }
 
-export default newFileComponent;
+NewBucketComponent.propTypes = {
+  currentItem: React.PropTypes.string.isRequired,
+  gridList: React.PropTypes.string.isRequired,
+  map: React.PropTypes.string.isRequired,
+  currentDb: React.PropTypes.string.isRequired,
+  refreshCollectionList: React.PropTypes.func.isRequired,
+  refreshRespectiveData: React.PropTypes.string.isRequired,
+  connectionId: React.PropTypes.string.isRequired,
+  length: React.PropTypes.string.isRequired
+};
+
+export default NewBucketComponent;

@@ -1,17 +1,13 @@
-import React from 'react'
-import collectionsStyles from './collections.css'
-import NewCollection from '../new-collection/NewCollectionComponent.jsx'
-import NewDocument from '../new-document/NewDocumentComponent.jsx'
-import QueryExecutor from '../query-executor/QueryExecutorComponent.jsx'
-import CollectionList from '../collection-list/CollectionListComponent.jsx'
-import GridFSList from '../gridfs-list/GridFSListComponent.jsx'
-import DbStats from '../db-stats/DbStatsComponent.jsx'
-import UserList from '../user-list/UserListComponent.jsx'
-import $ from 'jquery'
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import UserDetails from '../user-details/UserDetailsComponent.jsx'
+import React from 'react';
+import collectionsStyles from './collections.css';
+import QueryExecutor from '../query-executor/QueryExecutorComponent.jsx';
+import CollectionList from '../collection-list/CollectionListComponent.jsx';
+import GridFSList from '../gridfs-list/GridFSListComponent.jsx';
+import DbStats from '../db-stats/DbStatsComponent.jsx';
+import UserList from '../user-list/UserListComponent.jsx';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import UserDetails from '../user-details/UserDetailsComponent.jsx';
 import privilegesAPI from '../../gateway/privileges-api.js';
-import ReactResizeDetector from 'react-resize-detector';
 
 class CollectionsComponent extends React.Component {
 
@@ -24,7 +20,7 @@ class CollectionsComponent extends React.Component {
         userDetails: [],
         hasListColPriv: null,
         navMessage:'Collections'
-      }
+      };
       this.refreshRespectiveData = this.refreshRespectiveData.bind(this);
       this.refreshCollectionList = this.refreshCollectionList.bind(this);
       this.setStates = this.setStates.bind(this);
@@ -81,7 +77,7 @@ class CollectionsComponent extends React.Component {
   
   }
 
-  setStates(collection, data, type){
+  setStates(collection, data){
     if(data != undefined && data != null) {
       this.setState({userDetails: data});
     }
@@ -170,5 +166,11 @@ class CollectionsComponent extends React.Component {
     );
   }
 }
+
+CollectionsComponent.propTypes = {
+  location: React.PropTypes.object,
+  refreshDb: React.PropTypes.func,
+  connectionId: React.PropTypes.string
+};
 
 export default CollectionsComponent;

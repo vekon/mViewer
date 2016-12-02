@@ -1,11 +1,10 @@
 import React from 'react';
 import styles from './login.css';
-import classNames from 'classnames/bind';
 import { Form } from 'formsy-react';
 import TextInput from '../login-text-input/LoginTextInputComponent.jsx';
 import $ from 'jquery';
 import service from '../../gateway/service.js';
-import { browserHistory, hashHistory } from 'react-router';
+import { browserHistory} from 'react-router';
 
 class LoginComponent extends React.Component {
 
@@ -28,14 +27,14 @@ class LoginComponent extends React.Component {
       authEnabled: false,
       loading: false,
       rememberMe: false
-    }
+    };
     this.onSubmit = this.onSubmit.bind(this);
     this.success = this.success.bind(this);
     this.failure = this.failure.bind(this);
     this.getRequest = this.getRequest.bind(this);
   }
 
-  handleCheck = (e) => {
+  handleCheck = () => {
     this.setState({authEnabled:!this.state.authEnabled});
     this.setState({username: ''});
     this.setState({password: ''});
@@ -53,42 +52,41 @@ class LoginComponent extends React.Component {
   }
 
   getRequest() {
-    var that = this;
     if(this.state.host == null || this.state.host == ''){
-        this.state.hostError = true;
+        this.setState({hostError:true});
       } else {
-        this.state.hostError = false;
+        this.setState({hostError:false});
       }
       if(this.state.port == null || this.state.port == ''){
-        this.state.portError = true;
+        this.setState({portError:true});
       } else{
-        this.state.portError = false;
+        this.setState({portError:false});
       }
       
     if(this.state.authEnabled) {
       if(this.state.username == null || this.state.username == ''){
-        this.state.userNameError = true;
+        this.setState({userNameError:true});
       } else {
-        this.state.userNameError = false;
+        this.setState({userNameError:false});
       }
       if(this.state.password == null || this.state.password == ''){
-        this.state.passwordError = true;
+        this.setState({passwordError:true});
       } else {
-        this.state.passwordError = false;
+        this.setState({passwordError:false});
       }
       if(this.state.databases == null || this.state.databases == ''){
-        this.state.dbError = true;
+        this.setState({dbError:true});
       } else {
-        this.state.dbError = false;
+        this.setState({dbError:false});
       }
     }
     if(this.state.hostError || this.state.portError || this.state.userNameError || this.state.passwordError || this.state.dbError)
       return false;
 
-    var data = $("form").serialize().split("&");
+    var data = $('form').serialize().split('&');
     var obj={};
     for(var key in data){
-      obj[data[key].split("=")[0]] = data[key].split("=")[1];
+      obj[data[key].split('=')[0]] = data[key].split('=')[1];
     }
     return obj;
   }
@@ -179,7 +177,6 @@ class LoginComponent extends React.Component {
   }
 
   render() {
-    var rowClass = 'row inputLabel';
     return (
       <section className={styles.loginForm}>
         <div className={styles.parentDiv + ' ' + styles.clearfix}>
@@ -192,7 +189,7 @@ class LoginComponent extends React.Component {
                   <TextInput type="text" name="host" id="host" placeholder="host" value={this.state.host} onChange={this.handleChange( 'host')} validations={'isRequired1:'+this.state.hostError} validationErrors={{isRequired1: 'Host must not be empty' }} shouldBeDisabled ={this.state.loading} checked={this.state.rememberMe} />
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="text" name="port" id="port" placeholder="port" value={this.state.port} onChange={this.handleChange( 'port')} validations={{isRequired1:this.state.portError , isNumeric:true}} validationErrors={{isRequired1 : "Port must not be empty", isNumeric : "Inavlid Port number" }} shouldBeDisabled ={this.state.loading} checked={this.state.rememberMe} />
+                  <TextInput type="text" name="port" id="port" placeholder="port" value={this.state.port} onChange={this.handleChange( 'port')} validations={{isRequired1:this.state.portError , isNumeric:true}} validationErrors={{isRequired1 : 'Port must not be empty', isNumeric : 'Inavlid Port number' }} shouldBeDisabled ={this.state.loading} checked={this.state.rememberMe} />
                 </div>
                 <div className={styles.inputBoxLogin+' '+ styles.checkBox}>
                   <span className={styles.checkLabel} onClick ={this.handleCheck}>Perform Authentication</span>
@@ -209,7 +206,7 @@ class LoginComponent extends React.Component {
                 </div>
                 <div className={styles.submitContainer}>
                   {this.state.loading == true ? <div className={styles.loader}></div> : null}
-                  <input type="submit" value={this.state.loading == true ? "Connecting.." : "CONNECT" } disabled={!this.state.canSubmit || this.state.loading} className={ styles.gobutton} />
+                  <input type="submit" value={this.state.loading == true ? 'Connecting..' : 'CONNECT' } disabled={!this.state.canSubmit || this.state.loading} className={ styles.gobutton} />
                 </div>
                 <div className={styles.footerLink}>
                   <input type="checkbox" className={styles.rememberClass} name="rememberMe" id="rememberMe"  onChange={this.rememberMeCheck} checked={this.state.rememberMe}/>
@@ -225,5 +222,9 @@ class LoginComponent extends React.Component {
     );
   }
 }
+
+LoginComponent.propTypes = {
+  location: React.PropTypes.object.isRequired
+};
 
 export default LoginComponent;

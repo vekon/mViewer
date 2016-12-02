@@ -1,10 +1,10 @@
-import React from 'react'
-import GridFSListStyles from '../shared/list-panel.css'
-import $ from 'jquery'
-import GridFSItem from './GridFSItemComponent.jsx'
-import NewBucket from '../new-bucket/NewBucketComponent.jsx'
-import SearchInput, {createFilter} from 'react-search-input'
-import service from '../../gateway/service.js'
+import React from 'react';
+import GridFSListStyles from '../shared/list-panel.css';
+import $ from 'jquery';
+import GridFSItem from './GridFSItemComponent.jsx';
+import NewBucket from '../new-bucket/NewBucketComponent.jsx';
+import SearchInput, {createFilter} from 'react-search-input';
+import service from '../../gateway/service.js';
 import ReactHeight from 'react-height';
 
 class GridFSList extends React.Component {
@@ -23,7 +23,7 @@ class GridFSList extends React.Component {
       searchTerm: '',
       viewMore: false,
       viewMoreLink: false
-    }
+    };
   }
 
   success(calledFrom, data) {
@@ -66,7 +66,7 @@ class GridFSList extends React.Component {
   }
 
   searchUpdated (term) {
-    this.setState({searchTerm: term})
+    this.setState({searchTerm: term});
   }
 
   refreshCollectionList(db){
@@ -76,14 +76,12 @@ class GridFSList extends React.Component {
   }
 
   componentWillMount(){
-    const that = this;
     const partialUrl = this.props.selectedDB +'/gridfs?connectionId=' + this.state.connectionId;
     const gridFSListCall = service('GET', partialUrl, '');
     gridFSListCall.then(this.success.bind(this, 'componentWillMount'), this.failure.bind(this, 'componentWillMount'));
   }
 
   componentWillReceiveProps(nextProps) {
-    const that = this;
     if(this.state.gridfs && this.state.gridfs.length <  1) {
       const partialUrl = nextProps.selectedDB +'/gridfs?connectionId=' + this.state.connectionId;
       const gridFSListCall = service('GET', partialUrl, '');
@@ -114,7 +112,6 @@ class GridFSList extends React.Component {
     if (this.state.gridfs != undefined){
       filteredData = this.state.gridfs.filter(createFilter(this.state.searchTerm));
       items = filteredData.map(function (item, idx) {
-        const is_selected = that.state.selectedCollection == idx;
         return <GridFSItem
                 key={item}
                 name={item}
@@ -144,5 +141,15 @@ class GridFSList extends React.Component {
       );
   }
 }
+
+GridFSList.propTypes = {
+  propps: React.PropTypes.string.isRequired,
+  connectionId: React.PropTypes.string.isRequired,
+  selectedDB: React.PropTypes.string.isRequired,
+  refreshDb: React.PropTypes.func.isRequired,
+  visible: React.PropTypes.string.isRequired,
+  alignment: React.PropTypes.string.isRequired,
+  setStates: React.PropTypes.element.isRequired
+};
 
 export default GridFSList;

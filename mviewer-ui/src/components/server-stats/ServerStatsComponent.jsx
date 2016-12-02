@@ -43,7 +43,7 @@ class ServerStatsComponent extends React.Component {
   }
 
   render () {
-    const getItemString = (type, data, itemType, itemString) => (<span></span>);
+    const getItemString = () => (<span></span>);
     return(
       
       <div className={serverStatsStyles.mainContainer}>

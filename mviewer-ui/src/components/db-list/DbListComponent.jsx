@@ -1,20 +1,16 @@
-import React from 'react'
-import dbListStyles from './db-list.css'
-import collectionListStyles from '../shared/list-panel.css'
-import $ from 'jquery'
-import CollectionList from '../collection-list/CollectionListComponent.jsx'
-import GridFSList from '../gridfs-list/GridFSListComponent.jsx'
-import DbItem from './DbItemComponent.jsx'
-import ReactDOM  from 'react-dom'
-import { Form } from 'formsy-react'
-import TextInput from '../text-input/TextInputComponent.jsx'
-import Modal from 'react-modal'
-import service from '../../gateway/service.js'
-import SearchInput, {createFilter} from 'react-search-input'
+import React from 'react';
+import dbListStyles from './db-list.css';
+import $ from 'jquery';
+import DbItem from './DbItemComponent.jsx';
+import { Form } from 'formsy-react';
+import TextInput from '../text-input/TextInputComponent.jsx';
+import Modal from 'react-modal';
+import service from '../../gateway/service.js';
+import SearchInput, {createFilter} from 'react-search-input';
 import privilegesAPI from '../../gateway/privileges-api.js';
 import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx';
 import ReactHeight from 'react-height';
-import { browserHistory, hashHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 class DbListComponent extends React.Component {
 
   constructor(props) {
@@ -35,7 +31,7 @@ class DbListComponent extends React.Component {
       hasPriv: false,
       viewMore: false,
       viewMoreLink: false
-    }
+    };
     this.refreshDbList = this.refreshDbList.bind(this);
     this.setViewMore   = this.setViewMore.bind(this);
     this.searchUpdated = this.searchUpdated.bind(this);
@@ -78,28 +74,26 @@ class DbListComponent extends React.Component {
     }.bind(this);
   }
 
-  handleChange = (key) => {
+  handleChange = () => {
    this.setState({successMessage:false});
    this.setState({message:''});
   }
 
   clickHandler (idx, db) {
-    var that = this;
     this.setState({ visible: !this.state.visible });
     this.setState({selectedItem: db});
     this.props.selectedDB(db);
     this.setState({selectedDb : db});
-    sessionStorage.setItem('queryType', JSON.stringify("collection"));
+    sessionStorage.setItem('queryType', JSON.stringify('collection'));
 
     browserHistory.push({ pathname: '/dashboard/database', query: { collapsed: this.state.visible, db: db} });
     // window.location = '/dashboard/database?db='+db + '&collapsed='+this.state.visible;
   }
 
   componentDidMount(){
-    var that = this;
     var url = window.location.href;
     var params = url.split('?');
-    var n = params[1].search("collapsed=true");
+    var n = params[1].search('collapsed=true');
     if (n!= -1) {
       this.setState({visible:false});
     }
@@ -146,12 +140,11 @@ class DbListComponent extends React.Component {
   }
 
   clickHandlerModal = () => {
-    var that =this;
-    var data = $("form").serialize().split("&");
+    var data = $('form').serialize().split('&');
     var obj={};
     for(var key in data)
     {
-      obj[data[key].split("=")[0]] = data[key].split("=")[1];
+      obj[data[key].split('=')[0]] = data[key].split('=')[1];
     }
     if (obj['name']!=''){
       var partialUrl = 'db/'+obj['name']+'?connectionId='+this.props.propps.connectionId;
@@ -159,7 +152,7 @@ class DbListComponent extends React.Component {
       createDbCall.then(this.success.bind(this , 'clickHandlerModal' , obj), this.failure.bind(this , 'clickHandlerModal', obj));
     }
     else{
-      this.setState({error : true})
+      this.setState({error : true});
     }
   }
 
@@ -169,13 +162,13 @@ class DbListComponent extends React.Component {
   }
 
   searchUpdated (term) {
-    this.setState({searchTerm: term})
+    this.setState({searchTerm: term});
   }
 
   componentWillReceiveProps(){
     var url = window.location.href;
     var params = url.split('?');
-    var shouldCollapse = params[1].search("collapsed=true");
+    var shouldCollapse = params[1].search('collapsed=true');
     var queryType = JSON.parse(sessionStorage.getItem('queryType'));
     if (shouldCollapse!= -1) {
       this.setState({visible:false});
@@ -201,7 +194,6 @@ class DbListComponent extends React.Component {
           else{
             privilegesAPI.setRoles(undefined);
           }
-          var test = privilegesAPI.hasPrivilege('collStats','',this.props.propps.loggedInDatabase);
         }
       else {
         {
@@ -226,7 +218,7 @@ class DbListComponent extends React.Component {
         this.setState({message:'Database '+obj['name']+ ' was successfully created'});
         this.setState({successMessage:true});
         this.refreshDbList(this.state.selectedDb);
-        setTimeout(() => { this.closeModal() }, 2000);
+        setTimeout(() => { this.closeModal(); }, 2000);
       }
       if (data.response.error) {
         this.setState({successMessage:false});
@@ -268,7 +260,6 @@ class DbListComponent extends React.Component {
       }
     };
 
-    var that = this;
     const filteredData = this.state.dbNames.filter(createFilter(this.state.searchTerm));
     return(
      <div className = {this.state.visible ? dbListStyles.mainMenu : dbListStyles.mainMenuCollapsed}>
@@ -291,7 +282,7 @@ class DbListComponent extends React.Component {
                        isSelected={this.state.selectedDb==item}
                        connectionId = {this.state.connectionId}
                        refreshDbList={this.refreshDbList}
-                       />)
+                       />);
                    })}
               </ReactHeight>
             </div>
@@ -318,7 +309,7 @@ class DbListComponent extends React.Component {
          <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
            <div className={ dbListStyles.formContainer}>
              <div className={dbListStyles.inputBox}>
-               <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error+',maxLength:63'} onChange={this.handleChange} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name', maxLength: 'Db name exceeds maximum limit' }}  />
+               <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error+',maxLength:63'} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name', maxLength: 'Db name exceeds maximum limit' }}  />
              </div>
              <div className={dbListStyles.buttons}>
               <div className={dbListStyles.right}>
@@ -337,8 +328,11 @@ class DbListComponent extends React.Component {
   }
 }
 
-DbListComponent.contextTypes = {
-  selectedDB: React.PropTypes.string
+
+DbListComponent.propTypes = {
+  propps: React.PropTypes.object,
+  selectedNav: React.PropTypes.number,
+  selectedDB: React.PropTypes.func.isRequired
 };
 
 export default DbListComponent;
