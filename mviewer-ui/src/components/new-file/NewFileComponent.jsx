@@ -1,20 +1,18 @@
-import React from 'react'
-import newFileStyles from './new-file.css'
-import newBucketStyles from '../new-bucket/new-bucket.css'
-import $ from 'jquery'
-import Modal from 'react-modal'
+import React from 'react';
+import newFileStyles from './new-file.css';
+import newBucketStyles from '../new-bucket/new-bucket.css';
+import $ from 'jquery';
+import Modal from 'react-modal';
 import { Form } from 'formsy-react';
-import TextInput from '../text-input/TextInputComponent.jsx'
 import FileInput from 'react-file-input';
-import sharedStyles from '../shared/list-panel.css'
-import progress from '../shared/jquery.ajax-progress.jsx'
-import Line from 'rc-progress/lib/Line.js'
-import 'rc-progress/assets/index.less'
-import service from '../../gateway/service.js'
+import sharedStyles from '../shared/list-panel.css';
+import Line from 'rc-progress/lib/Line.js';
+import 'rc-progress/assets/index.less';
+import service from '../../gateway/service.js';
 import privilegesAPI from '../../gateway/privileges-api.js';
-import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx'
+import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx';
 
-class newFileComponent extends React.Component {
+class NewFileComponent extends React.Component {
 
   constructor(props) {
     super(props);
@@ -32,7 +30,7 @@ class newFileComponent extends React.Component {
       disableSubmit: true,
       showAuth: false,
       hasPriv: false
-    }
+    };
   }
 
   openModal() {
@@ -90,7 +88,6 @@ class newFileComponent extends React.Component {
   }
 
   fileUpload(data) {
-    const that = this;
     let fd = new FormData();
     fd.append( 'files', data );
     const partialUrl = this.props.currentDb+'/gridfs/'+this.props.currentItem+'/uploadfile?connectionId='+this.props.connectionId;
@@ -118,17 +115,17 @@ class newFileComponent extends React.Component {
     if (data.response && data.response.error) {
       if (data.response.error.code === 'ANY_OTHER_EXCEPTION'){
         this.setState({successMessage:false});
-        this.setState({count : 0 })
-        this.setState({message: "File cannot be added some error."});
+        this.setState({count : 0 });
+        this.setState({message: 'File cannot be added some error.'});
         this.setState({disableSubmit: false});
       }
     } else {
-      this.setState({count : this.state.count +1 })
+      this.setState({count : this.state.count +1 });
     }
     if(this.state.count == this.state.newFile.length) {
       this.setState({successMessage:true});
-      setTimeout(() => { this.setState({message: "File(s) successfully added to bucket " + this.props.currentItem})}, 2000);
-      setTimeout(() => { this.closeModal() }, 3000);
+      setTimeout(() => { this.setState({message: 'File(s) successfully added to bucket ' + this.props.currentItem});}, 2000);
+      setTimeout(() => { this.closeModal(); }, 3000);
     }
   }
 
@@ -152,7 +149,7 @@ class newFileComponent extends React.Component {
   }
 
   componentDidUpdate() {
-    $("input[name='myfile_filename']").value = "";
+    $('input[name="myfile_filename"]').value = '';
   }
 
   completeLoading() {
@@ -169,9 +166,7 @@ class newFileComponent extends React.Component {
 
   render () {
     const that = this;
-    let count = 0;
     const selectedFiles = Object.keys(that.state.newFile).map(function (item, idx) {
-      ++count
       let sizeKB = Math.round((that.state.newFile[item].size / 1024) * 100 ) / 100 ;
       return <div key={item} className={newFileStyles.selectedFiles}>
               <div key={item} className={newFileStyles.eachFile}>
@@ -186,10 +181,10 @@ class newFileComponent extends React.Component {
                 }
                 <span>{item.success}</span>
                 { item.added ?
-                  <span><i className={"fa fa-remove " +  sharedStyles.removeIcon} aria-hidden="true"></i></span>
+                  <span><i className={'fa fa-remove ' +  sharedStyles.removeIcon} aria-hidden="true"></i></span>
                 : null}
               </div>
-             </div>
+             </div>;
       }.bind(this));
 
     const customStyles = {
@@ -272,4 +267,16 @@ class newFileComponent extends React.Component {
   }
 }
 
-export default newFileComponent;
+
+NewFileComponent.propTypes = {
+  currentItem: React.PropTypes.string.isRequired,
+  addOrUpdate: React.PropTypes.string.isRequired,
+  refresh: React.PropTypes.func.isRequired,
+  currentDb: React.PropTypes.string.isRequired,
+  refreshCollectionList: React.PropTypes.string.isRequired,
+  refreshRespectiveData: React.PropTypes.string.isRequired,
+  connectionId: React.PropTypes.string.isRequired,
+  length: React.PropTypes.string.isRequired
+};
+
+export default NewFileComponent;

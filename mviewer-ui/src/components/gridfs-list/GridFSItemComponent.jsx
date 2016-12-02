@@ -1,13 +1,13 @@
-import React from 'react'
-import GridFSListStyles from '../shared/list-panel.css'
-import $ from 'jquery'
+import React from 'react';
+import GridFSListStyles from '../shared/list-panel.css';
+
 class GridFSItemComponent extends React.Component {
 
  constructor(props) {
    super(props);
    this.state = {
      hover_flag: false
-   }
+   };
   }
 
   render () {
@@ -23,10 +23,11 @@ class GridFSItemComponent extends React.Component {
 }
 GridFSItemComponent.getDefaultProps = {
   isSelected: false
-}
+};
 GridFSItemComponent.propTypes = {
   onClick: React.PropTypes.func.isRequired,
-  isSelected: React.PropTypes.bool
-}
+  isSelected: React.PropTypes.bool,
+  name: React.PropTypes.string
+};
 
 export default GridFSItemComponent;

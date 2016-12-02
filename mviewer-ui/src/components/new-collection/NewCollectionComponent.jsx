@@ -1,11 +1,11 @@
-import React from 'react'
-import newCollectionStyles from './new-collection.css'
-import $ from 'jquery'
-import Modal from 'react-modal'
-import { Form } from 'formsy-react'
-import TextInput from '../text-input/TextInputComponent.jsx'
-import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx'
-import service from '../../gateway/service.js'
+import React from 'react';
+import newCollectionStyles from './new-collection.css';
+import $ from 'jquery';
+import Modal from 'react-modal';
+import { Form } from 'formsy-react';
+import TextInput from '../text-input/TextInputComponent.jsx';
+import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx';
+import service from '../../gateway/service.js';
 import privilegesAPI from '../../gateway/privileges-api.js';
 
 class NewCollectionComponent extends React.Component {
@@ -31,7 +31,7 @@ class NewCollectionComponent extends React.Component {
       newCollection: this.props.currentItem,
       showAuth: false,
       isAdmin: false
-    }
+    };
   }
 
   openModal() {
@@ -45,7 +45,7 @@ class NewCollectionComponent extends React.Component {
     }
     else{
       const hasPriv1 = privilegesAPI.hasPrivilege('renameCollectionSameDB',this.props.name, this.props.currentDb);
-      if(hasPriv1 && !this.state.name.startsWith("system.")){
+      if(hasPriv1 && !this.state.name.startsWith('system.')){
         this.setState({showAuth : false});    }
       else{
         this.setState({showAuth : true});
@@ -105,28 +105,27 @@ class NewCollectionComponent extends React.Component {
     }.bind(this);
   }
 
-  handleChange(key){
+  handleChange = () => {
     return true;
   }
 
-  handleCheck(){
+  handleCheck = () => {
     this.setState({cap:!this.state.cap});
   }
 
-  handleIndex(){
+  handleIndex = () => {
     this.setState({autoIndex:!this.state.autoIndex});
   }
 
-  clickHandler(){
+  clickHandler = () => {
     this.setState({error:true});
     let methodType = 'POST';
-    const that =this;
-    const data = $('form[name="collectionForm"]').serialize().split("&");
+    const data = $('form[name="collectionForm"]').serialize().split('&');
     let obj={};
     this.setState({error : true});
     for(let key in data)
     {
-      obj[data[key].split("=")[0]] = data[key].split("=")[1];
+      obj[data[key].split('=')[0]] = data[key].split('=')[1];
     }
     if (obj['capSize']!= '' && obj['capSize']!=null){
       this.setState({submitted:true});
@@ -146,7 +145,7 @@ class NewCollectionComponent extends React.Component {
       }
     }
     if(obj['newCollName'] !=  '') {
-      let partialUrl = "";
+      let partialUrl = '';
       if(this.state.isAdmin) {
         partialUrl = this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId + '&isDbAdmin=true';
       } else {
@@ -157,7 +156,7 @@ class NewCollectionComponent extends React.Component {
     }
 }
   componentDidMount(){
-    this.state._isMounted =  true;
+    this.setState({_isMounted :true});
     if(this.props.addOrUpdate == 2){
       this.setState({name :this.props.currentItem});
       this.setState({title:'Update Collection'});
@@ -169,7 +168,7 @@ class NewCollectionComponent extends React.Component {
   }
 
   componentWillUnmount(){
-    this.state._isMounted =  false;
+    this.setState({_isMounted :false});
   }
 
   componentWillReceiveProps(nextProps){
@@ -198,14 +197,14 @@ class NewCollectionComponent extends React.Component {
         if(this.props.addOrUpdate == 2){
           const successResult = data.response.result.replace(/[\[\]']/g,'' );
           this.setState({message:successResult});
-          this.state.newCollection = obj['newCollName'];
+          this.setState({newCollection:obj['newCollName']});
         }
         else {
           this.setState({message:'Collection '+obj['newCollName']+ ' was successfully added to database ' + this.props.currentDb});
-          this.state.newCollection = obj['newCollName'];
+          this.setState({newCollection:obj['newCollName']});
         }
         this.setState({successMessage:true});
-        setTimeout(() => { this.closeModal() }, 2000);
+        setTimeout(() => { this.closeModal(); }, 2000);
       }
       if (data.response.error) {
         if (data.response.error.code === 'COLLECTION_ALREADY_EXISTS'){
@@ -214,7 +213,7 @@ class NewCollectionComponent extends React.Component {
         }
 
         if(data.response.error.code === 'COLLECTION_UPDATE_EXCEPTION'){
-          if(data.response.error.message.indexOf("specify size:<n> when capped is true") >= 0) {
+          if(data.response.error.message.indexOf('specify size:<n> when capped is true') >= 0) {
             this.setState({successMessage:false});
             this.setState({message:'The cap size must be greater than zero'});
           }
@@ -229,7 +228,7 @@ class NewCollectionComponent extends React.Component {
           this.setState({cap:data.response.result.capped});
           this.setState({previousCap: data.response.result.capped});
           this.setState({size:data.response.result.size != undefined ? data.response.result.size : ''});
-          this.setState({max:data.response.result.maxDocs != undefined && data.response.result.maxDocs != "-1" ? data.response.result.maxDocs : ''});
+          this.setState({max:data.response.result.maxDocs != undefined && data.response.result.maxDocs != '-1' ? data.response.result.maxDocs : ''});
         }
       }
     }
@@ -274,12 +273,11 @@ class NewCollectionComponent extends React.Component {
             <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} name="collectionForm" >
               <div className={ newCollectionStyles.formContainer}>
                 <div className={newCollectionStyles.inputBox}>
-
-                  <TextInput type="text" name="newCollName" id="newCollName" placeholder="Collection name" value={this.state.name} onChange = {this.handleChange.bind(this)} validations={'isRequired2:'+this.state.error+',isAlpha2:'+this.state.error+',maxLength:'+(119-this.props.currentDb.length)+',checkSystemCol'} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Collection name must not be empty', isAlpha2: 'Invalid Collection name', maxLength: 'Collection name cannot be more than '+(119- this.props.currentDb.length)+' characters for this Db', checkSystemCol: 'Collection name cannot start with system.' }}  />
+                  <TextInput type="text" name="newCollName" id="newCollName" placeholder="Collection name" value={this.state.name} validations={'isRequired2:'+this.state.error+',isAlpha2:'+this.state.error+',maxLength:'+(119-this.props.currentDb.length)+',checkSystemCol'} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2: 'Collection name must not be empty', isAlpha2: 'Invalid Collection name', maxLength: 'Collection name cannot be more than '+(119- this.props.currentDb.length)+' characters for this Db', checkSystemCol: 'Collection name cannot start with system.' }}  />
                 </div>
                 <div className={newCollectionStyles.inputBox}>
                   <input type="checkbox" name="isCapped" id="isCapped" className={newCollectionStyles.checkBox} onChange={this.handleCheck.bind(this)} checked={this.state.cap}  />
-                  <div className={newCollectionStyles.checkLabel} onClick={this.handleCheck.bind(this)}><span>Capped</span></div>
+                   <div className={newCollectionStyles.checkLabel} onClick={this.handleCheck.bind(this)}><span>Capped</span></div>
                 </div>
                 <div className={newCollectionStyles.inputBox}>
                   <TextInput type="text" name="capSize" id="capSize" placeholder="size (bytes)" value={this.state.size} onChange={this.handleChange.bind(this)} validations={'isRequired1:'+this.state.cap+',isNumeric1:'+this.state.cap + ',maxSize:' + this.state.cap + ',checkZero:' + this.state.cap} checkforOtherErrors ={this.state.submitted} validationErrors={{isNumeric1: 'Please enter the size in numeric', isRequired1: 'Please enter the size', maxSize: 'Entered value exceeds allowed Size limit.', checkZero: 'cap size cannot be zero.'}} shouldBeDisabled = {!this.state.cap}  />
@@ -288,7 +286,7 @@ class NewCollectionComponent extends React.Component {
                   <TextInput type="text" name="maxDocs" id="maxDocs" placeholder="max Documents (optional)" value={this.state.max} onChange={this.handleChange.bind(this)} shouldBeDisabled = {this.state.isAdmin ? true : !this.state.cap}  validationErrors={{isNumeric1: 'Please enter the size in numeric', maxDocs: 'Entered value exceeds allowed Max Docs limit.'}} checkforOtherErrors ={this.state.submitted} validations={'isNumeric1:' + this.state.cap + ',maxDocs:' + this.state.cap}/>
                 </div>
                 <div className={newCollectionStyles.inputBox}>
-                  <input type="checkbox" name="autoIndexId" id="autoIndexId"  className={newCollectionStyles.checkBox} checked={this.state.autoIndex} onChange={this.handleIndex.bind(this)} checked={this.state.autoIndex} disabled={!this.state.cap} />
+                  <input type="checkbox" name="autoIndexId" id="autoIndexId"  className={newCollectionStyles.checkBox} checked={this.state.autoIndex} onChange={this.handleIndex.bind(this)} disabled={!this.state.cap} />
                   <div className={newCollectionStyles.checkLabel} onClick={this.handleIndex.bind(this)}><span>Auto Indent</span></div>
                 </div>
                 <div >
@@ -304,5 +302,16 @@ class NewCollectionComponent extends React.Component {
     );
   }
 }
+
+NewCollectionComponent.propTypes = {
+  currentItem: React.PropTypes.string.isRequired,
+  addOrUpdate: React.PropTypes.string.isRequired,
+  name: React.PropTypes.string.isRequired,
+  currentDb: React.PropTypes.string.isRequired,
+  refreshCollectionList: React.PropTypes.string.isRequired,
+  refreshRespectiveData: React.PropTypes.string.isRequired,
+  connectionId: React.PropTypes.string.isRequired,
+  length: React.PropTypes.string.isRequired
+};
 
 export default NewCollectionComponent;
