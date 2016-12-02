@@ -1,6 +1,5 @@
 import React from 'react';
 import dbStatsStyles from './db-stats.css';
-import $ from 'jquery';
 import service from '../../gateway/service.js';
 
 class DbStatsComponent extends React.Component {
@@ -21,14 +20,13 @@ class DbStatsComponent extends React.Component {
     queryData['fields'] = '';
     queryData['limit'] = 10;
     queryData['skip'] = 0;
-    queryData['sortBy'] =  "{'_id':-1}";
+    queryData['sortBy'] =  '{"_id":-1}';
     const partialUrl = 'db/' + that.props.selectedDB + '?connectionId=' + that.props.connectionId;
     const dbStatsCall = service('POST', partialUrl, JSON.stringify(queryData), 'query');
     dbStatsCall.then(this.success.bind(this), this.failure.bind(this));
   }
 
   success(data) {
-    const that = this;
     let stats = [];
     const oldStats = data.response.result.documents;
     oldStats.length > 0 ? Object.keys(oldStats[0]).map(function(key) {

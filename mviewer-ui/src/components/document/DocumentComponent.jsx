@@ -1,7 +1,6 @@
 import React from 'react';
 import documentStyles from './document.css';
 import $ from 'jquery';
-import Modal from 'react-modal';
 import DeleteComponent from '../delete-component/DeleteComponent.jsx';
 import NewDocument from '../new-document/NewDocumentComponent.jsx';
 import autosize from 'autosize';
@@ -65,11 +64,11 @@ class DocumentComponent extends React.Component {
   }
 
   componentDidMount(){
-    this.state._isMounted = true;
+    this.setState({_isMounted:true});
   }
 
   componentWillUnmount(){
-    this.state._isMounted = false;
+    this.setState({_isMounted:false});
   }
   render () {
     autosize($('.textArea'));
@@ -88,5 +87,16 @@ class DocumentComponent extends React.Component {
     );
   }
 }
+
+DocumentComponent.propTypes = {
+  value: React.PropTypes.string,
+  currentItem: React.PropTypes.string,
+  currentDb: React.PropTypes.string,
+  refresh:  React.PropTypes.func,
+  queryType: React.PropTypes.string,
+  connectionId: React.PropTypes.string,
+  uId: React.PropTypes.string,
+  key1: React.PropTypes.string
+};
 
 export default DocumentComponent;

@@ -1,10 +1,8 @@
-import React from 'react'
-import dbListStyles from './db-list.css'
-import $ from 'jquery'
-import DeleteComponent from '../delete-component/DeleteComponent.jsx'
+import React from 'react';
+import dbListStyles from './db-list.css';
+import DeleteComponent from '../delete-component/DeleteComponent.jsx';
 import privilegesAPI from '../../gateway/privileges-api.js';
 import AuthPopUp from '../auth-popup/AuthPopUpComponent.jsx';
-import toolTip from '../shared/tool-tip.js';
 
 class DbItemComponent extends React.Component {
 
@@ -16,7 +14,7 @@ class DbItemComponent extends React.Component {
       _isMounted: false,
       showAuth: false,
       hasPriv: false
-    }
+    };
     this.closeModal = this.closeModal.bind(this);
   }
 
@@ -48,11 +46,11 @@ class DbItemComponent extends React.Component {
   }
 
   componentDidMount(){
-    this.state._isMounted = true;
+    this.setState({_isMounted:true});
   }
 
   componentWillUnmount(){
-    this.state._isMounted = false;
+    this.setState({_isMounted:false});
   }
 
   onClick = () => {
@@ -66,7 +64,7 @@ class DbItemComponent extends React.Component {
             <i className="fa fa-database" aria-hidden="true"></i>
           </span>
           <span id="toolTipDb" className={dbListStyles.content} title = {this.props.name}>{this.props.name}</span>
-          <i className={"fa fa-trash " +  dbListStyles.removeIcon} aria-hidden="true" onClick={this.openModal}></i>
+          <i className={'fa fa-trash ' +  dbListStyles.removeIcon} aria-hidden="true" onClick={this.openModal}></i>
         {this.state.modalIsOpen?( !this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal} title = 'database' dbName = {this.props.name} connectionId={this.props.connectionId} ></DeleteComponent>  : <AuthPopUp modalIsOpen = {this.state.showAuth}  authClose = {this.authClose} action = 'drop database' ></AuthPopUp>) : ''}        
       </div>
     );
@@ -75,10 +73,14 @@ class DbItemComponent extends React.Component {
 
 DbItemComponent.getDefaultProps = {
   isSelected: false
-}
+};
 DbItemComponent.propTypes = {
   onClick: React.PropTypes.func.isRequired,
-  isSelected: React.PropTypes.bool
-}
+  isSelected: React.PropTypes.bool,
+  name: React.PropTypes.string,
+  refreshDbList: React.PropTypes.func,
+  idx: React.PropTypes.string,
+  connectionId: React.PropTypes.string
+};
 
 export default DbItemComponent;

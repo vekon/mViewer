@@ -3,7 +3,9 @@ import $ from 'jquery';
 let path = '../services/';
 
 function setupServicePath() {
+  /* eslint-disable */
   if (ENV && ENV != 'prod') {
+  /* eslint-enable */
     path = 'http://localhost:8080/mViewer-1.0/services/';
   }
 }
@@ -17,7 +19,7 @@ function service(typex, serviceName, req , component, data) {
       url: path + serviceName,
       dataType: 'json',
       headers: {
-        Accept: "application/json"
+        Accept: 'application/json'
       },
       data: req,
       processData: false,
@@ -30,10 +32,10 @@ function service(typex, serviceName, req , component, data) {
     });
   }
   else if(component == 'download') {
-  	window.open(path + serviceName);
+    window.open(path + serviceName);
   }
   else if(component == 'query'){
-  	return $.ajax({
+    return $.ajax({
       type: typex,
       cache: false,
       dataType: 'json',
@@ -46,7 +48,7 @@ function service(typex, serviceName, req , component, data) {
     });
   }
   else{
-  	return $.ajax({
+    return $.ajax({
       type: typex,
       cache: false,
       dataType: 'json',
