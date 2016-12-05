@@ -28,7 +28,7 @@ GridFSItemComponent.getDefaultProps = {
   isSelected: false
 };
 GridFSItemComponent.propTypes = {
-  onClick: React.PropTypes.func.isRequired,
+  onClick: React.PropTypes.func,
   isSelected: React.PropTypes.bool,
   name: React.PropTypes.string
 };

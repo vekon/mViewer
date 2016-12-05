@@ -272,14 +272,14 @@ class NewFileComponent extends React.Component {
 
 
 NewFileComponent.propTypes = {
-  currentItem: React.PropTypes.string.isRequired,
-  addOrUpdate: React.PropTypes.string.isRequired,
-  refresh: React.PropTypes.func.isRequired,
-  currentDb: React.PropTypes.string.isRequired,
-  refreshCollectionList: React.PropTypes.string.isRequired,
-  refreshRespectiveData: React.PropTypes.string.isRequired,
-  connectionId: React.PropTypes.string.isRequired,
-  length: React.PropTypes.string.isRequired
+  currentItem: React.PropTypes.string,
+  addOrUpdate: React.PropTypes.string,
+  refresh: React.PropTypes.func,
+  currentDb: React.PropTypes.string,
+  refreshCollectionList: React.PropTypes.string,
+  refreshRespectiveData: React.PropTypes.string,
+  connectionId: React.PropTypes.string,
+  length: React.PropTypes.string
 };
 
 export default NewFileComponent;

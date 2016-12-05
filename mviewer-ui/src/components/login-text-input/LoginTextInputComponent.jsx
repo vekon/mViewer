@@ -51,7 +51,7 @@ Formsy.addValidationRule('checkSystemCol', (values, value) => {
 const LoginTextInput = React.createClass({
 
   propTypes: {
-      onChange: React.PropTypes.func.isRequired,
+      onChange: React.PropTypes.func,
       className: React.PropTypes.string,
       placeholder: React.PropTypes.string,
       type: React.PropTypes.string,

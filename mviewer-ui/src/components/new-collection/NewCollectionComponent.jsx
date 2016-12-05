@@ -131,7 +131,7 @@ class NewCollectionComponent extends React.Component {
       this.setState({submitted:true});
     }
 
-    if(this.props.addOrUpdate == 2){
+    if(this.props.addOrUpdate == '2'){
       methodType ='PUT';
     }
     else {
@@ -147,9 +147,9 @@ class NewCollectionComponent extends React.Component {
     if(obj['newCollName'] !=  '') {
       let partialUrl = '';
       if(this.state.isAdmin) {
-        partialUrl = this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId + '&isDbAdmin=true';
+        partialUrl = this.props.currentDb+'/collection/'+(this.props.addOrUpdate == '2' ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId + '&isDbAdmin=true';
       } else {
-        partialUrl = this.props.currentDb+'/collection/'+(this.props.addOrUpdate == 2 ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId + '&isDbAdmin=false';
+        partialUrl = this.props.currentDb+'/collection/'+(this.props.addOrUpdate == '2' ? this.state.name :obj['newCollName'])+'?connectionId='+this.props.connectionId + '&isDbAdmin=false';
       }
       const updateCollectionCall = service(methodType, partialUrl, obj);
       updateCollectionCall.then(this.success.bind(this, 'clickHandler', obj), this.failure.bind(this, 'clickHandler', obj));
@@ -157,7 +157,7 @@ class NewCollectionComponent extends React.Component {
 }
   componentDidMount(){
     this.setState({_isMounted :true});
-    if(this.props.addOrUpdate == 2){
+    if(this.props.addOrUpdate == '2'){
       this.setState({name :this.props.currentItem});
       this.setState({title:'Update Collection'});
     }
@@ -173,7 +173,7 @@ class NewCollectionComponent extends React.Component {
 
   componentWillReceiveProps(nextProps){
     this.setState({error:false});
-    if(nextProps.addOrUpdate == 2 ){
+    if(nextProps.addOrUpdate == '2'){
       this.setState({name :nextProps.currentItem});
       this.setState({title:'Update Collection'});
       this.setState({successMessage:false});
@@ -194,7 +194,7 @@ class NewCollectionComponent extends React.Component {
   success(calledFrom, obj,  data) {
     if (calledFrom == 'clickHandler'){
       if (data.response.result) {
-        if(this.props.addOrUpdate == 2){
+        if(this.props.addOrUpdate == '2'){
           const successResult = data.response.result.replace(/[\[\]']/g,'' );
           this.setState({message:successResult});
           this.setState({newCollection:obj['newCollName']});
@@ -260,8 +260,8 @@ class NewCollectionComponent extends React.Component {
     };
 
     return(
-      <div className={this.props.addOrUpdate=='1'? newCollectionStyles.modalContainer : newCollectionStyles.updateModalContainer}>
-        {this.props.addOrUpdate=='1'? <span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Collection</span> : <span className={newCollectionStyles.updateButton} onClick={this.openModal.bind(this)}><i className="fa fa-pencil" aria-hidden="true"></i>Update Collection</span>}
+      <div className={this.props.addOrUpdate== '1' ? newCollectionStyles.modalContainer : newCollectionStyles.updateModalContainer}>
+        {this.props.addOrUpdate== '1' ? <span onClick= {this.openModal.bind(this)} ><i className="fa fa-plus-circle" aria-hidden="true"></i> Add Collection</span> : <span className={newCollectionStyles.updateButton} onClick={this.openModal.bind(this)}><i className="fa fa-pencil" aria-hidden="true"></i>Update Collection</span>}
         {!this.state.showAuth ? <Modal
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal.bind(this)}
@@ -304,14 +304,14 @@ class NewCollectionComponent extends React.Component {
 }
 
 NewCollectionComponent.propTypes = {
-  currentItem: React.PropTypes.string.isRequired,
-  addOrUpdate: React.PropTypes.string.isRequired,
-  name: React.PropTypes.string.isRequired,
-  currentDb: React.PropTypes.string.isRequired,
-  refreshCollectionList: React.PropTypes.string.isRequired,
-  refreshRespectiveData: React.PropTypes.string.isRequired,
-  connectionId: React.PropTypes.string.isRequired,
-  length: React.PropTypes.string.isRequired
+  currentItem: React.PropTypes.string,
+  addOrUpdate: React.PropTypes.string,
+  name: React.PropTypes.string,
+  currentDb: React.PropTypes.string,
+  refreshCollectionList: React.PropTypes.func,
+  refreshRespectiveData: React.PropTypes.func,
+  connectionId: React.PropTypes.string,
+  length: React.PropTypes.string
 };
 
 export default NewCollectionComponent;

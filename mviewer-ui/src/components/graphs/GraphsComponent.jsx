@@ -233,16 +233,16 @@ class GraphsComponent extends React.Component {
 }
 
 GraphsComponent.propTypes = {
-  cx: React.PropTypes.string.isRequired,
-  cy: React.PropTypes.string.isRequired,
-  stroke: React.PropTypes.string.isRequired,
-  key: React.PropTypes.string.isRequired,
-  x: React.PropTypes.func.isRequired,
-  y: React.PropTypes.string.isRequired,
-  textAnchor: React.PropTypes.string.isRequired,
-  width: React.PropTypes.string.isRequired,
-  height: React.PropTypes.string.isRequired,
-  value: React.PropTypes.string.isRequired
+  cx: React.PropTypes.string,
+  cy: React.PropTypes.string,
+  stroke: React.PropTypes.string,
+  key: React.PropTypes.string,
+  x: React.PropTypes.func,
+  y: React.PropTypes.string,
+  textAnchor: React.PropTypes.string,
+  width: React.PropTypes.string,
+  height: React.PropTypes.string,
+  value: React.PropTypes.string
 };
 
 export default GraphsComponent;

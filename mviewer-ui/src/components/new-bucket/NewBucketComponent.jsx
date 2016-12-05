@@ -127,26 +127,27 @@ class NewBucketComponent extends React.Component {
       obj[data[key].split('=')[0]] = data[key].split('=')[1];
     }
     if ((obj['newBucket']!='' && obj['newBucket']!=null) && this.state.newFile.length > 0){
-      this.setState({newBucket: obj['newBucket']});
       let isDuplicate = false;
       this.props.gridList.map(function(item){
         if(item == obj['newBucket']) {
           isDuplicate = true;
         }
       });
-      if(!isDuplicate) {
-        this.setState({uploadClick: true});
-        this.setState({disableSubmit: true});
-        this.state.newFile.map(function(item){
-          item.percent = 0;
-          that.fileUpload(item);
-        });
-      }
-      else {
-        this.setState({successMessage:false});
-        this.setState({count : 0 });
-        this.setState({message: 'Bucket ' +this.state.newBucket+' already exists'});
-      }
+      this.setState({newBucket: obj['newBucket']}, function(){
+          if(!isDuplicate) {
+            this.setState({uploadClick: true});
+            this.setState({disableSubmit: true});
+            this.state.newFile.map(function(item){
+              item.percent = 0;
+              that.fileUpload(item);
+            });
+          }
+          else {
+            this.setState({successMessage:false});
+            this.setState({count : 0 });
+            this.setState({message: 'Bucket ' +obj['newBucket']+' already exists'});
+          }
+      });
     }
     if(obj['newBucket']!='' || obj['newBucket']!=null) {
       this.setState({error : true});
@@ -286,14 +287,14 @@ class NewBucketComponent extends React.Component {
 }
 
 NewBucketComponent.propTypes = {
-  currentItem: React.PropTypes.string.isRequired,
-  gridList: React.PropTypes.string.isRequired,
-  map: React.PropTypes.string.isRequired,
-  currentDb: React.PropTypes.string.isRequired,
-  refreshCollectionList: React.PropTypes.func.isRequired,
-  refreshRespectiveData: React.PropTypes.string.isRequired,
-  connectionId: React.PropTypes.string.isRequired,
-  length: React.PropTypes.string.isRequired
+  currentItem: React.PropTypes.string,
+  gridList: React.PropTypes.array,
+  map: React.PropTypes.string,
+  currentDb: React.PropTypes.string,
+  refreshCollectionList: React.PropTypes.func,
+  refreshRespectiveData: React.PropTypes.func,
+  connectionId: React.PropTypes.string,
+  length: React.PropTypes.string
 };
 
 export default NewBucketComponent;

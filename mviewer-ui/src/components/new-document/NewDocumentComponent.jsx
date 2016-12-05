@@ -191,18 +191,18 @@ class NewDocumentComponent extends React.Component {
 
 
 NewDocumentComponent.propTypes = {
-  currentItem: React.PropTypes.string.isRequired,
-  addOrUpdate: React.PropTypes.string.isRequired,
-  addOrEdit: React.PropTypes.string.isRequired,
-  currentDb: React.PropTypes.string.isRequired,
-  refreshCollectionList: React.PropTypes.string.isRequired,
-  documentValue: React.PropTypes.string.isRequired,
-  uId: React.PropTypes.string.isRequired,
-  refresh: React.PropTypes.string.isRequired,
-  refreshRespectiveData: React.PropTypes.string.isRequired,
-  connectionId: React.PropTypes.string.isRequired,
-  startsWith: React.PropTypes.string.isRequired,
-  length: React.PropTypes.string.isRequired
+  currentItem: React.PropTypes.string,
+  addOrUpdate: React.PropTypes.string,
+  addOrEdit: React.PropTypes.string,
+  currentDb: React.PropTypes.string,
+  refreshCollectionList: React.PropTypes.func,
+  documentValue: React.PropTypes.string,
+  uId: React.PropTypes.string,
+  refresh: React.PropTypes.func,
+  refreshRespectiveData: React.PropTypes.func,
+  connectionId: React.PropTypes.string,
+  startsWith: React.PropTypes.string,
+  length: React.PropTypes.string
 };
 
 export default NewDocumentComponent;

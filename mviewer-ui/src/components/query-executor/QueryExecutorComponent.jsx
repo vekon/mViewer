@@ -585,7 +585,7 @@ class QueryExecutorComponent extends React.Component {
               <ul className = { queryExecutorStyles.navBar + ' navbar navbar-nav navbar-right innerTab'}>
               <li><NewIndex currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this,'new')} addOrEdit='Add' ></NewIndex></li>
               <li><CollectionStats selectedDB={this.props.currentDb} selectedCollection={this.props.currentItem} connectionId={this.props.connectionId}></CollectionStats></li>
-              <li><NewCollection queryType='collection' currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} addOrUpdate={2} refreshCollectionList={this.props.refreshCollectionList} refreshRespectiveData = {this.props.refreshRespectiveData}/></li>
+              <li><NewCollection queryType='collection' currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} addOrUpdate={'2'} refreshCollectionList={this.props.refreshCollectionList} refreshRespectiveData = {this.props.refreshRespectiveData}/></li>
               <li><NewDocument currentDb={this.props.currentDb} currentItem={this.props.currentItem} connectionId={this.props.connectionId} refresh={this.refresh.bind(this,'new')} addOrEdit='Add' ></NewDocument></li>
               </ul>
             </div>

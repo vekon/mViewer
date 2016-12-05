@@ -89,7 +89,7 @@ CollectionItemComponent.propTypes = {
   dbName: React.PropTypes.string,
   refreshCollectionListForDelete: React.PropTypes.func,
   refreshCollectionList: React.PropTypes.func,
-  idx: React.PropTypes.string,
+  idx: React.PropTypes.number,
   connectionId: React.PropTypes.string
 };
 

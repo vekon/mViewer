@@ -51,46 +51,6 @@ class LoginComponent extends React.Component {
     this.setState({rememberMe:!this.state.rememberMe});
   }
 
-  getRequest() {
-    if(this.state.host == null || this.state.host == ''){
-        this.setState({hostError:true});
-      } else {
-        this.setState({hostError:false});
-      }
-      if(this.state.port == null || this.state.port == ''){
-        this.setState({portError:true});
-      } else{
-        this.setState({portError:false});
-      }
-      
-    if(this.state.authEnabled) {
-      if(this.state.username == null || this.state.username == ''){
-        this.setState({userNameError:true});
-      } else {
-        this.setState({userNameError:false});
-      }
-      if(this.state.password == null || this.state.password == ''){
-        this.setState({passwordError:true});
-      } else {
-        this.setState({passwordError:false});
-      }
-      if(this.state.databases == null || this.state.databases == ''){
-        this.setState({dbError:true});
-      } else {
-        this.setState({dbError:false});
-      }
-    }
-    if(this.state.hostError || this.state.portError || this.state.userNameError || this.state.passwordError || this.state.dbError)
-      return false;
-
-    var data = $('form').serialize().split('&');
-    var obj={};
-    for(var key in data){
-      obj[data[key].split('=')[0]] = data[key].split('=')[1];
-    }
-    return obj;
-  }
-
   loadLoginData() {
     if(localStorage.getItem('loginData') != undefined && localStorage.getItem('loginData') != null){
       var loginObject = JSON.parse(localStorage.getItem('loginData'));
@@ -105,20 +65,60 @@ class LoginComponent extends React.Component {
   }
 
   onSubmit() {
-    var obj = this.getRequest();
-    this.setState({loading : true});
-    this.setState({message: ''});
-    if(this.state.rememberMe){
-      var loginData = { 'host': this.state.host, 'port': this.state.port, 'username': this.state.username,
-                        'password': this.state.password, 'databases': this.state.databases,'authEnabled': this.state.authEnabled};
-      localStorage.setItem('loginData', JSON.stringify(loginData));
-    } else {
-      localStorage.removeItem('loginData');
+    let hostError = false;
+    let portError = false;
+    let userNameError = false;
+    let passwordError = false;
+    let dbError = false;
+
+    if(this.state.host == null || this.state.host == '')
+      hostError = true;
+
+    if(this.state.port == null || this.state.port == '')
+      portError = true;
+
+    if(this.state.authEnabled) {
+      if(this.state.username == null || this.state.username == '')
+        userNameError = true;
+
+      if(this.state.password == null || this.state.password == '')
+        passwordError = true;
+
+      if(this.state.databases == null || this.state.databases == '')
+        dbError = true;
     }
 
-    var loginCall = service('POST', 'login',  obj);
-    loginCall.then(this.success, this.failure);
-    return loginCall;
+    this.setState({hostError : hostError}, function(){
+        this.setState({portError : portError}, function(){
+            this.setState({userNameError : userNameError}, function(){
+                this.setState({passwordError : passwordError}, function(){
+                    this.setState({dbError : dbError}, function(){
+                        if(hostError || portError || userNameError || passwordError || dbError)
+                           return false;
+
+                         var data = $('form').serialize().split('&');
+                         var obj={};
+                         for(var key in data){
+                           obj[data[key].split('=')[0]] = data[key].split('=')[1];
+                         }
+
+                         this.setState({loading : true});
+                         this.setState({message: ''});
+                         if(this.state.rememberMe){
+                           var loginData = { 'host': this.state.host, 'port': this.state.port, 'username': this.state.username,
+                                             'password': this.state.password, 'databases': this.state.databases,'authEnabled': this.state.authEnabled};
+                           localStorage.setItem('loginData', JSON.stringify(loginData));
+                         } else {
+                           localStorage.removeItem('loginData');
+                         }
+                        var loginCall = service('POST', 'login',  obj);
+                        loginCall.then(this.success, this.failure);
+                        return loginCall;
+                    });
+                });
+            });
+        });
+    });
   }
 
   success(data) {
