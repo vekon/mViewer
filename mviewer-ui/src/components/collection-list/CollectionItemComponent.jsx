@@ -1,4 +1,7 @@
 import React from 'react';
+/*eslint-disable */
+import toolTip from '../shared/tool-tip.js';
+/*eslint-enable */
 import collectionListStyles from '../shared/list-panel.css';
 import DeleteComponent from '../delete-component/DeleteComponent.jsx';
 import privilegesAPI from '../../gateway/privileges-api.js';

@@ -176,7 +176,7 @@ class CreateDbComponent extends React.Component {
 }
 
 CreateDbComponent.propTypes = {
-  fromHome: React.PropTypes.string,
+  fromHome: React.PropTypes.object,
   refreshDb:  React.PropTypes.func
 };
 

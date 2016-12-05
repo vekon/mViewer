@@ -328,14 +328,11 @@ class DbListComponent extends React.Component {
   }
 }
 
-DbListComponent.contextTypes = {
-  selectedDB: React.PropTypes.string
-};
 
 DbListComponent.propTypes = {
   propps: React.PropTypes.object,
-  selectedNav: React.PropTypes.string,
-  selectedDB: React.PropTypes.string
+  selectedNav: React.PropTypes.number,
+  selectedDB: React.PropTypes.func.isRequired
 };
 
 export default DbListComponent;

@@ -1,4 +1,7 @@
 import React from 'react';
+/*eslint-disable */
+import toolTip from '../shared/tool-tip.js';
+/*eslint-enable */
 import GridFSListStyles from '../shared/list-panel.css';
 
 class GridFSItemComponent extends React.Component {

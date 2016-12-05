@@ -224,9 +224,7 @@ class LoginComponent extends React.Component {
 }
 
 LoginComponent.propTypes = {
-  location: React.PropTypes.string.isRequired,
-  query: React.PropTypes.string.isRequired ,
-  code: React.PropTypes.string.isRequired
+  location: React.PropTypes.object.isRequired
 };
 
 export default LoginComponent;

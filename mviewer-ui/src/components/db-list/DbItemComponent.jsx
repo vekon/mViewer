@@ -1,4 +1,7 @@
 import React from 'react';
+/*eslint-disable */
+import toolTip from '../shared/tool-tip.js';
+/*eslint-enable */
 import dbListStyles from './db-list.css';
 import DeleteComponent from '../delete-component/DeleteComponent.jsx';
 import privilegesAPI from '../../gateway/privileges-api.js';
@@ -79,7 +82,7 @@ DbItemComponent.propTypes = {
   isSelected: React.PropTypes.bool,
   name: React.PropTypes.string,
   refreshDbList: React.PropTypes.func,
-  idx: React.PropTypes.string,
+  idx: React.PropTypes.number,
   connectionId: React.PropTypes.string
 };
 

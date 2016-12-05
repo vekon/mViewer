@@ -6,6 +6,9 @@ import Modal from 'react-modal';
 import { Form } from 'formsy-react';
 import FileInput from 'react-file-input';
 import sharedStyles from '../shared/list-panel.css';
+/*eslint-disable */
+import progress from '../shared/jquery.ajax-progress.jsx';
+/*eslint-enable */
 import Line from 'rc-progress/lib/Line.js';
 import 'rc-progress/assets/index.less';
 import service from '../../gateway/service.js';

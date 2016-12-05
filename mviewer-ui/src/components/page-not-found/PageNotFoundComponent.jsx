@@ -1,7 +1,16 @@
-import React from 'react'
+import React from 'react';
 
-export default React.createClass({
-  render() {
-    return <div>Page Not Found</div>
+class PageNotFoundComponent extends React.Component {
+
+  constructor(props) {
+    super(props);
   }
-})
+
+  render () {
+    return(
+      <div>Page Not Found</div>
+    );
+  }
+}
+
+export default PageNotFoundComponent;

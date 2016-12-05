@@ -52,12 +52,11 @@ const LoginTextInput = React.createClass({
 
   propTypes: {
       onChange: React.PropTypes.func.isRequired,
-      className: React.PropTypes.string.isRequired,
-      placeholder: React.PropTypes.string.isRequired,
-      toUpperCase: React.PropTypes.string.isRequired,
-      type: React.PropTypes.string.isRequired,
-      name: React.PropTypes.string.isRequired,
-      shouldBeDisabled: React.PropTypes.string.isRequired
+      className: React.PropTypes.string,
+      placeholder: React.PropTypes.string,
+      type: React.PropTypes.string,
+      name: React.PropTypes.string,
+      shouldBeDisabled: React.PropTypes.bool
   },
 
   // Add the Formsy Mixin

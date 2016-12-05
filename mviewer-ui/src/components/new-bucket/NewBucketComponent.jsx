@@ -4,6 +4,9 @@ import sharedStyles from '../shared/list-panel.css';
 import $ from 'jquery';
 import Modal from 'react-modal';
 import { Form } from 'formsy-react';
+/*eslint-disable */
+import progress from '../shared/jquery.ajax-progress.jsx';
+/*eslint-enable */
 import TextInput from '../text-input/TextInputComponent.jsx';
 import Line from 'rc-progress/lib/Line.js';
 import newFileStyles from '../new-file/new-file.css';
