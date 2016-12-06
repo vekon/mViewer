@@ -1,3 +1,4 @@
+/* eslint react/prop-types: 0 */
 import React from 'react';
 import userDetailsStyles from './user-details.css';
 import DeleteComponent from '../delete-component/DeleteComponent.jsx';
@@ -147,13 +148,5 @@ class UserDetailsComponent extends React.Component {
   );
  }
 }
-
-UserDetailsComponent.propTypes = {
-  users : React.PropTypes.array,
-  currentDb: React.PropTypes.string,
-  connectionId: React.PropTypes.string,
-  refreshCollectionList: React.PropTypes.func.isRequired,
-  refreshData: React.PropTypes.func.isRequired
-};
 
 export default UserDetailsComponent;
