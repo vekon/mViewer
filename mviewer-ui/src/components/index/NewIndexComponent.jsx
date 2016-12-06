@@ -336,12 +336,12 @@ class NewIndexComponent extends React.Component {
 }
 
 NewIndexComponent.propTypes = {
-  currentItem: React.PropTypes.string.isRequired,
-  addOrEdit: React.PropTypes.string.isRequired,
-  refresh: React.PropTypes.func.isRequired,
-  currentDb: React.PropTypes.string.isRequired,
-  connectionId: React.PropTypes.string.isRequired,
-  length: React.PropTypes.string.isRequired
+  currentItem: React.PropTypes.string,
+  addOrEdit: React.PropTypes.string,
+  refresh: React.PropTypes.func,
+  currentDb: React.PropTypes.string,
+  connectionId: React.PropTypes.string,
+  length: React.PropTypes.string
 };
 
 export default NewIndexComponent;

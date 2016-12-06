@@ -149,7 +149,7 @@ class UserDetailsComponent extends React.Component {
 }
 
 UserDetailsComponent.propTypes = {
-  users : React.PropTypes.object,
+  users : React.PropTypes.array,
   currentDb: React.PropTypes.string,
   connectionId: React.PropTypes.string,
   refreshCollectionList: React.PropTypes.func.isRequired,

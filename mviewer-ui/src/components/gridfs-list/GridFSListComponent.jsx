@@ -143,13 +143,13 @@ class GridFSList extends React.Component {
 }
 
 GridFSList.propTypes = {
-  propps: React.PropTypes.string.isRequired,
-  connectionId: React.PropTypes.string.isRequired,
-  selectedDB: React.PropTypes.string.isRequired,
-  refreshDb: React.PropTypes.func.isRequired,
-  visible: React.PropTypes.string.isRequired,
-  alignment: React.PropTypes.string.isRequired,
-  setStates: React.PropTypes.element.isRequired
+  propps: React.PropTypes.object,
+  connectionId: React.PropTypes.string,
+  selectedDB: React.PropTypes.string,
+  refreshDb: React.PropTypes.func,
+  visible: React.PropTypes.bool,
+  alignment: React.PropTypes.string,
+  setStates: React.PropTypes.func
 };
 
 export default GridFSList;

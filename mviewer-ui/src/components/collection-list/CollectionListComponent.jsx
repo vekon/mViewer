@@ -202,12 +202,12 @@ class CollectionList extends React.Component {
 }
 
 CollectionList.propTypes = {
-  propps: React.PropTypes.string,
+  propps: React.PropTypes.object,
   selectedDB: React.PropTypes.string,
-  setStates: React.PropTypes.object,
+  setStates: React.PropTypes.func,
   refreshDb:  React.PropTypes.func,
-  hideQueryExecutor: React.PropTypes.string,
-  visible: React.PropTypes.string,
+  hideQueryExecutor: React.PropTypes.func,
+  visible: React.PropTypes.bool,
   alignment: React.PropTypes.string
 };
 
