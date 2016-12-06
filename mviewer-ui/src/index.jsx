@@ -6,9 +6,9 @@ import DashBoardComponent from './components/dashboard/DashBoardComponent.jsx';
 import PageNotFoundComponent from './components/page-not-found/PageNotFoundComponent.jsx';
 import HomeComponent from './components/home/HomeComponent.jsx';
 import DbStatsComponent from './components/db-stats/DbStatsComponent.jsx';
-import CollectionsComponent from  './components/collections/CollectionsComponent.jsx';
-import GraphsComponent from  './components/graphs/GraphsComponent.jsx';
-import ServerStatsComponent from  './components/server-stats/ServerStatsComponent.jsx';
+import CollectionsComponent from './components/collections/CollectionsComponent.jsx';
+import GraphsComponent from './components/graphs/GraphsComponent.jsx';
+import ServerStatsComponent from './components/server-stats/ServerStatsComponent.jsx';
 // import Bootstrap from './vendors/css/bootstrap/dist/css/bootstrap.css';
 
 render((

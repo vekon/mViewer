@@ -18,9 +18,36 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
+        "brace-style": [
+          "error"
+        ],
+        "eqeqeq": [
+          "error"
+        ],
+        "no-multi-spaces": [
+          "error"
+        ],
+        "comma-spacing": [
+          "error"
+        ],
+        "key-spacing": [
+          "error",
+          { "beforeColon": true,
+            "afterColon": true }
+        ],
+        "array-bracket-spacing": [
+          "error"
+        ],
+        "no-trailing-spaces": [
+          "error"
+        ],
         "indent": [
+            "error",
+            2
+        ],
+        "curly": [
             "off",
-            "tab"
+            "multi"
         ],
         "linebreak-style": [
             "off",

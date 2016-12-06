@@ -7,8 +7,8 @@ class AuthPopUpComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalIsOpen: this.props.modalIsOpen,
-      message:'',
+      modalIsOpen : this.props.modalIsOpen,
+      message : '',
     };
   }
 
@@ -20,18 +20,18 @@ class AuthPopUpComponent extends React.Component {
   render () {
     const customStyles = {
       content : {
-        top                   : '50%',
-        left                  : '50%',
-        right                 : 'auto',
-        width                 : '25%',
-        minWidth              : '300px',
-        bottom                : 'auto',
-        marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)',
-        zIndex                :  '4',
-        borderRadius          :  '2px',
-        padding               :  '0px',
-        border                :  '0px'
+        top : '50%',
+        left : '50%',
+        right : 'auto',
+        width : '25%',
+        minWidth : '300px',
+        bottom : 'auto',
+        marginRight : '-50%',
+        transform : 'translate(-50%, -50%)',
+        zIndex : '4',
+        borderRadius : '2px',
+        padding : '0px',
+        border : '0px'
       }
     };
 
@@ -57,9 +57,9 @@ class AuthPopUpComponent extends React.Component {
 }
 
 AuthPopUpComponent.propTypes = {
-  modalIsOpen: React.PropTypes.bool,
-  authClose:  React.PropTypes.func,
-  action: React.PropTypes.string
+  modalIsOpen : React.PropTypes.bool,
+  authClose : React.PropTypes.func,
+  action : React.PropTypes.string
 };
 
 export default AuthPopUpComponent;
