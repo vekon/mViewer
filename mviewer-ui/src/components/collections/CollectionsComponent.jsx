@@ -19,7 +19,8 @@ class CollectionsComponent extends React.Component {
         selectedCollection: '',
         userDetails: [],
         hasListColPriv: null,
-        navMessage:'Collections'
+        navMessage:'Collections',
+        _isMounted: false
       };
       this.refreshRespectiveData = this.refreshRespectiveData.bind(this);
       this.refreshCollectionList = this.refreshCollectionList.bind(this);
@@ -62,19 +63,29 @@ class CollectionsComponent extends React.Component {
 
       this.setState({hasListColPriv: null});
       setTimeout(() => {
-        this.setState({hasListColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db)}, function(){
-        }); 
+        if (this.state._isMounted == true){
+          this.setState({hasListColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db)}, function(){
+          }); 
+        }
       }, 500);
     }
   }
 
 
   componentDidMount (){
+    this.setState({_isMounted : true});
     setTimeout(() => {
-      this.setState({hasListColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db)}, function(){
-      }); 
+      if (this.state._isMounted == true){
+       this.setState({hasListColPriv : privilegesAPI.hasPrivilege('listCollections' , '' , this.props.location.query.db)}, function(){ });
+      }     
     }, 500);
   
+  }
+
+  componentWillUnmount (){
+    /* eslint-disable */ 
+    this.state._isMounted = false;
+    /* eslint-enable */
   }
 
   setStates(collection, data){
@@ -111,7 +122,6 @@ class CollectionsComponent extends React.Component {
   }
 
   render () {
-
     Tabs.setUseDefaultStyles(false);
     const hasUserAdminPriv = privilegesAPI.hasPrivilege('viewUser', '',this.props.location.query.db );
     const hasUserAdminAnyDatabasePriv = privilegesAPI.hasPrivilege('viewUser','',this.props.location.query.db );
