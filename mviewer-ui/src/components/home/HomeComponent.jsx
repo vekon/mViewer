@@ -13,7 +13,7 @@ class HomeComponent extends React.Component {
   }
   render () {
     return(
-      <div className={homeStyles.mainContainer+' container col-lg-10 col-sm-9 col-xs-8 col-md-9'}>
+      <div className={homeStyles.mainContainer + ' container col-lg-10 col-sm-9 col-xs-8 col-md-9'}>
         <CreateDb fromHome = {this.props} refreshDb={this.refreshDb}></CreateDb>
       </div>
     );
@@ -21,7 +21,7 @@ class HomeComponent extends React.Component {
 }
 
 HomeComponent.propTypes = {
-  refreshDb: React.PropTypes.func
+  refreshDb : React.PropTypes.func
 };
 
 export default HomeComponent;
