@@ -22,7 +22,8 @@ module.exports = {
           "error"
         ],
         "eqeqeq": [
-          "error"
+          "error",
+          "smart"
         ],
         "no-multi-spaces": [
           "error"
@@ -39,6 +40,12 @@ module.exports = {
           "error"
         ],
         "no-trailing-spaces": [
+          "error"
+        ],
+        "space-infix-ops" : [
+          "error"
+        ],
+        "space-before-blocks" : [
           "error"
         ],
         "indent": [

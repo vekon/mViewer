@@ -13,18 +13,18 @@ class CollectionList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      collections:[],
-      connectionId: this.props.propps.connectionId,
-      dbStats: {},
-      selectedDB: this.props.selectedDB,
-      visible: false,
-      selectedItem: null,
-      loading: 'Loading',
-      searchTerm: '',
-      queryType: JSON.parse(sessionStorage.getItem('queryType') || '{}'),
-      selectedCollection:null,
-      viewMore: false,
-      viewMoreLink: false
+      collections : [],
+      connectionId : this.props.propps.connectionId,
+      dbStats : {},
+      selectedDB : this.props.selectedDB,
+      visible : false,
+      selectedItem : null,
+      loading : 'Loading',
+      searchTerm : '',
+      queryType : JSON.parse(sessionStorage.getItem('queryType') || '{}'),
+      selectedCollection : null,
+      viewMore : false,
+      viewMoreLink : false
     };
     this.searchUpdated = this.searchUpdated.bind(this);
     this.refreshCollectionList = this.refreshCollectionList.bind(this);
@@ -35,75 +35,73 @@ class CollectionList extends React.Component {
     this.collMoreClick = this.collMoreClick.bind(this);
   }
 
-  clickHandler (idx,collection) {
-    this.setState({selectedItem: idx});
-    this.setState({ visible: false});
+  clickHandler (idx, collection) {
+    this.setState({selectedItem : idx});
+    this.setState({ visible : false});
     this.props.setStates(collection);
-    this.setState({selectedCollection : collection}, function(){
+    this.setState({selectedCollection : collection}, function() {
     });
   }
 
   refreshRespectiveData(newCollectionName) {
-    this.setState({selectedCollection: newCollectionName});
+    this.setState({selectedCollection : newCollectionName});
     this.props.setStates(newCollectionName);
   }
 
-  refreshCollectionList(db){
-    var partialUrl = db +'/collection?connectionId=' + this.state.connectionId;
+  refreshCollectionList(db) {
+    var partialUrl = db + '/collection?connectionId=' + this.state.connectionId;
     var collectionListCall = service('GET', partialUrl, '');
-    collectionListCall.then(this.success.bind(this , 'refreshCollectionList'), this.failure.bind(this , 'refreshCollectionList'));
+    collectionListCall.then(this.success.bind(this, 'refreshCollectionList'), this.failure.bind(this, 'refreshCollectionList'));
   }
 
-  refreshCollectionListForDelete(db){
-    var partialUrl = db +'/collection?connectionId=' + this.state.connectionId;
+  refreshCollectionListForDelete(db) {
+    var partialUrl = db + '/collection?connectionId=' + this.state.connectionId;
     var collectionListCall = service('GET', partialUrl, '');
-    collectionListCall.then(this.success.bind(this , 'refreshCollectionListForDelete'), this.failure.bind(this , 'refreshCollectionList'));
+    collectionListCall.then(this.success.bind(this, 'refreshCollectionListForDelete'), this.failure.bind(this, 'refreshCollectionList'));
   }
 
   success(calledFrom, data) {
-    if(calledFrom == 'componentDidMount'){
-      this.setState({collections: data.response.result});
+    if(calledFrom === 'componentDidMount') {
+      this.setState({collections : data.response.result});
     }
 
-    if(calledFrom == 'componentWillReceiveProps'){
-      if (this.state._isMounted == true) {
-        this.setState({collections: data.response.result});
+    if(calledFrom === 'componentWillReceiveProps') {
+      if (this.state._isMounted === true) {
+        this.setState({collections : data.response.result});
       }
     }
 
-    if(calledFrom == 'refreshCollectionList'){
-      if(typeof(data.response.result) !== 'undefined'){
-        if(data.response.result.length != 0){
-          this.setState({collections: data.response.result});
-        }
-        else{
+    if(calledFrom === 'refreshCollectionList') {
+      if(typeof(data.response.result) != 'undefined') {
+        if(data.response.result.length !== 0) {
+          this.setState({collections : data.response.result});
+        } else{
           this.props.refreshDb();
-          browserHistory.push({ pathname: '/dashboard/home', query: { collapsed: false} });
+          browserHistory.push({ pathname : '/dashboard/home', query : { collapsed : false} });
         }
       }
-      if(typeof(data.response.error) !== 'undefined'){
-        if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){
-            this.props.refreshDb();
+      if(typeof(data.response.error) != 'undefined') {
+        if(data.response.error.code === 'DB_DOES_NOT_EXISTS') {
+          this.props.refreshDb();
         }
       }
     }
 
-    if(calledFrom == 'refreshCollectionListForDelete'){
-      if(typeof(data.response.result) !== 'undefined'){
-        if(data.response.result.length != 0){
-          this.setState({collections: data.response.result});
+    if(calledFrom === 'refreshCollectionListForDelete') {
+      if(typeof(data.response.result) != 'undefined') {
+        if(data.response.result.length !== 0) {
+          this.setState({collections : data.response.result});
           this.props.hideQueryExecutor();
-        }
-        else{
+        } else{
           this.props.refreshDb();
-          browserHistory.push({ pathname: '/dashboard/home', query: { collapsed: false} });
+          browserHistory.push({ pathname : '/dashboard/home', query : { collapsed : false} });
         }
-        
+
       }
-      if(typeof(data.response.error) !== 'undefined'){
-        if(data.response.error.code == 'DB_DOES_NOT_EXISTS'){
-            this.props.refreshDb();
-            browserHistory.push({ pathname: '/dashboard/home', query: { collapsed: false} });
+      if(typeof(data.response.error) != 'undefined') {
+        if(data.response.error.code === 'DB_DOES_NOT_EXISTS') {
+          this.props.refreshDb();
+          browserHistory.push({ pathname : '/dashboard/home', query : { collapsed : false} });
         }
       }
 
@@ -114,35 +112,35 @@ class CollectionList extends React.Component {
 
   }
 
-  componentWillMount(){
-    this.state._isMounted == true;
+  componentWillMount() {
+    this.setState({_isMounted : true});
   }
 
   componentDidMount() {
-    this.state._isMounted == true;
+    // this.state._isMounted == true;
     this.setState({_isMounted : true});
-    this.setState({selectedDB: this.props.selectedDB});
-    var partialUrl = this.props.selectedDB +'/collection?connectionId=' + this.state.connectionId;
+    this.setState({selectedDB : this.props.selectedDB});
+    var partialUrl = this.props.selectedDB + '/collection?connectionId=' + this.state.connectionId;
     var collectionListCall = service('GET', partialUrl, '');
-    collectionListCall.then(this.success.bind(this , 'componentDidMount'), this.failure.bind(this , 'componentDidMount'));
+    collectionListCall.then(this.success.bind(this, 'componentDidMount'), this.failure.bind(this, 'componentDidMount'));
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.selectedDB != this.props.selectedDB){
+    if(nextProps.selectedDB !== this.props.selectedDB) {
       this.setState({selectedCollection : null});
     }
-    this.setState({selectedDB: nextProps.selectedDB});
+    this.setState({selectedDB : nextProps.selectedDB});
     // var partialUrl = nextProps.selectedDB +'/collection?connectionId=' + this.state.connectionId;
     // var collectionListCall = service('GET', partialUrl, '');
     // collectionListCall.then(this.success.bind(this , 'componentWillReceiveProps'), this.failure.bind(this , 'componentWillReceiveProps'));
   }
 
-  componentWillUnmount(){
-    this.setState({_isMounted: false});
+  componentWillUnmount() {
+    this.setState({_isMounted : false});
   }
 
   searchUpdated (term) {
-    this.setState({searchTerm: term});
+    this.setState({searchTerm : term});
   }
 
   setViewMore(height) {
@@ -150,33 +148,33 @@ class CollectionList extends React.Component {
     var listContainerHeight = height;
 
     if (listContainerHeight > collListHeight) {
-      this.setState({viewMoreLink: true});
+      this.setState({viewMoreLink : true});
     } else {
-      this.setState({viewMoreLink: false});
+      this.setState({viewMoreLink : false});
     }
   }
 
   collMoreClick() {
-    this.setState({viewMore: !this.state.viewMore});
-    this.setState({viewMoreLink: false});
+    this.setState({viewMore : !this.state.viewMore});
+    this.setState({viewMoreLink : false});
   }
 
   render () {
     var filteredData = null;
-    if (this.state.collections != undefined){
+    if (typeof(this.state.collections) != 'undefined') {
       filteredData = this.state.collections.filter(createFilter(this.state.searchTerm));
     }
 
 
-       return (
-         <div  id ="collectionNav-1" className={collectionListStyles.menu + ' innerList col-md-2 col-xs-5 col-sm-3'} key = {this.props.visible}>
-          <div className={(this.props.visible ?(this.state.visible ? collectionListStyles.visible : this.props.alignment): this.props.alignment ) }>
+    return (
+         <div id ="collectionNav-1" className={collectionListStyles.menu + ' innerList col-md-2 col-xs-5 col-sm-3'} key = {this.props.visible}>
+          <div className={(this.props.visible ? (this.state.visible ? collectionListStyles.visible : this.props.alignment) : this.props.alignment ) }>
              <SearchInput className={collectionListStyles.searchInput} onChange={this.searchUpdated} />
              <h5 className={collectionListStyles.menuTitle}><NewCollection queryType= {this.state.queryType} currentDb={this.props.selectedDB} currentItem={''} connectionId={this.props.propps.connectionId} addOrUpdate={'1'} refreshCollectionList={this.refreshCollectionList} refreshRespectiveData={this.refreshRespectiveData}/></h5>
                <div className = {(this.state.viewMore ? collectionListStyles.listBody : collectionListStyles.listBodyExpanded) + ' collContainer'}>
                 <ReactHeight onHeightReady={this.setViewMore}>
-                  { this.state.collections != undefined ?
-                     (filteredData.map((item,idx) => {
+                  { typeof(this.state.collections) != 'undefined' ?
+                     (filteredData.map((item, idx) => {
                        return(
                          <CollectionItem
                           key={item}
@@ -184,12 +182,12 @@ class CollectionList extends React.Component {
                           idx={idx}
                           dbName={this.state.selectedDB}
                           onClick={this.clickHandler}
-                          isSelected={this.state.selectedCollection==item}
+                          isSelected={this.state.selectedCollection === item}
                           connectionId={this.state.connectionId}
                           refreshCollectionList={this.refreshCollectionList}
                           refreshCollectionListForDelete={this.refreshCollectionListForDelete}
                          />);
-                    })): null}
+                     })) : null}
                   </ReactHeight>
                 </div>
                 <div className= {(this.state.viewMoreLink ? collectionListStyles.viewMoreContainer : collectionListStyles.displayNone)}>
@@ -197,18 +195,18 @@ class CollectionList extends React.Component {
                 </div>
             </div>
         </div>
-      );
-}
+    );
+  }
 }
 
 CollectionList.propTypes = {
-  propps: React.PropTypes.object,
-  selectedDB: React.PropTypes.string,
-  setStates: React.PropTypes.func,
-  refreshDb:  React.PropTypes.func,
-  hideQueryExecutor: React.PropTypes.func,
-  visible: React.PropTypes.bool,
-  alignment: React.PropTypes.string
+  propps : React.PropTypes.object,
+  selectedDB : React.PropTypes.string,
+  setStates : React.PropTypes.func,
+  refreshDb : React.PropTypes.func,
+  hideQueryExecutor : React.PropTypes.func,
+  visible : React.PropTypes.bool,
+  alignment : React.PropTypes.string
 };
 
 export default CollectionList;

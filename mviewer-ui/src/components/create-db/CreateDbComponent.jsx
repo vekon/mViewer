@@ -13,46 +13,45 @@ class CreateDbComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalIsOpen: false,
-      name: null,
-      canSubmit:false,
-      message:'',
-      successMessage: false,
-      error:false,
-      showAuth: false,
-      hasPriv: false
+      modalIsOpen : false,
+      name : null,
+      canSubmit : false,
+      message : '',
+      successMessage : false,
+      error : false,
+      showAuth : false,
+      hasPriv : false
     };
   }
 
   openModal = () => {
-    this.setState({modalIsOpen: true});
-    this.setState({message: ''});
-    this.setState({error:false});
-    var hasPriv = privilegesAPI.hasPrivilege('createCollection','', this.state.selectedItem);
-    if(hasPriv){
-      this.setState({showAuth : false});    }
-    else{
+    this.setState({modalIsOpen : true});
+    this.setState({message : ''});
+    this.setState({error : false});
+    var hasPriv = privilegesAPI.hasPrivilege('createCollection', '', this.state.selectedItem);
+    if(hasPriv) {
+      this.setState({showAuth : false});
+    } else{
       this.setState({showAuth : true});
     }
   }
 
   authClose = () => {
-      this.setState({showAuth:false});
-      this.setState({modalIsOpen:false});
+    this.setState({showAuth : false});
+    this.setState({modalIsOpen : false});
   }
 
   closeModal = () => {
-    this.setState({modalIsOpen: false});
-    if(this.state.successMessage==true)
-    {
-      browserHistory.push({ pathname: '/dashboard/home'});
+    this.setState({modalIsOpen : false});
+    if(this.state.successMessage === true) {
+      browserHistory.push({ pathname : '/dashboard/home'});
     }
   }
 
   enableButton() {
     return function() {
       this.setState({
-        canSubmit: true
+        canSubmit : true
       });
     }.bind(this);
   }
@@ -60,75 +59,75 @@ class CreateDbComponent extends React.Component {
   disableButton() {
     return function() {
       this.setState({
-        canSubmit: false
+        canSubmit : false
       });
     }.bind(this);
   }
 
   handleChange = () => {
-   this.setState({successMessage:false});
-   this.setState({message:''});
+    this.setState({successMessage : false});
+    this.setState({message : ''});
   }
 
 
   clickHandler = () => {
     var data = $('form').serialize().split('&');
-    var obj={};
-    for(var key in data)
-    {
+    var obj = {};
+    for(var key in data) {
       obj[data[key].split('=')[0]] = data[key].split('=')[1];
     }
-    if (obj['name']!=''){
-      var partialUrl = 'db/'+obj['name']+'?connectionId='+this.props.fromHome.connectionId;
+    if (obj['name'] !== '') {
+      var partialUrl = 'db/' + obj['name'] + '?connectionId=' + this.props.fromHome.connectionId;
       var createDbCall = service('POST', partialUrl, obj);
       createDbCall.then(this.success.bind(this, obj), this.failure.bind(this, obj));
-    }
-    else{
+    } else{
       this.setState({error : true});
     }
   }
 
   success(obj, data) {
     if (data.response.result) {
-      this.setState({message:'Database '+obj['name']+ ' was successfully created'});
-      this.setState({successMessage:true});
+      this.setState({message : 'Database ' + obj['name'] + ' was successfully created'});
+      this.setState({successMessage : true});
       this.props.refreshDb();
-      setTimeout(() => { this.closeModal(); }, 2000);
+      setTimeout(() => {
+        this.closeModal();
+      }, 2000);
     }
     if (data.response.error) {
-      this.setState({successMessage:false});
-      if(data.response.error.code == 'DB_ALREADY_EXISTS'){
-        this.setState({message:'Database '+obj['name']+ ' already exists'});
+      this.setState({successMessage : false});
+      if(data.response.error.code === 'DB_ALREADY_EXISTS') {
+        this.setState({message : 'Database ' + obj['name'] + ' already exists'});
       }
-      if(data.response.error.code == 'DB_CREATION_EXCEPTION'){
+      if(data.response.error.code === 'DB_CREATION_EXCEPTION') {
         this.setState({message : 'could not create database with given db name'});
       }
-      if(data.response.error.code == 'ANY_OTHER_EXCEPTION'){
+      if(data.response.error.code === 'ANY_OTHER_EXCEPTION') {
         this.setState({message : 'Error occured while creating the database'});
       }
     }
   }
 
-  failure (){
+  failure () {
 
   }
 
   render () {
     const customStyles = {
       content : {
-        top                   : '50%',
-        left                  : '53%',
-        right                 : 'auto',
-        width                 : '25%',
-        minWidth              : '200px',
-        bottom                : 'auto',
-        marginRight           : '-50%',
-        padding               : '0px',
-        transform             : 'translate(-50%, -50%)',
-        border                : 'none'
+        top : '50%',
+        left : '53%',
+        right : 'auto',
+        width : '25%',
+        minWidth : '200px',
+        bottom : 'auto',
+        marginRight : '-50%',
+        padding : '0px',
+        transform : 'translate(-50%, -50%)',
+        border : 'none'
       },
       overlay : {
-        backgroundColor       : 'rgba(0,0,0, 0.74902)'
+        backgroundColor : 'rgba(0,0,0, 0.74902)'
       }
     };
     return(
@@ -156,7 +155,7 @@ class CreateDbComponent extends React.Component {
             <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
               <div className={ createDbStyles.formContainer}>
                 <div className={createDbStyles.inputBox}>
-                  <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error+',maxLength:63'} validationErrors={{isRequired2: 'Db name must not be empty', isAlpha1: 'Invalid Db name', maxLength: 'Db name exceeds maximum limit' }}  />
+                  <TextInput type="text" name="name" id="name" placeholder="Database name" value={this.state.name} onChange = {this.handleChange} validations={'isRequired2:' + this.state.error + ',isAlpha1:' + this.state.error + ',maxLength:63'} validationErrors={{isRequired2 : 'Db name must not be empty', isAlpha1 : 'Invalid Db name', maxLength : 'Db name exceeds maximum limit' }} />
                 </div>
                 <div className={createDbStyles.buttons}>
                   <div className={createDbStyles.right}>
@@ -167,17 +166,17 @@ class CreateDbComponent extends React.Component {
               </div>
             </Form>
              <div className={createDbStyles.clear}></div>
-             <div className={!this.state.successMessage? (createDbStyles.errorMessage + ' ' + (this.state.message!='' ? createDbStyles.show : createDbStyles.hidden)) : (this.state.message != '' ? createDbStyles.successMessage : '')}>{this.state.message}</div>
+             <div className={!this.state.successMessage ? (createDbStyles.errorMessage + ' ' + (this.state.message !== '' ? createDbStyles.show : createDbStyles.hidden)) : (this.state.message !== '' ? createDbStyles.successMessage : '')}>{this.state.message}</div>
           </div>
-        </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose} action =   'create Database' ></AuthPopUp> }
+        </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose} action = 'create Database' ></AuthPopUp> }
       </div>
     );
   }
 }
 
 CreateDbComponent.propTypes = {
-  fromHome: React.PropTypes.object,
-  refreshDb:  React.PropTypes.func
+  fromHome : React.PropTypes.object,
+  refreshDb : React.PropTypes.func
 };
 
 export default CreateDbComponent;
