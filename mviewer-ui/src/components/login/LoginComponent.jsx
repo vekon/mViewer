@@ -52,7 +52,7 @@ class LoginComponent extends React.Component {
   }
 
   loadLoginData() {
-    if(localStorage.getItem('loginData') != undefined && localStorage.getItem('loginData') != null){
+    if(typeof(localStorage.getItem('loginData')) != 'undefined' && localStorage.getItem('loginData') != null) {
       var loginObject = JSON.parse(localStorage.getItem('loginData'));
       this.setState({host : loginObject.host});
       this.setState({port : loginObject.port});
@@ -71,40 +71,40 @@ class LoginComponent extends React.Component {
     let passwordError = false;
     let dbError = false;
 
-    if(this.state.host == null || this.state.host == '')
+    if(this.state.host == null || this.state.host === '')
       hostError = true;
 
-    if(this.state.port == null || this.state.port == '')
+    if(this.state.port == null || this.state.port === '')
       portError = true;
 
     if(this.state.authEnabled) {
-      if(this.state.username == null || this.state.username == '')
+      if(this.state.username == null || this.state.username === '')
         userNameError = true;
 
-      if(this.state.password == null || this.state.password == '')
+      if(this.state.password == null || this.state.password === '')
         passwordError = true;
 
-      if(this.state.databases == null || this.state.databases == '')
+      if(this.state.databases == null || this.state.databases === '')
         dbError = true;
     }
 
-    this.setState({hostError : hostError}, function(){
-      this.setState({portError : portError}, function(){
-        this.setState({userNameError : userNameError}, function(){
-          this.setState({passwordError : passwordError}, function(){
-            this.setState({dbError : dbError}, function(){
+    this.setState({hostError : hostError}, function() {
+      this.setState({portError : portError}, function() {
+        this.setState({userNameError : userNameError}, function() {
+          this.setState({passwordError : passwordError}, function() {
+            this.setState({dbError : dbError}, function() {
               if(hostError || portError || userNameError || passwordError || dbError)
                 return false;
 
               var data = $('form').serialize().split('&');
-              var obj={};
-              for(var key in data){
+              var obj = {};
+              for(var key in data) {
                 obj[data[key].split('=')[0]] = data[key].split('=')[1];
               }
 
               this.setState({loading : true});
               this.setState({message : ''});
-              if(this.state.rememberMe){
+              if(this.state.rememberMe) {
                 var loginData = { 'host' : this.state.host, 'port' : this.state.port, 'username' : this.state.username,
                   'password' : this.state.password, 'databases' : this.state.databases, 'authEnabled' : this.state.authEnabled};
                 localStorage.setItem('loginData', JSON.stringify(loginData));
@@ -170,7 +170,7 @@ class LoginComponent extends React.Component {
 
 
   componentDidMount() {
-    if (typeof(this.props.location.query.code) !== 'undefined' ) {
+    if (typeof(this.props.location.query.code) != 'undefined' ) {
       this.setState({message : 'You are not connected to Mongo DB'});
     }
     this.loadLoginData();
@@ -186,34 +186,34 @@ class LoginComponent extends React.Component {
             <Form method='POST' onValid={this.enableButton()} onSubmit={this.onSubmit} onInvalid={this.disableButton()} >
               <div className={ styles.formContainer}>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput type="text" name="host" id="host" placeholder="host" value={this.state.host} onChange={this.handleChange( 'host')} validations={'isRequired1:'+this.state.hostError} validationErrors={{isRequired1 : 'Host must not be empty' }} shouldBeDisabled ={this.state.loading} checked={this.state.rememberMe} />
+                  <TextInput type="text" name="host" id="host" placeholder="host" value={this.state.host} onChange={this.handleChange( 'host')} validations={'isRequired1:' + this.state.hostError} validationErrors={{isRequired1 : 'Host must not be empty' }} shouldBeDisabled ={this.state.loading} checked={this.state.rememberMe} />
                 </div>
                 <div className={styles.inputBoxLogin}>
                   <TextInput type="text" name="port" id="port" placeholder="port" value={this.state.port} onChange={this.handleChange( 'port')} validations={{isRequired1 : this.state.portError, isNumeric : true}} validationErrors={{isRequired1 : 'Port must not be empty', isNumeric : 'Inavlid Port number' }} shouldBeDisabled ={this.state.loading} checked={this.state.rememberMe} />
                 </div>
-                <div className={styles.inputBoxLogin+' '+ styles.checkBox}>
+                <div className={styles.inputBoxLogin + ' ' + styles.checkBox}>
                   <span className={styles.checkLabel} onClick ={this.handleCheck}>Perform Authentication</span>
                   <input type="checkbox" className={styles.checkboxClass} name="auth" id="auth" onChange={this.handleCheck} checked={this.state.authEnabled} disabled ={this.state.loading} />
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput ref="username" type="text" name="username" id="username" placeholder="username" value={this.state.username} onChange={this.handleChange( 'username')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.userNameError} validationErrors={{isRequired1 : 'User name must not be empty' }} checked={this.state.rememberMe}/>
+                  <TextInput ref="username" type="text" name="username" id="username" placeholder="username" value={this.state.username} onChange={this.handleChange( 'username')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:' + this.state.userNameError} validationErrors={{isRequired1 : 'User name must not be empty' }} checked={this.state.rememberMe}/>
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput ref="password" type="password" name="password" id="password" placeholder="password" value={this.state.password} onChange={this.handleChange( 'password')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.passwordError} validationErrors={{isRequired1 : 'Password must not be empty' }} checked={this.state.rememberMe}/>
+                  <TextInput ref="password" type="password" name="password" id="password" placeholder="password" value={this.state.password} onChange={this.handleChange( 'password')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:' + this.state.passwordError} validationErrors={{isRequired1 : 'Password must not be empty' }} checked={this.state.rememberMe}/>
                 </div>
                 <div className={styles.inputBoxLogin}>
-                  <TextInput ref="database" type="text" name="databases" id="databases" placeholder="database" value={this.state.databases} onChange={this.handleChange( 'databases')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:'+this.state.dbError} validationErrors={{isRequired1 : 'DB name must not be empty'}} checked={this.state.rememberMe}/>
+                  <TextInput ref="database" type="text" name="databases" id="databases" placeholder="database" value={this.state.databases} onChange={this.handleChange( 'databases')} shouldBeDisabled={!this.state.authEnabled || this.state.loading} validations={'isRequired1:' + this.state.dbError} validationErrors={{isRequired1 : 'DB name must not be empty'}} checked={this.state.rememberMe}/>
                 </div>
                 <div className={styles.submitContainer}>
-                  {this.state.loading == true ? <div className={styles.loader}></div> : null}
-                  <input type="submit" value={this.state.loading == true ? 'Connecting..' : 'CONNECT' } disabled={!this.state.canSubmit || this.state.loading} className={ styles.gobutton} />
+                  {this.state.loading === true ? <div className={styles.loader}></div> : null}
+                  <input type="submit" value={this.state.loading === true ? 'Connecting..' : 'CONNECT' } disabled={!this.state.canSubmit || this.state.loading} className={ styles.gobutton} />
                 </div>
                 <div className={styles.footerLink}>
                   <input type="checkbox" className={styles.rememberClass} name="rememberMe" id="rememberMe" onChange={this.rememberMeCheck} checked={this.state.rememberMe}/>
                   <div className={styles.rememberLabel} onClick ={this.rememberMeCheck} ><span>Remember Me</span></div>
                   <a target = "_blank" href='http://Imaginea.github.io/mViewer'>Need Help?</a>
                 </div>
-                <div className={styles.errorMessage + ' ' + (this.state.message != undefined && this.state.message!='' && this.state.message !='Login Success' ? styles.show : styles.hidden)}>{this.state.message}</div>
+                <div className={styles.errorMessage + ' ' + (typeof(this.state.message) != 'undefined' && this.state.message !== '' && this.state.message !== 'Login Success' ? styles.show : styles.hidden)}>{this.state.message}</div>
               </div>
             </Form>
           </div>
