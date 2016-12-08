@@ -31,7 +31,6 @@ class LoginComponent extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.success = this.success.bind(this);
     this.failure = this.failure.bind(this);
-    // this.getRequest = this.getRequest.bind(this);
   }
 
   handleCheck = () => {

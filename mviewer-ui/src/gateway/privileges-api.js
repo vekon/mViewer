@@ -7,25 +7,25 @@ function setRolesAndPrivileges(privs) {
 function hasPrivilege(privilege, collection, db) {
   let privs;
 
-  if (typeof(privileges) !== 'undefined') {
+  if (typeof(privileges) != 'undefined') {
     /*Used for System Collections*/
     privs = privileges.inheritedPrivileges.filter((eachPriv) => {
-      return eachPriv.resource.collection == collection && (eachPriv.resource.db == db || eachPriv.resource.db == '');
+      return eachPriv.resource.collection === collection && (eachPriv.resource.db === db || eachPriv.resource.db === '');
     });
 
     /*Used for Non System Collections*/
-    if (privs.length == 0) {
+    if (privs.length === 0) {
       privs = privileges.inheritedPrivileges.filter((eachPriv) => {
-        return eachPriv.resource.collection == '' && (eachPriv.resource.db == db || eachPriv.resource.db == '');
+        return eachPriv.resource.collection === '' && (eachPriv.resource.db === db || eachPriv.resource.db === '');
       });
     }
 
-    let actions =[];
+    let actions = [];
     let innerActions = [];
     if (privs && privs.length > 0) {
-      privs.forEach(function(eachPriv){
+      privs.forEach(function(eachPriv) {
         innerActions = eachPriv.actions.filter((eachAction) => {
-          return eachAction == privilege;
+          return eachAction === privilege;
         });
         actions = actions.concat(innerActions);
       });
@@ -39,11 +39,11 @@ function hasPrivilege(privilege, collection, db) {
 
 }
 
-function hasRole(role, db){
+function hasRole(role, db) {
   let rols;
-  if(typeof(privileges) !== 'undefined') {
+  if(typeof(privileges) != 'undefined') {
     rols = privileges.roles.filter((eachRole) => {
-      return eachRole.db == db && eachRole.role == role;
+      return eachRole.db === db && eachRole.role === role;
     });
 
     return (rols && rols.length > 0);

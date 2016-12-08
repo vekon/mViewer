@@ -7,20 +7,20 @@ class DbStatsComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dbStats: {},
-      selectedDB: null,
-      sidebarOpen: false
+      dbStats : {},
+      selectedDB : null,
+      sidebarOpen : false
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const that = this;
     let queryData = {};
     queryData['query'] = 'db.runCommand({dbStats:1})';
     queryData['fields'] = '';
     queryData['limit'] = 10;
     queryData['skip'] = 0;
-    queryData['sortBy'] =  '{"_id":-1}';
+    queryData['sortBy'] = '{"_id":-1}';
     const partialUrl = 'db/' + that.props.selectedDB + '?connectionId=' + that.props.connectionId;
     const dbStatsCall = service('POST', partialUrl, JSON.stringify(queryData), 'query');
     dbStatsCall.then(this.success.bind(this), this.failure.bind(this));
@@ -31,15 +31,15 @@ class DbStatsComponent extends React.Component {
     const oldStats = data.response.result.documents;
     oldStats.length > 0 ? Object.keys(oldStats[0]).map(function(key) {
       if(typeof(oldStats[0][key]) == 'object') {
-        Object.keys(oldStats[0][key]).map(function(item){
+        Object.keys(oldStats[0][key]).map(function(item) {
           const keyValue = key + '.' + item;
-          stats.push({key: keyValue, value: oldStats[0][key][item]});
+          stats.push({key : keyValue, value : oldStats[0][key][item]});
         });
       } else {
-        stats.push({key: key, value: oldStats[0][key]});
+        stats.push({key : key, value : oldStats[0][key]});
       }
     }) : null;
-    this.setState({dbStats: stats});
+    this.setState({dbStats : stats});
   }
 
   failure() {
@@ -49,7 +49,7 @@ class DbStatsComponent extends React.Component {
     const that = this;
     return(
       <div className={dbStatsStyles.mainContainer}>
-        { that.props.selectedDB  ?
+        { that.props.selectedDB ?
           <div className={dbStatsStyles.dbStatsBody}>
             <table>
               <tbody>
@@ -58,8 +58,8 @@ class DbStatsComponent extends React.Component {
                   <th>Values</th>
                 </tr>
                 { that.state.dbStats.length > 0 ? that.state.dbStats.map((item) => {
-                    return <tr key={item.key}><td>{item.key}</td><td>{item.value}</td></tr>;
-                }): null}
+                  return <tr key={item.key}><td>{item.key}</td><td>{item.value}</td></tr>;
+                }) : null}
               </tbody>
             </table>
           </div>

@@ -87,7 +87,6 @@ class DbListComponent extends React.Component {
     sessionStorage.setItem('queryType', JSON.stringify('collection'));
 
     browserHistory.push({ pathname : '/dashboard/database', query : { collapsed : this.state.visible, db : db} });
-    // window.location = '/dashboard/database?db='+db + '&collapsed='+this.state.visible;
   }
 
   componentDidMount() {

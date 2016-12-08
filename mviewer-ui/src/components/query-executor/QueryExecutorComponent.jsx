@@ -532,7 +532,6 @@ class QueryExecutorComponent extends React.Component {
   }
 
   checkHandler = () => {
-    
   }
 
   enableButton() {
