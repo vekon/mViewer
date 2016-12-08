@@ -21,160 +21,161 @@ class NewBucketComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalIsOpen: false,
-      autoIndex: true,
-      name: null,
-      size: '',
-      max:'',
-      error: false,
-      title:'',
-      submitted:false,
-      message:'',
-      successMessage: false,
-      newBucket: null,
-      uploadClick: false,
-      count: 0,
-      disableSubmit: true,
-      newFile: [],
-      errorFile: false,
-      showAuth: false
+      modalIsOpen : false,
+      autoIndex : true,
+      name : null,
+      size : '',
+      max : '',
+      error : false,
+      title : '',
+      submitted : false,
+      message : '',
+      successMessage : false,
+      newBucket : null,
+      uploadClick : false,
+      count : 0,
+      disableSubmit : true,
+      newFile : [],
+      errorFile : false,
+      showAuth : false
     };
   }
 
   openModal() {
-    this.setState({modalIsOpen: true});
-    this.setState({message: ''});
-    this.setState({disableSubmit: true});
-    this.setState({newBucket: null});
-    const hasPriv = privilegesAPI.hasPrivilege('insert','', this.props.currentDb);
-      if(hasPriv){
-        this.setState({showAuth : false});    }
-      else{
-        this.setState({showAuth : true});
-      }
+    this.setState({modalIsOpen : true});
+    this.setState({message : ''});
+    this.setState({disableSubmit : true});
+    this.setState({newBucket : null});
+    const hasPriv = privilegesAPI.hasPrivilege('insert', '', this.props.currentDb);
+    if(hasPriv) {
+      this.setState({showAuth : false});
+    } else{
+      this.setState({showAuth : true});
+    }
   }
 
-  authClose(){
-      this.setState({showAuth:false});
-      this.setState({modalIsOpen:false});
+  authClose() {
+    this.setState({showAuth : false});
+    this.setState({modalIsOpen : false});
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
-    this.setState({newFile: []});
-    this.setState({uploadClick: false});
-    this.setState({error: false});
-    this.setState({errorFile: false});
-    this.setState({count: 0});
-    if(this.state.successMessage==true)
-    {
+    this.setState({modalIsOpen : false});
+    this.setState({newFile : []});
+    this.setState({uploadClick : false});
+    this.setState({error : false});
+    this.setState({errorFile : false});
+    this.setState({count : 0});
+    if(this.state.successMessage === true) {
       this.props.refreshCollectionList(this.props.currentDb);
       this.props.refreshRespectiveData(this.state.newBucket);
     }
   }
 
-  handleChanged(event){
-    this.setState({disableSubmit: false});
+  handleChanged(event) {
+    this.setState({disableSubmit : false});
     let newArray = this.state.newFile.slice();
     newArray.push(event.target.files[0]);
     this.setState({newFile : newArray});
-    this.setState({errorFile: false});
+    this.setState({errorFile : false});
     event.target.value = null;
   }
 
   handleChange = () => {
-    this.setState({successMessage:false});
-    this.setState({message:''});
+    this.setState({successMessage : false});
+    this.setState({message : ''});
   }
 
   fileUpload(data) {
     const that = this;
     let fd = new FormData();
     fd.append( 'files', data );
-    const partialUrl = this.props.currentDb+'/gridfs/'+that.state.newBucket+'/uploadfile?connectionId='+this.props.connectionId;
-    const newBucketCall = service('POST', partialUrl, fd, 'fileUpload' , data);
+    const partialUrl = this.props.currentDb + '/gridfs/' + that.state.newBucket + '/uploadfile?connectionId=' + this.props.connectionId;
+    const newBucketCall = service('POST', partialUrl, fd, 'fileUpload', data);
     newBucketCall.then(this.success.bind(this), this.failure.bind(this));
   }
 
   success(data) {
     if (data.response && data.response.error) {
-      if (data.response.error.code === 'ANY_OTHER_EXCEPTION'){
-        this.setState({successMessage:false});
-        this.setState({disableSubmit: false});
+      if (data.response.error.code === 'ANY_OTHER_EXCEPTION') {
+        this.setState({successMessage : false});
+        this.setState({disableSubmit : false});
         this.setState({count : 0 });
-        this.setState({message: 'File cannot be added some error.'});
+        this.setState({message : 'File cannot be added some error.'});
       }
     } else {
-      this.setState({count : this.state.count +1 });
+      this.setState({count : this.state.count + 1 });
     }
-    if(this.state.count == this.state.newFile.length) {
-      this.setState({successMessage:true});
-      setTimeout(() => { this.setState({message: 'New Bucket ' +this.state.newBucket+' is successfully created'});}, 2000);
-      setTimeout(() => { this.closeModal(); }, 3000);
+    if(this.state.count === this.state.newFile.length) {
+      this.setState({successMessage : true});
+      setTimeout(() => {
+        this.setState({message : 'New Bucket ' + this.state.newBucket + ' is successfully created'});
+      }, 2000);
+      setTimeout(() => {
+        this.closeModal();
+      }, 3000);
     }
   }
 
   failure() {
-    this.setState({disableSubmit: false});
+    this.setState({disableSubmit : false});
   }
 
-  addHandle(){
+  addHandle() {
     const that = this;
     const data = $('form').serialize().split('&');
-    let obj={};
-    for(let key in data)
-    {
+    let obj = {};
+    for(let key in data) {
       obj[data[key].split('=')[0]] = data[key].split('=')[1];
     }
-    if ((obj['newBucket']!='' && obj['newBucket']!=null) && this.state.newFile.length > 0){
+    if ((obj['newBucket'] !== '' && obj['newBucket'] != null) && this.state.newFile.length > 0) {
       let isDuplicate = false;
-      this.props.gridList.map(function(item){
-        if(item == obj['newBucket']) {
+      this.props.gridList.map(function(item) {
+        if(item === obj['newBucket']) {
           isDuplicate = true;
         }
       });
-      this.setState({newBucket: obj['newBucket']}, function(){
-          if(!isDuplicate) {
-            this.setState({uploadClick: true});
-            this.setState({disableSubmit: true});
-            this.state.newFile.map(function(item){
-              item.percent = 0;
-              that.fileUpload(item);
-            });
-          }
-          else {
-            this.setState({successMessage:false});
-            this.setState({count : 0 });
-            this.setState({message: 'Bucket ' +obj['newBucket']+' already exists'});
-          }
+      this.setState({newBucket : obj['newBucket']}, function() {
+        if(!isDuplicate) {
+          this.setState({uploadClick : true});
+          this.setState({disableSubmit : true});
+          this.state.newFile.map(function(item) {
+            item.percent = 0;
+            that.fileUpload(item);
+          });
+        } else {
+          this.setState({successMessage : false});
+          this.setState({count : 0 });
+          this.setState({message : 'Bucket ' + obj['newBucket'] + ' already exists'});
+        }
       });
     }
-    if(obj['newBucket']!='' || obj['newBucket']!=null) {
+    if(obj['newBucket'] !== '' || obj['newBucket'] != null) {
       this.setState({error : true});
     }
 
-    if(this.state.newFile.length <= 0){
-      this.setState({errorFile: true});
+    if(this.state.newFile.length <= 0) {
+      this.setState({errorFile : true});
     }
   }
 
-  componentDidMount(){
-    this.setState({name :this.props.currentItem});
-    this.setState({title:'Add GridFS Bucket'});
+  componentDidMount() {
+    this.setState({name : this.props.currentItem});
+    this.setState({title : 'Add GridFS Bucket'});
   }
 
   removeFile(index) {
     return function() {
       let files = [];
-      this.state.newFile.map(function(item, idx){
-        if(idx != index)
+      this.state.newFile.map(function(item, idx) {
+        if(idx !== index)
           files.push(item);
       });
-      this.setState({newFile: files});
-      if(this.state.newFile.length > 0){
-        this.setState({disableSubmit: false});
+      this.setState({newFile : files});
+      if(this.state.newFile.length > 0) {
+        this.setState({disableSubmit : false});
       } else {
-        this.setState({disableSubmit: true});
+        this.setState({disableSubmit : true});
       }
     }.bind(this);
   }
@@ -197,29 +198,29 @@ class NewBucketComponent extends React.Component {
 
                 <span>{item.success}</span>
                 { item.added ?
-                  <span><i className={'fa fa-remove ' +  sharedStyles.removeIcon} aria-hidden="true"></i></span>
+                  <span><i className={'fa fa-remove ' + sharedStyles.removeIcon} aria-hidden="true"></i></span>
                 : null}
               </div>
              </div>;
-      }.bind(this));
+    }.bind(this));
 
     const customStyles = {
       content : {
-        top                   : '50%',
-        overflow              : 'hidden',
-        left                  : '50%',
-        padding               : '0px',
-        right                 : 'auto',
-        border                : 'none',
-        borderRadius          : '4px',
-        width                 : '28%',
-        minWidth              : '347px',
-        bottom                : 'auto',
-        marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)'
+        top : '50%',
+        overflow : 'hidden',
+        left : '50%',
+        padding : '0px',
+        right : 'auto',
+        border : 'none',
+        borderRadius : '4px',
+        width : '28%',
+        minWidth : '347px',
+        bottom : 'auto',
+        marginRight : '-50%',
+        transform : 'translate(-50%, -50%)'
       },
       overlay : {
-        backgroundColor       : 'rgba(0,0,0, 0.74902)'
+        backgroundColor : 'rgba(0,0,0, 0.74902)'
       }
     };
 
@@ -237,9 +238,9 @@ class NewBucketComponent extends React.Component {
             <Form method='POST'>
               <div className={newBucketStyles.div1}>
                 <div className = {newBucketStyles.textDiv}>
-                  <TextInput className={newBucketStyles.input} type="text" name="newBucket" id="newBucket" placeholder="Bucket Name" value={this.state.newBucket} validations={'isRequired2:'+this.state.error+',isAlpha1:'+this.state.error+',maxLength:'+(95-this.props.currentDb.length)} onChange={this.handleChange.bind(that)} validationErrors={{isRequired2: 'Bucket name must not be empty', isAlpha1: 'Invalid Bucket name', maxLength: 'Bucket size cannot be more than '+(95-this.props.currentDb.length)+' characters for this Db' }} />
+                  <TextInput className={newBucketStyles.input} type="text" name="newBucket" id="newBucket" placeholder="Bucket Name" value={this.state.newBucket} validations={'isRequired2:' + this.state.error + ',isAlpha1:' + this.state.error + ',maxLength:' + (95 - this.props.currentDb.length)} onChange={this.handleChange.bind(that)} validationErrors={{isRequired2 : 'Bucket name must not be empty', isAlpha1 : 'Invalid Bucket name', maxLength : 'Bucket size cannot be more than ' + (95 - this.props.currentDb.length) + ' characters for this Db' }} />
                 </div>
-                <div className={selectedFiles.length > 0 ? newFileStyles.fileDiv: ''}>
+                <div className={selectedFiles.length > 0 ? newFileStyles.fileDiv : ''}>
                 { selectedFiles.length <= 0 ?
                   <span>
                     <img src={'/images/add.png'} className={newBucketStyles.logo}></img>
@@ -276,7 +277,7 @@ class NewBucketComponent extends React.Component {
                 <span onClick={this.closeModal.bind(that)} className={newBucketStyles.cancel}>CANCEL</span>
               </div>
               <div className = {newBucketStyles.clear}></div>
-              <div className={!this.state.successMessage? (newBucketStyles.errorMessage + ' ' + (this.state.message!='' ? newBucketStyles.show : newBucketStyles.hidden)) : (this.state.message != '' ? newBucketStyles.successMessage : '')}>{this.state.message}</div>
+              <div className={!this.state.successMessage ? (newBucketStyles.errorMessage + ' ' + (this.state.message !== '' ? newBucketStyles.show : newBucketStyles.hidden)) : (this.state.message !== '' ? newBucketStyles.successMessage : '')}>{this.state.message}</div>
             </Form>
 
           </div>
@@ -287,14 +288,14 @@ class NewBucketComponent extends React.Component {
 }
 
 NewBucketComponent.propTypes = {
-  currentItem: React.PropTypes.string,
-  gridList: React.PropTypes.array,
-  map: React.PropTypes.string,
-  currentDb: React.PropTypes.string,
-  refreshCollectionList: React.PropTypes.func,
-  refreshRespectiveData: React.PropTypes.func,
-  connectionId: React.PropTypes.string,
-  length: React.PropTypes.string
+  currentItem : React.PropTypes.string,
+  gridList : React.PropTypes.array,
+  map : React.PropTypes.string,
+  currentDb : React.PropTypes.string,
+  refreshCollectionList : React.PropTypes.func,
+  refreshRespectiveData : React.PropTypes.func,
+  connectionId : React.PropTypes.string,
+  length : React.PropTypes.string
 };
 
 export default NewBucketComponent;

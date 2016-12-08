@@ -20,48 +20,47 @@ class NewFileComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalIsOpen: false,
-      name: null,
-      canSubmit:false,
-      title:'',
-      submitted:false,
-      message:'',
-      successMessage: false,
-      newFile: [],
-      uploadClick: false,
-      count: 0,
-      disableSubmit: true,
-      showAuth: false,
-      hasPriv: false
+      modalIsOpen : false,
+      name : null,
+      canSubmit : false,
+      title : '',
+      submitted : false,
+      message : '',
+      successMessage : false,
+      newFile : [],
+      uploadClick : false,
+      count : 0,
+      disableSubmit : true,
+      showAuth : false,
+      hasPriv : false
     };
   }
 
   openModal() {
-    this.setState({modalIsOpen: true});
-    this.setState({message: ''});
-    this.setState({disableSubmit: true});
-    this.setState({successMessage: false});
+    this.setState({modalIsOpen : true});
+    this.setState({message : ''});
+    this.setState({disableSubmit : true});
+    this.setState({successMessage : false});
 
-    const hasPriv = privilegesAPI.hasPrivilege('insert','', this.props.currentDb);
-    if(hasPriv){
-      this.setState({showAuth : false});    }
-    else{
+    const hasPriv = privilegesAPI.hasPrivilege('insert', '', this.props.currentDb);
+    if(hasPriv) {
+      this.setState({showAuth : false});
+    } else{
       this.setState({showAuth : true});
     }
   }
 
-  authClose(){
-      this.setState({showAuth:false});
-      this.setState({modalIsOpen:false});
+  authClose() {
+    this.setState({showAuth : false});
+    this.setState({modalIsOpen : false});
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
-    this.setState({newFile: []});
-    this.setState({uploadClick: false});
-    this.setState({count: 0});
-    if(this.state.successMessage==true)
-    {
+    this.setState({modalIsOpen : false});
+    this.setState({newFile : []});
+    this.setState({uploadClick : false});
+    this.setState({count : 0});
+    if(this.state.successMessage === true) {
       this.props.refresh('new');
     }
   }
@@ -69,7 +68,7 @@ class NewFileComponent extends React.Component {
   enableButton() {
     return function() {
       this.setState({
-        canSubmit: true
+        canSubmit : true
       });
     }.bind(this);
   }
@@ -77,78 +76,82 @@ class NewFileComponent extends React.Component {
   disableButton() {
     return function() {
       this.setState({
-        canSubmit: false
+        canSubmit : false
       });
     }.bind(this);
   }
 
-  handleChanged(event){
+  handleChanged(event) {
     let newArray = this.state.newFile.slice();
     newArray.push(event.target.files[0]);
     this.setState({newFile : newArray});
-    this.setState({disableSubmit: false});
+    this.setState({disableSubmit : false});
     event.target.value = null;
   }
 
   fileUpload(data) {
     let fd = new FormData();
     fd.append( 'files', data );
-    const partialUrl = this.props.currentDb+'/gridfs/'+this.props.currentItem+'/uploadfile?connectionId='+this.props.connectionId;
-    const newFileCall = service('POST', partialUrl, fd, 'fileUpload' , data);
+    const partialUrl = this.props.currentDb + '/gridfs/' + this.props.currentItem + '/uploadfile?connectionId=' + this.props.connectionId;
+    const newFileCall = service('POST', partialUrl, fd, 'fileUpload', data);
     newFileCall.then(this.success.bind(this), this.failure.bind(this));
   }
 
   removeFile(index) {
     return function() {
       let files = [];
-      this.state.newFile.map(function(item, idx){
-        if(idx != index)
+      this.state.newFile.map(function(item, idx) {
+        if(idx !== index)
           files.push(item);
       });
-      this.setState({newFile: files});
-      if(this.state.newFile.length > 0){
-        this.setState({disableSubmit: false});
+      this.setState({newFile : files});
+      if(this.state.newFile.length > 0) {
+        this.setState({disableSubmit : false});
       } else {
-        this.setState({disableSubmit: true});
+        this.setState({disableSubmit : true});
       }
     }.bind(this);
   }
 
   success(data) {
     if (data.response && data.response.error) {
-      if (data.response.error.code === 'ANY_OTHER_EXCEPTION'){
-        this.setState({successMessage:false});
+      if (data.response.error.code === 'ANY_OTHER_EXCEPTION') {
+        this.setState({successMessage : false});
         this.setState({count : 0 });
-        this.setState({message: 'File cannot be added some error.'});
-        this.setState({disableSubmit: false});
+        this.setState({message : 'File cannot be added some error.'});
+        this.setState({disableSubmit : false});
       }
     } else {
-      this.setState({count : this.state.count +1 });
+      this.setState({count : this.state.count + 1 });
     }
-    if(this.state.count == this.state.newFile.length) {
-      this.setState({successMessage:true});
-      setTimeout(() => { this.setState({message: 'File(s) successfully added to bucket ' + this.props.currentItem});}, 2000);
-      setTimeout(() => { this.closeModal(); }, 3000);
+    if(this.state.count === this.state.newFile.length) {
+      this.setState({successMessage : true});
+      setTimeout(() => {
+        this.setState({message : 'File(s) successfully added to bucket ' + this.props.currentItem});
+      }, 2000);
+      setTimeout(() => {
+        this.closeModal();
+      }, 3000);
     }
   }
 
   failure() {
-    this.setState({disableSubmit: false});
+    this.setState({disableSubmit : false});
   }
 
-  uploadHandle(){
-    this.setState({uploadClick: true});
-    this.setState({disableSubmit: true});
+  uploadHandle() {
+    this.setState({uploadClick : true});
+    this.setState({disableSubmit : true});
     const that = this;
-    this.state.newFile.map(function(item){
+    this.state.newFile.map(function(item) {
       item.percent = 0;
       that.fileUpload(item);
     });
   }
 
-  componentDidMount(){
-    this.setState({name :this.props.currentItem});
-    this.setState({title:'File Upload'});
+  componentDidMount() {
+    this.setState({name : this.props.currentItem});
+    this.setState({title : 'File Upload'});
   }
 
   componentDidUpdate() {
@@ -156,11 +159,11 @@ class NewFileComponent extends React.Component {
   }
 
   completeLoading() {
-    this.setState({completeLoading: true});
+    this.setState({completeLoading : true});
   }
 
   startLoading() {
-    this.setState({startLoading: true});
+    this.setState({startLoading : true});
   }
 
   resetLoading() {
@@ -184,29 +187,29 @@ class NewFileComponent extends React.Component {
                 }
                 <span>{item.success}</span>
                 { item.added ?
-                  <span><i className={'fa fa-remove ' +  sharedStyles.removeIcon} aria-hidden="true"></i></span>
+                  <span><i className={'fa fa-remove ' + sharedStyles.removeIcon} aria-hidden="true"></i></span>
                 : null}
               </div>
              </div>;
-      }.bind(this));
+    }.bind(this));
 
     const customStyles = {
       content : {
-        top                   : '50%',
-        left                  : '50%',
-        overflow              : 'hidden',
-        border                : 'none',
-        borderRadius          : '4px',
-        right                 : 'auto',
-        width                 : '25%',
-        minWidth              : '310px',
-        padding               : '0px',
-        bottom                : 'auto',
-        marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)'
+        top : '50%',
+        left : '50%',
+        overflow : 'hidden',
+        border : 'none',
+        borderRadius : '4px',
+        right : 'auto',
+        width : '25%',
+        minWidth : '310px',
+        padding : '0px',
+        bottom : 'auto',
+        marginRight : '-50%',
+        transform : 'translate(-50%, -50%)'
       },
       overlay : {
-        backgroundColor       : 'rgba(0,0,0, 0.74902)'
+        backgroundColor : 'rgba(0,0,0, 0.74902)'
       }
     };
 
@@ -223,7 +226,7 @@ class NewFileComponent extends React.Component {
             </div>
             <Form method='POST'>
               <div>
-                <div className={selectedFiles.length > 0 ? newFileStyles.fileDiv: ''}>
+                <div className={selectedFiles.length > 0 ? newFileStyles.fileDiv : ''}>
                 { selectedFiles.length <= 0 ?
                   <span>
                     <img src={'/images/add.png'} className={newBucketStyles.logo}></img>
@@ -262,9 +265,9 @@ class NewFileComponent extends React.Component {
               </div>
             </Form>
             <div className={newFileStyles.clear}></div>
-            <div className={!this.state.successMessage? (newFileStyles.errorMessage + ' ' + (this.state.message!='' ? newFileStyles.show : newFileStyles.hidden)) : (this.state.message != '' ? newFileStyles.successMessage : '')}>{this.state.message}</div>
+            <div className={!this.state.successMessage ? (newFileStyles.errorMessage + ' ' + (this.state.message !== '' ? newFileStyles.show : newFileStyles.hidden)) : (this.state.message !== '' ? newFileStyles.successMessage : '')}>{this.state.message}</div>
           </div>
-       </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} action = 'add file'   authClose = {this.authClose.bind(this)} ></AuthPopUp> }
+       </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} action = 'add file' authClose = {this.authClose.bind(this)} ></AuthPopUp> }
       </div>
     );
   }
@@ -272,14 +275,14 @@ class NewFileComponent extends React.Component {
 
 
 NewFileComponent.propTypes = {
-  currentItem: React.PropTypes.string,
-  addOrUpdate: React.PropTypes.string,
-  refresh: React.PropTypes.func,
-  currentDb: React.PropTypes.string,
-  refreshCollectionList: React.PropTypes.string,
-  refreshRespectiveData: React.PropTypes.string,
-  connectionId: React.PropTypes.string,
-  length: React.PropTypes.string
+  currentItem : React.PropTypes.string,
+  addOrUpdate : React.PropTypes.string,
+  refresh : React.PropTypes.func,
+  currentDb : React.PropTypes.string,
+  refreshCollectionList : React.PropTypes.string,
+  refreshRespectiveData : React.PropTypes.string,
+  connectionId : React.PropTypes.string,
+  length : React.PropTypes.string
 };
 
 export default NewFileComponent;
