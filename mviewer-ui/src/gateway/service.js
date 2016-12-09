@@ -13,7 +13,7 @@ function setupServicePath() {
 setupServicePath();
 
 function service(typex, serviceName, req, component, data) {
-  if (component == 'fileUpload'){
+  if (component === 'fileUpload') {
     return $.ajax({
       type : typex,
       url : path + serviceName,
@@ -30,9 +30,9 @@ function service(typex, serviceName, req, component, data) {
         }
       }
     });
-  } else if(component == 'download') {
+  } else if(component === 'download') {
     window.open(path + serviceName);
-  } else if(component == 'query'){
+  } else if(component === 'query') {
     return $.ajax({
       type : typex,
       cache : false,

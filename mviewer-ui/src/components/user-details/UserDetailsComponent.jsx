@@ -11,92 +11,92 @@ class UserDetailsComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userDetails: [],
-      selectedDB: null,
-      modalIsOpen: false,
-      sidebarOpen: false,
-      currentUser: null,
-      _isMounted: false,
-      roles: '',
-      showAuth: false,
-      hasPriv: false
+      userDetails : [],
+      selectedDB : null,
+      modalIsOpen : false,
+      sidebarOpen : false,
+      currentUser : null,
+      _isMounted : false,
+      roles : '',
+      showAuth : false,
+      hasPriv : false
     };
     this.closeModal = this.closeModal.bind(this);
     this.refreshRespectiveData = this.refreshRespectiveData.bind(this);
     this.refreshCollectionList = this.refreshCollectionList.bind(this);
-    this.createUserDetails     = this.createUserDetails.bind(this);
+    this.createUserDetails = this.createUserDetails.bind(this);
   }
 
   openModal = () => {
-    this.setState({modalIsOpen: true});
-    this.setState({message: ''});
-    const hasPriv = privilegesAPI.hasPrivilege('dropRole','', this.props.currentDb);
-    if(hasPriv){
-      this.setState({showAuth : false});    }
-    else{
+    this.setState({modalIsOpen : true});
+    this.setState({message : ''});
+    const hasPriv = privilegesAPI.hasPrivilege('dropRole', '', this.props.currentDb);
+    if(hasPriv) {
+      this.setState({showAuth : false});
+    } else{
       this.setState({showAuth : true});
     }
   }
 
   authClose = () => {
-    this.setState({showAuth:false});
-    this.setState({modalIsOpen:false});
+    this.setState({showAuth : false});
+    this.setState({modalIsOpen : false});
   }
 
 
   closeModal(successMessage) {
-    if(this.state._isMounted == true){
-      this.setState({modalIsOpen: false});
-      if (successMessage == true){
+    if(this.state._isMounted === true) {
+      this.setState({modalIsOpen : false});
+      if (successMessage === true) {
         this.props.refreshCollectionList(false);
       }
     }
   }
 
-  refreshRespectiveData(userName){
+  refreshRespectiveData(userName) {
     this.props.refreshData(userName);
   }
 
-  refreshCollectionList(showQueryExecutor){
+  refreshCollectionList(showQueryExecutor) {
     this.props.refreshCollectionList(showQueryExecutor);
   }
 
-  createUserDetails(nextProps){
+  createUserDetails(nextProps) {
     let userDetail = [];
     let sortItem = {};
-     if(nextProps != null && nextProps != undefined){
-       sortItem = nextProps.users;
-     } else {
-       sortItem = this.props.users;
-     }
+    if(nextProps != null && typeof(nextProps) != 'undefined') {
+      sortItem = nextProps.users;
+    } else {
+      sortItem = this.props.users;
+    }
     let roles = '';
     let Db = '';
-    sortItem.roles != undefined ? sortItem.roles.map(function(item) {
-      roles = roles.length > 0 ? roles + ', ' +  item.role : item.role;
+    typeof(sortItem.roles) != 'undefined' ? sortItem.roles.map(function(item) {
+      roles = roles.length > 0 ? roles + ', ' + item.role : item.role;
       Db = item.db;
     }) : null;
-    userDetail.push({'key': 'role', 'value': roles});
-    userDetail.push({'key': 'DbSource', 'value': Db});
+    userDetail.push({'key' : 'role', 'value' : roles});
+    userDetail.push({'key' : 'DbSource', 'value' : Db});
     Object.keys(sortItem).map(function(key) {
-      if(key != 'roles')
-        userDetail.push({'key': key, 'value': sortItem[key]});
+      if(key !== 'roles')
+        userDetail.push({'key' : key, 'value' : sortItem[key]});
     });
-    this.setState({userDetails: userDetail});
+    this.setState({userDetails : userDetail});
   }
 
-  componentDidMount(){
-    this.setState({_isMounted: true});
-    this.setState({currentUser: this.props.users.user});
+  componentDidMount() {
+    this.setState({_isMounted : true});
+    this.setState({currentUser : this.props.users.user});
     this.createUserDetails();
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     // this.state._isMounted = false; //eslint fix
-    this.setState({_isMounted: false});
+    this.setState({_isMounted : false});
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({currentUser: nextProps.users.user});
+    this.setState({currentUser : nextProps.users.user});
     this.createUserDetails(nextProps);
   }
 
@@ -124,12 +124,12 @@ class UserDetailsComponent extends React.Component {
       <div className="collapse navbar-collapse" id="userNavbar">
         <ul className = { userDetailsStyles.navBar + ' navbar navbar-nav navbar-right'}>
           <li className={userDetailsStyles.deleteButtonGridfs} onClick={this.openModal}><i className="fa fa-trash" aria-hidden="true"></i><span>Delete User</span></li>
-          { this.state.modalIsOpen?(!this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal} title = 'User' dbName = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose} action = 'drop user' ></AuthPopUp>) : '' }
+          { this.state.modalIsOpen ? (!this.state.showAuth ? <DeleteComponent modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal} title = 'User' dbName = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} ></DeleteComponent> : <AuthPopUp modalIsOpen = {this.state.showAuth} authClose = {this.authClose} action = 'drop user' ></AuthPopUp>) : '' }
           <li><ModifyUser className={userDetailsStyles.modifyUser} users={this.props.users} modifyUser={true} currentDb = {this.props.currentDb} userName = {this.state.currentUser} connectionId={this.props.connectionId} refreshCollectionList={this.refreshCollectionList} refreshRespectiveData={this.refreshRespectiveData}></ModifyUser></li>
         </ul>
       </div>
       </div>
-        
+
       <div className={userDetailsStyles.detailsBody}>
         <table className={'table'}>
           <tbody>
@@ -139,14 +139,14 @@ class UserDetailsComponent extends React.Component {
             </tr>
             { this.state.userDetails.length > 0 ?
               this.state.userDetails.map((item) => {
-              return <tr key={item.key}><td>{item.key}</td><td>{item.value}</td></tr>;
-            }) : null }
+                return <tr key={item.key}><td>{item.key}</td><td>{item.value}</td></tr>;
+              }) : null }
           </tbody>
         </table>
       </div>
     </div>
-  );
- }
+    );
+  }
 }
 
 export default UserDetailsComponent;

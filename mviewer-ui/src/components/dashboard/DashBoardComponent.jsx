@@ -9,10 +9,10 @@ class DashBoardComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      connectionId: JSON.parse(sessionStorage.getItem('connectionId') || '{}'),
-      loggedInDatabase:JSON.parse(sessionStorage.getItem('db') || '{}') ,
-      host: JSON.parse(sessionStorage.getItem('host') || '{}'),
-      username: JSON.parse(sessionStorage.getItem('username') || '{}')
+      connectionId : JSON.parse(sessionStorage.getItem('connectionId') || '{}'),
+      loggedInDatabase : JSON.parse(sessionStorage.getItem('db') || '{}'),
+      host : JSON.parse(sessionStorage.getItem('host') || '{}'),
+      username : JSON.parse(sessionStorage.getItem('username') || '{}')
     };
   }
 
@@ -23,10 +23,8 @@ class DashBoardComponent extends React.Component {
   }
 
   success(data) {
-    if(data.response.result==='User Logged Out')
-    {
-      // window.location = '/';
-      browserHistory.push({ pathname: '/index.html' });
+    if(data.response.result === 'User Logged Out') {
+      browserHistory.push({ pathname : '/index.html' });
       sessionStorage.setItem('connectionId', JSON.stringify(' '));
       sessionStorage.setItem('username', JSON.stringify(' '));
       sessionStorage.setItem('host', JSON.stringify(' '));
@@ -45,18 +43,18 @@ class DashBoardComponent extends React.Component {
 
   clearActiveClass = () => {
     this.refs.sideNav.clearActiveClass();
-    browserHistory.push({ pathname: '/dashboard/home', query: { db: this.state.loggedInDatabase} });
+    browserHistory.push({ pathname : '/dashboard/home', query : { db : this.state.loggedInDatabase} });
   }
 
   render() {
     const childrenWithProps = React.Children.map(this.props.children,
       (child) => React.cloneElement(child, {
-      connectionId: this.state.connectionId,
-      loggedInDatabase: this.state.loggedInDatabase,
-      refreshDb: function(){
-        this.refreshDb();
-      }.bind(this)
-     })
+        connectionId : this.state.connectionId,
+        loggedInDatabase : this.state.loggedInDatabase,
+        refreshDb : function() {
+          this.refreshDb();
+        }.bind(this)
+      })
     );
 
     return (
@@ -66,9 +64,9 @@ class DashBoardComponent extends React.Component {
             <nav>
               <div className={'row ' + dashStyles.row}>
                 <a href= {'#'} className={dashStyles.logo} onClick={this.clearActiveClass}><img src={'/images/logo.png'}></img></a>
-            
+
                 <ul className={dashStyles.mainNav + ' ' + dashStyles.clearfix} >
-                  <li><div className={dashStyles.details}>{this.state.host}</div>  
+                  <li><div className={dashStyles.details}>{this.state.host}</div>
                     <div className={dashStyles.details}>{this.state.username}</div></li>
                   <li><a target = '_blank' href='https://Imaginea.github.io/mViewer/'><span><i className='fa fa-question-circle-o'></i></span></a></li>
                   <li className={dashStyles.seperator}><span></span></li>
@@ -88,6 +86,6 @@ class DashBoardComponent extends React.Component {
 }
 
 DashBoardComponent.propTypes = {
-  children: React.PropTypes.object
+  children : React.PropTypes.object
 };
 export default DashBoardComponent;

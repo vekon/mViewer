@@ -67,6 +67,12 @@ module.exports = {
         "semi": [
             "error",
             "always"
+        ],
+        "camelcase": [
+            "error"
+        ],
+        "vars-on-top": [
+            "error"
         ]
     }
 };
