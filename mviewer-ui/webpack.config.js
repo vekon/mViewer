@@ -5,6 +5,7 @@ var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var DefinePlugin = require('webpack/lib/DefinePlugin');
+var failPlugin = require('webpack-fail-plugin');
 
 var BUILD_DIR = path.resolve(__dirname + '/build');
 var APP_DIR = path.resolve(__dirname + '/src');
@@ -59,7 +60,6 @@ var config = {
           }
         ]
     },
-
     plugins: [
         new DefinePlugin({
           'ENV': JSON.stringify(ENV)
@@ -72,10 +72,10 @@ var config = {
         new CopyWebpackPlugin([
             { from: APP_DIR + '/assets', to: BUILD_DIR  + '/'}
         ]),
-
         new CopyWebpackPlugin([
             { from: APP_DIR + '/vendors/css/bootstrap', to: BUILD_DIR  + '/bootstrap'}
-        ])
+        ]),
+        failPlugin
     ]
 };
 
