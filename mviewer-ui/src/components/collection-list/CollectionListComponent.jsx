@@ -119,8 +119,8 @@ class CollectionList extends React.Component {
   componentDidMount() {
     this.setState({_isMounted : true});
     this.setState({selectedDB : this.props.selectedDB});
-    var partialUrl = this.props.selectedDB + '/collection?connectionId=' + this.state.connectionId;
-    var collectionListCall = service('GET', partialUrl, '');
+    let partialUrl = this.props.selectedDB + '/collection?connectionId=' + this.state.connectionId;
+    let collectionListCall = service('GET', partialUrl, '');
     collectionListCall.then(this.success.bind(this, 'componentDidMount'), this.failure.bind(this, 'componentDidMount'));
   }
 

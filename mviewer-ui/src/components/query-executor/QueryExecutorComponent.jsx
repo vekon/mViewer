@@ -53,9 +53,9 @@ class QueryExecutorComponent extends React.Component {
   }
 
   openModal = () => {
+    var hasPriv = privilegesAPI.hasPrivilege('dropCollection', '', this.props.currentDb);
     this.setState({modalIsOpen : true});
     this.setState({message : ''});
-    var hasPriv = privilegesAPI.hasPrivilege('dropCollection', '', this.props.currentDb);
     if(hasPriv) {
       this.setState({showAuth : false});
     } else{
@@ -80,9 +80,9 @@ class QueryExecutorComponent extends React.Component {
 
   success(calledFrom, parentData, data) {
     if(calledFrom === 'getAttributes') {
-      var arr = data.response.result.keys;
-      var newArr = [];
-      for(var i = 0; i < arr.length; i++) {
+      let arr = data.response.result.keys;
+      let newArr = [];
+      for(let i = 0; i < arr.length; i++) {
         newArr.push({'value' : arr[i], 'selected' : true});
       }
       this.setState({fields : newArr});
@@ -100,34 +100,34 @@ class QueryExecutorComponent extends React.Component {
   }
 
   componentDidMount () {
-    // this.state._isMounted = true; //eslint fix
-    this.setState({_isMounted : true});
     var currentDb = this.props.currentDb;
     var currentItem = this.props.currentItem;
     var connectionId = this.props.connectionId;
     var queryData = {};
+    this.setState({_isMounted : true});
+
     queryData['query'] = this.state.query;
     queryData['fields'] = '';
     queryData['limit'] = 10;
     queryData['skip'] = 0;
     queryData['sortBy'] = '{\'_id\':-1}';
     queryData['allKeys'] = true;
-    var partialUrl = this.props.queryType === 'collection' ? currentDb + '/' + currentItem + '/document/query?connectionId=' + connectionId :
+    let partialUrl = this.props.queryType === 'collection' ? currentDb + '/' + currentItem + '/document/query?connectionId=' + connectionId :
               currentDb + '/gridfs/' + currentItem + '/getfiles?connectionId=' + connectionId;
-    var queryExecutorCall1 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
+    let queryExecutorCall1 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
     queryExecutorCall1.then(this.success1.bind(this), this.failure1.bind(this));
   }
 
   success1(data) {
     if(typeof(data.response.result) != 'undefined') {
       this.setState({errorMessage : ''});
-      var array = data.response.result.documents;
+      let array = data.response.result.documents;
       if(this.state._isMounted === true) {
         this.setState({collectionObjects : array});
         this.props.queryType === 'collection' ? this.getAttributes(this.props.currentDb, this.props.currentItem, this.props.connectionId) : null;
         this.setState({totalCount : data.response.result.count});
         if (this.state.skipValue < this.state.totalCount) {
-          var size = this.state.skipValue + this.state.limitValue;
+          let size = this.state.skipValue + this.state.limitValue;
           this.setState({startLabel : (this.state.totalCount !== 0 ? this.state.skipValue + 1 : 0)});
           this.setState({endLabel : (this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)});
         }
@@ -142,14 +142,16 @@ class QueryExecutorComponent extends React.Component {
   }
 
 
-  failure1() {
-
+  failure1(data) {
+    if (data.responseText.indexOf('not authorized on') !== -1) {
+      this.setState({errorMessage : 'User is not authorized to perform this query'});
+    }
   }
 
   success2(currentDb, currentItem, connectionId, data) {
     if(typeof(data.response.result) != 'undefined' && this.state._isMounted === true) {
       this.setState({errorMessage : ''});
-      var array = data.response.result.documents;
+      let array = data.response.result.documents;
       this.setState({collectionObjects : array});
       this.props.queryType === 'collection' ? this.getAttributes(currentDb, currentItem, connectionId) : null;
       this.setState({totalCount : data.response.result.count});
@@ -161,7 +163,7 @@ class QueryExecutorComponent extends React.Component {
         this.setState({skipValue : 0});
       }
       if (this.state.skipValue < this.state.totalCount) {
-        var size = this.state.skipValue + this.state.limitValue;
+        let size = this.state.skipValue + this.state.limitValue;
         this.setState({startLabel : (this.state.totalCount !== 0 ? this.state.skipValue + 1 : 0)});
         this.setState({endLabel : (this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)});
       }
@@ -179,8 +181,10 @@ class QueryExecutorComponent extends React.Component {
     }
   }
 
-  failure2() {
-
+  failure2(data) {
+    if (data.responseText.indexOf('not authorized on') !== -1) {
+      this.setState({errorMessage : 'User is not authorized to perform this query'});
+    }
   }
 
   success3(currentDb, currentItem, connectionId, refresh, data) {
@@ -192,13 +196,13 @@ class QueryExecutorComponent extends React.Component {
       }
 
       this.setState({errorMessage : ''});
-      var array = data.response.result.documents;
+      let array = data.response.result.documents;
       this.setState({collectionObjects : array});
       if(refresh)
         this.props.queryType === 'collection' ? this.getAttributes(currentDb, currentItem, connectionId) : null;
       this.setState({totalCount : data.response.result.count});
       if (this.state.skipValue < this.state.totalCount) {
-        var size = this.state.skipValue + this.state.limitValue;
+        let size = this.state.skipValue + this.state.limitValue;
         this.setState({startLabel : (this.state.totalCount !== 0 ? this.state.skipValue + 1 : 0)});
         this.setState({endLabel : (this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)});
       }
@@ -244,18 +248,20 @@ class QueryExecutorComponent extends React.Component {
     }
   }
 
-  failure3() {
-
+  failure3(data) {
+    if (data.responseText.indexOf('not authorized on') !== -1) {
+      this.setState({errorMessage : 'User is not authorized to perform this query'});
+    }
   }
 
 
   success4(currentDb, currentItem, connectionId, data) {
     if(typeof(data.response.result) != 'undefined') {
-      var array = data.response.result.documents;
+      let array = data.response.result.documents;
       this.setState({collectionObjects : array});
       this.setState({totalCount : data.response.result.count});
       if (this.state.skipValue < this.state.totalCount) {
-        var size = this.state.skipValue + this.state.limitValue;
+        let size = this.state.skipValue + this.state.limitValue;
         this.setState({startLabel : (this.state.totalCount !== 0 ? this.state.skipValue + 1 : 0)});
         this.setState({endLabel : (this.state.totalCount <= size ? this.state.totalCount : this.state.skipValue + this.state.limitValue)});
       } else{
@@ -268,23 +274,25 @@ class QueryExecutorComponent extends React.Component {
     }
   }
 
-  failure4() {
-
+  failure4(data) {
+    if (data.responseText.indexOf('not authorized on') !== -1) {
+      this.setState({errorMessage : 'User is not authorized to perform this query'});
+    }
   }
 
   componentWillUnmount() {
-    // this.state._isMounted = false; //eslint fix
     this.setState({_isMounted : false});
   }
 
   componentWillReceiveProps(nextProps) {
+
     if((this.props.currentDb === nextProps.currentDb && this.props.currentItem !== nextProps.currentItem) || (this.props.currentDb !== nextProps.currentDb)) {
       this.setState({selectedTab : 0});
-      var currentDb = nextProps.currentDb;
-      var currentItem = nextProps.currentItem;
-      var connectionId = this.props.connectionId;
-      var queryData = {};
-      var query = (nextProps.queryType === 'collection' ? 'db.' + currentItem + '.find({})' : 'db.' + currentItem + '.files.find({})');
+      let currentDb = nextProps.currentDb;
+      let currentItem = nextProps.currentItem;
+      let connectionId = this.props.connectionId;
+      let queryData = {};
+      let query = (nextProps.queryType === 'collection' ? 'db.' + currentItem + '.find({})' : 'db.' + currentItem + '.files.find({})');
       // this.state.query = query;
       this.setState({collectionObjects : []});
       this.setState({skip : 0});
@@ -299,11 +307,9 @@ class QueryExecutorComponent extends React.Component {
 
       this.setState({query : query}, function() {
         queryData['query'] = this.state.query;
-        var partialUrl = this.props.queryType === 'collection' ? currentDb + '/' + currentItem + '/document/query?connectionId=' + connectionId :
+        let partialUrl = this.props.queryType === 'collection' ? currentDb + '/' + currentItem + '/document/query?connectionId=' + connectionId :
                 currentDb + '/gridfs/' + currentItem + '/getfiles?connectionId=' + connectionId;
-
-
-        var queryExecutorCall2 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
+        let queryExecutorCall2 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
         queryExecutorCall2.then(this.success2.bind(this, currentDb, currentItem, connectionId), this.failure2.bind(this));
       });
     }
@@ -313,13 +319,14 @@ class QueryExecutorComponent extends React.Component {
 
   clickHandler = () => {
     var that = this;
-    that.setState({limitValue : parseInt(that.state.limit)});
-    that.setState({skipValue : parseInt(that.state.skip)});
     var attributes = '';
     var allSelected = true;
     var currentDb = this.props.currentDb;
     var currentItem = this.props.currentItem;
     var connectionId = this.props.connectionId;
+    var queryData = {};
+    that.setState({limitValue : parseInt(that.state.limit)});
+    that.setState({skipValue : parseInt(that.state.skip)});
     this.state.fields.map(function(e) {
       if(e.selected) {
         attributes += attributes.length > 0 ? ',' + e.value : e.value;
@@ -327,16 +334,15 @@ class QueryExecutorComponent extends React.Component {
         allSelected = false;
       }
     });
-    var queryData = {};
     queryData['query'] = this.state.query;
     queryData['fields'] = this.props.queryType === 'collection' ? attributes : '';
     queryData['limit'] = this.state.limit;
     queryData['skip'] = this.state.skip;
     queryData['sortBy'] = '{' + '\'' + this.state.sort.split(':')[0] + '\'' + ':' + parseInt(this.state.sort.split(':')[1]) + '}';
     queryData['allKeys'] = allSelected;
-    var partialUrl = this.props.queryType === 'collection' ? currentDb + '/' + currentItem + '/document/query?connectionId=' + connectionId :
+    let partialUrl = this.props.queryType === 'collection' ? currentDb + '/' + currentItem + '/document/query?connectionId=' + connectionId :
               currentDb + '/gridfs/' + currentItem + '/getfiles?connectionId=' + connectionId;
-    var queryExecutorCall3 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
+    let queryExecutorCall3 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
     let shouldRefresh = false;
     if (this.state.query.indexOf('.remove') > 0) {
       shouldRefresh = true;
@@ -347,13 +353,15 @@ class QueryExecutorComponent extends React.Component {
 
   refreshDocuments() {
     var that = this;
-    that.setState({limitValue : parseInt(that.state.limit)});
-    that.setState({skipValue : parseInt(that.state.skip)});
     var attributes = '';
     var allSelected = true;
     var currentDb = this.props.currentDb;
     var currentItem = this.props.currentItem;
     var connectionId = this.props.connectionId;
+    var query = '';
+    var queryData = {};
+    that.setState({limitValue : parseInt(that.state.limit)});
+    that.setState({skipValue : parseInt(that.state.skip)});
     this.state.fields.map(function(e) {
       if(e.selected) {
         attributes += attributes.length > 0 ? ',' + e.value : e.value;
@@ -362,7 +370,6 @@ class QueryExecutorComponent extends React.Component {
       }
     });
     allSelected = true;
-    var query = '';
 
     if (this.props.queryType === 'collection') {
       query = 'db.' + currentItem + '.find({})';
@@ -371,16 +378,15 @@ class QueryExecutorComponent extends React.Component {
     }
 
     this.setState({query : query });
-    var queryData = {};
     queryData['query'] = this.state.query;
     queryData['fields'] = this.props.queryType === 'collection' ? attributes : '';
     queryData['limit'] = this.state.limit;
     queryData['skip'] = this.state.skip;
     queryData['sortBy'] = '{' + '\'' + this.state.sort.split(':')[0] + '\'' + ':' + parseInt(this.state.sort.split(':')[1]) + '}';
     queryData['allKeys'] = allSelected;
-    var partialUrl = this.props.queryType === 'collection' ? currentDb + '/' + currentItem + '/document/query?connectionId=' + connectionId :
+    let partialUrl = this.props.queryType === 'collection' ? currentDb + '/' + currentItem + '/document/query?connectionId=' + connectionId :
               currentDb + '/gridfs/' + currentItem + '/getfiles?connectionId=' + connectionId;
-    var queryExecutorCall3 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
+    let queryExecutorCall3 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
     queryExecutorCall3.then(this.success3.bind(this, currentDb, currentItem, connectionId, true), this.failure3.bind(this));
   }
 
@@ -472,6 +478,12 @@ class QueryExecutorComponent extends React.Component {
   paginationHandler(buttonValue, refresh, e) {
     var attributes = '';
     var allSelected = true;
+    var position = '';
+    var currentDb = this.props.currentDb;
+    var currentItem = this.props.currentItem;
+    var connectionId = this.props.connectionId;
+    var queryData = {};
+    var skipValue = parseInt(this.state.skipValue), limitValue = parseInt(this.state.limit), countValue = parseInt(this.state.totalCount);
     if(!refresh) {
       this.state.fields.map(function(e) {
         if(e.selected) {
@@ -481,14 +493,12 @@ class QueryExecutorComponent extends React.Component {
         }
       });
     }
-    var position = '';
     if(typeof(e) != 'undefined') {
       position = e.target.id;
     } else {
       position = '';
     }
 
-    var skipValue = parseInt(this.state.skipValue), limitValue = parseInt(this.state.limit), countValue = parseInt(this.state.totalCount);
     if (position === 'first') {
       skipValue = 0;
     } else if (position === 'prev') {
@@ -496,7 +506,7 @@ class QueryExecutorComponent extends React.Component {
     } else if (position === 'next') {
       skipValue = skipValue + limitValue;
     } else if (position === 'last') {
-      var docCountInLastPage = (countValue % limitValue === 0) ? limitValue : (countValue % limitValue);
+      let docCountInLastPage = (countValue % limitValue === 0) ? limitValue : (countValue % limitValue);
       skipValue = countValue - docCountInLastPage;
     } else if (position === '') {
       countValue = countValue - 1;
@@ -507,21 +517,19 @@ class QueryExecutorComponent extends React.Component {
 
       }
     }
-    var currentDb = this.props.currentDb;
-    var currentItem = this.props.currentItem;
-    var connectionId = this.props.connectionId;
-    var partialUrl = this.props.queryType === 'collection' ? this.props.currentDb + '/' + this.props.currentItem + '/document/query?connectionId=' + this.props.connectionId :
+
+    let partialUrl = this.props.queryType === 'collection' ? this.props.currentDb + '/' + this.props.currentItem + '/document/query?connectionId=' + this.props.connectionId :
               currentDb + '/gridfs/' + currentItem + '/getfiles?connectionId=' + this.props.connectionId;
 
     this.setState({skipValue : skipValue});
-    var queryData = {};
+
     queryData['query'] = this.state.query;
     queryData['fields'] = this.props.queryType === 'collection' ? attributes : '';
     queryData['limit'] = this.state.limit;
     queryData['skip'] = skipValue;
     queryData['sortBy'] = '{' + '\'' + this.state.sort.split(':')[0] + '\'' + ':' + parseInt(this.state.sort.split(':')[1]) + '}';
     queryData['allKeys'] = allSelected;
-    var queryExecutorCall4 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
+    let queryExecutorCall4 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
     queryExecutorCall4.then(this.success4.bind(this, currentDb, currentItem, connectionId), this.failure4.bind(this));
   }
 

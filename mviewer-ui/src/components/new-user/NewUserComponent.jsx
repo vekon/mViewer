@@ -16,7 +16,7 @@ class NewUserComponent extends React.Component {
       modalIsOpen : false,
       autoIndex : true,
       password : null,
-      user_name : null,
+      userName : null,
       canSubmit : false,
       title : '',
       submitted : false,
@@ -236,7 +236,7 @@ class NewUserComponent extends React.Component {
   setForm() {
     if(this.props.modifyUser) {
       this.setState({password : ''});
-      this.setState({user_name : this.props.userName});
+      this.setState({userName : this.props.userName});
       this.setState({title : 'Modify User'});
     } else{
       this.setState({title : 'Add User'});
@@ -266,7 +266,6 @@ class NewUserComponent extends React.Component {
           this.setState({message : 'User ' + obj['user_name'] + ' was successfully modified for database ' + this.state.dbSource});
         else
           this.setState({message : 'User ' + obj['user_name'] + ' was successfully added to database ' + this.state.dbSource});
-        // this.state.newUser = obj['user_name'];  //eslint fix
         this.setState({newUser : obj['user_name']});
         this.setState({successMessage : true});
         setTimeout(() => {
@@ -342,7 +341,7 @@ class NewUserComponent extends React.Component {
            <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} >
              <div className={ newUserStyles.formContainer}>
                <div className={newUserStyles.name}>
-                 <TextInput type="text" name="user_name" id="user_name" placeholder="User Name" value={this.state.user_name} onChange={this.handleChange} validationErrors={{isRequired2 : 'User name must not be empty'}} validations={'isRequired2:' + this.state.error} shouldBeDisabled={this.props.modifyUser}/>
+                 <TextInput type="text" name="user_name" id="user_name" placeholder="User Name" value={this.state.userName} onChange={this.handleChange} validationErrors={{isRequired2 : 'User name must not be empty'}} validations={'isRequired2:' + this.state.error} shouldBeDisabled={this.props.modifyUser}/>
                </div>
                <div className={newUserStyles.userPassword}>
                  <TextInput type="password" name="password" id="password" placeholder="Password" value={this.state.name} onChange={this.handleChange} validationErrors={{isRequired2 : 'Password must not be empty'}} validations={'isRequired2:' + this.state.error}/>

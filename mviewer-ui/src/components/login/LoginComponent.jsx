@@ -52,7 +52,7 @@ class LoginComponent extends React.Component {
 
   loadLoginData() {
     if(typeof(localStorage.getItem('loginData')) != 'undefined' && localStorage.getItem('loginData') != null) {
-      var loginObject = JSON.parse(localStorage.getItem('loginData'));
+      let loginObject = JSON.parse(localStorage.getItem('loginData'));
       this.setState({host : loginObject.host});
       this.setState({port : loginObject.port});
       this.setState({username : loginObject.username});
@@ -92,25 +92,25 @@ class LoginComponent extends React.Component {
         this.setState({userNameError : userNameError}, function() {
           this.setState({passwordError : passwordError}, function() {
             this.setState({dbError : dbError}, function() {
-              if(hostError || portError || userNameError || passwordError || dbError)
-                return false;
-
               var data = $('form').serialize().split('&');
               var obj = {};
-              for(var key in data) {
+              var loginData = {};
+              if(hostError || portError || userNameError || passwordError || dbError)
+                return false;
+              for(let key in data) {
                 obj[data[key].split('=')[0]] = data[key].split('=')[1];
               }
 
               this.setState({loading : true});
               this.setState({message : ''});
               if(this.state.rememberMe) {
-                var loginData = { 'host' : this.state.host, 'port' : this.state.port, 'username' : this.state.username,
+                loginData = { 'host' : this.state.host, 'port' : this.state.port, 'username' : this.state.username,
                   'password' : this.state.password, 'databases' : this.state.databases, 'authEnabled' : this.state.authEnabled};
                 localStorage.setItem('loginData', JSON.stringify(loginData));
               } else {
                 localStorage.removeItem('loginData');
               }
-              var loginCall = service('POST', 'login', obj);
+              let loginCall = service('POST', 'login', obj);
               loginCall.then(this.success, this.failure);
               return loginCall;
             });

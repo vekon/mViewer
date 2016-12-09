@@ -12,7 +12,7 @@ class CollectionItemComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hover_flag : false,
+      hoverFlag : false,
       modalIsOpen : false,
       _isMounted : false,
       showAuth : false,

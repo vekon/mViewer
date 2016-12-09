@@ -28,7 +28,7 @@ class CreateDbComponent extends React.Component {
     this.setState({modalIsOpen : true});
     this.setState({message : ''});
     this.setState({error : false});
-    var hasPriv = privilegesAPI.hasPrivilege('createCollection', '', this.state.selectedItem);
+    let hasPriv = privilegesAPI.hasPrivilege('createCollection', '', this.state.selectedItem);
     if(hasPriv) {
       this.setState({showAuth : false});
     } else{
@@ -73,12 +73,12 @@ class CreateDbComponent extends React.Component {
   clickHandler = () => {
     var data = $('form').serialize().split('&');
     var obj = {};
-    for(var key in data) {
+    for(let key in data) {
       obj[data[key].split('=')[0]] = data[key].split('=')[1];
     }
     if (obj['name'] !== '') {
-      var partialUrl = 'db/' + obj['name'] + '?connectionId=' + this.props.fromHome.connectionId;
-      var createDbCall = service('POST', partialUrl, obj);
+      let partialUrl = 'db/' + obj['name'] + '?connectionId=' + this.props.fromHome.connectionId;
+      let createDbCall = service('POST', partialUrl, obj);
       createDbCall.then(this.success.bind(this, obj), this.failure.bind(this, obj));
     } else{
       this.setState({error : true});

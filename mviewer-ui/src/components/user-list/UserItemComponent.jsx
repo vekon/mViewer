@@ -9,7 +9,7 @@ class UserItemComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hover_flag : false
+      hoverFlag : false
     };
   }
 

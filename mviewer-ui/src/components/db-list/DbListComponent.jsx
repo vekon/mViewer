@@ -42,7 +42,7 @@ class DbListComponent extends React.Component {
     this.setState({modalIsOpen : true});
     this.setState({message : ''});
     this.setState({error : false});
-    var hasPriv = privilegesAPI.hasPrivilege('createCollection', '', '');
+    let hasPriv = privilegesAPI.hasPrivilege('createCollection', '', '');
     if(hasPriv) {
       this.setState({showAuth : false});
     } else{
@@ -96,8 +96,8 @@ class DbListComponent extends React.Component {
     if (n !== -1) {
       this.setState({visible : false});
     }
-    var partialUrl = 'login/details?connectionId=' + this.state.connectionId;
-    var refreshDbCall = service('GET', partialUrl, '');
+    let partialUrl = 'login/details?connectionId=' + this.state.connectionId;
+    let refreshDbCall = service('GET', partialUrl, '');
     refreshDbCall.then(this.success.bind(this, 'componentDidMount', ''), this.failure.bind(this, 'componentDidMount', ''));
   }
 
@@ -113,8 +113,8 @@ class DbListComponent extends React.Component {
   }
 
   refreshDbList(dbName) {
-    var partialUrl = 'login/details?connectionId=' + this.state.connectionId;
-    var refreshDbCall = service('GET', partialUrl, '');
+    let partialUrl = 'login/details?connectionId=' + this.state.connectionId;
+    let refreshDbCall = service('GET', partialUrl, '');
     refreshDbCall.then(this.success.bind(this, 'refreshDbList', ''), this.failure.bind(this, 'refreshDbList', ''));
     if(dbName != null) {
       browserHistory.push({ pathname : '/dashboard/database', query : { db : dbName, collapsed : false} });
@@ -141,12 +141,12 @@ class DbListComponent extends React.Component {
   clickHandlerModal = () => {
     var data = $('form').serialize().split('&');
     var obj = {};
-    for(var key in data) {
+    for(let key in data) {
       obj[data[key].split('=')[0]] = data[key].split('=')[1];
     }
     if (obj['name'] !== '') {
-      var partialUrl = 'db/' + obj['name'] + '?connectionId=' + this.props.propps.connectionId;
-      var createDbCall = service('POST', partialUrl, obj);
+      let partialUrl = 'db/' + obj['name'] + '?connectionId=' + this.props.propps.connectionId;
+      let createDbCall = service('POST', partialUrl, obj);
       createDbCall.then(this.success.bind(this, 'clickHandlerModal', obj), this.failure.bind(this, 'clickHandlerModal', obj));
     } else{
       this.setState({error : true});
@@ -180,7 +180,7 @@ class DbListComponent extends React.Component {
   success(calledFrom, obj, data) {
     if(calledFrom === 'componentDidMount') {
       if (typeof(data.response.result) != 'undefined') {
-        var result = data.response.result;
+        let result = data.response.result;
         this.setState({dbNames : result.dbNames});
         sessionStorage.setItem('dbNames', JSON.stringify(this.state.dbNames));
         if (result.rolesAndPrivileges) {
