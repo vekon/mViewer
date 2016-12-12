@@ -46,6 +46,8 @@ class QueryExecutorComponent extends React.Component {
       showAuth : false,
       hasPriv : false,
       query : this.props.queryType === 'collection' ? 'db.' + this.props.currentItem + '.find({})' :
+                   'db.' + this.props.currentItem + '.files.find({})',
+      textAreaValue : this.props.queryType === 'collection' ? 'db.' + this.props.currentItem + '.find({})' :
                    'db.' + this.props.currentItem + '.files.find({})'
     };
       // this.refresh = this.refresh.bind(this);
@@ -100,10 +102,13 @@ class QueryExecutorComponent extends React.Component {
   }
 
   componentDidMount () {
-    var currentDb = this.props.currentDb;
-    var currentItem = this.props.currentItem;
-    var connectionId = this.props.connectionId;
-    var queryData = {};
+    this.setState({_isMounted : true});
+    const textArea = this.refs.TextArea;
+    textArea.select();
+    const currentDb = this.props.currentDb;
+    const currentItem = this.props.currentItem;
+    const connectionId = this.props.connectionId;
+    let queryData = {};
     this.setState({_isMounted : true});
 
     queryData['query'] = this.state.query;
@@ -187,7 +192,7 @@ class QueryExecutorComponent extends React.Component {
     }
   }
 
-  success3(currentDb, currentItem, connectionId, refresh, data) {
+  success3(currentDb, currentItem, connectionId, data) {
     if(typeof(data.response.result) != 'undefined') {
       if (typeof(data.response.result.documents[0]) != 'undefined') {
         if(Object.getOwnPropertyNames(data.response.result.documents[0]).length === 0) {
@@ -198,8 +203,7 @@ class QueryExecutorComponent extends React.Component {
       this.setState({errorMessage : ''});
       let array = data.response.result.documents;
       this.setState({collectionObjects : array});
-      if(refresh)
-        this.props.queryType === 'collection' ? this.getAttributes(currentDb, currentItem, connectionId) : null;
+      this.props.queryType === 'collection' ? this.getAttributes(currentDb, currentItem, connectionId) : null;
       this.setState({totalCount : data.response.result.count});
       if (this.state.skipValue < this.state.totalCount) {
         let size = this.state.skipValue + this.state.limitValue;
@@ -305,11 +309,14 @@ class QueryExecutorComponent extends React.Component {
       queryData['sortBy'] = '{\'_id\':-1}';
       queryData['allKeys'] = true;
 
-      this.setState({query : query}, function() {
-        queryData['query'] = this.state.query;
+      this.setState({textAreaValue : query}, function() {
+        this.setState({query : query});
+        queryData['query'] = this.state.textAreaValue;
         let partialUrl = this.props.queryType === 'collection' ? currentDb + '/' + currentItem + '/document/query?connectionId=' + connectionId :
                 currentDb + '/gridfs/' + currentItem + '/getfiles?connectionId=' + connectionId;
         let queryExecutorCall2 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
+        const textArea = this.refs.TextArea;
+        textArea.select();
         queryExecutorCall2.then(this.success2.bind(this, currentDb, currentItem, connectionId), this.failure2.bind(this));
       });
     }
@@ -334,7 +341,21 @@ class QueryExecutorComponent extends React.Component {
         allSelected = false;
       }
     });
-    queryData['query'] = this.state.query;
+    const textArea = this.refs.TextArea;
+//    const len = textArea.value.length;
+    const start = textArea.selectionStart;
+    const end = textArea.selectionEnd;
+    const sel = textArea.value.substring(start, end);
+    const firstIndexOfDot = sel.indexOf('.');
+    const lastIndexOfDot = sel.lastIndexOf('.');
+    currentItem = sel.substring(firstIndexOfDot + 1, lastIndexOfDot);
+    textArea.focus();
+    if(sel.length <= 0) {
+      this.setState({errorMessage : 'Please select query. Only selected query will get executed.'});
+      return false;
+    }
+    this.setState({query : sel});
+    queryData['query'] = sel;
     queryData['fields'] = this.props.queryType === 'collection' ? attributes : '';
     queryData['limit'] = this.state.limit;
     queryData['skip'] = this.state.skip;
@@ -343,11 +364,7 @@ class QueryExecutorComponent extends React.Component {
     let partialUrl = this.props.queryType === 'collection' ? currentDb + '/' + currentItem + '/document/query?connectionId=' + connectionId :
               currentDb + '/gridfs/' + currentItem + '/getfiles?connectionId=' + connectionId;
     let queryExecutorCall3 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
-    let shouldRefresh = false;
-    if (this.state.query.indexOf('.remove') > 0) {
-      shouldRefresh = true;
-    }
-    queryExecutorCall3.then(this.success3.bind(this, currentDb, currentItem, connectionId, shouldRefresh), this.failure3.bind(this));
+    queryExecutorCall3.then(this.success3.bind(this, currentDb, currentItem, connectionId), this.failure3.bind(this));
   }
 
 
@@ -378,6 +395,7 @@ class QueryExecutorComponent extends React.Component {
     }
 
     this.setState({query : query });
+    this.setState({textAreaValue : query });
     queryData['query'] = this.state.query;
     queryData['fields'] = this.props.queryType === 'collection' ? attributes : '';
     queryData['limit'] = this.state.limit;
@@ -387,7 +405,7 @@ class QueryExecutorComponent extends React.Component {
     let partialUrl = this.props.queryType === 'collection' ? currentDb + '/' + currentItem + '/document/query?connectionId=' + connectionId :
               currentDb + '/gridfs/' + currentItem + '/getfiles?connectionId=' + connectionId;
     let queryExecutorCall3 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
-    queryExecutorCall3.then(this.success3.bind(this, currentDb, currentItem, connectionId, true), this.failure3.bind(this));
+    queryExecutorCall3.then(this.success3.bind(this, currentDb, currentItem, connectionId), this.failure3.bind(this));
   }
 
   refresh(buttonValue) {
@@ -399,6 +417,8 @@ class QueryExecutorComponent extends React.Component {
     if(this.props.queryType === 'collection') {
       this.getAttributes(this.props.currentDb, this.props.currentItem, this.props.connectionId);
     }
+    const textArea = this.refs.TextArea;
+    textArea.select();
   }
 
   attributeHandler(r) {
@@ -449,7 +469,7 @@ class QueryExecutorComponent extends React.Component {
 
   changeHandler() {
     return function(e) {
-      this.setState({query : e.target.value});
+      this.setState({textAreaValue : e.target.value});
     }.bind(this);
   }
 
@@ -529,6 +549,8 @@ class QueryExecutorComponent extends React.Component {
     queryData['skip'] = skipValue;
     queryData['sortBy'] = '{' + '\'' + this.state.sort.split(':')[0] + '\'' + ':' + parseInt(this.state.sort.split(':')[1]) + '}';
     queryData['allKeys'] = allSelected;
+    const textArea = this.refs.TextArea;
+    textArea.select();
     let queryExecutorCall4 = service('POST', partialUrl, JSON.stringify(queryData), 'query');
     queryExecutorCall4.then(this.success4.bind(this, currentDb, currentItem, connectionId), this.failure4.bind(this));
   }
@@ -605,7 +627,7 @@ class QueryExecutorComponent extends React.Component {
               <label>Define Query</label>
             </div>
             <div className={queryExecutorStyles.textAreaContainer}>
-              <textarea id="queryBox" name="queryBox" value={this.state.query} onChange = {this.changeHandler()} className= {queryExecutorStyles.queryBox} data-search_name="query">
+              <textarea id="queryBox" name="queryBox" ref="TextArea" value={this.state.textAreaValue} onChange = {this.changeHandler()} className= {queryExecutorStyles.queryBox} data-search_name="query">
               </textarea>
             </div>
           </div>
