@@ -36,15 +36,15 @@ class NewCollectionComponent extends React.Component {
 
   openModal() {
     if (this.props.addOrUpdate === '1') {
-      const hasPriv = privilegesAPI.hasPrivilege('createCollection', this.props.name, this.props.currentDb);
+      const hasPriv = privilegesAPI.hasPrivilege('createCollection', this.props.currentItem, this.props.currentDb);
       if(hasPriv) {
         this.setState({showAuth : false});
       } else{
         this.setState({showAuth : true});
       }
     } else{
-      const hasPriv1 = privilegesAPI.hasPrivilege('renameCollectionSameDB', this.props.name, this.props.currentDb);
-      if(hasPriv1 && !this.state.name.startsWith('system.')) {
+      const hasPriv1 = privilegesAPI.hasPrivilege('renameCollectionSameDB', this.props.currentItem, this.props.currentDb);
+      if(hasPriv1 && !this.props.currentItem.startsWith('system.')) {
         this.setState({showAuth : false});
       } else{
         this.setState({showAuth : true});
