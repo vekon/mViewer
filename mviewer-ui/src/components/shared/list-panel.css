@@ -10,7 +10,7 @@
     z-index:2;
     top:0;
     width: 100%;
-    height: calc(100vh - 120px);
+    height: calc(100vh - 155px);
     transition: transform ease 0.3s;
     color: #ccc;
     background:#fff;
@@ -145,12 +145,14 @@
 
 
 .listBody{
-  height: calc(100vh - 205px);
+  /*height: calc(100vh - 205px);*/
+  height: calc(100vh - 240px);
   overflow: auto
 }
 
 .listBodyExpanded{
-  height: calc(100vh - 254px);
+  /*height: calc(100vh - 254px);*/
+  height: calc(100vh - 289px);
   overflow: hidden;
 }
 
@@ -170,11 +172,11 @@
 }
 
 .gridListBody {
-  height: calc(100vh - 222px);
+  height: calc(100vh - 259px);
   overflow: auto
 }
 
 .gridListBodyExpanded {
-  height: calc(100vh - 272px);
+  height: calc(100vh - 300px);
   overflow: hidden;
 }

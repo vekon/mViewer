@@ -89,6 +89,8 @@
   text-align: center;
   margin-bottom: 3%;
   margin-top: 5%;
+  margin-right: 5%;
+  float: right;
 }
 
 /*Buttons*/
@@ -96,7 +98,6 @@
 .cancel
  {
     border: none !important;
-    width: 20%;
     background-color: inherit;
     font-size: 13px;
     font-weight: 600;
@@ -105,16 +106,13 @@
 
 .cancel {
   color: #484848;
-  margin-left: 175px;
   font-family: 'Brandon-Light';
 }
 
 .submit {
   float: right;
-  margin-bottom: 4%;
-  margin-right: 8px;
   font-family: 'Brandon-Light';
-  margin-top: .01%;
+  padding-left: 20px;
 }
 
 .submit:enabled {
@@ -183,4 +181,8 @@ padding: 10px;
 
 .editButton span {
   display: inline;
+}
+
+.clear {
+  clear: both;
 }

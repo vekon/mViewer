@@ -1,3 +1,4 @@
+/* eslint react/prop-types: 0 */
 import React from 'react';
 import newUserStyles from './new-user.css';
 import Dropdown from 'react-drop-down';
@@ -46,25 +47,6 @@ class NewUserComponent extends React.Component {
     this.setState({successMessage : false});
     this.setState({uniqueRetrievedRoles : []});
     this.setForm();
-    // let ds = ['Please select a DbSource'];   //eslint fix
-    // let dbList = [];
-    // dbList = JSON.parse(sessionStorage.getItem('dbNames') || '{}');
-    // dbList.map((item) => {
-    //   ds.push(item);
-    // });
-    // if(this.props.modifyUser) {
-    //   this.setState({dbSource : this.props.currentDb});
-    //   ds=[];
-    //   ds.push(this.props.currentDb);
-    // }
-    // this.setState({dbSourceList: ds});
-    // console.log('sate changed check');
-    // console.log(this.state.retrievedRoles);
-    // const unique = this.state.retrievedRoles.filter((item, pos) => {
-    //   return this.state.retrievedRoles.indexOf(item) == pos;
-    // });
-
-    // this.setState({uniqueRetrievedRoles : unique});
   }
 
   setRoles = () => {
@@ -88,8 +70,6 @@ class NewUserComponent extends React.Component {
           ++index;
         });
       });
-
-      //this.state.retrievedRoles = retrievedRoles; //eslint fix
     }
 
     this.setState({retrievedRoles : retrievedRoles}, function() {
@@ -123,9 +103,7 @@ class NewUserComponent extends React.Component {
               {key : 'clusterAdmin', 'selected' : false}, {key : 'readAnyDatabase', 'selected' : false}, {key : 'dbAdminAnyDatabase', 'selected' : false}]});
 
     if(this.state.successMessage === true) {
-      if(this.props.currentDb !== this.state.dbSource) {
-       // this.props.refreshCollectionList(this.state.dbSource);
-      } else{
+      if(this.props.currentDb === this.state.dbSource) {
         this.props.refreshCollectionList(this.props.currentDb);
         this.props.refreshRespectiveData(this.state.newUser);
       }
@@ -245,12 +223,10 @@ class NewUserComponent extends React.Component {
   }
 
   componentDidMount() {
-    // this.state._isMounted =  true;  //eslint fix
     this.setState({_isMounted : true});
   }
 
   componentWillUnmount() {
-    // this.state._isMounted =  false;
     this.setState({_isMounted : false});
   }
 
@@ -292,7 +268,6 @@ class NewUserComponent extends React.Component {
   }
 
   DDhandleChange = (e) => {
-    // this.state.dbSource = e; //eslint fix
     this.setState({dbSource : e});
     if(e !== 'Please select a DbSource') {
       this.setState({successMessage : false});
@@ -362,6 +337,7 @@ class NewUserComponent extends React.Component {
                  <span onClick={this.closeModal} className={ newUserStyles.cancel }>CANCEL</span>
                  <button onClick={this.clickHandler} value='SUBMIT' className={newUserStyles.submit} disabled={!this.state.canSubmit}>SUBMIT</button>
                </div>
+                <div className = {newUserStyles.clear}></div>
              </div>
            </Form>
             <div className={!this.state.successMessage ? (newUserStyles.errorMessage + ' ' + (this.state.message !== '' ? newUserStyles.show : newUserStyles.hidden)) : (this.state.message !== '' ? newUserStyles.successMessage : '')}>{this.state.message}</div>
@@ -372,14 +348,5 @@ class NewUserComponent extends React.Component {
   }
 }
 
-NewUserComponent.propTypes = {
-  modifyUser : React.PropTypes.bool,
-  userName : React.PropTypes.string,
-  currentDb : React.PropTypes.string,
-  connectionId : React.PropTypes.string,
-  refreshCollectionList : React.PropTypes.func.isRequired,
-  refreshRespectiveData : React.PropTypes.func.isRequired,
-  users : React.PropTypes.object
-};
 
 export default NewUserComponent;
