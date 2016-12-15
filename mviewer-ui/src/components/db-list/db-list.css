@@ -275,7 +275,7 @@ border-right: 1px solid #bababa;
   color: red;
   text-align: center;
   border: 1px solid red;
-  width: 90%;
+  width: 100%;
   border-radius: 0px;
   font-size: 12px;
   margin: 5px auto;
@@ -293,7 +293,7 @@ border-right: 1px solid #bababa;
   color: red;
   text-align: center;
   border: 1px solid red;
-  width: 90%;
+  width: 100%;
   border-radius: 0px;
   font-size: 12px;
   margin: 5px auto;
@@ -308,7 +308,7 @@ border-right: 1px solid #bababa;
   color: green;
   text-align: center;
   border: 1px solid green;
-  width: 90%;
+  width: 100%;
   border-radius: 0px;
   font-size: 12px;
   margin: 5px auto;
@@ -336,7 +336,7 @@ border-right: 1px solid #bababa;
 
 .submit {
 
-  margin-left: 8px;
+  padding-left: 20px;
   font-family: 'Brandon-Light';
 }
 

@@ -1,6 +1,4 @@
 .choiceContainer.showChoice {
-  float: right;
-  width: 100%;
 }
 
 .choiceContainer.hideChoice {
@@ -21,10 +19,8 @@
     background-color: #fff;
     font-size: 15px;
     color: #2294d2;
-    margin-right: 2%;
     float: right;
     height: 30px;
-    width: 20%;
     border: none;
     cursor: pointer;
 }
@@ -36,9 +32,9 @@
   color: #484848;
   float: right;
   height: 30px;
-  width: 20%;;
   border: none;
   cursor: pointer;
+  padding-left: 20px;
 }
 .submit:hover,
 .submit:active {

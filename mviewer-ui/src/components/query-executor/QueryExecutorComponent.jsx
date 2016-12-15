@@ -50,7 +50,6 @@ class QueryExecutorComponent extends React.Component {
       textAreaValue : this.props.queryType === 'collection' ? 'db.' + this.props.currentItem + '.find({})' :
                    'db.' + this.props.currentItem + '.files.find({})'
     };
-      // this.refresh = this.refresh.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
@@ -342,7 +341,6 @@ class QueryExecutorComponent extends React.Component {
       }
     });
     const textArea = this.refs.TextArea;
-//    const len = textArea.value.length;
     const start = textArea.selectionStart;
     const end = textArea.selectionEnd;
     const sel = textArea.value.substring(start, end);
