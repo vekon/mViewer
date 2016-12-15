@@ -71,3 +71,15 @@
 	background-image: linear-gradient(rgb(85,85,85), rgb(85,85,85)) !important;
 	box-shadow: rgb(85,85,85) 1px 1px 0px inset, rgba(0, 0, 0, 0.0980392) -4px 0px 4px !important;
 }
+
+
+/*Close Button component styles*/
+.buttonContainer {
+	cursor: pointer;
+}
+
+.buttonContainer:hover {
+	filter: none;
+    background-color: 'red';
+    color: #bababa;
+}
