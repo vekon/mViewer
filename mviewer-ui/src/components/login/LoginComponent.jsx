@@ -34,13 +34,15 @@ class LoginComponent extends React.Component {
   }
 
   handleCheck = () => {
-    this.setState({authEnabled : !this.state.authEnabled});
-    this.setState({username : ''});
-    this.setState({password : ''});
-    this.setState({databases : ''});
-    this.setState({userNameError : false});
-    this.setState({passwordError : false});
-    this.setState({dbError : false});
+    this.setState({
+      authEnabled : !this.state.authEnabled,
+      username : '',
+      password : '',
+      databases : '',
+      userNameError : false,
+      passwordError : false,
+      dbError : false
+    });
     this.refs.username.clearCss();
     this.refs.password.clearCss();
     this.refs.database.clearCss();
@@ -53,17 +55,22 @@ class LoginComponent extends React.Component {
   loadLoginData() {
     if(typeof(localStorage.getItem('loginData')) != 'undefined' && localStorage.getItem('loginData') != null) {
       let loginObject = JSON.parse(localStorage.getItem('loginData'));
-      this.setState({host : loginObject.host});
-      this.setState({port : loginObject.port});
-      this.setState({username : loginObject.username});
-      this.setState({password : loginObject.password});
-      this.setState({databases : loginObject.databases});
-      this.setState({authEnabled : loginObject.authEnabled});
-      this.setState({rememberMe : true});
+      this.setState({
+        host : loginObject.host,
+        port : loginObject.port,
+        username : loginObject.username,
+        password : loginObject.password,
+        databases : loginObject.databases,
+        authEnabled : loginObject.authEnabled,
+        rememberMe : true
+      });
     }
   }
 
   onSubmit() {
+    var data = $('form').serialize().split('&');
+    var obj = {};
+    var loginData = {};
     let hostError = false;
     let portError = false;
     let userNameError = false;
@@ -87,37 +94,38 @@ class LoginComponent extends React.Component {
         dbError = true;
     }
 
-    this.setState({hostError : hostError}, function() {
-      this.setState({portError : portError}, function() {
-        this.setState({userNameError : userNameError}, function() {
-          this.setState({passwordError : passwordError}, function() {
-            this.setState({dbError : dbError}, function() {
-              var data = $('form').serialize().split('&');
-              var obj = {};
-              var loginData = {};
-              if(hostError || portError || userNameError || passwordError || dbError)
-                return false;
-              for(let key in data) {
-                obj[data[key].split('=')[0]] = data[key].split('=')[1];
-              }
-
-              this.setState({loading : true});
-              this.setState({message : ''});
-              if(this.state.rememberMe) {
-                loginData = { 'host' : this.state.host, 'port' : this.state.port, 'username' : this.state.username,
-                  'password' : this.state.password, 'databases' : this.state.databases, 'authEnabled' : this.state.authEnabled};
-                localStorage.setItem('loginData', JSON.stringify(loginData));
-              } else {
-                localStorage.removeItem('loginData');
-              }
-              let loginCall = service('POST', 'login', obj);
-              loginCall.then(this.success, this.failure);
-              return loginCall;
-            });
-          });
-        });
-      });
+    this.setState({
+      hostError : hostError,
+      portError : portError,
+      userNameError : userNameError,
+      passwordError : passwordError,
+      dbError : dbError
     });
+
+    if(hostError || portError || userNameError || passwordError || dbError)
+      return false;
+    for(let key in data) {
+      obj[data[key].split('=')[0]] = data[key].split('=')[1];
+    }
+
+    this.setState({
+      loading : true,
+      message : ''
+    });
+    if(this.state.rememberMe) {
+      loginData = { 'host' : this.state.host, 'port' : this.state.port, 'username' : this.state.username,
+        'password' : this.state.password, 'databases' : this.state.databases, 'authEnabled' : this.state.authEnabled};
+      localStorage.setItem('loginData', JSON.stringify(loginData));
+    } else {
+      localStorage.removeItem('loginData');
+    }
+    let loginCall = service('POST', 'login', obj);
+    loginCall.then(this.success, this.failure);
+    return loginCall;
+
+
+
+
   }
 
   success(data) {
@@ -126,20 +134,26 @@ class LoginComponent extends React.Component {
       sessionStorage.setItem('username', JSON.stringify(this.state.username));
       sessionStorage.setItem('host', JSON.stringify(this.state.host));
       sessionStorage.setItem('db', JSON.stringify(this.state.databases));
-      this.setState({message : data.response.result['success']});
-      this.setState({loading : false});
+      this.setState({
+        message : data.response.result['success'],
+        loading : false
+      });
       browserHistory.push({ pathname : '/dashboard/home', query : { database : this.state.databases} });
     }
     if (data.response.error) {
-      this.setState({message : data.response.error.message});
-      this.setState({loading : false});
+      this.setState({
+        message : data.response.error.message,
+        loading : false
+      });
     }
 
   }
 
   failure() {
-    this.setState({ message : 'Unexpected Error Occurred' });
-    this.setState({loading : false});
+    this.setState({
+      message : 'Unexpected Error Occurred',
+      loading : false
+    });
   }
 
   enableButton() {
@@ -169,8 +183,42 @@ class LoginComponent extends React.Component {
 
 
   componentDidMount() {
+    // transfers sessionStorage from one tab to another
+    let sessionStorageTransfer = function(event) {
+      if(!event) {
+        event = window.event;
+      } // ie suq
+      if(!event.newValue) return;          // do nothing if no value to work with
+      if (event.key === 'getSessionStorage') {
+        // another tab asked for the sessionStorage -> send it
+        localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
+        // the other tab should now have it, so we're done with it.
+        localStorage.removeItem('sessionStorage'); // <- could do short timeout as well.
+      } else if (event.key === 'sessionStorage' && !sessionStorage.length) {
+        // another tab sent data <- get it
+        let data = JSON.parse(event.newValue);
+        for (let key in data) {
+          sessionStorage.setItem(key, data[key]);
+        }
+      }
+    };
+
     if (typeof(this.props.location.query.code) != 'undefined' ) {
       this.setState({message : 'You are not connected to Mongo DB'});
+    }
+
+    // listen for changes to localStorage
+    if(window.addEventListener) {
+      window.addEventListener('storage', sessionStorageTransfer, false);
+    } else {
+      window.attachEvent('onstorage', sessionStorageTransfer);
+    }
+
+
+    // Ask other tabs for session storage (this is ONLY to trigger event)
+    if (!sessionStorage.length) {
+      localStorage.setItem('getSessionStorage', 'foobar');
+      localStorage.removeItem('getSessionStorage', 'foobar');
     }
     this.loadLoginData();
   }

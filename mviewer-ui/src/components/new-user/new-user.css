@@ -108,7 +108,6 @@
 .cancel
  {
     border: none !important;
-    width: 20%;
     background-color: inherit;
     font-size: 13px;
     font-weight: 600;
@@ -117,7 +116,6 @@
 
 .cancel {
   color: #484848;
-  margin-left: 235px;
 }
 
 .cancel:hover,
@@ -129,11 +127,8 @@
 
 .submit {
     color: #2494d0;
-    float: right;
-    margin-bottom: 4%;
-    margin-right: -3%;
     font-family: 'Brandon-Light';
-    margin-top: -1.8%;
+    padding-left: 20px;
 }
 .submit:hover,
 .submit:active {
@@ -158,6 +153,8 @@
 
 .buttonContainer{
   padding-top: 15px;
+  padding-bottom: 10px;
+  float: right;
 }
 
 .label1 {
@@ -205,6 +202,10 @@
 
 .modifyUser span {
   display: inline;
+}
+
+.clear{
+  clear: both;
 }
 
 
