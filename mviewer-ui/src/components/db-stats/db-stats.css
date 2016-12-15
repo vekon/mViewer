@@ -3,7 +3,8 @@
     display: inline-block;
     width: 100%;
     overflow: hidden;
-    height: calc(100vh - 130px);
+    /*height: calc(100vh - 130px);*/
+    height: calc(100vh - 156px);
     overflow: auto;
     font-family: 'Brandon-Light';
 }
