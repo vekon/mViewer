@@ -101,6 +101,7 @@ class DatabaseTabsComponent extends React.Component {
         selectedTab : nextSelected,
       });
       this.setState({selectedTab : nextSelected});
+      this.handleTabSelect('', nextSelected, currentTabs);
     }
   }
 
