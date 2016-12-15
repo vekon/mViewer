@@ -99,7 +99,7 @@
   float: right;
   font-family: 'Brandon-Light';
   margin-top: .01%;
-  padding: 10px 0 10px 40px;
+  padding: 10px 0 10px 10px;
 }
 .submit:hover:enabled,
 .submit:active:enabled {

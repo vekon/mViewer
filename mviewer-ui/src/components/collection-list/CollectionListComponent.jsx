@@ -4,7 +4,6 @@ import $ from 'jquery';
 import CollectionItem from './CollectionItemComponent.jsx';
 import NewCollection from '../new-collection/NewCollectionComponent.jsx';
 import SearchInput, {createFilter} from 'react-search-input';
-import { browserHistory } from 'react-router';
 import service from '../../gateway/service.js';
 import ReactHeight from 'react-height';
 
@@ -38,14 +37,14 @@ class CollectionList extends React.Component {
   clickHandler (idx, collection) {
     this.setState({selectedItem : idx});
     this.setState({ visible : false});
-    this.props.setStates(collection);
+    this.props.setStates(collection, '', 'collection');
     this.setState({selectedCollection : collection}, function() {
     });
   }
 
   refreshRespectiveData(newCollectionName) {
     this.setState({selectedCollection : newCollectionName});
-    this.props.setStates(newCollectionName);
+    this.props.setStates(newCollectionName, '', 'collection');
   }
 
   refreshCollectionList(db) {
@@ -77,7 +76,7 @@ class CollectionList extends React.Component {
           this.setState({collections : data.response.result});
         } else{
           this.props.refreshDb();
-          browserHistory.push({ pathname : '/dashboard/home', query : { collapsed : false} });
+          this.props.closeDbTab();
         }
       }
       if(typeof(data.response.error) != 'undefined') {
@@ -94,14 +93,14 @@ class CollectionList extends React.Component {
           this.props.hideQueryExecutor();
         } else{
           this.props.refreshDb();
-          browserHistory.push({ pathname : '/dashboard/home', query : { collapsed : false} });
+          this.props.closeDbTab();
         }
 
       }
       if(typeof(data.response.error) != 'undefined') {
         if(data.response.error.code === 'DB_DOES_NOT_EXISTS') {
           this.props.refreshDb();
-          browserHistory.push({ pathname : '/dashboard/home', query : { collapsed : false} });
+          this.props.closeDbTab();
         }
       }
 
@@ -200,6 +199,7 @@ CollectionList.propTypes = {
   selectedDB : React.PropTypes.string,
   setStates : React.PropTypes.func,
   refreshDb : React.PropTypes.func,
+  closeDbTab : React.PropTypes.func,
   hideQueryExecutor : React.PropTypes.func,
   visible : React.PropTypes.bool,
   alignment : React.PropTypes.string

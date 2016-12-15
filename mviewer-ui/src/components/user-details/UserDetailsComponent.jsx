@@ -104,13 +104,6 @@ class UserDetailsComponent extends React.Component {
   }
 
   render () {
-    // var roles = '';          //eslint fix
-    // this.state.userDetail ? this.state.userDetail.map(function(item){
-    //   if(item.key == 'role')
-    //     roles = item.value;
-    // }) : null;
-    // roles = this.state.userDetail ? this.state.userDetail[0].key : null;
-    // console.log(roles);
     return(
       <div className={userDetailsStyles.mainContainer + ' col-md-10 col-xs-7 col-sm-9'}>
       <div id="userDetails" className={userDetailsStyles.userContainer + ' navbar navbar-default'}>

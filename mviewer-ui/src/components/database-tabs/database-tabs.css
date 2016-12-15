@@ -1,0 +1,73 @@
+.mainContainer,
+.collapsedContainer {
+	padding: 0 !important;
+	height: calc(100vh - 60px);
+}
+
+.collapsedContainer{
+  
+}
+
+.myWrapper{
+
+}
+
+.myTabBar{
+
+}
+
+.myTabBarAfter{
+	background-color: #bababa !important;
+	border-bottom-color: #bababa !important;
+	height: 1px !important;
+
+}
+
+.myTab{
+	background-image: linear-gradient(rgb(244,249,252), rgb(239,244,248)) !important;
+}
+
+.myTabBefore{
+	background-image: linear-gradient(rgb(244,249,252), rgb(239,244,248)) !important;
+	box-shadow: rgb(244,249,252) 1px 1px 0px inset, rgba(0, 0, 0, 0.0980392) -4px 0px 4px !important;
+}
+
+.myTabAfter{
+	background-image: linear-gradient(rgb(244,249,252), rgb(239,244,248)) !important;
+	box-shadow: rgb(244,249,252) -1px 1px 0px inset, rgba(0, 0, 0, 0.0980392) 4px 0px 4px !important;
+}
+
+.myTabTitle{
+	color: #555 !important;
+	font-family: 'Brandon' !important;
+	font-size: 15px !important;
+	margin-top: 2px !important;
+}
+
+.tabCloseIcon{
+
+}
+
+
+.myTabActive{
+	background-image: linear-gradient(rgb(85,85,85), rgb(85,85,85)) !important;
+	
+}
+
+.myTabActive > .myTabTitle {
+	color: rgb(244,249,252) !important;
+	font-family: 'Brandon' !important;
+	font-size: 15px !important;
+	margin-top: 2px !important;
+}
+
+
+.myTabActive > .myTabAfter {
+	background-image: linear-gradient(rgb(85,85,85), rgb(85,85,85)) !important;
+	box-shadow: rgb(85,85,85) -1px 1px 0px inset, rgba(0, 0, 0, 0.0980392) 4px 0px 4px !important;
+}
+
+.myTabActive > .myTabBefore {
+	background-image: linear-gradient(rgb(85,85,85), rgb(85,85,85)) !important;
+	box-shadow: rgb(85,85,85) 1px 1px 0px inset, rgba(0, 0, 0, 0.0980392) -4px 0px 4px !important;
+}
