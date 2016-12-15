@@ -126,6 +126,12 @@ class DbListComponent extends React.Component {
     }
   }
 
+
+  changeDbName () {
+    let title = JSON.parse(sessionStorage.getItem('selectedTabTitle') || null);
+    this.setState({selectedDb : title});
+  }
+
   changeHandler = () => {
     this.setState({visible : false});
   }

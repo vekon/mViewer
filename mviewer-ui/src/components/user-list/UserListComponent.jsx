@@ -88,7 +88,7 @@ class UserList extends React.Component {
   refreshRespectiveData(newCollectionName) {
     this.setState({selectedItem : newCollectionName});
     this.setState({selectedCollection : newCollectionName});
-    this.props.setStates(newCollectionName);
+    this.props.setStates(newCollectionName, '', 'user');
   }
 
   searchUpdated (term) {

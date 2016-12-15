@@ -6,7 +6,8 @@
   padding-right: 3%;
 
   float: right;
-  height: calc(100vh - 130px);
+  /*height: calc(100vh - 130px);*/
+  height: calc(100vh - 156px);
 
 }
 

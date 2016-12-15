@@ -2,7 +2,7 @@
 .mainContainerCollapsed{
   display: inline-block;
   padding: 5px;
-  height: calc(100vh - 130px);
+  height: calc(100vh - 146px);
   overflow: auto;
   float: right;
   padding-right: 3%;

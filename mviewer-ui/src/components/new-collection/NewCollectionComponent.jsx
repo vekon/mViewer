@@ -267,7 +267,7 @@ class NewCollectionComponent extends React.Component {
             <Form method='POST' onValid={this.enableButton()} onInvalid={this.disableButton()} name="collectionForm" >
               <div className={ newCollectionStyles.formContainer}>
                 <div className={newCollectionStyles.inputBox}>
-                  <TextInput type="text" name="newCollName" id="newCollName" placeholder="Collection name" value={this.state.name} validations={'isRequired2:' + this.state.error + ',isAlpha2:' + this.state.error + ',maxLength:' + (119 - this.props.currentDb.length) + ',checkSystemCol'} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2 : 'Collection name must not be empty', isAlpha2 : 'Invalid Collection name', maxLength : 'Collection name cannot be more than ' + (119 - this.props.currentDb.length) + ' characters for this Db', checkSystemCol : 'Collection name cannot start with system.' }} />
+                  <TextInput type="text" name="newCollName" id="newCollName" placeholder="Collection name" value={this.state.name} validations={'isRequired2:' + this.state.error + ',isAlpha2:' + this.state.error + ',maxLength:' + (114 - this.props.currentDb.length) + ',checkSystemCol'} onChange={this.handleChange.bind(this)} validationErrors={{isRequired2 : 'Collection name must not be empty', isAlpha2 : 'Invalid Collection name', maxLength : 'Collection name cannot be more than ' + (114 - this.props.currentDb.length) + ' characters for this Db', checkSystemCol : 'Collection name cannot start with system.' }} />
                 </div>
                 <div className={newCollectionStyles.inputBox}>
                   <input type="checkbox" name="isCapped" id="isCapped" className={newCollectionStyles.checkBox} onChange={this.handleCheck.bind(this)} checked={this.state.cap} />
@@ -283,13 +283,14 @@ class NewCollectionComponent extends React.Component {
                   <input type="checkbox" name="autoIndexId" id="autoIndexId" className={newCollectionStyles.checkBox} checked={this.state.autoIndex} onChange={this.handleIndex.bind(this)} disabled={!this.state.cap} />
                   <div className={newCollectionStyles.checkLabel} onClick={this.handleIndex.bind(this)}><span>Auto Indent</span></div>
                 </div>
-                <div >
+                <div className={newCollectionStyles.buttonContainer}>
                   <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={newCollectionStyles.submit} disabled={!this.state.canSubmit}>SUBMIT</button>
                   <span onClick={this.closeModal.bind(this)} value='CANCEL' className={newCollectionStyles.cancel}>CANCEL</span>
                 </div>
               </div>
             </Form>
-             <div className={!this.state.successMessage ? (newCollectionStyles.errorMessage + ' ' + (this.state.message !== '' ? newCollectionStyles.show : newCollectionStyles.hidden)) : (this.state.message !== '' ? newCollectionStyles.successMessage : '')}>{this.state.message}</div>
+            <div className = {newCollectionStyles.clear}></div>
+            <div className={!this.state.successMessage ? (newCollectionStyles.errorMessage + ' ' + (this.state.message !== '' ? newCollectionStyles.show : newCollectionStyles.hidden)) : (this.state.message !== '' ? newCollectionStyles.successMessage : '')}>{this.state.message}</div>
           </div>
         </Modal> : <AuthPopUp modalIsOpen = {this.state.showAuth} action = {this.props.addOrUpdate === '1' ? 'add collection' : 'edit collection' } authClose = {this.authClose.bind(this)} ></AuthPopUp>}
      </div>
