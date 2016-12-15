@@ -217,14 +217,6 @@ class DatabaseTabsComponent extends React.Component {
           onTabPositionChange={this.handleTabPositionChange.bind(this)}
           shouldTabClose={this.shouldTabClose.bind(this)}
           tabs={this.state.tabs}
-          shortCutKeys={
-            {
-              'close' : ['alt+command+w', 'alt+ctrl+w'],
-              'create' : ['alt+command+t', 'alt+ctrl+t'],
-              'moveRight' : ['alt+command+tab', 'alt+ctrl+tab'],
-              'moveLeft' : ['shift+alt+command+tab', 'shift+alt+ctrl+tab']
-            }
-          }
           keepSelectedTab={true}
         />
       </div>
