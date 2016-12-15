@@ -2,9 +2,15 @@
     background-color: #fff;
     display: inline-block;
     overflow: auto;
-    height: calc(100vh - 60px);
+    /*height: calc(100vh - 60px);*/
+    height: calc(100vh - 86px);
     padding-right: 0;
     padding-left: 0;
+    width: 100%;
+}
+
+.collapsedContainer{
+
 }
 
 .mainContainer>button {

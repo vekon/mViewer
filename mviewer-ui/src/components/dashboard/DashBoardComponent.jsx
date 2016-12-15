@@ -9,10 +9,10 @@ class DashBoardComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      connectionId : JSON.parse(sessionStorage.getItem('connectionId') || '{}'),
-      loggedInDatabase : JSON.parse(sessionStorage.getItem('db') || '{}'),
-      host : JSON.parse(sessionStorage.getItem('host') || '{}'),
-      username : JSON.parse(sessionStorage.getItem('username') || '{}')
+      // connectionId : JSON.parse(sessionStorage.getItem('connectionId') || '{}'),
+      // loggedInDatabase : JSON.parse(sessionStorage.getItem('db') || '{}'),
+      // host : JSON.parse(sessionStorage.getItem('host') || '{}'),
+      // username : JSON.parse(sessionStorage.getItem('username') || '{}')
     };
   }
 
@@ -41,9 +41,69 @@ class DashBoardComponent extends React.Component {
     this.refs.sideNav.refreshDb();
   }
 
+  changeDbName () {
+    this.refs.sideNav.changeDbName();
+  }
+
+
   clearActiveClass = () => {
     this.refs.sideNav.clearActiveClass();
     browserHistory.push({ pathname : '/dashboard/home', query : { db : this.state.loggedInDatabase} });
+  }
+
+  componentWillMount () {
+    // transfers sessionStorage from one tab to another
+    let that = this;
+    let sessionStorageTransfer = function(event) {
+      if(!event) {
+        event = window.event;
+      } // ie suq
+      if(!event.newValue) return;          // do nothing if no value to work with
+      if (event.key === 'getSessionStorage') {
+        // another tab asked for the sessionStorage -> send it
+        localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
+        // the other tab should now have it, so we're done with it.
+        localStorage.removeItem('sessionStorage'); // <- could do short timeout as well.
+      } else if (event.key === 'sessionStorage' && !sessionStorage.length) {
+        // another tab sent data <- get it
+        let data = JSON.parse(event.newValue);
+        for (let key in data) {
+          sessionStorage.setItem(key, data[key]);
+        }
+        that.setState({
+          connectionId : JSON.parse(sessionStorage.getItem('connectionId') || '{}'),
+          loggedInDatabase : JSON.parse(sessionStorage.getItem('db') || '{}'),
+          host : JSON.parse(sessionStorage.getItem('host') || '{}'),
+          username : JSON.parse(sessionStorage.getItem('username') || '{}')
+        });
+
+      }
+    };
+
+    // listen for changes to localStorage
+    if(window.addEventListener) {
+      window.addEventListener('storage', sessionStorageTransfer, false);
+    } else {
+      window.attachEvent('onstorage', sessionStorageTransfer);
+    }
+
+
+    // Ask other tabs for session storage (this is ONLY to trigger event)
+    if (!sessionStorage.length) {
+      localStorage.setItem('getSessionStorage', 'foobar');
+      localStorage.removeItem('getSessionStorage', 'foobar');
+    }
+
+  }
+
+
+  componentDidMount() {
+    this.setState({
+      connectionId : JSON.parse(sessionStorage.getItem('connectionId') || ' '),
+      loggedInDatabase : JSON.parse(sessionStorage.getItem('db') || ' '),
+      host : JSON.parse(sessionStorage.getItem('host') || ' '),
+      username : JSON.parse(sessionStorage.getItem('username') || ' ')
+    });
   }
 
   render() {
@@ -53,6 +113,9 @@ class DashBoardComponent extends React.Component {
         loggedInDatabase : this.state.loggedInDatabase,
         refreshDb : function() {
           this.refreshDb();
+        }.bind(this),
+        changeDbName : function() {
+          this.changeDbName();
         }.bind(this)
       })
     );
@@ -76,8 +139,8 @@ class DashBoardComponent extends React.Component {
              </nav>
           </header>
           <div>
-            <SideNav ref='sideNav' connectionId = {this.state.connectionId} loggedInDatabase ={this.state.loggedInDatabase} propss = {this.props}></SideNav>
-            {childrenWithProps}
+            {this.state.connectionId != null || typeof(this.state.connectionId) != 'undefined' ? <SideNav ref='sideNav' connectionId = {this.state.connectionId} loggedInDatabase ={this.state.loggedInDatabase} propss = {this.props}></SideNav> : null}
+            {this.state.connectionId != null || typeof(this.state.connectionId) != 'undefined' ? childrenWithProps : null}
           </div>
         </div>
       </div>
