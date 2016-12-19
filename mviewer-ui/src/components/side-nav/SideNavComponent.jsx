@@ -22,6 +22,10 @@ class SideNavComponent extends React.Component {
     this.refs.left.refreshDbList();
   }
 
+  changeDbName () {
+    this.refs.left.changeDbName();
+  }
+
   setActiveItem (item) {
     this.setState({selectedDB : item});
   }
