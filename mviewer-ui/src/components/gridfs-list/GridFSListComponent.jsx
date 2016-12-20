@@ -55,14 +55,14 @@ class GridFSList extends React.Component {
   clickHandler (idx, fs) {
     this.setState({selectedCollection : idx});
     this.setState({ visible : false});
-    this.props.setStates(fs);
+    this.props.setStates(fs, '', 'gridFs');
     this.setState({selectedCollection : fs}, function() {
     });
   }
 
   refreshRespectiveData(newCollectionName) {
     this.setState({selectedCollection : newCollectionName});
-    this.props.setStates(newCollectionName);
+    this.props.setStates(newCollectionName, '', 'gridFs');
   }
 
   searchUpdated (term) {
