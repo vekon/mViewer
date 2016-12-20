@@ -184,20 +184,33 @@ class DatabaseTabsComponent extends React.Component {
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.location.query.db !== this.props.location.query.db && typeof(nextProps.location.query.db) != 'undefined') {
-      const key = 'newTab_' + Date.now();
-      let newTab = (<Tab key={key} title={nextProps.location.query.db} afterTitle={<CloseButtonComponent closeButtonHandler = {this.closeButtonHandler} key1={key}/>} disableClose={true} >
-                    <CollectionsComponent propss = {nextProps} closeDbTab = {this.closeDbTab} />
-                  </Tab>);
+      let tabAlreadyOpened = [];
       let previousTabs = this.state.tabs;
-      let newTabs = previousTabs.concat([newTab]);
-      this.setState({
-        tabs : newTabs,
-        selectedTab : key
+      tabAlreadyOpened = previousTabs.filter((tab) => {
+        return tab.props.title === nextProps.location.query.db ;
       });
+      if (tabAlreadyOpened.length === 0) {
+        const key = 'newTab_' + Date.now();
+        let newTab = (<Tab key={key} title={nextProps.location.query.db} afterTitle={<CloseButtonComponent closeButtonHandler = {this.closeButtonHandler} key1={key}/>} disableClose={true} >
+                      <CollectionsComponent propss = {nextProps} closeDbTab = {this.closeDbTab} />
+                    </Tab>);
+        let newTabs = previousTabs.concat([newTab]);
+        this.setState({
+          tabs : newTabs,
+          selectedTab : key
+        });
+        sessionStorage.setItem('selectedTabKey', JSON.stringify(key));
+      } else {
+        let key = tabAlreadyOpened[0].key;
+        this.setState({
+          selectedTab : key
+        });
+        sessionStorage.setItem('selectedTabKey', JSON.stringify(key));
+      }
       this.setState({currentDb : nextProps.location.query.db});
       sessionStorage.setItem('selectedTabTitle', JSON.stringify(nextProps.location.query.db));
-      sessionStorage.setItem('selectedTabKey', JSON.stringify(key));
     }
+
   }
 
 
