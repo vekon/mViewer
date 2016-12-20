@@ -1,24 +1,26 @@
 package com.imaginea.mongodb.controllers;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import java.io.InputStream;
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by satyad on 30/11/16.
  */
-@Path("/")
-public class DashboardURLController {
+public class DashboardURLController extends HttpServlet {
 
-	@Path("{any: .*}")
-    @GET
-    @Produces({MediaType.TEXT_HTML})
-    public InputStream viewHome()
-    {	
-        InputStream file = this.getClass().getResourceAsStream("/../../index.html");
-        return file;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public void doGet(HttpServletRequest httpReq, HttpServletResponse httpRes) throws IOException, ServletException {	
+        RequestDispatcher view = httpReq.getRequestDispatcher("/index.html");
+        view.forward(httpReq, httpRes);
     }
 }
 
