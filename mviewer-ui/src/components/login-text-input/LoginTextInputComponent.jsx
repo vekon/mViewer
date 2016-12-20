@@ -98,7 +98,12 @@ const LoginTextInput = React.createClass({
 
   componentDidMount () {
     if(typeof(localStorage.getItem('loginData')) != 'undefined' && localStorage.getItem('loginData') != null) {
-      this.setState({hoverClass : 'floating-label-hovered'});
+      let loginObject = JSON.parse(localStorage.getItem('loginData'));
+      for (let key in loginObject) {
+        if (this.props.name === key && loginObject[key]) {
+          this.setState({hoverClass : 'floating-label-hovered'});
+        }
+      }
     } else{
       this.setState({hoverClass : 'floating-label'});
     }

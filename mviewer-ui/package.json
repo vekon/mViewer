@@ -1,7 +1,7 @@
 {
   "name": "mviewer",
   "version": "1.0.0",
-  "description": "mongo db installation manager",
+  "description": "A simple web-based Administration and Management Tool for MongoDB",
   "main": "index.js",
   "jest": {
     "scriptPreprocessor": "./preprocessor.js"

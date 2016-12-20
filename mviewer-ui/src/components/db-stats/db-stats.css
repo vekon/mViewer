@@ -1,4 +1,4 @@
-.mainContainer {
+.dbStatsBody {
     background-color: #fff;
     display: inline-block;
     width: 100%;
@@ -24,9 +24,8 @@
     border: 1px solid #bababa;
     text-align: center;
     line-height: 25px;
-    margin-top: 5%;
-    margin-left: 8%;
-    width: 50%;
+    margin: 60px;
+    width: 40%;
 }
 
 .dbStatsBody table tbody {
@@ -38,7 +37,6 @@
 }
 .dbStatsBody table tr:first-child th {
   border-top: 0;
-  text-align: center;
 }
 .dbStatsBody table tr:last-child td {
   border-bottom: 0;
@@ -52,7 +50,7 @@
   border-right: 0;
 }
 
-.dbStatsBody table tr td {
+.dbStatsBody table tr th, .dbStatsBody table tr td {
     padding: 5px 50px;
     text-transform: capitalize;
 }

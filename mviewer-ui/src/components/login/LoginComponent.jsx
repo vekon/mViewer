@@ -115,11 +115,8 @@ class LoginComponent extends React.Component {
     }
     let loginCall = service('POST', 'login', obj);
     loginCall.then(this.success, this.failure);
+
     return loginCall;
-
-
-
-
   }
 
   success(data) {
@@ -140,7 +137,6 @@ class LoginComponent extends React.Component {
         loading : false
       });
     }
-
   }
 
   failure() {
@@ -173,8 +169,6 @@ class LoginComponent extends React.Component {
       this.setState(state);
     }.bind(this);
   }
-
-
 
   componentDidMount() {
     this.loadLoginData();

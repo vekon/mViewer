@@ -127,12 +127,12 @@ class UserDetailsComponent extends React.Component {
         <table className={'table'}>
           <tbody>
             <tr>
-              <th>Keys</th>
-              <th>Values</th>
+              <th className='text-left'>Keys</th>
+              <th className='text-left'>Values</th>
             </tr>
             { this.state.userDetails.length > 0 ?
               this.state.userDetails.map((item) => {
-                return <tr key={item.key}><td>{item.key}</td><td>{item.value}</td></tr>;
+                return <tr key={item.key}><td className='text-left'>{item.key}</td><td className='text-left'>{item.value}</td></tr>;
               }) : null }
           </tbody>
         </table>

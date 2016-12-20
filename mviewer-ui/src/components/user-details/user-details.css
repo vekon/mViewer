@@ -24,16 +24,12 @@
 .detailsBody table {
   border-collapse: collapse;
   border: 1.5px solid #bababa;
-  text-align: center;
   line-height: 25px;
   max-width: 425px;
   background-color: #eff4f8;
   margin-bottom: 0;
 }
 
-.detailsBody table th{
-  text-align: center;
-}
 .detailsBody table td, .detailsBody table th {
   border: 1.5px solid #bababa;
 }

@@ -48,21 +48,19 @@ class DbStatsComponent extends React.Component {
   render () {
     const that = this;
     return(
-      <div className={dbStatsStyles.mainContainer}>
+      <div className={dbStatsStyles.dbStatsBody}>
         { that.props.selectedDB ?
-          <div className={dbStatsStyles.dbStatsBody}>
             <table>
               <tbody>
                 <tr>
-                  <th>Keys</th>
-                  <th>Values</th>
+                  <th className='text-left'>Keys</th>
+                  <th className='text-right'>Values</th>
                 </tr>
                 { that.state.dbStats.length > 0 ? that.state.dbStats.map((item) => {
-                  return <tr key={item.key}><td>{item.key}</td><td>{item.value}</td></tr>;
+                  return <tr key={item.key}><td className='text-left'>{item.key}</td><td className='text-right'>{item.value}</td></tr>;
                 }) : null}
               </tbody>
             </table>
-          </div>
           : null
         }
       </div>

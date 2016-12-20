@@ -281,7 +281,7 @@ class NewCollectionComponent extends React.Component {
                 </div>
                 <div className={newCollectionStyles.inputBox}>
                   <input type="checkbox" name="autoIndexId" id="autoIndexId" className={newCollectionStyles.checkBox} checked={this.state.autoIndex} onChange={this.handleIndex.bind(this)} disabled={!this.state.cap} />
-                  <div className={newCollectionStyles.checkLabel} onClick={this.handleIndex.bind(this)}><span>Auto Indent</span></div>
+                  <div className={newCollectionStyles.checkLabel} onClick={this.handleIndex.bind(this)}><span>Auto Index</span></div>
                 </div>
                 <div className={newCollectionStyles.buttonContainer}>
                   <button onClick={this.clickHandler.bind(this)} value='SUBMIT' className={newCollectionStyles.submit} disabled={!this.state.canSubmit}>SUBMIT</button>
